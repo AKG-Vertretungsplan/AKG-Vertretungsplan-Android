@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2015 SpiritCroc
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <PreferenceCategory
+        android:title="@string/userdata">
+        <EditTextPreference
+            android:key="pref_username"
+            android:title="@string/username"
+            android:inputType="textNoSuggestions"
+            android:defaultValue=""/>
+        <EditTextPreference
+            android:key="pref_password"
+            android:title="@string/password"
+            android:inputType="textPassword"
+            android:defaultValue=""/>
+        </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/pref_general">
+        <ListPreference
+            android:key="pref_auto_mark_read"
+            android:title="@string/pref_auto_mark_read"
+            android:entries="@array/pref_auto_mark_read_array"
+            android:entryValues="@array/pref_auto_mark_read_array_values"
+            android:defaultValue="onPlanReloaded"/>
+        <EditTextPreference
+            android:key="pref_auto_load_on_open"
+            android:title="@string/pref_auto_load_on_open"
+            android:numeric="integer"
+            android:defaultValue="5"/>
+        <CheckBoxPreference
+            android:key="pref_background_service"
+            android:title="@string/pref_background_service"
+            android:summary="@string/pref_background_service_summary"
+            android:defaultValue="true"/>
+        <EditTextPreference
+            android:key="pref_background_update_interval"
+            android:title="@string/pref_background_update_interval"
+            android:numeric="integer"
+            android:defaultValue="60"
+            android:dependency="pref_background_service"/>
+        <!--EditTextPreference
+            android:key="pref_debugging_enabled"
+            android:title="@string/pref_developing_enabled"
+            android:summary="@string/pref_developing_enabled_summary"
+            android:numeric="integer"
+            android:defaultValue="0"/--><!--todo: remove preference for release-->
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/pref_notification">
+        <CheckBoxPreference
+            android:key="pref_notification_enabled"
+            android:title="@string/pref_notification_enabled"
+            android:summary="@string/pref_notification_enabled_summary"
+            android:defaultValue="true"/>
+        <CheckBoxPreference
+            android:key="pref_notification_sound_enabled"
+            android:title="@string/pref_notification_sound_enabled"
+            android:defaultValue="true"
+            android:dependency="pref_notification_enabled"/>
+        <RingtonePreference
+            android:key="pref_notification_sound"
+            android:title="@string/pref_notification_sound"
+            android:defaultValue=""
+            android:dependency="pref_notification_sound_enabled"/>
+        <CheckBoxPreference
+            android:key="pref_led_notification_enabled"
+            android:title="@string/pref_led_notification_enabled"
+            android:defaultValue="true"
+            android:dependency="pref_notification_enabled"/>
+        <ListPreference
+            android:key="pref_led_notification_color"
+            android:title="@string/pref_led_notification_color"
+            android:entries="@array/pref_led_color_array"
+            android:entryValues="@array/pref_led_color_array_values"
+            android:dependency="pref_led_notification_enabled"
+            android:defaultValue="-1"/>
+        <CheckBoxPreference
+            android:key="pref_vibrate_notification_enabled"
+            android:title="@string/pref_vibrate_notification_enabled"
+            android:defaultValue="true"
+            android:dependency="pref_notification_enabled"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/pref_user_interface">
+        <EditTextPreference
+            android:key="pref_no_change_since_max_precision"
+            android:title="@string/pref_no_change_since_max_precision"
+            android:numeric="integer"
+            android:defaultValue="2"/>
+        <ListPreference
+            android:key="pref_theme"
+            android:title="@string/pref_theme"
+            android:entries="@array/pref_theme_array"
+            android:entryValues="@array/pref_theme_array_values"
+            android:defaultValue="lightDarkActionBar"/>
+    <PreferenceScreen
+        android:title="@string/pref_colors"
+        android:summary="@string/pref_colors_summary">
+        <CheckBoxPreference
+            android:key="pref_customize_background_colors"
+            android:title="@string/pref_customize_background_colors"
+            android:summary="@string/pref_customize_background_colors_summary"
+            android:defaultValue="false"/>
+        <PreferenceCategory
+            android:title="@string/pref_header_text">
+            <ListPreference
+                android:key="pref_header_text_text_color"
+                android:title="@string/pref_text_color"
+                android:entries="@array/pref_color_array"
+                android:entryValues="@array/pref_color_array_values"
+                android:defaultValue="-16777216"/>
+            <ListPreference
+                android:key="pref_header_text_background_color"
+                android:title="@string/pref_background_color"
+                android:entries="@array/pref_color_array"
+                android:entryValues="@array/pref_color_array_values"
+                android:defaultValue="-1"
+                android:dependency="pref_customize_background_colors"/>
+            <ListPreference
+                android:key="pref_header_text_text_color_highlight"
+                android:title="@string/pref_text_color_highlight"
+                android:entries="@array/pref_color_array"
+                android:entryValues="@array/pref_color_array_values"
+                android:defaultValue="-65536"/>
+            <ListPreference
+                android:key="pref_header_text__background_color_highlight"
+                android:title="@string/pref_background_color_highlight"
+                android:entries="@array/pref_color_array"
+                android:entryValues="@array/pref_color_array_values"
+                android:defaultValue="-1"
+                android:dependency="pref_customize_background_colors"/>
+        </PreferenceCategory>
+        <PreferenceCategory
+            android:title="@string/pref_class_text">
+            <ListPreference
+                android:key="pref_class_text_text_color"
+                android:title="@string/pref_text_color"
+                android:entries="@array/pref_color_array"
+                android:entryValues="@array/pref_color_array_values"
+                android:defaultValue="-16776961"/>
+            <ListPreference
+                android:key="pref_class_text_background_color"
+                android:title="@string/pref_background_color"
+                android:entries="@array/pref_color_array"
+                android:entryValues="@array/pref_color_array_values"
+                android:defaultValue="-1"
+                android:dependency="pref_customize_background_colors"/>
+        </PreferenceCategory>
+        <PreferenceCategory
+            android:title="@string/pref_normal_text">
+            <ListPreference
+                android:key="pref_normal_text_text_color"
+                android:title="@string/pref_text_color"
+                android:entries="@array/pref_color_array"
+                android:entryValues="@array/pref_color_array_values"
+                android:defaultValue="-16777216"/>
+            <ListPreference
+                android:key="pref_normal_text_background_color"
+                android:title="@string/pref_background_color"
+                android:entries="@array/pref_color_array"
+                android:entryValues="@array/pref_color_array_values"
+                android:defaultValue="-1"
+                android:dependency="pref_customize_background_colors"/>
+            <ListPreference
+                android:key="pref_normal_text_text_color_highlight"
+                android:title="@string/pref_text_color_highlight"
+                android:entries="@array/pref_color_array"
+                android:entryValues="@array/pref_color_array_values"
+                android:defaultValue="-65536"/>
+            <ListPreference
+                android:key="pref_normal_text__background_color_highlight"
+                android:title="@string/pref_background_color_highlight"
+                android:entries="@array/pref_color_array"
+                android:entryValues="@array/pref_color_array_values"
+                android:defaultValue="-1"
+                android:dependency="pref_customize_background_colors"/>
+        </PreferenceCategory>
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:title="@string/pref_widget">
+            <PreferenceCategory
+                android:title="@string/pref_colors">
+                <ListPreference
+                    android:key="pref_widget_text_color"
+                    android:title="@string/pref_text_color"
+                    android:entries="@array/pref_color_array"
+                    android:entryValues="@array/pref_color_array_values"
+                    android:defaultValue="-1"/>
+                <ListPreference
+                    android:key="pref_widget_text_color_highlight"
+                    android:title="@string/pref_text_color_highlight"
+                    android:entries="@array/pref_color_array"
+                    android:entryValues="@array/pref_color_array_values"
+                    android:defaultValue="-65536"/>
+                </PreferenceCategory>
+        </PreferenceScreen>
+    </PreferenceCategory>
+</PreferenceScreen>

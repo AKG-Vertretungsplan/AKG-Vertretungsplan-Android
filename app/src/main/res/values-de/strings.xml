@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2015 SpiritCroc
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources>
+    <string name="app_name">Vertretungsplan</string>
+    <string name="action_reload_web_view">Neu laden</string>
+    <string name="correct_userdata">Falsche Anmeldedaten! Bitte Anmeldedaten eingeben</string>
+    <string name="enter_userdata">Bitte Anmeldedaten eingeben</string>
+    <string name="error_could_not_load">Vertretungsplan kann nicht geladen werden</string>
+    <string name="error_unknown">Unbekannter Fehler</string>
+    <string name="error_download_error">Fehler beim Herunterladen</string>
+    <string name="loading">Lade…</string>
+    <string name="loading_widget">Lade widget…</string>
+    <string name="new_version">Neue Vertretungen</string>
+    <string name="no_change_for">Keine neuen Vertretungen seit </string>
+    <string name="password">Passwort</string>
+    <string name="settings">Einstellungen</string>
+    <string name="showing_offline">Zeige Offline-Vertretungsplan</string>
+    <string name="userdata">Anmeldedaten</string>
+    <string name="username">Benutzername</string>
+    <plurals name="plural_day">
+        <item quantity="one">%d Tag</item>
+        <item quantity="other">%d Tagen</item>
+    </plurals>
+    <plurals name="plural_hour">
+        <item quantity="one">%d Stunde</item>
+        <item quantity="other">%d Stunden</item>
+    </plurals>
+    <plurals name="plural_minute">
+        <item quantity="one">%d Minute</item>
+        <item quantity="other">%d Minuten</item>
+    </plurals>
+    <plurals name="plural_second">
+        <item quantity="one">%d Sekunde</item>
+        <item quantity="other">%d Sekunden</item>
+    </plurals>
+    <string name="pref_no_change_since_max_precision">Zeitangabe</string>
+    <string name="pref_no_change_since_max_precision_summary_none">Es werden keine Werte angezeigt</string>
+    <plurals name="pref_no_change_since_max_precision_summary">
+        <item quantity="one">Es wird bis zu %d Wert angezeigt</item>
+        <item quantity="other">Es werden bis zu %d Werte angezeigt</item>
+    </plurals>
+    <string name="pref_user_interface">Darstellung</string>
+    <string name="no_change">Keine neuen Vertretungen</string>
+    <string name="title_activity_formatted">Vertretungsplan</string>
+    <string name="formatted_activity">Formatierter Plan</string>
+    <string name="original_activity">Webplan</string>
+    <string name="action_mark_read">Markiere als gelesen</string>
+    <string name="pref_colors">Farben</string>
+    <string name="pref_auto_mark_read">Automatisch als gelesen markieren</string>
+    <string-array name="pref_color_array">
+        <item>Schwarz</item>
+        <item>Blau</item>
+        <item>Cyan</item>
+        <item>Dunkelgrau</item>
+        <item>Grau</item>
+        <item>Grün</item>
+        <item>Hellgrau</item>
+        <item>Magenta</item>
+        <item>Rot</item>
+        <item>Weiß</item>
+        <item>Gelb</item>
+    </string-array>
+    <string name="pref_background_color">Hintergrundfarbe</string>
+    <string name="pref_background_color_highlight">Hintergrundfarbe bei Änderungen</string>
+    <string name="pref_class_text">Klasse</string>
+    <string name="pref_header_text">Kopf</string>
+    <string name="pref_normal_text">Vertretungen</string>
+    <string name="pref_text_color">Textfarbe</string>
+    <string name="pref_text_color_highlight">Textfarbe bei Änderungen</string>
+    <string name="pref_colors_summary">Farben des formatierten Plans</string>
+    <string-array name="pref_auto_mark_read_array">
+        <item>Beim Verlassen der Anzeige</item>
+        <item>Beim erneuten Laden</item>
+        <item>Nie</item>
+    </string-array>
+    <string name="today">Heute</string>
+    <string name="tomorrow">Morgen</string>
+    <string name="last_checked">Stand:</string>
+    <string name="add_widget">Widget hinzufügen</string>
+    <string name="pref_widget">Widget</string>
+    <string name="dialog_yes">Ja</string>
+    <string name="dialog_later">Später</string>
+    <string name="pref_general">Allgemein</string>
+    <string name="welcome">Willkommen</string>
+    <string name="pref_auto_load_on_open">Lade beim Start</string>
+    <plurals name="pref_auto_load_on_open_summary">
+        <item quantity="one">Lade den Plan beim Starten der App, falls seit der letzten Überprüfung mehr als %d Minute vergangen sind</item>
+        <item quantity="other">Lade den Plan beim Starten der App, falls seit der letzten Überprüfung mehr als %d Minuten vergangen sind</item>
+    </plurals>
+    <string name="disclaimer">Haftungsausschluss</string>
+    <string name="disclaimer_text">Benutzung dieser App nur auf eigene Gefahr/Verantwortung. Die hervorgesehene Funktionsweise dieser App bzw. die Richtigkeit der dargestellten Inhalte wird nicht garantiert!</string>
+    <string name="dialog_agree">Zustimmen</string>
+    <string name="version">Version</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Abbrechen</string>
+    <string name="dialog_about_0">\nDiese App ist OpenSource. Der Quellcode befindet sich hier: https://github.com/SpiritCroc/AKG-Vertretungsplan\n\nBugreports, Verbesserungsvorschläge, Funktionswünsche und andere konstruktive Rückmeldungen können auch an spiritcroc@gmail.com gesendet werden.</string>
+    <string name="dialog_about_1_title">\n<u>Verwendete Komponenten von Drittanbietern</u></string>
+    <string name="dialog_about_1_body">In dieser App werden einige von Googles Material Design Icons (lizenziert unter CC BY 4.0) verwendet.\nLink: http://www.google.com/design/spec/resources/sticker-sheets-icons.html#sticker-sheets-icons-components</string>
+    <string name="pref_developing_enabled">Geheimcode</string>
+    <string name="pref_developing_enabled_summary">Verwende dies nicht, wenn du nicht ich bist</string>
+    <string name="pref_theme">Theme</string>
+    <string name="pref_theme_summary">Für die vollständige Übernahme des Themes bitte App neu starten</string>
+    <string-array name="pref_theme_array">
+        <item>Hell</item>
+        <item>Hell mit dunkler ActionBar</item>
+        <item>Dunkel</item>
+    </string-array>
+    <string name="pref_customize_background_colors">Verändere Hintergrund</string>
+    <string name="pref_customize_background_colors_summary">Setze individuelle Hintergrundfarben</string>
+    <string name="pref_background_service">Hintergrundservice</string>
+    <string name="pref_background_service_summary">Lade den Plan regelmäßig im Hintergrund herunter</string>
+    <string name="pref_background_update_interval">Update Intervall</string>
+    <string name="pref_notification">Benachrichtigungen</string>
+    <string name="pref_notification_enabled">Benachrichtigungen aktivieren</string>
+    <string name="pref_notification_enabled_summary">Zeige eine Benachrichtigung, wenn neue Vertretungen verfügbar sind</string>
+    <string name="pref_notification_sound_enabled">Benachrichtigungston aktivieren</string>
+    <string name="pref_notification_sound">Benachrichtigungston auswählen</string>
+    <string name="pref_led_notification_enabled">LED aktivieren</string>
+    <string name="pref_led_notification_color">LED Farbe</string>
+    <string-array name="pref_led_color_array">
+        <item>Blau</item>
+        <item>Cyan</item>
+        <item>Grün</item>
+        <item>Magenta</item>
+        <item>Rot</item>
+        <item>Weiß</item>
+        <item>Gelb</item>
+    </string-array>
+    <string name="pref_vibrate_notification_enabled">Vibrieren</string>
+    <!--string name="pref_share_app">App weiterempfehlen</string>
+    <string name="pref_share_app_summary">Wenn du diese App nützlich findest, kannst du sie gerne deinen Freunden weiterempfehlen!</string>
+    <string name="pref_share_app_text">subject=AKG-Vertretungsplan?text=Ich habe eine praktische App gefunden, mit der man einfach den Vertretungsplan des AKGs auf Aktualisierungen überprüfen kann! Du findest sie unter https://sites.google.com/site/dampflok43apps/apps/akg-vertretungsplan.</string-->
+    <string name="action_about">Über</string>
+</resources>

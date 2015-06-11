@@ -1,0 +1,97 @@
+description text:
+Voraussetzung: Sdk 11 (Android 3.0) oder höher
+Funktionen:
+ - Wähle zwischen einem optimiertem und dem unverändertem Vertretungsplan von der AKG-Website
+ - Hebe Änderungen seit dem letzten Aufruf farbig hervor
+ - Überprüfe regelmäßig, ob der Vertretungsplan geändert wurde; Benachrichtigung bei Änderungen
+ - Offline-Anzeige
+ - Widget
+ - Viele Einstellungsmöglichkeiten
+
+Changelog hint: 1. big changes / features added, 2. usefull little changes / features added, 3. bug fixes, minor changes
+Changelog:
+
+Version 3.3.4 (13) WIP
+- Verwende Quantity Strings (Plurals)
+- Code aufgeräumt
+- Lizenzierung für GitHub eingeführt
+- Abhängigkeiten aktualisiert
+
+Version 3.3.3 (12)
+- Titel des aktuellen Vertretungsplan wird bei einer Veränderung jetzt sofort aktualisiert
+- Notification-Icon an Design-Guidelines angepasst
+
+Version 3.3.2 (11)
+- Teile entfernt, die aufgrund der Veröffentlichung im Google Play Store nicht mehr benötigt werden
+- Kleine Verbesserungen
+
+Version 3.3.1 (9/10)
+- Es wird nicht mehr überprüft, ob sich der Vertretungsplan verändert hat, sondern ob neue Vertretungen hinzugekommen sind
+
+Version 3.3.0 (7/8)
+- Neues Icon
+- Anzeigeproblem bei enthaltenem '>' im Vertretungsplan behoben
+- Regelmäßiger Download im Hintergrund, Benachrichtigung bei Veränderung
+- Anzeigeproblem der Tabelle für die ganze Schule behoben
+- Neue Über-diese-App-Anzeige, neuer Haftungsausschluss-Dialog
+- Schwarzer Reload-Button bei hellem Theme
+- Weitere kleine Veränderungen
+
+Version 3.2.1 (6)
+- Widget Design verändert
+- Winzige Veränderungen
+
+Version 3.2 (5)
+- Material Design
+- Auswahl zwischen verschiedenen Themes
+- Dialog bei Antippen einzelner Vertretungen hinzugefügt
+- Möglichkeit zur Bevorzugung des Originalplans wurde entfernt, um Probleme mit der Zurück-Taste zu beheben
+- Weitere kleine Verbesserungen
+
+Version 3.1 (4)
+- Vertikales Widget hinzugefügt
+- Viele kleine Verbesserungen/Veränderungen
+
+Version 3.0 (3)
+- Link zur App-Website hinzugefügt
+- Automatische Überprüfung nach App-Updates hinzugefügt
+- Riesige Interne Verbesserungen zur Behebung der internen Verschlechterungen (asyncTask → service)
+- Markiere den Plan nicht mehr als gelesen, wenn er erneut geladen wird, aber noch nicht angesehen wurde (Betrifft nur die Einstellung 'Beim erneuten Laden'
+- Package umbenannt
+    Falls du eine vorherige Version installiert hast, deinstalliere sie bitte, da sonst diese Version parallel zur alten installiert wird!
+
+Version 2.0 (2)
+- Neues Icon
+- Riesige interne Verbesserungen
+- (Interne Verschlechterungen)
+- Widget hinzugefügt
+
+Version 1.1.1
+- Fix css bei Offline-Anzeige
+
+Version 1.1
+- Verhindere, Links im Webplan intern zu öffnen
+- Interne Verbesserungen zum Herunterladen des Plans
+    → Anzeige-Probleme bei Geräten vor Android KitKat behoben
+    → Nach veränderten Anmeldedaten muss die App nicht mehr neu gestartet werden
+
+Version 1.0
+- Release
+
+
+
+
+
+//todo: future release:
+// apply theme to options menu
+// add action bar with up navigation to nested PreferenceScreens
+// pull down to refresh http://www.tutecentral.com/android-pull-to-refresh/
+// instead of checking if already downloading before starting DownloadService, do in DownloadService itself by extending Service instead of IntentService
+// function stundenplan (Klassenstufe, Klasse, Lehrerkürzel in Liste aus Tag+Stunde+checkbox PK/GW/other(e.g. GW12))→highlight concerning stuff (also class because of see christmas 2014 plan)
+// add reset colors settings setting
+// add setting hide update info (=textview)
+// add share button to ElementDialog
+// widget background button color settings
+// add save current vplan feature?
+// add weiterempfehlen
+// do not show markRead button in ItemFragment if already read (requires addition of optionMenuItems from code)

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2015 SpiritCroc
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources>
+    <string name="app_name">Vertretungsplan</string>
+    <string name="settings">Settings</string>
+    <string name="action_reload_web_view">Reload</string>
+    <string name="loading">Load…</string>
+    <string name="loading_widget">Load widget…</string>
+    <string name="enter_userdata">Please enter userdata</string>
+    <string name="correct_userdata">Wrong userdata! Please enter userdata</string>
+    <string name="userdata">Userdata</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="no_change_for">No change for</string>
+    <string name="new_version">New version</string>
+    <string name="error_could_not_load">Cannot load</string>
+    <string name="error_unknown">Unknown error</string>
+    <string name="error_download_error">Error while downloading</string>
+    <string name="showing_offline">Show offline</string>
+    <plurals name="plural_day">
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+    <plurals name="plural_hour">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+    <plurals name="plural_minute">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <plurals name="plural_second">
+        <item quantity="one">%d second</item>
+        <item quantity="other">%d seconds</item>
+    </plurals>
+    <string name="pref_no_change_since_max_precision">Time span</string>
+    <string name="pref_no_change_since_max_precision_summary_none">No values are displayed</string>
+    <plurals name="pref_no_change_since_max_precision_summary">
+        <item quantity="one">Up to %d value is displayed</item>
+        <item quantity="other">Up to %d values are displayed</item>
+    </plurals>
+    <string name="pref_user_interface">User interface</string>
+    <string name="no_change">No change</string>
+    <string name="title_activity_formatted">Vertretungsplan</string>
+    <string name="formatted_activity">Formatted VPlan</string>
+    <string name="original_activity">Webplan</string>
+    <string name="action_mark_read">Mark as read</string>
+    <string name="pref_colors">Colors</string>
+    <string name="pref_auto_mark_read">Automatically mark read</string>
+    <string name="pref_normal_text">Normal</string>
+    <string name="pref_header_text">Header</string>
+    <string name="pref_class_text">Class</string>
+    <string name="pref_text_color">Text color</string>
+    <string name="pref_background_color">Background color</string>
+    <string name="pref_text_color_highlight">Highlight text color</string>
+    <string name="pref_background_color_highlight">Highlight background color</string>
+
+    <string-array name="pref_color_array">
+        <item>Black</item>
+        <item>Blue</item>
+        <item>Cyan</item>
+        <item>Dark gray</item>
+        <item>Gray</item>
+        <item>Green</item>
+        <item>Light gray</item>
+        <item>Magenta</item>
+        <item>Red</item>
+        <item>White</item>
+        <item>Yellow</item>
+    </string-array>
+    <string-array name="pref_color_array_values" translatable="false">
+        <item>-16777216</item>
+        <item>-16776961</item>
+        <item>-16711681</item>
+        <item>-12303292</item>
+        <item>-7829368</item>
+        <item>-16711936</item>
+        <item>-3355444</item>
+        <item>-65281</item>
+        <item>-65536</item>
+        <item>-1</item>
+        <item>-256</item>
+    </string-array>
+
+    <string name="pref_colors_summary">Colors used in the formatted display</string>
+
+    <string-array name="pref_auto_mark_read_array">
+        <item>On display paused</item>
+        <item>On plan reloaded</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_auto_mark_read_array_values" translatable="false">
+        <item>onActivityPause</item>
+        <item>onPlanReloaded</item>
+        <item>never</item>
+    </string-array>
+
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="add_widget">Add widget</string>
+    <string name="last_checked">Last checked:</string>
+    <string name="pref_widget">Widget</string>
+    <string name="dialog_yes">Yes</string>
+    <string name="dialog_later">Later</string>
+    <string name="pref_general">General</string>
+    <string name="welcome">Welcome</string>
+    <string name="pref_auto_load_on_open">Load on app start</string>
+    <plurals name="pref_auto_load_on_open_summary">
+        <item quantity="one">Load plan on app start if last checked is more than %d minute ago</item>
+        <item quantity="other">Load plan on app start if last checked is more than %d minutes ago</item>
+    </plurals>
+    <string name="disclaimer">Disclaimer</string>
+    <string name="disclaimer_text">This app is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</string>
+    <string name="dialog_agree">Agree</string>
+    <string name="version">Version</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_about_0">\This app is OpenSource. You can find the source code here: https://github.com/SpiritCroc/AKG-Vertretungsplan\n\nContact: spiritcroc@gmail.com</string>
+    <string name="dialog_about_1_title">\n<u>Used 3rd party components</u></string>
+    <string name="dialog_about_1_body">Some "Material Design Icons" (licensed under CC BY 4.0) by Google are used in this app.\nLink: http://www.google.com/design/spec/resources/sticker-sheets-icons.html#sticker-sheets-icons-components</string>
+    <string name="pref_developing_enabled">Secret code</string>
+    <string name="pref_developing_enabled_summary">Do not use this unless you are me</string>
+    <string name="pref_theme">Theme</string>
+    <string name="pref_theme_summary">You might want to restart App after changing theme</string>
+    <string-array name="pref_theme_array">
+        <item>Light</item>
+        <item>Light with a Dark ActionBar</item>
+        <item>Dark</item>
+    </string-array>
+    <string-array name="pref_theme_array_values" translatable="false">
+        <item>light</item>
+        <item>lightDarkActionBar</item>
+        <item>dark</item>
+    </string-array>
+    <string name="pref_customize_background_colors">Customize background</string>
+    <string name="pref_customize_background_colors_summary">Customize background colors</string>
+    <string name="pref_background_service">Background Service</string>
+    <string name="pref_background_service_summary">Periodically download plan in background</string>
+    <string name="pref_background_update_interval">Update interval</string>
+    <string name="pref_notification">Notifications</string>
+    <string name="pref_notification_enabled">Enable notifications</string>
+    <string name="pref_notification_enabled_summary">Show a notification if a new plan is available</string>
+    <string name="pref_notification_sound_enabled">Enable notification sound</string>
+    <string name="pref_notification_sound">Choose notification sound</string>
+    <string name="pref_led_notification_enabled">Enable LED</string>
+    <string name="pref_led_notification_color">LED color</string>
+    <string-array name="pref_led_color_array">
+        <item>Blue</item>
+        <item>Cyan</item>
+        <item>Green</item>
+        <item>Magenta</item>
+        <item>Red</item>
+        <item>White</item>
+        <item>Yellow</item>
+    </string-array>
+    <string-array name="pref_led_color_array_values" translatable="false">
+        <item>-16776961</item>
+        <item>-16711681</item>
+        <item>-16711936</item>
+        <item>-65281</item>
+        <item>-65536</item>
+        <item>-1</item>
+        <item>-256</item>
+    </string-array>
+    <string name="pref_vibrate_notification_enabled">Enable vibration</string>
+    <!--string name="pref_share_app">Share App</string>
+    <string name="pref_share_app_summary">If you find this app useful, feel free to tell your friends about it!</string>
+    <string name="pref_share_app_text">subject=AKG-Vertretungsplan?text=You might want to check this application out: https://sites.google.com/site/dampflok43apps/apps/akg-vertretungsplan</string-->
+    <string name="action_about">About</string>
+
+</resources>
