@@ -1,13 +1,3 @@
-description text:
-Voraussetzung: Sdk 11 (Android 3.0) oder höher
-Funktionen:
- - Wähle zwischen einem optimiertem und dem unverändertem Vertretungsplan von der AKG-Website
- - Hebe Änderungen seit dem letzten Aufruf farbig hervor
- - Überprüfe regelmäßig, ob der Vertretungsplan geändert wurde; Benachrichtigung bei Änderungen
- - Offline-Anzeige
- - Widget
- - Viele Einstellungsmöglichkeiten
-
 Changelog hint: 1. big changes / features added, 2. usefull little changes / features added, 3. bug fixes, minor changes
 Changelog:
 
