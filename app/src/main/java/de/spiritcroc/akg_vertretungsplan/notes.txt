@@ -6,6 +6,7 @@ Version 3.3.4 (13) WIP
 - Code aufgeräumt
 - Lizenzierung für GitHub eingeführt
 - Abhängigkeiten aktualisiert
+- Swipe-to-refresh hinzugefügt
 
 Version 3.3.3 (12)
 - Titel des aktuellen Vertretungsplan wird bei einer Veränderung jetzt sofort aktualisiert
@@ -75,7 +76,6 @@ Version 1.0
 //todo: future release:
 // apply theme to options menu
 // add action bar with up navigation to nested PreferenceScreens
-// pull down to refresh http://www.tutecentral.com/android-pull-to-refresh/
 // instead of checking if already downloading before starting DownloadService, do in DownloadService itself by extending Service instead of IntentService
 // function stundenplan (Klassenstufe, Klasse, Lehrerkürzel in Liste aus Tag+Stunde+checkbox PK/GW/other(e.g. GW12))→highlight concerning stuff (also class because of see christmas 2014 plan)
 // add reset colors settings setting

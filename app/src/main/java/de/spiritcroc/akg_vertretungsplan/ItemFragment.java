@@ -14,16 +14,25 @@
  * limitations under the License.
  */
 
+/*
+    inspiration for the swipe-to-refresh feature from https://developer.android.com/samples/SwipeRefreshListFragment/src/com.example.android.swiperefreshlistfragment/SwipeRefreshListFragment.html
+ */
+
 package de.spiritcroc.akg_vertretungsplan;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -43,6 +52,7 @@ public class ItemFragment extends ListFragment{
     private ArrayList<String[]> fullFormattedContent = new ArrayList<>();   //Save List content so it can be shown in a Dialog
     private String currentClass = "";
     private int tmpCellCount;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private static final String ARG_CONTENT = "content";
     private static final String ARG_DATE = "date";
@@ -89,6 +99,36 @@ public class ItemFragment extends ListFragment{
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
 
         setListAdapter(new CustomArrayAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, createContent(content)));
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        final View listFragmentView = super.onCreateView(inflater, container, savedInstanceState);
+
+        swipeRefreshLayout = new ListFragmentSwipeRefreshLayout(container.getContext());
+
+        swipeRefreshLayout.addView(listFragmentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        swipeRefreshLayout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+        return swipeRefreshLayout;
+    }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
+        super.onViewCreated(view, savedInstanceState);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Activity activity = getActivity();
+                if (activity instanceof FormattedActivity)
+                    ((FormattedActivity) activity).startDownloadService();
+                else {
+                    Log.e("ItemFragment", "cannot download plan: activity is not instance of FormattedActivity");
+                    setRefreshing(false);
+                }
+            }
+        });
     }
 
     @Override
@@ -149,6 +189,9 @@ public class ItemFragment extends ListFragment{
         }
     }
 
+    public void setRefreshing(boolean refreshing){
+        swipeRefreshLayout.setRefreshing(refreshing);
+    }
     public void reloadContent(String content, String date){
         this.content = content;
         this.date = date;
@@ -330,6 +373,24 @@ public class ItemFragment extends ListFragment{
                     view.setBackgroundColor(Color.WHITE);   //default background color
             }
             return view;
+        }
+    }
+
+    private class ListFragmentSwipeRefreshLayout extends SwipeRefreshLayout{
+        public ListFragmentSwipeRefreshLayout(Context context){
+            super(context);
+        }
+        @Override
+        public boolean canChildScrollUp(){
+            final ListView listView = getListView();
+            if (listView.getVisibility() == View.VISIBLE){
+                if (Build.VERSION.SDK_INT >= 14)
+                    return ViewCompat.canScrollVertically(listView, -1);
+                else
+                    return listView.getChildCount() > 0 && (listView.getFirstVisiblePosition() > 0 || listView.getChildAt(0).getTop() < listView.getPaddingTop());
+            }
+            else
+                return false;
         }
     }
 }

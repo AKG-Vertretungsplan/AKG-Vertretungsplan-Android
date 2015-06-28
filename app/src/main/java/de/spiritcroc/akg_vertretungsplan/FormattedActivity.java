@@ -84,10 +84,8 @@ public class FormattedActivity extends ActionBarActivity implements ItemFragment
             BReceiver.startDownloadService(this);
         //Download plan stuff  start
         Calendar calendar = DownloadService.stringToCalendar(sharedPreferences.getString("pref_last_checked", "???"));
-        if (calendar == null || Calendar.getInstance().getTime().getTime() - calendar.getTime().getTime() > Integer.parseInt(sharedPreferences.getString("pref_auto_load_on_open", "5"))*60000){
-            if (!DownloadService.isDownloading() && !sharedPreferences.getBoolean("pref_unseen_changes", false))
-                startService(new Intent(this, DownloadService.class).setAction(DownloadService.ACTION_DOWNLOAD_PLAN));
-        }
+        if (calendar == null || Calendar.getInstance().getTime().getTime() - calendar.getTime().getTime() > Integer.parseInt(sharedPreferences.getString("pref_auto_load_on_open", "5"))*60000)
+            startDownloadService();
         else {
             String text = getString(R.string.last_checked) + " " + sharedPreferences.getString("pref_last_checked", getString(R.string.error_unknown));
             textView.setText(text);
@@ -142,8 +140,7 @@ public class FormattedActivity extends ActionBarActivity implements ItemFragment
                 startActivity(new Intent(this, SettingsActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
                 return true;
             case R.id.action_reload_web_view:
-                if (!DownloadService.isDownloading())
-                    startService(new Intent(this, DownloadService.class).setAction(DownloadService.ACTION_DOWNLOAD_PLAN));
+                startDownloadService();
                 return true;
             case R.id.action_original_activity:
                 startActivity(new Intent(getApplication(), WebActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
@@ -159,6 +156,10 @@ public class FormattedActivity extends ActionBarActivity implements ItemFragment
     @Override
     public void showDialog(String text){
         ElementDialog.newInstance(text).show(getFragmentManager(), text);
+    }
+    public void startDownloadService(){
+        if (!DownloadService.isDownloading() && !sharedPreferences.getBoolean("pref_unseen_changes", false))
+            startService(new Intent(this, DownloadService.class).setAction(DownloadService.ACTION_DOWNLOAD_PLAN));
     }
 
     public static class CustomFragmentPagerAdapter extends FragmentPagerAdapter{
@@ -206,6 +207,14 @@ public class FormattedActivity extends ActionBarActivity implements ItemFragment
             else if (action.equals("setTextViewText")){
                 String text = intent.getStringExtra("text");
                 textView.setText(text);
+                if (text.equals(getString(R.string.loading))){
+                    fragment1.setRefreshing(true);
+                    fragment2.setRefreshing(true);
+                }
+                else{
+                    fragment1.setRefreshing(false);
+                    fragment2.setRefreshing(false);
+                }
             }
             else if (action.equals("showToast")){
                 String text = intent.getStringExtra("text");
