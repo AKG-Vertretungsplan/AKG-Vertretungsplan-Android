@@ -74,6 +74,9 @@ public class CheckPlanWidget extends AppWidgetProvider {
             views.setTextViewText(R.id.appwidget_button, context.getString(R.string.loading));
             //views.setTextColor(R.id.appwidget_button, Integer.parseInt(sharedPreferences.getString("pref_widget_text_color", "" + Color.WHITE))); //keep loading red if new version
         }
+        else if (sharedPreferences.getBoolean("pref_illegal_plan", false)){
+            views.setTextViewText(R.id.appwidget_button, context.getString(R.string.error_illegal_plan));
+        }
         else if (sharedPreferences.getBoolean("pref_unseen_changes", false)){
             views.setTextViewText(R.id.appwidget_button, context.getString(R.string.new_version) + " " + sharedPreferences.getString("pref_last_update", context.getString(R.string.error_could_not_load)));
             views.setTextColor(R.id.appwidget_button, Integer.parseInt(sharedPreferences.getString("pref_widget_text_color_highlight", "" + Color.RED)));

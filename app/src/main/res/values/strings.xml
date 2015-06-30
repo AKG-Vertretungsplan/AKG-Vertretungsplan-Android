@@ -183,4 +183,6 @@
     <string name="pref_share_app_text">subject=AKG-Vertretungsplan?text=You might want to check this application out: https://sites.google.com/site/dampflok43apps/apps/akg-vertretungsplan</string-->
     <string name="action_about">About</string>
 
+    <string name="error_illegal_plan">Error: illegal plan</string>
+
 </resources>

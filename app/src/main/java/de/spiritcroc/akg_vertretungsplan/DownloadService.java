@@ -160,7 +160,8 @@ public class DownloadService extends IntentService {
             }
             editor.apply();
             loadWebViewData(result);
-            loadFormattedPlans(result);
+            if (!loadFormattedPlans(result))
+                setTextViewText(getString(R.string.error_illegal_plan));
         }
         Tools.updateWidgets(this);
     }
@@ -345,9 +346,11 @@ public class DownloadService extends IntentService {
         html = html.replace("&ucirc;", "û");*/
         return html;
     }
-    private void loadFormattedPlans(String html){
+    private boolean loadFormattedPlans(String html){
         String title1, plan1, title2, plan2;
         plan1 = convertSpecialChars(getContentFromHtml(html));
+
+        SharedPreferences.Editor editor = getSharedPreferences().edit();
 
         //remove spacers from empty cells
         for (int i = 0; i < plan1.length()-1; i++){
@@ -359,7 +362,8 @@ public class DownloadService extends IntentService {
         int index = plan1.indexOf(searchingFor);
         if (index == -1){
             Log.e("getHeadsAndDivide", "Could not find " + searchingFor);
-            return;
+            editor.putBoolean("pref_illegal_plan", true).apply();
+            return false;
         }
         else
             title1 = Tools.getLine(plan1.substring(index + searchingFor.length()), 1);
@@ -368,20 +372,22 @@ public class DownloadService extends IntentService {
         index = plan1.indexOf(searchingFor, index+searchingFor.length());
         if (index == -1){
             Log.e("getHeadsAndDivide", "Could not find " + searchingFor + " twice");
-            return;
+            editor.putBoolean("pref_illegal_plan", true).apply();
+            return false;
         }
         else {
             title2 = Tools.getLine(plan1.substring(index + searchingFor.length()), 1);
             plan2 = plan1.substring(index);
             plan1 = plan1.substring(0, index);
         }
-        SharedPreferences.Editor editor = getSharedPreferences().edit();
         editor.putString("pref_current_title_1", title1);
         editor.putString("pref_current_plan_1", plan1);
         editor.putString("pref_current_title_2", title2);
         editor.putString("pref_current_plan_2", plan2);
+        editor.putBoolean("pref_illegal_plan", false);
         editor.apply();
         loadFragmentData(title1, plan1, title2, plan2);
+        return true;
     }
 
     //output format: type, specific content: normal spacer = ¡, fat content spacer: ¿ \n

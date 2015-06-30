@@ -87,7 +87,7 @@ public class FormattedActivity extends ActionBarActivity implements ItemFragment
         if (calendar == null || Calendar.getInstance().getTime().getTime() - calendar.getTime().getTime() > Integer.parseInt(sharedPreferences.getString("pref_auto_load_on_open", "5"))*60000)
             startDownloadService();
         else {
-            String text = getString(R.string.last_checked) + " " + sharedPreferences.getString("pref_last_checked", getString(R.string.error_unknown));
+            String text = sharedPreferences.getBoolean("pref_illegal_plan", false) ? getString(R.string.error_illegal_plan) : getString(R.string.last_checked) + " " + sharedPreferences.getString("pref_last_checked", getString(R.string.error_unknown));
             textView.setText(text);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("pref_text_view_text", text);
@@ -95,6 +95,11 @@ public class FormattedActivity extends ActionBarActivity implements ItemFragment
         }
         //Download plan stuff end
         created = true;
+
+        if (sharedPreferences.getBoolean("pref_illegal_plan", false)) {
+            startActivity(new Intent(getApplication(), WebActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
+            Toast.makeText(getApplicationContext(), getString(R.string.error_illegal_plan), Toast.LENGTH_LONG).show();
+        }
     }
     @Override
     public void onResume() {
