@@ -1,12 +1,15 @@
 Changelog hint: 1. big changes / features added, 2. usefull little changes / features added, 3. bug fixes, minor changes
 Changelog:
 
-Version 3.3.4 (13) WIP
+Version 3.4.1 (15) WIP
+
+Version 3.4.0 (13/14)
 - Verwende Quantity Strings (Plurals)
 - Code aufgeräumt
 - Lizenzierung für GitHub eingeführt
 - Abhängigkeiten aktualisiert
 - Swipe-to-refresh hinzugefügt
+- Hinweis bei Vertretungsplan-Server-Ausfall (Umleitung zum WebPlan)
 
 Version 3.3.3 (12)
 - Titel des aktuellen Vertretungsplan wird bei einer Veränderung jetzt sofort aktualisiert
