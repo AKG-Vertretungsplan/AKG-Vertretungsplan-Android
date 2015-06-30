@@ -213,12 +213,16 @@ public class FormattedActivity extends ActionBarActivity implements ItemFragment
                 String text = intent.getStringExtra("text");
                 textView.setText(text);
                 if (text.equals(getString(R.string.loading))){
-                    fragment1.setRefreshing(true);
-                    fragment2.setRefreshing(true);
+                    if (fragment1!=null)
+                        fragment1.setRefreshing(true);
+                    if (fragment2!=null)
+                        fragment2.setRefreshing(true);
                 }
                 else{
-                    fragment1.setRefreshing(false);
-                    fragment2.setRefreshing(false);
+                    if (fragment1!=null)
+                        fragment1.setRefreshing(false);
+                    if (fragment2!=null)
+                        fragment2.setRefreshing(false);
                 }
             }
             else if (action.equals("showToast")){
