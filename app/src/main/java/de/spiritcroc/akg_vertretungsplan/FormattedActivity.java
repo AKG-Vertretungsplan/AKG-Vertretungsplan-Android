@@ -84,8 +84,11 @@ public class FormattedActivity extends ActionBarActivity implements ItemFragment
             BReceiver.startDownloadService(this);
         //Download plan stuff  start
         Calendar calendar = DownloadService.stringToCalendar(sharedPreferences.getString("pref_last_checked", "???"));
-        if (calendar == null || Calendar.getInstance().getTime().getTime() - calendar.getTime().getTime() > Integer.parseInt(sharedPreferences.getString("pref_auto_load_on_open", "5"))*60000)
+        boolean startedDownloadService = false;
+        if (calendar == null || Calendar.getInstance().getTime().getTime() - calendar.getTime().getTime() > Integer.parseInt(sharedPreferences.getString("pref_auto_load_on_open", "5"))*60000) {
             startDownloadService();
+            startedDownloadService = true;
+        }
         else {
             String text = sharedPreferences.getBoolean("pref_illegal_plan", false) ? getString(R.string.error_illegal_plan) : getString(R.string.last_checked) + " " + sharedPreferences.getString("pref_last_checked", getString(R.string.error_unknown));
             textView.setText(text);
@@ -96,7 +99,7 @@ public class FormattedActivity extends ActionBarActivity implements ItemFragment
         //Download plan stuff end
         created = true;
 
-        if (sharedPreferences.getBoolean("pref_illegal_plan", false)) {
+        if (sharedPreferences.getBoolean("pref_illegal_plan", false) && !startedDownloadService) {
             startActivity(new Intent(getApplication(), WebActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
             Toast.makeText(getApplicationContext(), getString(R.string.error_illegal_plan), Toast.LENGTH_LONG).show();
         }
@@ -223,6 +226,11 @@ public class FormattedActivity extends ActionBarActivity implements ItemFragment
                         fragment1.setRefreshing(false);
                     if (fragment2!=null)
                         fragment2.setRefreshing(false);
+
+                    if (text.equals(getString(R.string.error_illegal_plan))) {
+                        startActivity(new Intent(getApplication(), WebActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
+                        Toast.makeText(getApplicationContext(), getString(R.string.error_illegal_plan), Toast.LENGTH_LONG).show();
+                    }
                 }
             }
             else if (action.equals("showToast")){
