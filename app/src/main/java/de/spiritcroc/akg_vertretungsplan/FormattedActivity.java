@@ -227,7 +227,7 @@ public class FormattedActivity extends ActionBarActivity implements ItemFragment
                     if (fragment2!=null)
                         fragment2.setRefreshing(false);
 
-                    if (text.equals(getString(R.string.error_illegal_plan))) {
+                    if (sharedPreferences.getBoolean("pref_illegal_plan", false)) {
                         startActivity(new Intent(getApplication(), WebActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
                         Toast.makeText(getApplicationContext(), getString(R.string.error_illegal_plan), Toast.LENGTH_LONG).show();
                     }
