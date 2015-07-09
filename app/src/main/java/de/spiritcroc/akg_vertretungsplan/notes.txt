@@ -1,7 +1,10 @@
 Changelog hint: 1. big changes / features added, 2. usefull little changes / features added, 3. bug fixes, minor changes
 Changelog:
 
-Version 3.4.1 (15) WIP
+Version 3.4.2 (16) WIP
+
+Version 3.4.1 (15)
+- Kleine Verbesserungen
 
 Version 3.4.0 (13/14)
 - Verwende Quantity Strings (Plurals)
