@@ -284,7 +284,7 @@ public class DownloadService extends IntentService {
         if (difference == 0)
             everythingIn[3] = "";
         else {
-            everythingIn[3] = getResources().getQuantityString(R.plurals.plural_day, (int) tmp, (int) tmp);;
+            everythingIn[3] = getResources().getQuantityString(R.plurals.plural_day, (int) difference, (int) difference);
             precision = 4;
         }
 
