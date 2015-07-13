@@ -185,4 +185,12 @@
 
     <string name="error_illegal_plan">Error: illegal plan</string>
 
+    <string name="pref_hidden_debug_enabled">Show hidden debug settings</string>
+    <string name="pref_hidden_debug_enabled_summary">Don\'t hide this preference category</string>
+
+    <string name="pref_screen_hidden_debug">Hidden debug settings</string>
+    <string name="pref_screen_hidden_debug_summary">Do not use those unless you are developer</string>
+
+    <string name="toast_enabled_hidden_debug">You have enabled the hidden debug settings!</string>
+
 </resources>

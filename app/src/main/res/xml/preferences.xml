@@ -15,7 +15,8 @@
      limitations under the License.
 -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="pref_screen_base">
 
 
     <PreferenceCategory
@@ -55,12 +56,6 @@
             android:numeric="integer"
             android:defaultValue="60"
             android:dependency="pref_background_service"/>
-        <!--EditTextPreference
-            android:key="pref_debugging_enabled"
-            android:title="@string/pref_developing_enabled"
-            android:summary="@string/pref_developing_enabled_summary"
-            android:numeric="integer"
-            android:defaultValue="0"/--><!--todo: remove preference for release-->
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/pref_notification">
@@ -211,5 +206,25 @@
                     android:defaultValue="-65536"/>
                 </PreferenceCategory>
         </PreferenceScreen>
+    </PreferenceCategory>
+
+    <Preference
+        android:key="hidden_debug"
+        android:title="\n \n" />
+
+
+    <PreferenceCategory android:key="pref_screen_hidden_debug"
+        android:enabled="true"
+        android:title="@string/pref_screen_hidden_debug">
+        <CheckBoxPreference
+            android:key="pref_hidden_debug_enabled"
+            android:title="@string/pref_hidden_debug_enabled"
+            android:summary="@string/pref_hidden_debug_enabled_summary" />
+        <EditTextPreference
+            android:key="pref_debugging_enabled"
+            android:title="@string/pref_developing_enabled"
+            android:summary="@string/pref_developing_enabled_summary"
+            android:numeric="integer"
+            android:defaultValue="0"/>
     </PreferenceCategory>
 </PreferenceScreen>

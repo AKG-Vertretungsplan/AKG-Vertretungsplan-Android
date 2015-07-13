@@ -61,7 +61,7 @@ public class DownloadService extends IntentService {
             if (ACTION_DOWNLOAD_PLAN.equals(action)){
                 if (!loginFailed) {
                     downloading = true;
-                    /*//todo: remove dummy stuff for release
+                    //hidden debug stuff start
                     int tmp = 0;
                     try {
                         tmp = Integer.parseInt(getSharedPreferences().getString("pref_debugging_enabled", "0"));
@@ -69,7 +69,7 @@ public class DownloadService extends IntentService {
                     catch (Exception e){};
                     if (tmp != 0)
                         dummyHandleActionDownloadPlan(tmp);
-                    else//*/
+                    else//hidden debug stuff end
                         handleActionDownloadPlan();
                     downloading = false;
                 }
@@ -518,7 +518,7 @@ public class DownloadService extends IntentService {
     }
 
 
-    /*//todo: remove dummy stuff for release
+    //hidden debug plans:
     private void dummyHandleActionDownloadPlan(int no){
         setTextViewText(getString(R.string.loading));
         Tools.updateWidgets(this);
@@ -1918,5 +1918,5 @@ public class DownloadService extends IntentService {
             "<p class=\"seite\" align=\"left\">\n" +
             "<a href=\"https://itunes.apple.code/app/akg-vertretungsplan/id918844717?l=de&amp;ls=1&amp;mt=8\" target=\"_new\">zur IOS-App von Yann Rekker</a>&nbsp; -&nbsp; <a href=\"https://play.google.com/store/apps/details?id=de.atozdev.vertretungsplanapp&amp;hl=de\" target=\"_new\">zur Android-App von Philipp B&uuml;chner</a> </p>\n" +
             "<hr>\n" +
-            "</body></html>";//*/
+            "</body></html>";
 }

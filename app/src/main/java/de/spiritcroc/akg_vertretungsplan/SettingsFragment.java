@@ -19,14 +19,31 @@ package de.spiritcroc.akg_vertretungsplan;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.os.SystemClock;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.os.Bundle;
-import android.util.Log;
+import android.preference.PreferenceScreen;
+import android.support.annotation.NonNull;
+import android.widget.Toast;
 
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener{
+    private Preference hiddenDebug;
+    private PreferenceScreen basePrefScreen;
+    private PreferenceCategory hiddenDebugPrefScreen;
+    private long[] hits = new long[7];
+    private SharedPreferences sharedPreferences;
+
+    private SharedPreferences getSharedPreferences(){
+        if (sharedPreferences == null)
+            sharedPreferences = getPreferenceManager().getSharedPreferences();
+        return sharedPreferences;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -49,10 +66,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         setSummaryToValue("pref_auto_mark_read");
         setSummaryToValue("pref_led_notification_color");
 
-        SharedPreferences sharedPreferences = getPreferenceManager().getSharedPreferences();
-
         EditTextPreference tmpEditTextPreference = (EditTextPreference) findPreference("pref_auto_load_on_open");
-        int tmpValue = correctInteger(sharedPreferences, "pref_auto_load_on_open", tmpEditTextPreference.getText(), 5);
+        int tmpValue = correctInteger(getSharedPreferences(), "pref_auto_load_on_open", tmpEditTextPreference.getText(), 5);
         tmpEditTextPreference.setSummary(resources.getQuantityString(R.plurals.pref_auto_load_on_open_summary, tmpValue, tmpValue));
 
         ListPreference tmpListPreference = (ListPreference) findPreference("pref_theme");
@@ -63,8 +78,18 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         tmpEditTextPreference.setSummary(resources.getQuantityString(R.plurals.plural_minute, tmpValue, tmpValue));
 
         tmpEditTextPreference = (EditTextPreference) findPreference("pref_no_change_since_max_precision");
-        tmpValue = correctInteger(sharedPreferences, "pref_no_change_since_max_precision", tmpEditTextPreference.getText(), 2);
+        tmpValue = correctInteger(getSharedPreferences(), "pref_no_change_since_max_precision", tmpEditTextPreference.getText(), 2);
         tmpEditTextPreference.setSummary(resources.getQuantityString(R.plurals.pref_no_change_since_max_precision_summary, tmpValue, tmpValue));
+
+        //hidden debug: (inspiration from AICP's hidden shit
+        basePrefScreen = (PreferenceScreen) findPreference("pref_screen_base");
+        hiddenDebug = findPreference("hidden_debug");
+        hiddenDebugPrefScreen = (PreferenceCategory) findPreference("pref_screen_hidden_debug");
+        boolean hiddenDebugEnabled = getSharedPreferences().getBoolean("pref_hidden_debug_enabled", false);
+        if (hiddenDebugEnabled)
+            basePrefScreen.removePreference(hiddenDebug);
+        else
+            basePrefScreen.removePreference(hiddenDebugPrefScreen);
     }
 
     @Override
@@ -90,7 +115,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             int tmpValue = correctInteger(sharedPreferences, "pref_auto_load_on_open", tmpEditTextPreference.getText(), 5);
             tmpEditTextPreference.setSummary(getResources().getQuantityString(R.plurals.pref_auto_load_on_open_summary, tmpValue, tmpValue));
         }
-        if (key.equals("pref_theme")){
+        else if (key.equals("pref_theme")){
             ListPreference listPreference = (ListPreference) findPreference("pref_theme");
             String theme = listPreference.getValue();
             listPreference.setSummary(listPreference.getEntry() + "\n" + getString(R.string.pref_theme_summary));
@@ -180,5 +205,23 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             editor.apply();
             return defaultValue;
         }
+    }
+
+    @Override
+    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference){
+        if (preference == hiddenDebug){
+            System.arraycopy(hits, 1, hits, 0, hits.length-1);
+            hits[hits.length-1] = SystemClock.uptimeMillis();
+            if (!getSharedPreferences().getBoolean("pref_hidden_debug_enabled", false) && hits[0] >= (SystemClock.uptimeMillis()-1300)){
+                getSharedPreferences().edit().putBoolean("pref_hidden_debug_enabled", true).apply();
+                Toast.makeText(getActivity(), R.string.toast_enabled_hidden_debug, Toast.LENGTH_LONG).show();
+                basePrefScreen.removePreference(hiddenDebug);
+                basePrefScreen.addPreference(hiddenDebugPrefScreen);
+                ((CheckBoxPreference)findPreference("pref_hidden_debug_enabled")).setChecked(true);
+            }
+        }
+        else
+            return super.onPreferenceTreeClick(preferenceScreen, preference);
+        return false;
     }
 }

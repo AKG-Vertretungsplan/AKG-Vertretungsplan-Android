@@ -148,4 +148,13 @@
     <string name="action_about">Über</string>
 
     <string name="error_illegal_plan">Fehlerhafter Plan</string>
+
+    <string name="pref_hidden_debug_enabled">Zeige versteckte Entwicklereinstellungen</string>
+    <string name="pref_hidden_debug_enabled_summary">Verstecke diese Einstellungskategorie nicht</string>
+
+    <string name="pref_screen_hidden_debug">Verstecke Entwicklereinstellungen</string>
+    <string name="pref_screen_hidden_debug_summary">Verwende diese nicht, wenn du nicht Entwickler bist</string>
+
+    <string name="toast_enabled_hidden_debug">Du hast die versteckten Entwicklereinstellungen aktiviert!</string>
+
 </resources>
