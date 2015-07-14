@@ -96,7 +96,7 @@ public class DownloadService extends IntentService {
             username = getSharedPreferences().getString("pref_username", "");
             password = getSharedPreferences().getString("pref_password", "");
             String base64EncodedCredentials = Base64.encodeToString((username + ":" + password).getBytes("US-ASCII"), Base64.URL_SAFE | Base64.NO_WRAP);
-            DefaultHttpClient httpClient = new DefaultHttpClient();
+            DefaultHttpClient httpClient = new DefaultHttpClient();//On purpose use deprecated stuff because it works better (I have problems with HttpURLConnection: it does not read the credentials each time they are needed, and if they are wrong, there is no appropriate message (just an java.io.FileNotFoundException))
             HttpGet httpGet = new HttpGet("http://www.sc.shuttle.de/sc/akg/Ver/");
             httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
             String result = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
