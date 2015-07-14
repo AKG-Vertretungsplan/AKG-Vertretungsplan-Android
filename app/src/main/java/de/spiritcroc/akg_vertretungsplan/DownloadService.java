@@ -419,11 +419,11 @@ public class DownloadService extends IntentService {
                 else if (bracketContent.length() == 5 && bracketContent.substring(0,3).equals("</h"))       //header end
                     contentType = ContentType.AWAIT;
                 else if (bracketContent.length() >= 7 && bracketContent.substring(0,6).equals("<table"))    //table
-                    result += contentType.TABLE_START_FLAG + "¡" + tmpHeader + "\n";
+                    result += ContentType.TABLE_START_FLAG + "¡" + tmpHeader + "\n";
                     //else if (bracketContent.length() >= 8 && bracketContent.substring(0,7).equals("</table"))   //table end
                     //result += contentType.TABLE_END_FLAG + "\n";      //TABLE_END_FLAG not needed anymore
                 else if (bracketContent.length() >= 4 && bracketContent.substring(0,3).equals("<tr")) {     //table row
-                    result += contentType.TABLE_ROW;
+                    result += ContentType.TABLE_ROW;
                     if (rowSpanNumber>0){
                         result += "¿" + tmpRowSpanningHeader;
                         rowSpanNumber--;
