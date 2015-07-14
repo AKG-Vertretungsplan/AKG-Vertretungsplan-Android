@@ -541,6 +541,9 @@ public class DownloadService extends IntentService {
             case 5:
                 result += dummy5;
                 break;
+            case 6:
+                result += dummy6;
+                break;
         }
 
         processPlan(result);
@@ -1920,4 +1923,45 @@ public class DownloadService extends IntentService {
             "<a href=\"https://itunes.apple.code/app/akg-vertretungsplan/id918844717?l=de&amp;ls=1&amp;mt=8\" target=\"_new\">zur IOS-App von Yann Rekker</a>&nbsp; -&nbsp; <a href=\"https://play.google.com/store/apps/details?id=de.atozdev.vertretungsplanapp&amp;hl=de\" target=\"_new\">zur Android-App von Philipp B&uuml;chner</a> </p>\n" +
             "<hr>\n" +
             "</body></html>";
+    String dummy6 = "<style media=&quot;screen&quot; type=&quot;text/css&quot;>body { margin-top:20px;font-family:sans-serif;\n" +
+            "       }\n" +
+            "\n" +
+            "th { color: #eee; \n" +
+            "     background-color: #048; \n" +
+            "     height:0px;}\n" +
+            "\n" +
+            "td { color: #000;\n" +
+            "     background-color:#cce; \n" +
+            "     }\n" +
+            "table.innen\n" +
+            "{  \n" +
+            "  border:0;\n" +
+            "}\n" +
+            "\n" +
+            "table.F\n" +
+            "{\n" +
+            "  border-style:none;border-width:0;border-collapse:collapse; \n" +
+            "}\n" +
+            "\n" +
+            "th.a \n" +
+            "{   \n" +
+            "  text-align:left;\n" +
+            "}\n" +
+            "th.F \n" +
+            "{   \n" +
+            "  text-align:left;\n" +
+            "}\n" +
+            "</style><!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.1//EN&quot; &quot;http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd&quot;>\n" +
+            "<html>\n" +
+            "<head><link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;willi.css&quot;></link><script src=&quot;willi.js&quot; type=&quot;text/javascript&quot;></script><title>WILLI</title></head>\n" +
+            "<body>\n" +
+            "<center>\n" +
+            "<h1>\n" +
+            "Leider ist unser Server ausgefallen. \n" +
+            "Daher gibt es zur Zeit keinen Online-Vertretungsplan.\n" +
+            "Bitte achtet auf die Aush&auml;nge im Atrium \n" +
+            "und an der Pinnwand im 1. Stock im DG, wo der Plan t&auml;glich per Fax ankommt.\n" +
+            "</h1>\n" +
+            "</center>\n" +
+            "</body></html>\n";
 }
