@@ -127,7 +127,7 @@ public class DownloadService extends IntentService {
 
     private void processPlan(String result){
         String latestHtml = getSharedPreferences().getString("pref_html_latest", "");
-        if (result.indexOf("401 Authorization Required") >= 0) {
+        if (result.contains("401 Authorization Required")) {
             showText((username.equals("") ? getString(R.string.enter_userdata) : getString(R.string.correct_userdata)));
             loginFailed = true;
             startLoginActivity();
@@ -495,7 +495,7 @@ public class DownloadService extends IntentService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this).setSmallIcon(R.drawable.ic_stat_notify_plan_update).setContentTitle(title).setContentText(text);
         if (getSharedPreferences().getBoolean("pref_notification_sound_enabled", false)) {
             String notificationSound = getSharedPreferences().getString("pref_notification_sound", "");
-            if (notificationSound=="")
+            if (notificationSound.equals(""))
                 builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
             else
                 builder.setSound(Uri.parse(notificationSound));
