@@ -134,6 +134,7 @@ public class DownloadService extends IntentService {
         } else {
             String time = timeAndDateToString(Calendar.getInstance());
             SharedPreferences.Editor editor = getSharedPreferences().edit();
+            editor.putBoolean("pref_illegal_plan", false).apply();//there are some textView updates below, and we don't know yet whether plan is illegal, so just pretend it is not for now and handle stuff later
             editor.putString("pref_last_checked", time);
             String latestContent = getContentFromHtml(latestHtml),
                     currentContent = getContentFromHtml(result);
