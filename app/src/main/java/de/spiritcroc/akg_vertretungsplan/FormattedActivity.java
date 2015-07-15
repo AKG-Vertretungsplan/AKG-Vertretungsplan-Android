@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -47,6 +48,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
     private static ItemFragment fragment1, fragment2;
     private int style;
     private boolean created = false;
+    private MenuItem debugEmailMenuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +132,17 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
 
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu){
+        if (sharedPreferences.getBoolean("pref_hidden_debug_enabled", false) && sharedPreferences.getBoolean("pref_enable_option_send_debug_email", false)) {
+            if (debugEmailMenuItem == null || menu.findItem(debugEmailMenuItem.getItemId()) == null)
+                debugEmailMenuItem = menu.add(R.string.action_send_debug_email);
+        }
+        else
+            debugEmailMenuItem = null;
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_formatted, menu);
 
@@ -143,6 +156,44 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (debugEmailMenuItem != null && debugEmailMenuItem == item){//send debug mail
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setType("message/rfc822");
+            intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.debug_email_subject));
+            String text = getString(R.string.debug_email_issue_description) + "\n\n" +
+                    getString(R.string.debug_email_automatically_added_information) + "\n\n" +
+
+                    getString(R.string.debug_email_pref_last_checked) + "\n" +
+                    sharedPreferences.getString("pref_last_checked", "") + "\n\n\n" +
+                    getString(R.string.debug_email_pref_last_update) + "\n" +
+                    sharedPreferences.getString("pref_last_update", "") + "\n\n\n" +
+
+                    getString(R.string.debug_email_pref_latest_title_1) + "\n" +
+                    sharedPreferences.getString("pref_latest_title_1", "") + "\n\n\n" +
+                    getString(R.string.debug_email_pref_latest_plan_1) + "\n" +
+                    sharedPreferences.getString("pref_latest_plan_1", "") + "\n\n\n" +
+                    getString(R.string.debug_email_pref_latest_title_2) + "\n" +
+                    sharedPreferences.getString("pref_latest_title_2", "") + "\n\n\n" +
+                    getString(R.string.debug_email_pref_latest_plan_2) + "\n" +
+                    sharedPreferences.getString("pref_latest_plan_2", "") + "\n\n\n" +
+
+                    getString(R.string.debug_email_pref_current_title_1) + "\n" +
+                    sharedPreferences.getString("pref_current_title_1", "") + "\n\n\n" +
+                    getString(R.string.debug_email_pref_current_plan_1) + "\n" +
+                    sharedPreferences.getString("pref_current_plan_1", "") + "\n\n\n" +
+                    getString(R.string.debug_email_pref_current_title_2) + "\n" +
+                    sharedPreferences.getString("pref_current_title_2", "") + "\n\n\n" +
+                    getString(R.string.debug_email_pref_current_plan_2) + "\n" +
+                    sharedPreferences.getString("pref_current_plan_2", "") + "\n\n\n" +
+
+                    getString(R.string.debug_email_pref_html_latest) + "\n" +
+                    sharedPreferences.getString("pref_html_latest", "");
+            intent.putExtra(Intent.EXTRA_TEXT, text);
+            intent.setData(Uri.parse("mailto:"));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            return true;
+        }
         switch (item.getItemId()){
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));

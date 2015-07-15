@@ -157,4 +157,12 @@
 
     <string name="toast_enabled_hidden_debug">Du hast die versteckten Entwicklereinstellungen aktiviert!</string>
 
+    <string name="pref_enable_option_send_debug_email">Aktiviere Debug-Email</string>
+    <string name="pref_enable_option_send_debug_email_summary">Aktiviere Option beim formatierten Plan zum senden einer Debug-Email</string>
+    <string name="action_send_debug_email">Sende Debug-Email</string>
+
+    <string name="debug_email_subject">AKG-Vertretungsplan Debug-Informationen</string>
+    <string name="debug_email_issue_description">Problembeschreibung:\n[Problembeschreibung hier einfügen]</string>
+    <string name="debug_email_automatically_added_information">Automatisch hinzugefügte Informationen:</string>
+
 </resources>

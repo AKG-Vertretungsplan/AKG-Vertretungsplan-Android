@@ -193,4 +193,23 @@
 
     <string name="toast_enabled_hidden_debug">You have enabled the hidden debug settings!</string>
 
+    <string name="pref_enable_option_send_debug_email">Enable debug email</string>
+    <string name="pref_enable_option_send_debug_email_summary">Enable option in FormattedActivity to send debug email</string>
+    <string name="action_send_debug_email">Send debug email</string>
+
+    <string name="debug_email_subject">AKG-Vertretungsplan debug information</string>
+    <string name="debug_email_issue_description">Issue description:\n[insert your issue description here]</string>
+    <string name="debug_email_automatically_added_information">Automatically added information:</string>
+    <string name="debug_email_pref_html_latest" translatable="false">-------pref_html_latest-------</string>
+    <string name="debug_email_pref_latest_title_1" translatable="false">-------pref_latest_title_1-------</string>
+    <string name="debug_email_pref_latest_title_2" translatable="false">-------pref_latest_title_2-------</string>
+    <string name="debug_email_pref_latest_plan_1" translatable="false">-------pref_latest_plan_1-------</string>
+    <string name="debug_email_pref_latest_plan_2" translatable="false">-------pref_latest_plan_2-------</string>
+    <string name="debug_email_pref_last_checked" translatable="false">-------pref_last_checked-------</string>
+    <string name="debug_email_pref_last_update" translatable="false">-------pref_last_update-------</string>
+    <string name="debug_email_pref_current_title_1" translatable="false">-------pref_current_title_1-------</string>
+    <string name="debug_email_pref_current_title_2" translatable="false">-------pref_current_title_2-------</string>
+    <string name="debug_email_pref_current_plan_1" translatable="false">-------pref_current_plan_1-------</string>
+    <string name="debug_email_pref_current_plan_2" translatable="false">-------pref_current_plan_2-------</string>
+
 </resources>

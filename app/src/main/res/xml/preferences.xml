@@ -220,6 +220,10 @@
             android:key="pref_hidden_debug_enabled"
             android:title="@string/pref_hidden_debug_enabled"
             android:summary="@string/pref_hidden_debug_enabled_summary" />
+        <CheckBoxPreference
+            android:key="pref_enable_option_send_debug_email"
+            android:title="@string/pref_enable_option_send_debug_email"
+            android:summary="@string/pref_enable_option_send_debug_email_summary" />
         <EditTextPreference
             android:key="pref_debugging_enabled"
             android:title="@string/pref_developing_enabled"
