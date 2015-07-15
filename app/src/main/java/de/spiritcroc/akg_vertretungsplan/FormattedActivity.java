@@ -30,7 +30,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -38,7 +38,7 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
-public class FormattedActivity extends ActionBarActivity implements ItemFragment.OnFragmentInteractionListener{
+public class FormattedActivity extends AppCompatActivity implements ItemFragment.OnFragmentInteractionListener{
     private CustomFragmentPagerAdapter fragmentPagerAdapter;
     private ViewPager viewPager;
     private static String plan1, plan2, title1, title2;

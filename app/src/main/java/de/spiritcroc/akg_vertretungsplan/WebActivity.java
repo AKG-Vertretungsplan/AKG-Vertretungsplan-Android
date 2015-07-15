@@ -10,7 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
@@ -18,7 +18,7 @@ import android.webkit.WebViewClient;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class WebActivity extends ActionBarActivity {
+public class WebActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private WebView webView;
     private CustomWebViewClient customWebViewClient;
