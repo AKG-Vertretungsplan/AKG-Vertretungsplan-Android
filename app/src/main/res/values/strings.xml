@@ -212,4 +212,58 @@
     <string name="debug_email_pref_current_plan_1" translatable="false">-------pref_current_plan_1-------</string>
     <string name="debug_email_pref_current_plan_2" translatable="false">-------pref_current_plan_2-------</string>
 
+    <string name="day_monday">Monday</string>
+    <string name="day_tuesday">Tuesday</string>
+    <string name="day_wednesday">Wednesday</string>
+    <string name="day_thursday">Thursday</string>
+    <string name="day_friday">Friday</string>
+    <string-array name="lesson_plan_days" translatable="false">
+        <item>@string/day_monday</item>
+        <item>@string/day_tuesday</item>
+        <item>@string/day_wednesday</item>
+        <item>@string/day_thursday</item>
+        <item>@string/day_friday</item>
+    </string-array>
+
+    <string name="action_lesson_plan">Lesson plan</string>
+    <string name="lesson_plan">Lesson_plan</string>
+    <string name="action_reset">Reset</string>
+    <string name="lunch_break">Lunch break</string>
+    <string name="free_time">Free</string>
+
+    <string name="dialog_subject">Subject:</string>
+    <string name="dialog_subject_summary">Required</string>
+    <string name="dialog_teacher_short">Teacher abbr.:</string>
+    <string name="dialog_teacher_short_summary">Required for individualized plan</string>
+    <string name="dialog_teacher_full">Teacher name:</string>
+    <string name="dialog_teacher_full_summary">For alternative display</string>
+    <string name="dialog_free">Free time</string>
+    <string name="dialog_edit_lesson">Edit lesson</string>
+
+    <string name="toast_please_enter_subject">Please enter a subject first or select free time!</string>
+    <string name="toast_subject_illegal_character">Your subject contains an illegal character!</string>
+    <string name="toast_teacher_short_illegal_character">Your teacher abbr. contains an illegal character!</string>
+    <string name="toast_teacher_full_illegal_character">Your teacher name contains an illegal character!</string>
+
+    <string name="dialog_reset_lesson_plan">Reset lesson plan</string>
+    <string name="dialog_reset_lesson_plan_message">Do you really want to reset your lesson plan? All lessons will be set to be free time.</string>
+
+    <string-array name="lesson_plan_times" translatable="false">
+        <item>7:45 – 8:30</item>
+        <item>8:35 – 9:20</item>
+        <item>9:35 – 10:20</item>
+        <item>10:20 – 11:05</item>
+        <item>11:20 – 12:05</item>
+        <item>12:10 – 12:50</item>
+        <item>13:05 – 13:50</item>
+        <item>13:50 – 14:35</item>
+        <item>14:35 – 15:20</item>
+        <item>15:30 – 16:15</item>
+        <item>16:15 – 17:00</item>
+    </string-array>
+
+    <string name="pref_lesson_plan">Lesson plan</string>
+    <string name="pref_lesson_plan_auto_select_day">Auto-select day</string>
+    <string name="pref_lesson_plan_auto_select_day_summary">Automatically show current day when opening the lesson plan</string>
+
 </resources>

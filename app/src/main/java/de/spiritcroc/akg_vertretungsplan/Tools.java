@@ -24,6 +24,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 public abstract class Tools {
     public static String getLine (String text, int number){
         return getLine (text, number, '\n');
@@ -71,6 +73,12 @@ public abstract class Tools {
             if (checkLine.equals(line))
                 return true;
         }
+        return false;
+    }
+    public static boolean stringAvailable(ArrayList<String> arrayList, String search){//Alternative to arrayList.contains() which checks strings with .equals() instead of "=="
+        for (int i = 0; i < arrayList.size(); i++)
+            if (arrayList.get(i).equals(search))
+                return true;
         return false;
     }
     public static void setUnseenFalse(Context context){

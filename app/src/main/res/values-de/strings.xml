@@ -165,4 +165,37 @@
     <string name="debug_email_issue_description">Problembeschreibung:\n[Problembeschreibung hier einfügen]</string>
     <string name="debug_email_automatically_added_information">Automatisch hinzugefügte Informationen:</string>
 
+    <string name="day_monday">Montag</string>
+    <string name="day_tuesday">Dienstag</string>
+    <string name="day_wednesday">Mittwoch</string>
+    <string name="day_thursday">Donnerstag</string>
+    <string name="day_friday">Freitag</string>
+
+    <string name="action_lesson_plan">Stundenplan</string>
+    <string name="lesson_plan">Stundenplan</string>
+    <string name="action_reset">Zurücksetzen</string>
+    <string name="lunch_break">Mittagspause</string>
+    <string name="free_time">Frei</string>
+
+    <string name="dialog_subject">Fach:</string>
+    <string name="dialog_subject_summary">Benötigt</string>
+    <string name="dialog_teacher_short">Lehrerkürzel:</string>
+    <string name="dialog_teacher_short_summary">Benötigt zur individuellen Vertretungspanzeige</string>
+    <string name="dialog_teacher_full">Lehrername:</string>
+    <string name="dialog_teacher_full_summary">Zur alternativen Anzeige</string>
+    <string name="dialog_free">Freistunde</string>
+    <string name="dialog_edit_lesson">Stunde konfigurieren</string>
+
+    <string name="toast_please_enter_subject">Bitte zuerst ein Fach eingeben oder Freistunde auswählen!</string>
+    <string name="toast_subject_illegal_character">Das eingegebene Fach enthält ein ungültiges Zeichen!</string>
+    <string name="toast_teacher_short_illegal_character">Das eingegebene Lehrerkürzel enthält ein ungültiges Zeichen!</string>
+    <string name="toast_teacher_full_illegal_character">Der eingegebene Lehrername enthält ein ungültiges Zeichen!</string>
+
+    <string name="dialog_reset_lesson_plan">Stundenplan zurücksetzen</string>
+    <string name="dialog_reset_lesson_plan_message">Möchtest du wirklich deinen Stundenplan zurücksetzen? Alle deine Stunden werden dann mit Freistunden ersetzt.</string>
+
+    <string name="pref_lesson_plan">Stundenplan</string>
+    <string name="pref_lesson_plan_auto_select_day">Springe zu Heute</string>
+    <string name="pref_lesson_plan_auto_select_day_summary">Zeige automatisch den aktuellen Tag an, wenn der Stundenplan geöffnet wird</string>
+
 </resources>

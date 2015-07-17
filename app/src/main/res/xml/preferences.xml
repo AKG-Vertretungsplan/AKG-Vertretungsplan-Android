@@ -208,11 +208,18 @@
         </PreferenceScreen>
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:title="@string/pref_lesson_plan">
+        <CheckBoxPreference
+            android:key="pref_lesson_plan_auto_select_day"
+            android:title="@string/pref_lesson_plan_auto_select_day"
+            android:summary="@string/pref_lesson_plan_auto_select_day_summary"
+            android:defaultValue="true"/>
+    </PreferenceCategory>
+
     <Preference
         android:key="hidden_debug"
         android:title="\n \n" />
-
-
     <PreferenceCategory android:key="pref_screen_hidden_debug"
         android:enabled="true"
         android:title="@string/pref_screen_hidden_debug">

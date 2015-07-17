@@ -92,6 +92,9 @@ public class WebActivity extends AppCompatActivity {
             case R.id.action_about:
                 new AboutDialog().show(getFragmentManager(), "AboutDialog");
                 return true;
+            case R.id.action_lesson_plan:
+                startActivity(new Intent(getApplication(), LessonPlanActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
