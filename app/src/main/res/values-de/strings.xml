@@ -197,5 +197,10 @@
     <string name="pref_lesson_plan">Stundenplan</string>
     <string name="pref_lesson_plan_auto_select_day">Springe zu Heute</string>
     <string name="pref_lesson_plan_auto_select_day_summary">Zeige automatisch den aktuellen Tag an, wenn der Stundenplan geöffnet wird</string>
+    <string name="pref_formatted_plan_auto_select_day">Springe zu Heute</string>
+    <string name="pref_formatted_plan_auto_select_day_summary">Zeige automatisch den aktuellen Tag an, wenn der Vertretungsplan geöffnet wird</string>
+    <string name="pref_formatted_plan_auto_select_day_time">Zeit zur Auswahl des nächsten Vertretungsplans</string>
+    <string name="pref_formatted_plan_auto_select_day_time_summary_pre">Der Plan für morgen wird automatisch ab" "</string>
+    <string name="pref_formatted_plan_auto_select_day_time_summary_post">" "Uhr angezeigt</string>
 
 </resources>

@@ -32,8 +32,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,14 +43,16 @@ import java.util.Calendar;
 
 public class FormattedActivity extends AppCompatActivity implements ItemFragment.OnFragmentInteractionListener{
     private CustomFragmentPagerAdapter fragmentPagerAdapter;
-    private ViewPager viewPager;
+    private static ViewPager viewPager;
     private static String plan1, plan2, title1, title2;
     private TextView textView;
     private SharedPreferences sharedPreferences;
     private static ItemFragment fragment1, fragment2;
+    private static Calendar date1, date2;
     private int style;
     private boolean created = false;
     private MenuItem debugEmailMenuItem;
+    private static boolean shortCutToPageTwo = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +71,20 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
         plan1 = sharedPreferences.getString("pref_current_plan_1", "");
         title2 = sharedPreferences.getString("pref_current_title_2", getString(R.string.tomorrow));
         plan2 = sharedPreferences.getString("pref_current_plan_2", "");
+        try {
+            date1 = Tools.getDateFromPlanTitle(title1);
+        }
+        catch (Exception e){
+            Log.e("FormattedActivity", "Got error while trying to extract date1 from the titles: " + e);
+            date1 = null;//Deactivate date functionality
+        }
+        try {
+            date2 = Tools.getDateFromPlanTitle(title2);
+        }
+        catch (Exception e){
+            Log.e("FormattedActivity", "Got error while trying to extract date2 from the titles: " + e);
+            date2 = null;//Deactivate date functionality
+        }
 
         viewPager = (ViewPager) findViewById(R.id.pager);
 
@@ -104,6 +122,25 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
         if (sharedPreferences.getBoolean("pref_illegal_plan", false) && !startedDownloadService) {
             startActivity(new Intent(getApplication(), WebActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
             Toast.makeText(getApplicationContext(), getString(R.string.error_illegal_plan), Toast.LENGTH_LONG).show();
+        }
+
+        if (date1 != null && sharedPreferences.getBoolean("pref_formatted_plan_auto_select_day", true)) {//Try to show most relevant day
+            Calendar currentDate = Calendar.getInstance();
+            if (currentDate.after(date1)){
+                if (currentDate.get(Calendar.DAY_OF_MONTH) != date1.get(Calendar.DAY_OF_MONTH)
+                        || currentDate.get(Calendar.MONTH) != date1.get(Calendar.MONTH)
+                        || currentDate.get(Calendar.YEAR) != date1.get(Calendar.YEAR))
+                    shortCutToPageTwo = true;
+                else{
+                    try{
+                        if (currentDate.get(Calendar.HOUR_OF_DAY) >= Integer.parseInt(sharedPreferences.getString("pref_formatted_plan_auto_select_day_time", "")))
+                            shortCutToPageTwo = true;
+                    }
+                    catch (Exception e){
+                        Log.e("FormattedActivity", "Got exception while trying to compare current HOUR_OF_DAY with pref_formatted_plan_auto_select_day_time: " + e);
+                    }
+                }
+            }
         }
     }
     @Override
@@ -248,6 +285,15 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
             else
                 return "???";
         }
+        @Override
+        public void finishUpdate(ViewGroup container){
+            super.finishUpdate(container);
+
+            if (shortCutToPageTwo) {
+                viewPager.setCurrentItem(1);
+                shortCutToPageTwo = false;//use shortcut only once
+            }
+        }
     }
 
     private BroadcastReceiver downloadInfoReceiver = new BroadcastReceiver() {
@@ -260,6 +306,20 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
                 plan1 = intent.getStringExtra("plan1");
                 title2 = intent.getStringExtra("title2");
                 plan2 = intent.getStringExtra("plan2");
+                try {
+                    date1 = Tools.getDateFromPlanTitle(title1);
+                }
+                catch (Exception e){
+                    Log.e("FormattedActivity", "Got error while trying to extract date1 from the titles: " + e);
+                    date1 = null;//Deactivate date functionality
+                }
+                try {
+                    date2 = Tools.getDateFromPlanTitle(title2);
+                }
+                catch (Exception e){
+                    Log.e("FormattedActivity", "Got error while trying to extract date2 from the titles: " + e);
+                    date2 = null;//Deactivate date functionality
+                }
                 if (fragment1!=null)
                     fragment1.reloadContent(plan1, title1);
                 if (fragment2!=null)

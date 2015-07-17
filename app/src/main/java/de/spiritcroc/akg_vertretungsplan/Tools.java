@@ -25,6 +25,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public abstract class Tools {
     public static String getLine (String text, int number){
@@ -108,6 +110,42 @@ public abstract class Tools {
             return R.style.Theme_AppCompat;
         else
             return R.style.AppTheme;    //default
+    }
+    public static Calendar getDateFromPlanTitle(String title){
+        int day = 0, month = 0, year = 0, position = 0, progress = 0;
+        boolean lastWasInt = false;
+        while (position < title.length()){
+            char c = title.charAt(position++);
+            if (c >= '0' && c <= '9'){
+                if (!lastWasInt) {
+                    progress++;
+                    lastWasInt = true;
+                }
+                switch (progress){
+                    case 1:
+                        day = day*10+Integer.parseInt(""+c);
+                        break;
+                    case 3:
+                        month = month*10+Integer.parseInt(""+c);
+                        break;
+                    case 5:
+                        year = year*10+Integer.parseInt(""+c);
+                        break;
+                }
+            }
+            else if (lastWasInt){
+                progress++;
+                lastWasInt = false;
+            }
+        }
+        if (day == 0 || month == 0 || year == 0){
+            Log.e("Tools", "getDateFromPlanTitle: Unable to get date from title " + title);
+            return null;
+        }
+        else{
+            return new GregorianCalendar(year, month+Calendar.JANUARY-1, day);
+        }
+
     }
     /*public static void saveStringToFile (String string, String filePath){
         try {
