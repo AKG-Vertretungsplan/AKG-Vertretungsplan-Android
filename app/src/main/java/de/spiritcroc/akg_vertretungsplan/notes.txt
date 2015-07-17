@@ -79,15 +79,14 @@ Version 1.0
 
 
 
-//todo: future release:
-// apply theme to options menu
-// add action bar with up navigation to nested PreferenceScreens
-// instead of checking if already downloading before starting DownloadService, do in DownloadService itself by extending Service instead of IntentService
-// function stundenplan (Klassenstufe, Klasse, Lehrerkürzel in Liste aus Tag+Stunde+checkbox PK/GW/other(e.g. GW12))→highlight concerning stuff (also class because of see christmas 2014 plan)
-// add reset colors settings setting
-// add setting hide update info (=textview)
-// add share button to ElementDialog
-// widget background button color settings
-// add save current vplan feature?
-// add weiterempfehlen
-// do not show markRead button in ItemFragment if already read (requires addition of optionMenuItems from code)
+todo: future release:
+- add share button to ElementDialog
+- add setting hide update info (=textview)
+- apply theme to options menu
+- add action bar with up navigation to nested PreferenceScreens
+- instead of checking if already downloading before starting DownloadService, do in DownloadService itself by extending Service instead of IntentService
+- lesson plan: enter class for better individualized vplan results (see christmas 2014 plan)
+- add reset colors settings setting
+- widget background button color settings
+- add save current vplan feature?
+- do not show markRead button in ItemFragment if already read (requires addition of optionMenuItems from code)
