@@ -60,7 +60,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
     private TextView textView;
     private SharedPreferences sharedPreferences;
     private static ItemFragment fragment1, fragment2;
-    private static Calendar date1, date2;
+    private static Calendar date1;
     private int style;
     private boolean created = false;
     private static boolean shortCutToPageTwo = false, filteredMode;
@@ -90,13 +90,6 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
         catch (Exception e){
             Log.e("FormattedActivity", "Got error while trying to extract date1 from the titles: " + e);
             date1 = null;//Deactivate date functionality
-        }
-        try {
-            date2 = Tools.getDateFromPlanTitle(title2);
-        }
-        catch (Exception e){
-            Log.e("FormattedActivity", "Got error while trying to extract date2 from the titles: " + e);
-            date2 = null;//Deactivate date functionality
         }
 
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -389,13 +382,6 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
                 catch (Exception e){
                     Log.e("FormattedActivity", "Got error while trying to extract date1 from the titles: " + e);
                     date1 = null;//Deactivate date functionality
-                }
-                try {
-                    date2 = Tools.getDateFromPlanTitle(title2);
-                }
-                catch (Exception e){
-                    Log.e("FormattedActivity", "Got error while trying to extract date2 from the titles: " + e);
-                    date2 = null;//Deactivate date functionality
                 }
                 if (fragment1!=null)
                     fragment1.reloadContent(plan1, title1);
