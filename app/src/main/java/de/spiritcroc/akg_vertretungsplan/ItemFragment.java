@@ -180,9 +180,17 @@ public class ItemFragment extends ListFragment{
             mListener.showDialog(dividedText[0] + "\n" + dividedText[1]);
         else{
             String text = "";
+            LessonPlan lessonPlan = LessonPlan.getInstance(sharedPreferences);
             for (int i = 0; i < dividedText.length; i++) {
-                if (dividedText[i] != null && dividedText[i].length() > 0)
-                    text += (text.length()==0 ? "" : "\n") + (headerRow[i] == null || headerRow[i].length() == 0 ? "" : headerRow[i] + "\n\t") + dividedText[i];
+                if (dividedText[i] != null && dividedText[i].length() > 0) {
+                    String textInsert = lessonPlan.getTeacherFullForTeacherShort(dividedText[i]);//Try to find out full teacher name
+                    if (textInsert==null || textInsert.equals(""))
+                        textInsert = dividedText[i];
+                    else
+                        textInsert += " (" + dividedText[i] + ")";
+                    text += (text.length() == 0 ? "" : "\n") + (headerRow[i] == null || headerRow[i].length() == 0 ? "" : headerRow[i] + "\n\t") + textInsert;
+                    Log.d("bla", i + ":" + dividedText[i]);
+                }
             }
             mListener.showDialog(text);
         }
