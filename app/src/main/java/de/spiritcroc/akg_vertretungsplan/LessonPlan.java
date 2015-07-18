@@ -118,7 +118,7 @@ public class LessonPlan {
         }
     }
 
-    public boolean isConfigured(){//testme
+    public boolean isConfigured(){
         for (int j = 0; j < lessons.length; j++)
             for (int i = 0; i < lessons[j].length; i++)
                 if (!lessons[j][i].isFreeTime())
