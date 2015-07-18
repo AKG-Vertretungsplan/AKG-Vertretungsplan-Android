@@ -270,5 +270,8 @@
     <string name="pref_formatted_plan_auto_select_day_time">Time for selecting tomorrow</string>
     <string name="pref_formatted_plan_auto_select_day_time_summary_pre">The plan for tomorrow will be selected automatically after" "</string>
     <string name="pref_formatted_plan_auto_select_day_time_summary_post">" "o\' clock (24-hour clock)</string>
+    <string name="pref_lesson_plan_auto_select_day_time">Time for selecting tomorrow</string>
+    <string name="pref_lesson_plan_auto_select_day_time_summary_pre">The lesson plan for tomorrow will be selected automatically after" "</string>
+    <string name="pref_lesson_plan_auto_select_day_time_summary_post">" "o\' clock (24-hour clock)</string>
 
 </resources>

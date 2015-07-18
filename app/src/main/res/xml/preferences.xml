@@ -226,6 +226,12 @@
             android:title="@string/pref_lesson_plan_auto_select_day"
             android:summary="@string/pref_lesson_plan_auto_select_day_summary"
             android:defaultValue="true"/>
+        <EditTextPreference
+            android:key="pref_lesson_plan_auto_select_day_time"
+            android:title="@string/pref_lesson_plan_auto_select_day_time"
+            android:numeric="integer"
+            android:defaultValue="17"
+            android:dependency="pref_lesson_plan_auto_select_day"/>
     </PreferenceCategory>
 
     <Preference

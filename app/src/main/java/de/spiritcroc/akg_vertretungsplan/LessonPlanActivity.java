@@ -25,6 +25,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -61,6 +62,15 @@ public class LessonPlanActivity extends AppCompatActivity {
 
         if (sharedPreferences.getBoolean("pref_lesson_plan_auto_select_day", true)) {//Try to show current day
             Calendar calendar = Calendar.getInstance();
+
+            try{
+                if (calendar.get(Calendar.HOUR_OF_DAY) >= Integer.parseInt(sharedPreferences.getString("pref_lesson_plan_auto_select_day_time", "")))
+                    calendar.add(Calendar.DAY_OF_WEEK, 1);
+            }
+            catch (Exception e){
+                Log.e("LessonPlanActivity", "Got exception while trying to compare current HOUR_OF_DAY with pref_lesson_plan_auto_select_day_time: " + e);
+            }
+
             switch (calendar.get(Calendar.DAY_OF_WEEK)) {
                 case Calendar.TUESDAY:
                     shortcutDay = 1;

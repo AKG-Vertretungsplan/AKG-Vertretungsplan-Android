@@ -85,6 +85,10 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         tmpValue = correctInteger(getSharedPreferences(), "pref_formatted_plan_auto_select_day_time", tmpEditTextPreference.getText(), 17);
         tmpEditTextPreference.setSummary(getString(R.string.pref_formatted_plan_auto_select_day_time_summary_pre) + tmpValue + getString(R.string.pref_formatted_plan_auto_select_day_time_summary_post));
 
+        tmpEditTextPreference = (EditTextPreference) findPreference("pref_lesson_plan_auto_select_day_time");
+        tmpValue = correctInteger(getSharedPreferences(), "pref_lesson_plan_auto_select_day_time", tmpEditTextPreference.getText(), 17);
+        tmpEditTextPreference.setSummary(getString(R.string.pref_lesson_plan_auto_select_day_time_summary_pre) + tmpValue + getString(R.string.pref_lesson_plan_auto_select_day_time_summary_post));
+
         //hidden debug: (inspiration from AICP's hidden shit
         basePrefScreen = (PreferenceScreen) findPreference("pref_screen_base");
         hiddenDebug = findPreference("hidden_debug");
@@ -196,6 +200,11 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             EditTextPreference tmpEditTextPreference = (EditTextPreference) findPreference("pref_formatted_plan_auto_select_day_time");
             int tmpValue = correctInteger(getSharedPreferences(), "pref_formatted_plan_auto_select_day_time", tmpEditTextPreference.getText(), 17);
             tmpEditTextPreference.setSummary(getString(R.string.pref_formatted_plan_auto_select_day_time_summary_pre) + tmpValue + getString(R.string.pref_formatted_plan_auto_select_day_time_summary_post));
+        }
+        else if (key.equals("pref_lesson_plan_auto_select_day_time")){
+            EditTextPreference tmpEditTextPreference = (EditTextPreference) findPreference("pref_lesson_plan_auto_select_day_time");
+            int tmpValue = correctInteger(getSharedPreferences(), "pref_lesson_plan_auto_select_day_time", tmpEditTextPreference.getText(), 17);
+            tmpEditTextPreference.setSummary(getString(R.string.pref_lesson_plan_auto_select_day_time_summary_pre) + tmpValue + getString(R.string.pref_lesson_plan_auto_select_day_time_summary_post));
         }
     }
 
