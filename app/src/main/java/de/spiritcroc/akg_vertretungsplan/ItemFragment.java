@@ -182,15 +182,8 @@ public class ItemFragment extends ListFragment{
             String text = "";
             LessonPlan lessonPlan = LessonPlan.getInstance(sharedPreferences);
             for (int i = 0; i < dividedText.length; i++) {
-                if (dividedText[i] != null && dividedText[i].length() > 0) {
-                    String textInsert = lessonPlan.getTeacherFullForTeacherShort(dividedText[i]);//Try to find out full teacher name
-                    if (textInsert==null || textInsert.equals(""))
-                        textInsert = dividedText[i];
-                    else
-                        textInsert += " (" + dividedText[i] + ")";
-                    text += (text.length() == 0 ? "" : "\n") + (headerRow[i] == null || headerRow[i].length() == 0 ? "" : headerRow[i] + "\n\t") + textInsert;
-                    Log.d("bla", i + ":" + dividedText[i]);
-                }
+                if (dividedText[i] != null && dividedText[i].length() > 0)
+                    text += (text.length() == 0 ? "" : "\n") + (headerRow[i] == null || headerRow[i].length() == 0 ? "" : headerRow[i] + "\n\t") + getTeacherCombinationString(lessonPlan, dividedText[i]);
             }
             mListener.showDialog(text);
         }
@@ -250,6 +243,7 @@ public class ItemFragment extends ListFragment{
         backgroundColors.clear();
         String add;
         String tmp = "a";   //not empty
+        boolean useFullTeacherNames = sharedPreferences.getBoolean("pref_formatted_plan_replace_teacher_short_with_teacher_full", true);
         for (int i = 0; !tmp.equals(""); i++){
             tmp = Tools.getLine(unformattedContent, i + 1);
             if (getRow(tmp, "" + DownloadService.ContentType.TABLE_ROW)){
@@ -287,18 +281,9 @@ public class ItemFragment extends ListFragment{
                     if (headerRow[0]==null) //e.g. when extra table "Gesamte Schule:"
                         add = tmpRowContent[0] + " → " + tmpRowContent[1];
                     else{
-                        String tmpRowContent1;//For alternative display of the full teacher name
-                        if (sharedPreferences.getBoolean("pref_formatted_plan_replace_teacher_short_with_teacher_full", true)){
-                            tmpRowContent1 = lessonPlan.getTeacherFullForTeacherShort(tmpRowContent[1]);
-                            if (tmpRowContent1==null || tmpRowContent1.equals(""))
-                                tmpRowContent1 = tmpRowContent[1];
-                        }
-                        else
-                            tmpRowContent1 = tmpRowContent[1];
-
-                        add = tmpRowContent[2] + " " + tmpRowContent1 + " →";
+                        add = tmpRowContent[2] + " " + (useFullTeacherNames ? getTeacherCombinationString(lessonPlan, tmpRowContent[1]) : tmpRowContent[1]) + " →";
                         if (!tmpRowContent[3].equals(""))
-                            add += " " + tmpRowContent[3];
+                            add += " " + (useFullTeacherNames ? getTeacherCombinationString(lessonPlan, tmpRowContent[3]) : tmpRowContent[3]);
                         if (!tmpRowContent[4].equals(""))
                             add += " (" + tmpRowContent[4] + ")";
                         if (!tmpRowContent[5].equals(""))
@@ -369,6 +354,15 @@ public class ItemFragment extends ListFragment{
                 count++;
         }
         return count;
+    }
+
+    private String getTeacherCombinationString(LessonPlan lessonPlan, String teacherShort){
+        String result = lessonPlan.getTeacherFullForTeacherShort(teacherShort);
+        if (result == null || result.equals(""))
+            result = teacherShort;
+        else
+            result += " (" + teacherShort + ")";
+        return result;
     }
 
     public class CustomArrayAdapter extends ArrayAdapter{
