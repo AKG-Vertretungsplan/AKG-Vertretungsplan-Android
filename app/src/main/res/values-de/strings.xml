@@ -118,7 +118,6 @@
     <string name="pref_theme_summary">Für die vollständige Übernahme des Themes bitte App neu starten</string>
     <string-array name="pref_theme_array">
         <item>Hell</item>
-        <item>Hell mit dunkler ActionBar</item>
         <item>Dunkel</item>
     </string-array>
     <string name="pref_customize_background_colors">Verändere Hintergrund</string>
