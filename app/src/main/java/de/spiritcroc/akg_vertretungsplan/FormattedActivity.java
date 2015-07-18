@@ -64,7 +64,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
     private int style;
     private boolean created = false;
     private static boolean shortCutToPageTwo = false, filteredMode;
-    private MenuItem reloadItem;
+    private MenuItem reloadItem, filterItem;
     private TintImageView overflow;
 
     @Override
@@ -162,6 +162,11 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
         if (!sharedPreferences.getBoolean("pref_seen_disclaimer", false))
             new DisclaimerDialog().show(getFragmentManager(), "DisclaimerDialog");
 
+        if (filterItem != null)
+            filterItem.setShowAsAction(sharedPreferences.getBoolean("pref_show_filtered_plan_as_action", false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
+        if (reloadItem != null)
+            reloadItem.setVisible(!sharedPreferences.getBoolean("pref_hide_action_reload", false));
+
         setActionBarColor();
     }
     @Override
@@ -190,6 +195,9 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
 
         if (menu != null) {
             reloadItem = menu.findItem(R.id.action_reload_web_view);
+            reloadItem.setVisible(!sharedPreferences.getBoolean("pref_hide_action_reload", false));
+            filterItem = menu.findItem(R.id.action_filter_plan);
+            filterItem.setShowAsAction(sharedPreferences.getBoolean("pref_show_filtered_plan_as_action", false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
 
             //http://stackoverflow.com/questions/22046903/changing-the-android-overflow-menu-icon-programmatically/22106474#22106474
             final String overflowDescription = getString(R.string.abc_action_menu_overflow_description);
@@ -257,6 +265,8 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
                 reloadItem.setIcon(darkText ? R.drawable.ic_autorenew_black_36dp : R.drawable.ic_autorenew_white_36dp);
             if (overflow != null)
                 overflow.setColorFilter(darkText ? Color.BLACK : Color.WHITE);
+            if (filterItem != null)
+                filterItem.setIcon(darkText ? R.drawable.ic_filter_list_black_36dp : R.drawable.ic_filter_list_white_36dp);
             else if (tryAgain)
                 new Handler().postDelayed(SetActionBarColorRunnable, 100);
         }

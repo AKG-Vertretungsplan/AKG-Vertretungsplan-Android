@@ -221,5 +221,9 @@
     <string name="pref_action_bar_filtered">Bei aktivem Filter</string>
     <string name="pref_action_bar_color">Hintergrundfarbe</string>
     <string name="pref_action_bar_dark_text">Verwende dunklen Text</string>
+    <string name="pref_show_filtered_plan_as_action">Vertretungsfilter als Aktion</string>
+    <string name="pref_show_filtered_plan_as_action_summary">Zeige die Option \"Vertretungsfilter\" direkt auf der Aktionsleiste (nur bei konfiguriertem Stundenplan)</string>
+    <string name="pref_hide_action_reload">Verstecke Aktion \"Neu laden\"</string>
+    <string name="pref_hide_action_reload_summary">Der Vertretungsplan kann dann immer noch durch herunterwischen aktualisiert werden</string>
 
 </resources>

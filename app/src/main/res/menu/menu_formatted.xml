@@ -24,7 +24,9 @@
         app:showAsAction="ifRoom"/>
     <item android:id="@+id/action_filter_plan"
         android:title="@string/action_filter_plan"
-        android:checkable="true"/>
+        android:checkable="true"
+        android:icon="@drawable/ic_filter_list_white_36dp"
+        app:showAsAction="never"/>
     <item android:id="@+id/action_original_activity"
         android:title="@string/original_activity"
         android:orderInCategory="97"/>

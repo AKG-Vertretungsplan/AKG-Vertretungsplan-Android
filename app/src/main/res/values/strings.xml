@@ -290,5 +290,9 @@
     <string name="pref_action_bar_filtered">When applying filters</string>
     <string name="pref_action_bar_color">Background color</string>
     <string name="pref_action_bar_dark_text">Use dark text</string>
+    <string name="pref_show_filtered_plan_as_action">Filter plan as action</string>
+    <string name="pref_show_filtered_plan_as_action_summary">Show option to filter plan directly in the action bar (only if lesson plan is used)</string>
+    <string name="pref_hide_action_reload">Hide reload action</string>
+    <string name="pref_hide_action_reload_summary">You can still reload the plan by swiping down</string>
 
 </resources>
