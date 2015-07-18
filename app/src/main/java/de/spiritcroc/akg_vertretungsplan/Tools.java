@@ -22,11 +22,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 public abstract class Tools {
     public static String getLine (String text, int number){
@@ -104,8 +108,6 @@ public abstract class Tools {
         String style = PreferenceManager.getDefaultSharedPreferences(context).getString("pref_theme", "");
         if (style.equals("light"))
             return R.style.Theme_AppCompat_Light;
-        else if (style.equals("lightDarkActionBar"))
-            return  R.style.Theme_AppCompat_Light_DarkActionBar;
         else if (style.equals("dark"))
             return R.style.Theme_AppCompat;
         else
@@ -146,6 +148,20 @@ public abstract class Tools {
             return new GregorianCalendar(year, month+Calendar.JANUARY-1, day);
         }
 
+    }
+    static void findViewsWithText(List<View> outViews, ViewGroup parent, String targetDescription) {//http://stackoverflow.com/questions/22046903/changing-the-android-overflow-menu-icon-programmatically/22106474#22106474
+        if (parent == null || TextUtils.isEmpty(targetDescription)) {
+            return;
+        }
+        final int count = parent.getChildCount();
+        for (int i = 0; i < count; i++) {
+            final View child = parent.getChildAt(i);
+            final CharSequence description = child.getContentDescription();
+            if (!TextUtils.isEmpty(description) && targetDescription.equals(description.toString()))
+                outViews.add(child);
+            else if (child instanceof ViewGroup && child.getVisibility() == View.VISIBLE)
+                findViewsWithText(outViews, (ViewGroup) child, targetDescription);
+        }
     }
     /*public static void saveStringToFile (String string, String filePath){
         try {

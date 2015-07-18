@@ -93,6 +93,7 @@
     <string name="last_checked">Stand:</string>
     <string name="add_widget">Widget hinzufügen</string>
     <string name="pref_widget">Widget</string>
+    <string name="pref_widget_summary">Farben der Widgets</string>
     <string name="dialog_yes">Ja</string>
     <string name="dialog_later">Später</string>
     <string name="pref_general">Allgemein</string>
@@ -212,5 +213,12 @@
 
     <string name="pref_relevant_text">Relevante Vertretungen</string>
     <string name="pref_relevant_text_summary">Vertretungen, die aufgrund des Stundenplans als relevant angesehen werden (Einstellungen werden nur angewendet, wenn der Vertretungsplan nicht gefiltert wird)</string>
+
+    <string name="pref_action_bar">Aktionsleiste</string>
+    <string name="pref_action_bar_summary">Farben der Aktionsleiste</string>
+    <string name="pref_action_bar_normal">Normal</string>
+    <string name="pref_action_bar_filtered">Bei aktivem Filter</string>
+    <string name="pref_action_bar_color">Hintergrundfarbe</string>
+    <string name="pref_action_bar_dark_text">Verwende dunklen Text</string>
 
 </resources>

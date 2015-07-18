@@ -236,7 +236,38 @@
             </PreferenceCategory>
         </PreferenceScreen>
         <PreferenceScreen
-            android:title="@string/pref_widget">
+            android:title="@string/pref_action_bar"
+            android:summary="@string/pref_action_bar_summary">
+            <PreferenceCategory
+                android:title="@string/pref_action_bar_normal">
+                <ListPreference
+                    android:key="pref_action_bar_normal_background_color"
+                    android:title="@string/pref_action_bar_color"
+                    android:entries="@array/pref_color_array"
+                    android:entryValues="@array/pref_color_array_values"
+                    android:defaultValue="-12303292"/>
+                <CheckBoxPreference
+                    android:key="pref_action_bar_normal_dark_text"
+                    android:title="@string/pref_action_bar_dark_text"
+                    android:defaultValue="false"/>
+            </PreferenceCategory>
+            <PreferenceCategory
+                android:title="@string/pref_action_bar_filtered">
+                <ListPreference
+                    android:key="pref_action_bar_filtered_background_color"
+                    android:title="@string/pref_action_bar_color"
+                    android:entries="@array/pref_color_array"
+                    android:entryValues="@array/pref_color_array_values"
+                    android:defaultValue="-16711936"/>
+                <CheckBoxPreference
+                    android:key="pref_action_bar_filtered_dark_text"
+                    android:title="@string/pref_action_bar_dark_text"
+                    android:defaultValue="true"/>
+            </PreferenceCategory>
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:title="@string/pref_widget"
+            android:summary="@string/pref_widget_summary">
             <PreferenceCategory
                 android:title="@string/pref_colors">
                 <ListPreference

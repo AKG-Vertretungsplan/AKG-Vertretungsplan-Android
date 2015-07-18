@@ -115,6 +115,7 @@
     <string name="add_widget">Add widget</string>
     <string name="last_checked">Last checked:</string>
     <string name="pref_widget">Widget</string>
+    <string name="pref_widget_summary">Widget colors</string>
     <string name="dialog_yes">Yes</string>
     <string name="dialog_later">Later</string>
     <string name="pref_general">General</string>
@@ -139,12 +140,10 @@
     <string name="pref_theme_summary">You might want to restart App after changing theme</string>
     <string-array name="pref_theme_array">
         <item>Light</item>
-        <item>Light with a Dark ActionBar</item>
         <item>Dark</item>
     </string-array>
     <string-array name="pref_theme_array_values" translatable="false">
         <item>light</item>
-        <item>lightDarkActionBar</item>
         <item>dark</item>
     </string-array>
     <string name="pref_customize_background_colors">Customize background</string>
@@ -280,5 +279,12 @@
 
     <string name="pref_relevant_text">Relevant</string>
     <string name="pref_relevant_text_summary">Text that is considered as relevant based on your lesson plan (Settings are only active if plan is not filtered)</string>
+
+    <string name="pref_action_bar">Action bar</string>
+    <string name="pref_action_bar_summary">Colors of the action bar</string>
+    <string name="pref_action_bar_normal">Normal</string>
+    <string name="pref_action_bar_filtered">When applying filters</string>
+    <string name="pref_action_bar_color">Background color</string>
+    <string name="pref_action_bar_dark_text">Use dark text</string>
 
 </resources>

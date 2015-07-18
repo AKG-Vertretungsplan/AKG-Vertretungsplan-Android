@@ -23,22 +23,34 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.internal.widget.TintImageView;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class FormattedActivity extends AppCompatActivity implements ItemFragment.OnFragmentInteractionListener{
@@ -51,7 +63,9 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
     private static Calendar date1, date2;
     private int style;
     private boolean created = false;
-    private static boolean shortCutToPageTwo = false;
+    private static boolean shortCutToPageTwo = false, filteredMode;
+    private MenuItem reloadItem;
+    private TintImageView overflow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +168,8 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
 
         if (!sharedPreferences.getBoolean("pref_seen_disclaimer", false))
             new DisclaimerDialog().show(getFragmentManager(), "DisclaimerDialog");
+
+        setActionBarColor();
     }
     @Override
     protected void onPause(){
@@ -180,20 +196,36 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
         getMenuInflater().inflate(R.menu.menu_formatted, menu);
 
         if (menu != null) {
-            if (style == R.style.Theme_AppCompat_Light){
-                MenuItem item = menu.findItem(R.id.action_reload_web_view);
-                if (item != null)
-                    item.setIcon(R.drawable.ic_autorenew_black_36dp);
-            }
+            reloadItem = menu.findItem(R.id.action_reload_web_view);
+
+            //http://stackoverflow.com/questions/22046903/changing-the-android-overflow-menu-icon-programmatically/22106474#22106474
+            final String overflowDescription = getString(R.string.abc_action_menu_overflow_description);
+            final ViewGroup decorView = (ViewGroup) getWindow().getDecorView();
+            final ViewTreeObserver viewTreeObserver = decorView.getViewTreeObserver();
+            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    final ArrayList<View> outViews = new ArrayList<>();
+                    Tools.findViewsWithText(outViews, decorView, overflowDescription);
+                    overflow = (TintImageView) outViews.get(0);
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
+                        decorView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    else
+                        decorView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            });
 
             MenuItem filterPlanMenuItem = menu.findItem(R.id.action_filter_plan);
-            filterPlanMenuItem.setChecked(sharedPreferences.getBoolean("pref_filter_plan", false));
+            filteredMode = sharedPreferences.getBoolean("pref_filter_plan", false);
+            filterPlanMenuItem.setChecked(filteredMode);
+            setActionBarColor();
             filterPlanMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-                    boolean checked = !item.isChecked();
-                    item.setChecked(checked);
-                    sharedPreferences.edit().putBoolean("pref_filter_plan", checked).apply();
+                    filteredMode = !item.isChecked();
+                    item.setChecked(filteredMode);
+                    sharedPreferences.edit().putBoolean("pref_filter_plan", filteredMode).apply();
+                    setActionBarColor();
                     if (fragment1 != null)
                         fragment1.reloadContent();
                     if (fragment2 != null)
@@ -204,6 +236,37 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
         }
 
         return super.onCreateOptionsMenu(menu);
+    }
+    private void setActionBarColor(){
+        setActionBarColor(true);
+    }
+    private Runnable SetActionBarColorRunnable = new Runnable() {
+        @Override
+        public void run() {
+            setActionBarColor(false);
+        }
+    };
+    private void setActionBarColor(boolean tryAgain){
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            int backgroundColor = filteredMode ?
+                    Integer.parseInt(sharedPreferences.getString("pref_action_bar_filtered_background_color", "" + Color.GREEN)) :
+                    Integer.parseInt(sharedPreferences.getString("pref_action_bar_normal_background_color", "" + Color.DKGRAY));
+            boolean darkText = filteredMode ?
+                    sharedPreferences.getBoolean("pref_action_bar_filtered_dark_text", true) :
+                    sharedPreferences.getBoolean("pref_action_bar_normal_dark_text", false);
+
+            actionBar.setBackgroundDrawable(new ColorDrawable(backgroundColor));
+            Spannable title = new SpannableString(actionBar.getTitle());
+            title.setSpan(new ForegroundColorSpan(darkText ? Color.BLACK : Color.WHITE), 0, title.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            actionBar.setTitle(title);
+            if (reloadItem != null)
+                reloadItem.setIcon(darkText ? R.drawable.ic_autorenew_black_36dp : R.drawable.ic_autorenew_white_36dp);
+            if (overflow != null)
+                overflow.setColorFilter(darkText ? Color.BLACK : Color.WHITE);
+            else if (tryAgain)
+                new Handler().postDelayed(SetActionBarColorRunnable, 100);
+        }
     }
 
     @Override
