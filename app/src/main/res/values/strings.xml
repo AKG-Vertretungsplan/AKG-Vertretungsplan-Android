@@ -281,7 +281,7 @@
     <string name="pref_relevant_text_summary">Text that is considered as relevant based on your lesson plan (Settings are only active if plan is not filtered)</string>
 
     <string name="pref_action_bar">Action bar</string>
-    <string name="pref_action_bar_summary">Colors of the action bar</string>
+    <string name="pref_action_bar_summary">Colors of the action bar while showing formatted plan</string>
     <string name="pref_action_bar_normal">Normal</string>
     <string name="pref_action_bar_filtered">When applying filters</string>
     <string name="pref_action_bar_color">Background color</string>
