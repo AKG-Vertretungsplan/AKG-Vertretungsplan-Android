@@ -218,6 +218,10 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
 
             MenuItem filterPlanMenuItem = menu.findItem(R.id.action_filter_plan);
             filteredMode = sharedPreferences.getBoolean("pref_filter_plan", false);
+            if (!LessonPlan.getInstance(sharedPreferences).isConfigured()) {
+                filteredMode = false;
+                sharedPreferences.edit().putBoolean("pref_filter_plan", filteredMode).apply();
+            }
             filterPlanMenuItem.setChecked(filteredMode);
             setActionBarColor();
             filterPlanMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {

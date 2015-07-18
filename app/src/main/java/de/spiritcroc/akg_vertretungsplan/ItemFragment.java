@@ -248,7 +248,8 @@ public class ItemFragment extends ListFragment{
         String add;
         String tmp = "a";   //not empty
         boolean useFullTeacherNames = sharedPreferences.getBoolean("pref_formatted_plan_replace_teacher_short_with_teacher_full", true),
-            filterResults = sharedPreferences.getBoolean("pref_filter_plan", false), lastAddedHeader = false;
+                filterResults = sharedPreferences.getBoolean("pref_filter_plan", false) && LessonPlan.getInstance(sharedPreferences).isConfigured(),
+                lastAddedHeader = false;
         for (int i = 0; !tmp.equals(""); i++){
             tmp = Tools.getLine(unformattedContent, i + 1);
             if (getRow(tmp, "" + DownloadService.ContentType.TABLE_ROW)){
