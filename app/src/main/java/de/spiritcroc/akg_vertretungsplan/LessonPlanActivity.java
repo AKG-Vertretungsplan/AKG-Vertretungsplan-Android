@@ -110,7 +110,8 @@ public class LessonPlanActivity extends AppCompatActivity {
 
     public void updateAll(){
         for (int i = 0; i < lessonPlanFragments.length; i++)
-            lessonPlanFragments[i].update();
+            if (lessonPlanFragments[i] != null)
+                lessonPlanFragments[i].update();
     }
 
     public void showEditLessonDialog(Lesson lesson, LessonPlanFragment lessonPlanFragment, int lessonPosition){
