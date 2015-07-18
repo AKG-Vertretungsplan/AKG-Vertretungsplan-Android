@@ -205,5 +205,7 @@
     <string name="pref_lesson_plan_auto_select_day_time">Zeit zur Auswahl des nächsten Stundenplans</string>
     <string name="pref_lesson_plan_auto_select_day_time_summary_pre">Der Stundenplan für morgen wird automatisch ab" "</string>
     <string name="pref_lesson_plan_auto_select_day_time_summary_post">" "Uhr angezeigt</string>
+    <string name="pref_formatted_plan_replace_teacher_short_with_teacher_full">Zeige Lehrernamen</string>
+    <string name="pref_formatted_plan_replace_teacher_short_with_teacher_full_summary">Ersetze Lehrerkürzel im formatierten Plan mit Lehrernamen, falls diese im Stundenplan vorkommen</string>
 
 </resources>

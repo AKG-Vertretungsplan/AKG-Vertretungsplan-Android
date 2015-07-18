@@ -235,6 +235,7 @@ public class ItemFragment extends ListFragment{
             headerRow[i] = null;
         }
 
+        LessonPlan lessonPlan = LessonPlan.getInstance(sharedPreferences);
         ArrayList<String> result= new ArrayList<>();
         fullFormattedContent.clear();
         textColors.clear();
@@ -278,7 +279,16 @@ public class ItemFragment extends ListFragment{
                     if (headerRow[0]==null) //e.g. when extra table "Gesamte Schule:"
                         add = tmpRowContent[0] + " → " + tmpRowContent[1];
                     else{
-                        add = tmpRowContent[2] + " " + tmpRowContent[1] + " →";
+                        String tmpRowContent1;//For alternative display of the full teacher name
+                        if (sharedPreferences.getBoolean("pref_formatted_plan_replace_teacher_short_with_teacher_full", true)){
+                            tmpRowContent1 = lessonPlan.getTeacherFullForTeacherShort(tmpRowContent[1]);
+                            if (tmpRowContent1==null || tmpRowContent1.equals(""))
+                                tmpRowContent1 = tmpRowContent[1];
+                        }
+                        else
+                            tmpRowContent1 = tmpRowContent[1];
+
+                        add = tmpRowContent[2] + " " + tmpRowContent1 + " →";
                         if (!tmpRowContent[3].equals(""))
                             add += " " + tmpRowContent[3];
                         if (!tmpRowContent[4].equals(""))

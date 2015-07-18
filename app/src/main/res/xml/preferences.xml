@@ -95,6 +95,11 @@
     <PreferenceCategory
         android:title="@string/pref_user_interface">
         <CheckBoxPreference
+            android:key="pref_formatted_plan_replace_teacher_short_with_teacher_full"
+            android:title="@string/pref_formatted_plan_replace_teacher_short_with_teacher_full"
+            android:summary="@string/pref_formatted_plan_replace_teacher_short_with_teacher_full_summary"
+            android:defaultValue="true"/>
+        <CheckBoxPreference
             android:key="pref_formatted_plan_auto_select_day"
             android:title="@string/pref_formatted_plan_auto_select_day"
             android:summary="@string/pref_formatted_plan_auto_select_day_summary"
