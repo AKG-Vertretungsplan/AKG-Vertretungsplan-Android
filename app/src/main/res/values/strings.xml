@@ -82,6 +82,7 @@
         <item>Red</item>
         <item>White</item>
         <item>Yellow</item>
+        <item>Orange</item>
     </string-array>
     <string-array name="pref_color_array_values" translatable="false">
         <item>-16777216</item>
@@ -95,6 +96,7 @@
         <item>-65536</item>
         <item>-1</item>
         <item>-256</item>
+        <item>-33024</item>
     </string-array>
 
     <string name="pref_colors_summary">Colors used in the formatted display</string>
@@ -166,6 +168,7 @@
         <item>Red</item>
         <item>White</item>
         <item>Yellow</item>
+        <item>Orange</item>
     </string-array>
     <string-array name="pref_led_color_array_values" translatable="false">
         <item>-16776961</item>
@@ -175,6 +178,7 @@
         <item>-65536</item>
         <item>-1</item>
         <item>-256</item>
+        <item>-33024</item>
     </string-array>
     <string name="pref_vibrate_notification_enabled">Enable vibration</string>
     <!--string name="pref_share_app">Share App</string>
