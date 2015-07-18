@@ -208,4 +208,6 @@
     <string name="pref_formatted_plan_replace_teacher_short_with_teacher_full">Zeige Lehrernamen</string>
     <string name="pref_formatted_plan_replace_teacher_short_with_teacher_full_summary">Ergänze Lehrerkürzel im formatierten Plan mit Lehrernamen, falls diese im Stundenplan vorkommen</string>
 
+    <string name="action_filter_plan">Vertretungsfilter</string>
+
 </resources>

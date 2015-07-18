@@ -18,5 +18,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 <item
     android:id="@+id/action_mark_read"
-    android:title="@string/action_mark_read"/>
+    android:title="@string/action_mark_read"
+    android:orderInCategory="50"/>
 </menu>

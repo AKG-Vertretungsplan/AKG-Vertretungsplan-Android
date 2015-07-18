@@ -51,7 +51,6 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
     private static Calendar date1, date2;
     private int style;
     private boolean created = false;
-    private MenuItem debugEmailMenuItem;
     private static boolean shortCutToPageTwo = false;
 
     @Override
@@ -170,12 +169,9 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu){
-        if (sharedPreferences.getBoolean("pref_hidden_debug_enabled", false) && sharedPreferences.getBoolean("pref_enable_option_send_debug_email", false)) {
-            if (debugEmailMenuItem == null || menu.findItem(debugEmailMenuItem.getItemId()) == null)
-                debugEmailMenuItem = menu.add(R.string.action_send_debug_email);
-        }
-        else
-            debugEmailMenuItem = null;
+        menu.findItem(R.id.action_send_debug_email).setVisible(sharedPreferences.getBoolean("pref_hidden_debug_enabled", false) && sharedPreferences.getBoolean("pref_enable_option_send_debug_email", false));
+        menu.findItem(R.id.action_filter_plan).setVisible(LessonPlan.getInstance(sharedPreferences).isConfigured());
+
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -183,54 +179,35 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_formatted, menu);
 
-        if (menu != null && style == R.style.Theme_AppCompat_Light){
-            MenuItem item = menu.findItem(R.id.action_reload_web_view);
-            if (item != null)
-                item.setIcon(R.drawable.ic_autorenew_black_36dp);
+        if (menu != null) {
+            if (style == R.style.Theme_AppCompat_Light){
+                MenuItem item = menu.findItem(R.id.action_reload_web_view);
+                if (item != null)
+                    item.setIcon(R.drawable.ic_autorenew_black_36dp);
+            }
+
+            MenuItem filterPlanMenuItem = menu.findItem(R.id.action_filter_plan);
+            filterPlanMenuItem.setChecked(sharedPreferences.getBoolean("pref_filter_plan", false));
+            filterPlanMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    boolean checked = !item.isChecked();
+                    item.setChecked(checked);
+                    sharedPreferences.edit().putBoolean("pref_filter_plan", checked).apply();
+                    if (fragment1 != null)
+                        fragment1.reloadContent();
+                    if (fragment2 != null)
+                        fragment2.reloadContent();
+                    return false;
+                }
+            });
         }
+
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (debugEmailMenuItem != null && debugEmailMenuItem == item){//send debug mail
-            Intent intent = new Intent(Intent.ACTION_SENDTO);
-            intent.setType("message/rfc822");
-            intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.debug_email_subject));
-            String text = getString(R.string.debug_email_issue_description) + "\n\n" +
-                    getString(R.string.debug_email_automatically_added_information) + "\n\n" +
-
-                    getString(R.string.debug_email_pref_last_checked) + "\n" +
-                    sharedPreferences.getString("pref_last_checked", "") + "\n\n\n" +
-                    getString(R.string.debug_email_pref_last_update) + "\n" +
-                    sharedPreferences.getString("pref_last_update", "") + "\n\n\n" +
-
-                    getString(R.string.debug_email_pref_latest_title_1) + "\n" +
-                    sharedPreferences.getString("pref_latest_title_1", "") + "\n\n\n" +
-                    getString(R.string.debug_email_pref_latest_plan_1) + "\n" +
-                    sharedPreferences.getString("pref_latest_plan_1", "") + "\n\n\n" +
-                    getString(R.string.debug_email_pref_latest_title_2) + "\n" +
-                    sharedPreferences.getString("pref_latest_title_2", "") + "\n\n\n" +
-                    getString(R.string.debug_email_pref_latest_plan_2) + "\n" +
-                    sharedPreferences.getString("pref_latest_plan_2", "") + "\n\n\n" +
-
-                    getString(R.string.debug_email_pref_current_title_1) + "\n" +
-                    sharedPreferences.getString("pref_current_title_1", "") + "\n\n\n" +
-                    getString(R.string.debug_email_pref_current_plan_1) + "\n" +
-                    sharedPreferences.getString("pref_current_plan_1", "") + "\n\n\n" +
-                    getString(R.string.debug_email_pref_current_title_2) + "\n" +
-                    sharedPreferences.getString("pref_current_title_2", "") + "\n\n\n" +
-                    getString(R.string.debug_email_pref_current_plan_2) + "\n" +
-                    sharedPreferences.getString("pref_current_plan_2", "") + "\n\n\n" +
-
-                    getString(R.string.debug_email_pref_html_latest) + "\n" +
-                    sharedPreferences.getString("pref_html_latest", "");
-            intent.putExtra(Intent.EXTRA_TEXT, text);
-            intent.setData(Uri.parse("mailto:"));
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            return true;
-        }
         switch (item.getItemId()){
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
@@ -246,6 +223,43 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
                 return true;
             case R.id.action_lesson_plan:
                 startActivity(new Intent(getApplication(), LessonPlanActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
+                return true;
+            case R.id.action_send_debug_email:
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                intent.setType("message/rfc822");
+                intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.debug_email_subject));
+                String text = getString(R.string.debug_email_issue_description) + "\n\n" +
+                        getString(R.string.debug_email_automatically_added_information) + "\n\n" +
+
+                        getString(R.string.debug_email_pref_last_checked) + "\n" +
+                        sharedPreferences.getString("pref_last_checked", "") + "\n\n\n" +
+                        getString(R.string.debug_email_pref_last_update) + "\n" +
+                        sharedPreferences.getString("pref_last_update", "") + "\n\n\n" +
+
+                        getString(R.string.debug_email_pref_latest_title_1) + "\n" +
+                        sharedPreferences.getString("pref_latest_title_1", "") + "\n\n\n" +
+                        getString(R.string.debug_email_pref_latest_plan_1) + "\n" +
+                        sharedPreferences.getString("pref_latest_plan_1", "") + "\n\n\n" +
+                        getString(R.string.debug_email_pref_latest_title_2) + "\n" +
+                        sharedPreferences.getString("pref_latest_title_2", "") + "\n\n\n" +
+                        getString(R.string.debug_email_pref_latest_plan_2) + "\n" +
+                        sharedPreferences.getString("pref_latest_plan_2", "") + "\n\n\n" +
+
+                        getString(R.string.debug_email_pref_current_title_1) + "\n" +
+                        sharedPreferences.getString("pref_current_title_1", "") + "\n\n\n" +
+                        getString(R.string.debug_email_pref_current_plan_1) + "\n" +
+                        sharedPreferences.getString("pref_current_plan_1", "") + "\n\n\n" +
+                        getString(R.string.debug_email_pref_current_title_2) + "\n" +
+                        sharedPreferences.getString("pref_current_title_2", "") + "\n\n\n" +
+                        getString(R.string.debug_email_pref_current_plan_2) + "\n" +
+                        sharedPreferences.getString("pref_current_plan_2", "") + "\n\n\n" +
+
+                        getString(R.string.debug_email_pref_html_latest) + "\n" +
+                        sharedPreferences.getString("pref_html_latest", "");
+                intent.putExtra(Intent.EXTRA_TEXT, text);
+                intent.setData(Uri.parse("mailto:"));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

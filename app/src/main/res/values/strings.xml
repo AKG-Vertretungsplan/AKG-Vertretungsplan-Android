@@ -276,4 +276,6 @@
     <string name="pref_formatted_plan_replace_teacher_short_with_teacher_full">Show teacher names</string>
     <string name="pref_formatted_plan_replace_teacher_short_with_teacher_full_summary">Amend the teacher abbr. with the full name if it\s available from the lesson plan</string>
 
+    <string name="action_filter_plan">Filter plan</string>
+
 </resources>

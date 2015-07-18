@@ -17,8 +17,10 @@
 package de.spiritcroc.akg_vertretungsplan;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class LessonPlan {
     public static final int DAY_COUNT = 5;
@@ -114,5 +116,41 @@ public class LessonPlan {
             for (int i = 0; i < lessons[j].length; i++)
                 lessons[j][i] = new Lesson();
         }
+    }
+
+    public boolean isConfigured(){//testme
+        for (int j = 0; j < lessons.length; j++)
+            for (int i = 0; i < lessons[j].length; i++)
+                if (!lessons[j][i].isFreeTime())
+                    return true;
+        return false;
+    }
+    public boolean isRelevant(int day, int lesson, String teacherShort){
+        int dayPosition;
+        switch (day) {
+            case Calendar.MONDAY:
+                dayPosition = 0;
+                break;
+            case Calendar.TUESDAY:
+                dayPosition = 1;
+                break;
+            case Calendar.WEDNESDAY:
+                dayPosition = 2;
+                break;
+            case Calendar.THURSDAY:
+                dayPosition = 3;
+                break;
+            case Calendar.FRIDAY:
+                dayPosition = 4;
+                break;
+            default:
+                Log.e("LessonPlan", "Day " + day + " is not defined");
+                return false;
+        }
+        if (lessons[dayPosition].length <= lesson-1){
+            Log.e("LessonPlan", "Lesson " + lesson + " not available (array to short)");
+            return false;
+        }
+        return teacherShort.equals(lessons[dayPosition][lesson-1].getTeacherShort());
     }
 }

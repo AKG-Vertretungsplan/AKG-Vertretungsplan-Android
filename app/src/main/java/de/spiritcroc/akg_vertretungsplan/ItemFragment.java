@@ -42,6 +42,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ItemFragment extends ListFragment{
     private SharedPreferences sharedPreferences;
@@ -195,6 +196,9 @@ public class ItemFragment extends ListFragment{
     public void reloadContent(String content, String date){
         this.content = content;
         this.date = date;
+        reloadContent();
+    }
+    public void reloadContent(){
         Activity activity = getActivity();
         if (activity == null)
             Log.e("reloadContent", "getActivity()==null");
@@ -243,7 +247,8 @@ public class ItemFragment extends ListFragment{
         backgroundColors.clear();
         String add;
         String tmp = "a";   //not empty
-        boolean useFullTeacherNames = sharedPreferences.getBoolean("pref_formatted_plan_replace_teacher_short_with_teacher_full", true);
+        boolean useFullTeacherNames = sharedPreferences.getBoolean("pref_formatted_plan_replace_teacher_short_with_teacher_full", true),
+            filterResults = sharedPreferences.getBoolean("pref_filter_plan", false), lastAddedHeader = false;
         for (int i = 0; !tmp.equals(""); i++){
             tmp = Tools.getLine(unformattedContent, i + 1);
             if (getRow(tmp, "" + DownloadService.ContentType.TABLE_ROW)){
@@ -260,8 +265,12 @@ public class ItemFragment extends ListFragment{
                     currentClass = "";
                 }
                 else{
+                    boolean doNotFilterOut;
                     if (headerRow[0]==null){
                         if (putHeaderAsClass){
+                            if (filterResults && lastAddedHeader)
+                                removeLastAddedItem();
+                            lastAddedHeader = true;
                             result.add(currentClass);    //class text
                             fullFormattedContent.add(null);
                             textColors.add(Integer.parseInt(sharedPreferences.getString("pref_class_text_text_color", "" + Color.BLUE)));
@@ -271,15 +280,19 @@ public class ItemFragment extends ListFragment{
                         //else: no header available
                     }
                     else if (!currentClass.equals(tmpRowContent[0])){
+                        if (filterResults && lastAddedHeader)
+                            removeLastAddedItem();
+                        lastAddedHeader = true;
                         currentClass = tmpRowContent[0];
                         result.add(headerRow[0] + " " + tmpRowContent[0]);    //class text
                         fullFormattedContent.add(null);
                         textColors.add(Integer.parseInt(sharedPreferences.getString("pref_class_text_text_color", "" + Color.BLUE)));
                         backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_class_text_background_color", "" + Color.WHITE)));
-
                     }
-                    if (headerRow[0]==null) //e.g. when extra table "Gesamte Schule:"
+                    if (headerRow[0]==null) { //e.g. when extra table "Gesamte Schule:"
                         add = tmpRowContent[0] + " → " + tmpRowContent[1];
+                        doNotFilterOut = true;
+                    }
                     else{
                         add = tmpRowContent[2] + " " + (useFullTeacherNames ? getTeacherCombinationString(lessonPlan, tmpRowContent[1]) : tmpRowContent[1]) + " →";
                         if (!tmpRowContent[3].equals(""))
@@ -290,15 +303,25 @@ public class ItemFragment extends ListFragment{
                             add += " " + tmpRowContent[5];
                         if (!tmpRowContent[6].equals(""))
                             add += " " + tmpRowContent[6];
+                        try{
+                            doNotFilterOut = lessonPlan.isRelevant(Tools.getDateFromPlanTitle(this.date).get(Calendar.DAY_OF_WEEK), Integer.parseInt(tmpRowContent[2]), tmpRowContent[1]);
+                            if (doNotFilterOut)
+                                lastAddedHeader = false;
+                        }
+                        catch (Exception e){
+                            Log.e("ItemFragment", "Check for relevancy threw exception: " + e);
+                            doNotFilterOut = false;
+                        }
                     }
-                    result.add(add);                    //substitution text
-                    if (Tools.lineAvailable(oldPlan, tmp)){
-                        textColors.add(Integer.parseInt(sharedPreferences.getString("pref_normal_text_text_color", "" + Color.BLACK)));
-                        backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_normal_text_background_color", "" + Color.WHITE)));
-                    }
-                    else{       //highlight changes
-                        textColors.add(Integer.parseInt(sharedPreferences.getString("pref_normal_text_text_color_highlight", "" + Color.RED)));
-                        backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_normal_text__background_color_highlight", "" + Color.WHITE)));
+                    if (!filterResults || doNotFilterOut) {
+                        result.add(add);                    //substitution text
+                        if (Tools.lineAvailable(oldPlan, tmp)) {
+                            textColors.add(Integer.parseInt(sharedPreferences.getString("pref_normal_text_text_color", "" + Color.BLACK)));
+                            backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_normal_text_background_color", "" + Color.WHITE)));
+                        } else {       //highlight changes
+                            textColors.add(Integer.parseInt(sharedPreferences.getString("pref_normal_text_text_color_highlight", "" + Color.RED)));
+                            backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_normal_text__background_color_highlight", "" + Color.WHITE)));
+                        }
                     }
                 }
                 fullFormattedContent.add(tmpRowContent.clone());
@@ -308,7 +331,14 @@ public class ItemFragment extends ListFragment{
                 putHeaderAsClass = true;
             }
         }
+        if (filterResults && lastAddedHeader)
+            removeLastAddedItem();
         return result.toArray(new String[result.size()]);
+    }
+    private void removeLastAddedItem(){
+        fullFormattedContent.remove(fullFormattedContent.size()-1);
+        textColors.remove(textColors.size()-1);
+        backgroundColors.remove(backgroundColors.size()-1);
     }
     private boolean getRow(String line, String searchingFor){
         if (line.length() > searchingFor.length()+1 && line.substring(0, searchingFor.length()).equals(searchingFor)) { //ignore empty rows
