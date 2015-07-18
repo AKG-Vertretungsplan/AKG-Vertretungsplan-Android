@@ -278,4 +278,7 @@
 
     <string name="action_filter_plan">Filter plan</string>
 
+    <string name="pref_relevant_text">Relevant</string>
+    <string name="pref_relevant_text_summary">Text that is considered as relevant based on your lesson plan (Settings are only active if plan is not filtered)</string>
+
 </resources>

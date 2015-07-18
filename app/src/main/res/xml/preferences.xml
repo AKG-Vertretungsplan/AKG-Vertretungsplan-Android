@@ -128,7 +128,7 @@
                 android:key="pref_customize_background_colors"
                 android:title="@string/pref_customize_background_colors"
                 android:summary="@string/pref_customize_background_colors_summary"
-                android:defaultValue="false"/>
+                android:defaultValue="true"/>
             <PreferenceCategory
                 android:title="@string/pref_header_text">
                 <ListPreference
@@ -201,6 +201,37 @@
                     android:entries="@array/pref_color_array"
                     android:entryValues="@array/pref_color_array_values"
                     android:defaultValue="-1"
+                    android:dependency="pref_customize_background_colors"/>
+            </PreferenceCategory>
+            <PreferenceCategory
+                android:title="@string/pref_relevant_text">
+                <Preference
+                    android:summary="@string/pref_relevant_text_summary"/>
+                <ListPreference
+                    android:key="pref_relevant_text_text_color"
+                    android:title="@string/pref_text_color"
+                    android:entries="@array/pref_color_array"
+                    android:entryValues="@array/pref_color_array_values"
+                    android:defaultValue="-16777216"/>
+                <ListPreference
+                    android:key="pref_relevant_text_background_color"
+                    android:title="@string/pref_background_color"
+                    android:entries="@array/pref_color_array"
+                    android:entryValues="@array/pref_color_array_values"
+                    android:defaultValue="-256"
+                    android:dependency="pref_customize_background_colors"/>
+                <ListPreference
+                    android:key="pref_relevant_text_text_color_highlight"
+                    android:title="@string/pref_text_color_highlight"
+                    android:entries="@array/pref_color_array"
+                    android:entryValues="@array/pref_color_array_values"
+                    android:defaultValue="-65536"/>
+                <ListPreference
+                    android:key="pref_relevant_text_background_color_highlight"
+                    android:title="@string/pref_background_color_highlight"
+                    android:entries="@array/pref_color_array"
+                    android:entryValues="@array/pref_color_array_values"
+                    android:defaultValue="-256"
                     android:dependency="pref_customize_background_colors"/>
             </PreferenceCategory>
         </PreferenceScreen>

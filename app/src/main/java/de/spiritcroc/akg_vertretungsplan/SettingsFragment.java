@@ -65,6 +65,10 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         setSummaryToValue("pref_widget_text_color_highlight");
         setSummaryToValue("pref_auto_mark_read");
         setSummaryToValue("pref_led_notification_color");
+        setSummaryToValue("pref_relevant_text_text_color");
+        setSummaryToValue("pref_relevant_text_background_color");
+        setSummaryToValue("pref_relevant_text_text_color_highlight");
+        setSummaryToValue("pref_relevant_text_background_color_highlight");
 
         EditTextPreference tmpEditTextPreference = (EditTextPreference) findPreference("pref_auto_load_on_open");
         int tmpValue = correctInteger(getSharedPreferences(), "pref_auto_load_on_open", tmpEditTextPreference.getText(), 5);
@@ -113,7 +117,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key){
-        if (key.equals("pref_class_text_text_color") || key.equals("pref_class_text_background_color") || key.equals("pref_normal_text_text_color") || key.equals("pref_normal_text_background_color") || key.equals("pref_normal_text_text_color_highlight") || key.equals("pref_normal_text__background_color_highlight") || key.equals("pref_header_text_text_color") || key.equals("pref_header_text_background_color") || key.equals("pref_header_text_text_color_highlight") || key.equals("pref_header_text__background_color_highlight" ) || key.equals("pref_widget_text_color")  || key.equals("pref_widget_text_color_highlight") || key.equals("pref_auto_mark_read") || key.equals("pref_led_notification_color"))
+        if (key.equals("pref_class_text_text_color") || key.equals("pref_class_text_background_color") || key.equals("pref_normal_text_text_color") || key.equals("pref_normal_text_background_color") || key.equals("pref_normal_text_text_color_highlight") || key.equals("pref_normal_text__background_color_highlight") || key.equals("pref_header_text_text_color") || key.equals("pref_header_text_background_color") || key.equals("pref_header_text_text_color_highlight") || key.equals("pref_header_text__background_color_highlight" ) || key.equals("pref_widget_text_color")  || key.equals("pref_widget_text_color_highlight") || key.equals("pref_auto_mark_read") || key.equals("pref_led_notification_color") || key.equals("pref_relevant_text_text_color") || key.equals("pref_relevant_text_background_color") || key.equals("pref_relevant_text_text_color_highlight") || key.equals("pref_relevant_text_background_color_highlight"))
             setSummaryToValue(key);
         else if (key.equals("pref_username") || key.equals("pref_password")){
             getActivity().startService(new Intent(getActivity(), DownloadService.class).setAction(DownloadService.ACTION_RETRY));
@@ -138,15 +142,15 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 if (sharedPreferences.getString("pref_normal_text_text_color", "").equals("-1"))
                     editor.putString("pref_normal_text_text_color", "-16777216");
 
-                if (sharedPreferences.getString("pref_header_text_background_color", "").equals("-16777216"))
+                if (sharedPreferences.getString("pref_header_text_background_color", "").equals("-12303292"))
                     editor.putString("pref_header_text_background_color", "-1");
-                if (sharedPreferences.getString("pref_header_text__background_color_highlight", "").equals("-16777216"))
+                if (sharedPreferences.getString("pref_header_text__background_color_highlight", "").equals("-12303292"))
                     editor.putString("pref_header_text__background_color_highlight", "-1");
-                if (sharedPreferences.getString("pref_class_text_background_color", "").equals("-16777216"))
+                if (sharedPreferences.getString("pref_class_text_background_color", "").equals("-12303292"))
                     editor.putString("pref_class_text_background_color", "-1");
-                if (sharedPreferences.getString("pref_normal_text_background_color", "").equals("-16777216"))
+                if (sharedPreferences.getString("pref_normal_text_background_color", "").equals("-12303292"))
                     editor.putString("pref_normal_text_background_color", "-1");
-                if (sharedPreferences.getString("pref_normal_text__background_color_highlight", "").equals("-16777216"))
+                if (sharedPreferences.getString("pref_normal_text__background_color_highlight", "").equals("-12303292"))
                     editor.putString("pref_normal_text__background_color_highlight", "-1");
             }
             else if (theme.equals("dark")){
@@ -158,15 +162,15 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                     editor.putString("pref_normal_text_text_color", "-1");
 
                 if (sharedPreferences.getString("pref_header_text_background_color", "").equals("-1"))
-                    editor.putString("pref_header_text_background_color", "-16777216");
+                    editor.putString("pref_header_text_background_color", "-12303292");
                 if (sharedPreferences.getString("pref_header_text__background_color_highlight", "").equals("-1"))
-                    editor.putString("pref_header_text__background_color_highlight", "-16777216");
+                    editor.putString("pref_header_text__background_color_highlight", "-12303292");
                 if (sharedPreferences.getString("pref_class_text_background_color", "").equals("-1"))
-                    editor.putString("pref_class_text_background_color", "-16777216");
+                    editor.putString("pref_class_text_background_color", "-12303292");
                 if (sharedPreferences.getString("pref_normal_text_background_color", "").equals("-1"))
-                    editor.putString("pref_normal_text_background_color", "-16777216");
+                    editor.putString("pref_normal_text_background_color", "-12303292");
                 if (sharedPreferences.getString("pref_normal_text__background_color_highlight", "").equals("-1"))
-                    editor.putString("pref_normal_text__background_color_highlight", "-16777216");
+                    editor.putString("pref_normal_text__background_color_highlight", "-12303292");
             }
             editor.apply();
         }
