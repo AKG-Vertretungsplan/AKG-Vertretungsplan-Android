@@ -46,17 +46,6 @@
             android:numeric="integer"
             android:defaultValue="5"/>
         <CheckBoxPreference
-            android:key="pref_formatted_plan_auto_select_day"
-            android:title="@string/pref_formatted_plan_auto_select_day"
-            android:summary="@string/pref_formatted_plan_auto_select_day_summary"
-            android:defaultValue="true"/>
-        <EditTextPreference
-            android:key="pref_formatted_plan_auto_select_day_time"
-            android:title="@string/pref_formatted_plan_auto_select_day_time"
-            android:numeric="integer"
-            android:defaultValue="17"
-            android:dependency="pref_formatted_plan_auto_select_day"/>
-        <CheckBoxPreference
             android:key="pref_background_service"
             android:title="@string/pref_background_service"
             android:summary="@string/pref_background_service_summary"
@@ -105,6 +94,17 @@
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/pref_user_interface">
+        <CheckBoxPreference
+            android:key="pref_formatted_plan_auto_select_day"
+            android:title="@string/pref_formatted_plan_auto_select_day"
+            android:summary="@string/pref_formatted_plan_auto_select_day_summary"
+            android:defaultValue="true"/>
+        <EditTextPreference
+            android:key="pref_formatted_plan_auto_select_day_time"
+            android:title="@string/pref_formatted_plan_auto_select_day_time"
+            android:numeric="integer"
+            android:defaultValue="17"
+            android:dependency="pref_formatted_plan_auto_select_day"/>
         <EditTextPreference
             android:key="pref_no_change_since_max_precision"
             android:title="@string/pref_no_change_since_max_precision"
