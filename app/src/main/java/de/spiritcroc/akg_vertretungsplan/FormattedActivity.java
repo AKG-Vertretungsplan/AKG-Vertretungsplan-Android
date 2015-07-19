@@ -181,6 +181,8 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
             startActivity(intent);
             overridePendingTransition(0, 0);
         }
+
+        textView.setVisibility(sharedPreferences.getBoolean("pref_hide_text_view", false) ? View.GONE : View.VISIBLE);
     }
     @Override
     protected void onPause(){

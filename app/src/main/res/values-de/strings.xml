@@ -242,4 +242,7 @@
 
     <string name="action_open_in_browser">Im Browser öffnen</string>
 
+    <string name="pref_hide_text_view">Verstecke Statusinformationen</string>
+    <string name="pref_hide_text_view_summary">Verstecke den Text unter der Aktionsleiste, der Statusinformationen anzeigt</string>
+
 </resources>

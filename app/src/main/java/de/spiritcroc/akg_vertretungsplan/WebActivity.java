@@ -13,6 +13,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
@@ -60,6 +61,8 @@ public class WebActivity extends AppCompatActivity {
             startActivity(intent);
             overridePendingTransition(0, 0);
         }
+
+        textView.setVisibility(sharedPreferences.getBoolean("pref_hide_text_view", false) ? View.GONE : View.VISIBLE);
     }
     @Override
     protected void onPause(){

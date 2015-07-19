@@ -112,6 +112,11 @@
             android:summary="@string/pref_hide_action_reload_summary"
             android:defaultValue="false"/>
         <CheckBoxPreference
+            android:key="pref_hide_text_view"
+            android:title="@string/pref_hide_text_view"
+            android:summary="@string/pref_hide_text_view_summary"
+            android:defaultValue="false"/>
+        <CheckBoxPreference
             android:key="pref_show_filtered_plan_as_action"
             android:title="@string/pref_show_filtered_plan_as_action"
             android:summary="@string/pref_show_filtered_plan_as_action_summary"
