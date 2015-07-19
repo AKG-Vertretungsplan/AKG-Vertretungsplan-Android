@@ -22,8 +22,6 @@
         android:icon="@drawable/ic_autorenew_white_36dp"
         android:title="@string/action_reload_web_view"
         app:showAsAction="ifRoom"/>
-    <item android:id="@+id/action_formatted_activity"
-        android:title="@string/formatted_activity"/>
     <item android:id="@+id/action_lesson_plan"
         android:title="@string/action_lesson_plan"/>
     <item android:id="@+id/action_settings"

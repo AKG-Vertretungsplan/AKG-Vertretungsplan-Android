@@ -57,7 +57,6 @@
     <string name="pref_user_interface">Darstellung</string>
     <string name="no_change">Keine neuen Vertretungen</string>
     <string name="title_activity_formatted">Vertretungsplan</string>
-    <string name="formatted_activity">Formatierter Plan</string>
     <string name="original_activity">Webplan</string>
     <string name="action_mark_read">Markiere als gelesen</string>
     <string name="pref_colors">Farben</string>

@@ -86,9 +86,6 @@ public class WebActivity extends AppCompatActivity {
                 if (!DownloadService.isDownloading())
                     startService(new Intent(this, DownloadService.class).setAction(DownloadService.ACTION_DOWNLOAD_PLAN));
                 return true;
-            case R.id.action_formatted_activity:
-                startActivity(new Intent(this, FormattedActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
-                return true;
             case R.id.action_about:
                 new AboutDialog().show(getFragmentManager(), "AboutDialog");
                 return true;
