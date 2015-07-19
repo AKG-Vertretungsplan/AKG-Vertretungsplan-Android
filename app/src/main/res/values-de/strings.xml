@@ -240,4 +240,6 @@
     <string name="dialog_share">Teilen</string>
     <string name="share_header">Diese Vertretung könnte interessant sein:</string>
 
+    <string name="action_open_in_browser">Im Browser öffnen</string>
+
 </resources>

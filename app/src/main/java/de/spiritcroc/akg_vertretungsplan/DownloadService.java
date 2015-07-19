@@ -42,6 +42,9 @@ public class DownloadService extends IntentService {
     public static final String ACTION_DOWNLOAD_PLAN = "de.spiritcroc.akg_vertretungsplan.action.downloadPlan";
     public static final String ACTION_RETRY = "de.spiritcroc.akg_vertretungsplan.action.retry";
 
+    public static final String PLAN_ADDRESS = "http://www.sc.shuttle.de/sc/akg/Ver/";
+    public static final String CSS_ADDRESS = "http://www.sc.shuttle.de/sc/akg/Ver/willi.css";
+
     public enum ContentType {AWAIT, IGNORE, HEADER, TABLE_START_FLAG, TABLE_END_FLAG, TABLE_ROW, TABLE_CONTENT}
     private String username, password;
     private final String cssHeader = "<style media=\"screen\" type=\"text/css\">";
@@ -97,10 +100,10 @@ public class DownloadService extends IntentService {
             password = getSharedPreferences().getString("pref_password", "");
             String base64EncodedCredentials = Base64.encodeToString((username + ":" + password).getBytes("US-ASCII"), Base64.URL_SAFE | Base64.NO_WRAP);
             DefaultHttpClient httpClient = new DefaultHttpClient();//On purpose use deprecated stuff because it works better (I have problems with HttpURLConnection: it does not read the credentials each time they are needed, and if they are wrong, there is no appropriate message (just an java.io.FileNotFoundException))
-            HttpGet httpGet = new HttpGet("http://www.sc.shuttle.de/sc/akg/Ver/");
+            HttpGet httpGet = new HttpGet(PLAN_ADDRESS);
             httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
             String result = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
-            httpGet = new HttpGet("http://www.sc.shuttle.de/sc/akg/Ver/willi.css");
+            httpGet = new HttpGet(CSS_ADDRESS);
             httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
             String css = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
             processPlan(cssHeader + css + cssFoot + result);

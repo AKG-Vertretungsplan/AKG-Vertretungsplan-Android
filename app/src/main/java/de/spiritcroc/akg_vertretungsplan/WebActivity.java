@@ -100,6 +100,9 @@ public class WebActivity extends AppCompatActivity {
             case R.id.action_lesson_plan:
                 startActivity(new Intent(getApplication(), LessonPlanActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
                 return true;
+            case R.id.action_open_in_browser:
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(DownloadService.PLAN_ADDRESS)));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
