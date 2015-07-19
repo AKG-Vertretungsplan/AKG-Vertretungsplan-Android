@@ -226,4 +226,7 @@
     <string name="pref_hide_action_reload">Verstecke Aktion \"Neu laden\"</string>
     <string name="pref_hide_action_reload_summary">Der Vertretungsplan kann dann immer noch durch herunterwischen aktualisiert werden</string>
 
+    <string name="error_could_not_create_shortcut">Fehler: Kann Verknüpfung nicht erstellen</string>
+    <string name="lesson_plan_shortcut">Stundenplan</string>
+
 </resources>

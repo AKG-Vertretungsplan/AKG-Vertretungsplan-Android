@@ -55,6 +55,18 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".LessonPlanActivity" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" /><!--So the launcher is allowed to launch this after creating a shortcut-->
+            </intent-filter>
+        </activity>
+        <activity android:name="ShortcutActivity"
+            android:theme="@style/AppTheme"
+            android:label="@string/lesson_plan_shortcut"
+            android:icon="@mipmap/ic_launcher">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
         <receiver android:name=".CheckPlanWidget" >

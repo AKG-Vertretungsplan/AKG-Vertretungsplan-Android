@@ -229,7 +229,7 @@
     </string-array>
 
     <string name="action_lesson_plan">Lesson plan</string>
-    <string name="lesson_plan">Lesson_plan</string>
+    <string name="lesson_plan">Lesson plan</string>
     <string name="action_reset">Reset</string>
     <string name="lunch_break">Lunch break</string>
     <string name="free_time">Free</string>
@@ -294,5 +294,8 @@
     <string name="pref_show_filtered_plan_as_action_summary">Show option to filter plan directly in the action bar (only if lesson plan is used)</string>
     <string name="pref_hide_action_reload">Hide reload action</string>
     <string name="pref_hide_action_reload_summary">You can still reload the plan by swiping down</string>
+
+    <string name="error_could_not_create_shortcut">Error: could not create shortcut</string>
+    <string name="lesson_plan_shortcut">Lesson plan</string>
 
 </resources>
