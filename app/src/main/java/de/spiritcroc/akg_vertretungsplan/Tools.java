@@ -107,7 +107,7 @@ public abstract class Tools {
     public static int getStyle(Context context){
         String style = PreferenceManager.getDefaultSharedPreferences(context).getString("pref_theme", "");
         if (style.equals("light"))
-            return R.style.Theme_AppCompat_Light;
+            return R.style.Theme_AppCompat_Light_DarkActionBar;
         else if (style.equals("dark"))
             return R.style.Theme_AppCompat;
         else
