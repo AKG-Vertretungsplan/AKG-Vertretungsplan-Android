@@ -142,9 +142,6 @@
         <item>Orange</item>
     </string-array>
     <string name="pref_vibrate_notification_enabled">Vibrieren</string>
-    <!--string name="pref_share_app">App weiterempfehlen</string>
-    <string name="pref_share_app_summary">Wenn du diese App nützlich findest, kannst du sie gerne deinen Freunden weiterempfehlen!</string>
-    <string name="pref_share_app_text">subject=AKG-Vertretungsplan?text=Ich habe eine praktische App gefunden, mit der man einfach den Vertretungsplan des AKGs auf Aktualisierungen überprüfen kann! Du findest sie unter https://sites.google.com/site/dampflok43apps/apps/akg-vertretungsplan.</string-->
     <string name="action_about">Über</string>
 
     <string name="error_illegal_plan">Fehlerhafter Plan</string>
