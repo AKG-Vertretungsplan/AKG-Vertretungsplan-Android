@@ -369,9 +369,18 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
         @Override
         public Fragment getItem(int position){
             if (position==0)
-                return fragment1 = ItemFragment.newInstance(plan1, title1, 1);
+                return ItemFragment.newInstance(plan1, title1, 1);
             else
-                return fragment2 = ItemFragment.newInstance(plan2, title2, 2);
+                return ItemFragment.newInstance(plan2, title2, 2);
+        }
+        @Override
+        public Object instantiateItem(ViewGroup container, int position){
+            ItemFragment fragment = (ItemFragment) super.instantiateItem(container, position);
+            if (position==0)
+                fragment1 = fragment;
+            else if (position==1)
+                fragment2 = fragment;
+            return fragment;
         }
         @Override
         public CharSequence getPageTitle (int position){
