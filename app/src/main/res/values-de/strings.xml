@@ -227,4 +227,14 @@
     <string name="error_could_not_create_shortcut">Fehler: Kann Verknüpfung nicht erstellen</string>
     <string name="lesson_plan_shortcut">Stundenplan</string>
 
+    <string name="pref_notification_only_if_relevant">Nur falls relevant</string>
+    <string name="pref_notification_only_if_relevant_summary">Benachrichtige nur, falls die Vertretungen aufgrund des eingestellten Stundenplans als relevant angesehen werden (Achtung: Einige relevante Vertretungen können vielleicht nicht erkannt werden)</string>
+    <string name="pref_notification_general_not_relevant">Ignoriere allgemeine Informationen</string>
+    <string name="pref_notification_general_not_relevant_summary">Zähle allgemeine Informationen als nicht relevant (Wähle dies aus, wenn du das nächste Hitzefrei verpassen willst)</string>
+
+    <plurals name="new_relevant_information">
+        <item quantity="one">%d neue relevante Vertretung</item>
+        <item quantity="other">%d neue relevante Vertretungen</item>
+    </plurals>
+
 </resources>

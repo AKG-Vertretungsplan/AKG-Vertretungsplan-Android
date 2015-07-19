@@ -127,6 +127,7 @@ public class DownloadService extends IntentService {
 
     private void processPlan(String result){
         String latestHtml = getSharedPreferences().getString("pref_html_latest", "");
+        boolean newVersion = false;
         if (result.contains("401 Authorization Required")) {
             showText((username.equals("") ? getString(R.string.enter_userdata) : getString(R.string.correct_userdata)));
             loginFailed = true;
@@ -140,7 +141,7 @@ public class DownloadService extends IntentService {
                     currentContent = getContentFromHtml(result);
             if (latestHtml.equals("") || !currentContent.equals(latestContent)) {    //site has changed or nothing saved yet
                 if (newVersionNotify(latestContent, currentContent)){   //are new entries available?
-                    maybePostNotification(getString(R.string.new_version), getString(R.string.last_checked) + " " + time);
+                    newVersion = true;
                     setTextViewText(getString(R.string.new_version));
                     editor.putString("pref_last_update", time);
                     editor.putBoolean("pref_unseen_changes", true);
@@ -163,6 +164,13 @@ public class DownloadService extends IntentService {
             loadWebViewData(result);
             if (!loadFormattedPlans(result))
                 setTextViewText(getString(R.string.error_illegal_plan));
+            if (newVersion) {//Notification after loadFormattedPlans, because getNewRelevantInformationCount depends on it
+                int newRelevantNotificationCount = getNewRelevantInformationCount(sharedPreferences);
+                if (!sharedPreferences.getBoolean("pref_notification_only_if_relevant", false) || newRelevantNotificationCount > 0) {
+                    String message = (newRelevantNotificationCount > 0 ? getResources().getQuantityString(R.plurals.new_relevant_information, newRelevantNotificationCount, newRelevantNotificationCount) : getString(R.string.last_checked) + " " + time);
+                    maybePostNotification(getString(R.string.new_version), message);
+                }
+            }
         }
         Tools.updateWidgets(this);
     }
@@ -370,7 +378,7 @@ public class DownloadService extends IntentService {
             title1 = Tools.getLine(plan1.substring(index + searchingFor.length()), 1);
 
         searchingFor = ContentType.TABLE_START_FLAG + "¡Vertretungsplan für ";
-        index = plan1.indexOf(searchingFor, index+searchingFor.length());
+        index = plan1.indexOf(searchingFor, index + searchingFor.length());
         if (index == -1){
             Log.e("getHeadsAndDivide", "Could not find " + searchingFor + " twice");
             editor.putBoolean("pref_illegal_plan", true).apply();
@@ -516,6 +524,61 @@ public class DownloadService extends IntentService {
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(1, builder.build());
+    }
+
+    public static int getNewRelevantInformationCount(SharedPreferences sharedPreferences){
+        return getNewRelevantInformationCount(sharedPreferences, sharedPreferences.getString("pref_current_plan_1", ""), sharedPreferences.getString("pref_current_title_1", "")) +
+                getNewRelevantInformationCount(sharedPreferences, sharedPreferences.getString("pref_current_plan_2", ""), sharedPreferences.getString("pref_current_title_2", ""));
+    }
+    private static int getNewRelevantInformationCount(SharedPreferences sharedPreferences, String currentContent, String title){
+        String latestContent;
+        if (title.equals(sharedPreferences.getString("pref_latest_title_1", "")))    //check date for comparison
+            latestContent = sharedPreferences.getString("pref_latest_plan_1", "");
+        else if (title.equals(sharedPreferences.getString("pref_latest_title_2", "")))
+            latestContent = sharedPreferences.getString("pref_latest_plan_2", "");
+        else
+            latestContent = "";
+
+        Calendar calendar = Tools.getDateFromPlanTitle(title);
+        if (calendar == null){
+            Log.e("DownloadService", "getNewRelevantInformationCount: Could not read calendar " + title);
+            return -1;
+        }
+
+        int count = 0, tmpCellCount;
+        String tmp = "a";   //not empty
+        String[] tmpRowContent = new String[ItemFragment.cellCount];
+        LessonPlan lessonPlan = LessonPlan.getInstance(sharedPreferences);
+        for (int i = 1; !tmp.equals(""); i++) {
+            tmp = Tools.getLine(currentContent, i);
+            if (!Tools.lineAvailable(latestContent, tmp)) {//new information
+                String searchingFor = "" + DownloadService.ContentType.TABLE_ROW;
+
+                if (tmp.length() > searchingFor.length()+1 && tmp.substring(0, searchingFor.length()).equals(searchingFor)) { //ignore empty rows
+                    tmpCellCount = 0;
+                    tmp = tmp.substring(searchingFor.length());
+                    if (Tools.countHeaderCells(tmp)<=1) {//ignore headerRows
+                        for (int j = 0; j < tmpRowContent.length; j++) {
+                            tmpRowContent[j] = Tools.getCellContent(tmp, j+1);
+                            if (!tmpRowContent[j].equals(""))
+                                tmpCellCount++;
+                        }
+
+                        if (tmpCellCount <= 2 && !sharedPreferences.getBoolean("pref_notification_general_not_relevant", false))//general info for whole school
+                            count++;
+                        else {
+                            try {
+                                if (lessonPlan.isRelevant(calendar.get(Calendar.DAY_OF_WEEK), Integer.parseInt(tmpRowContent[2]), tmpRowContent[1]))
+                                    count++;
+                            } catch (Exception e) {
+                                Log.e("DownloadService", "getNewRelevantInformationCount: Got exception while checking for relevancy: " + e);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return count;
     }
 
 

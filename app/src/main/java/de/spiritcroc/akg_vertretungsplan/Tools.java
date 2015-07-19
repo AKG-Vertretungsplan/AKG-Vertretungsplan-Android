@@ -163,6 +163,31 @@ public abstract class Tools {
                 findViewsWithText(outViews, (ViewGroup) child, targetDescription);
         }
     }
+
+    //VPlan helper methods, former methods of ItemFragment
+    public static int countHeaderCells(String row){
+        int count = 0;
+        for (int i=0; i<row.length(); i++){
+            if (row.charAt(i)=='¿')
+                count++;
+        }
+        return count;
+    }
+    public static String getCellContent(String row, int number){
+        int found = 0;
+        String result = "";
+        for (int i = 0; i<row.length(); i++){
+            if (row.charAt(i)=='¡' || row.charAt(i)=='¿')
+                found++;
+            else if (found == number)
+                result += row.charAt(i);
+            else if (found > number)
+                return result;
+        }
+        return result;
+    }
+    //VPlan helper methods end
+
     /*public static void saveStringToFile (String string, String filePath){
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath));

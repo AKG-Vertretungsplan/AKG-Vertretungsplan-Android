@@ -91,6 +91,18 @@
             android:title="@string/pref_vibrate_notification_enabled"
             android:defaultValue="true"
             android:dependency="pref_notification_enabled"/>
+        <CheckBoxPreference
+            android:key="pref_notification_only_if_relevant"
+            android:title="@string/pref_notification_only_if_relevant"
+            android:summary="@string/pref_notification_only_if_relevant_summary"
+            android:defaultValue="false"
+            android:dependency="pref_notification_enabled"/>
+        <CheckBoxPreference
+            android:key="pref_notification_general_not_relevant"
+            android:title="@string/pref_notification_general_not_relevant"
+            android:summary="@string/pref_notification_general_not_relevant_summary"
+            android:defaultValue="false"
+            android:dependency="pref_notification_enabled"/>
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/pref_user_interface">

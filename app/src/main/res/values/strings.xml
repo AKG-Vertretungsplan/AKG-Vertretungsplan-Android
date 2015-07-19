@@ -296,4 +296,14 @@
     <string name="error_could_not_create_shortcut">Error: could not create shortcut</string>
     <string name="lesson_plan_shortcut">Lesson plan</string>
 
+    <string name="pref_notification_only_if_relevant">Only if relevant</string>
+    <string name="pref_notification_only_if_relevant_summary">Only notify if relevant information is found based on your lesson plan</string>
+    <string name="pref_notification_general_not_relevant">Ignore general information</string>
+    <string name="pref_notification_general_not_relevant_summary">Don\'t count general information as relevant</string>
+
+    <plurals name="relevant_information">
+        <item quantity="one">%d new piece of relevant information</item>
+        <item quantity="other">%d new pieces of relevant information</item>
+    </plurals>
+
 </resources>

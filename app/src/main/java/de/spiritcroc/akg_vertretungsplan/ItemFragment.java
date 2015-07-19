@@ -45,9 +45,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class ItemFragment extends ListFragment{
+    public static final int cellCount = 7;
+
     private SharedPreferences sharedPreferences;
-    private String[] tmpRowContent = new String[7];
-    private String[] headerRow = new String[7];
+    private String[] tmpRowContent = new String[cellCount];
+    private String[] headerRow = new String[cellCount];
     private ArrayList<Integer> textColors = new ArrayList<>(), backgroundColors = new ArrayList<>();
     private ArrayList<String[]> fullFormattedContent = new ArrayList<>();   //Save List content so it can be shown in a Dialog
     private String currentClass = "";
@@ -359,9 +361,9 @@ public class ItemFragment extends ListFragment{
         if (line.length() > searchingFor.length()+1 && line.substring(0, searchingFor.length()).equals(searchingFor)) { //ignore empty rows
             line = line.substring(searchingFor.length());
             tmpCellCount = 0;
-            if (countHeaderCells(line)>1) {  //save as headerRow
+            if (Tools.countHeaderCells(line)>1) {  //save as headerRow
                 for (int i = 0; i < headerRow.length; i++){
-                    headerRow[i] = getCellContent(line, i+1);
+                    headerRow[i] = Tools.getCellContent(line, i+1);
                     if (!headerRow[i].equals(""))
                         tmpCellCount++;
                 }
@@ -369,7 +371,7 @@ public class ItemFragment extends ListFragment{
             }
             else {
                 for (int i = 0; i < tmpRowContent.length; i++) {
-                    tmpRowContent[i] = getCellContent(line, i + 1);
+                    tmpRowContent[i] = Tools.getCellContent(line, i + 1);
                     if (!tmpRowContent[i].equals(""))
                         tmpCellCount++;
                 }
@@ -378,27 +380,6 @@ public class ItemFragment extends ListFragment{
         }
         else
             return false;
-    }
-    private String getCellContent(String row, int number){
-        int found = 0;
-        String result = "";
-        for (int i = 0; i<row.length(); i++){
-            if (row.charAt(i)=='¡' || row.charAt(i)=='¿')
-                found++;
-            else if (found == number)
-                result += row.charAt(i);
-            else if (found > number)
-                return result;
-        }
-        return result;
-    }
-    private int countHeaderCells(String row){
-        int count = 0;
-        for (int i=0; i<row.length(); i++){
-            if (row.charAt(i)=='¿')
-                count++;
-        }
-        return count;
     }
 
     private String getTeacherCombinationString(LessonPlan lessonPlan, String teacherShort){
