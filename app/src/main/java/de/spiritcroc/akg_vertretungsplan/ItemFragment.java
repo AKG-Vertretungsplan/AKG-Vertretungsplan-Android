@@ -175,20 +175,23 @@ public class ItemFragment extends ListFragment{
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id){
         String[] dividedText = fullFormattedContent.get(position);
+        String shareMessage = getString(R.string.share_header) + "\n" + date;
         if (dividedText == null || dividedText[0]==null || dividedText[0].length()==0)
             return;
         else if (dividedText[1]==null || dividedText[1].length()==0)
-            mListener.showDialog(dividedText[0]);
+            mListener.showDialog(dividedText[0], shareMessage + "\n" + dividedText[0]);
         else if (dividedText[2]==null || dividedText[2].length()==0)//→ two row table
-            mListener.showDialog(dividedText[0] + "\n" + dividedText[1]);
+            mListener.showDialog(dividedText[0] + "\n" + dividedText[1], shareMessage + "\n" + dividedText[0] + "\n" + dividedText[1]);
         else{
             String text = "";
             LessonPlan lessonPlan = LessonPlan.getInstance(sharedPreferences);
             for (int i = 0; i < dividedText.length; i++) {
-                if (dividedText[i] != null && dividedText[i].length() > 0)
+                if (dividedText[i] != null && dividedText[i].length() > 0) {
                     text += (text.length() == 0 ? "" : "\n") + (headerRow[i] == null || headerRow[i].length() == 0 ? "" : headerRow[i] + "\n\t") + getTeacherCombinationString(lessonPlan, dividedText[i]);
+                    shareMessage += "\n" + (headerRow[i] == null || headerRow[i].length() == 0 ? "" : headerRow[i] + ": ") + getTeacherCombinationString(lessonPlan, dividedText[i]);
+                }
             }
-            mListener.showDialog(text);
+            mListener.showDialog(text, shareMessage);
         }
     }
 
@@ -217,7 +220,7 @@ public class ItemFragment extends ListFragment{
 
 
     public interface OnFragmentInteractionListener {
-        void showDialog(String text);
+        void showDialog(String text, String messageText);
     }
 
     public void markChangesAsRead(){

@@ -20,16 +20,28 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
 public class ElementDialog extends DialogFragment{
-    String message;
+    String message, shareMessage;
     private static final String ARG_MESSAGE = "message";
+    private static final String ARG_SHARE_MESSAGE = "share_message";
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(message)
+                .setNeutralButton(R.string.dialog_share, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_SEND);
+                        intent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+                        intent.setType("text/plain");
+                        startActivity(Intent.createChooser(intent, getResources().getText(R.string.dialog_share)));
+                    }
+                })
                 .setNegativeButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -39,10 +51,11 @@ public class ElementDialog extends DialogFragment{
         return builder.create();
     }
 
-    public static ElementDialog newInstance(String message) {
+    public static ElementDialog newInstance(String message, String shareMessage) {
         ElementDialog fragment = new ElementDialog();
         Bundle args = new Bundle();
         args.putString(ARG_MESSAGE, message);
+        args.putString(ARG_SHARE_MESSAGE, shareMessage);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,10 +65,12 @@ public class ElementDialog extends DialogFragment{
 
         if (getArguments() != null) {
             message = getArguments().getString(ARG_MESSAGE);
+            shareMessage = getArguments().getString(ARG_SHARE_MESSAGE);
         }
         else {
             Log.e("ElementDialog.onCreate", "getArguments()==null");
-            message = getString(R.string.error_unknown);
+            message = shareMessage = getString(R.string.error_unknown);
+            dismiss();
         }
     }
 }
