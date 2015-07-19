@@ -151,6 +151,6 @@ public class LessonPlan {
             Log.e("LessonPlan", "Lesson " + lesson + " not available (array to short)");
             return false;
         }
-        return teacherShort.equals(lessons[dayPosition][lesson-1].getTeacherShort());
+        return !lessons[dayPosition][lesson-1].isFreeTime() && teacherShort.equals(lessons[dayPosition][lesson-1].getTeacherShort());
     }
 }
