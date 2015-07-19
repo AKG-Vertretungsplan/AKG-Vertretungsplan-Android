@@ -256,16 +256,17 @@ public class ItemFragment extends ListFragment{
             tmp = Tools.getLine(unformattedContent, i + 1);
             if (getRow(tmp, "" + DownloadService.ContentType.TABLE_ROW)){
                 if (tmpCellCount==1) {
-                    result.add(tmpRowContent[0]);       //header text
-                    if (Tools.lineAvailable(oldPlan, tmp)){
-                        textColors.add(Integer.parseInt(sharedPreferences.getString("pref_header_text_text_color", "" + Color.BLACK)));
-                        backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_header_text_background_color", "" + Color.WHITE)));
+                    if (!filterResults || !sharedPreferences.getBoolean("pref_filter_general", false)) {
+                        result.add(tmpRowContent[0]);       //header text
+                        if (Tools.lineAvailable(oldPlan, tmp)) {
+                            textColors.add(Integer.parseInt(sharedPreferences.getString("pref_header_text_text_color", "" + Color.BLACK)));
+                            backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_header_text_background_color", "" + Color.WHITE)));
+                        } else {       //highlight changes
+                            textColors.add(Integer.parseInt(sharedPreferences.getString("pref_header_text_text_color_highlight", "" + Color.RED)));
+                            backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_header_text__background_color_highlight", "" + Color.WHITE)));
+                        }
+                        currentClass = "";
                     }
-                    else{       //highlight changes
-                        textColors.add(Integer.parseInt(sharedPreferences.getString("pref_header_text_text_color_highlight", "" + Color.RED)));
-                        backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_header_text__background_color_highlight", "" + Color.WHITE)));
-                    }
-                    currentClass = "";
                 }
                 else{
                     boolean relevant;
@@ -294,8 +295,9 @@ public class ItemFragment extends ListFragment{
                     }
                     if (headerRow[0]==null) { //e.g. when extra table "Gesamte Schule:"
                         add = tmpRowContent[0] + " → " + tmpRowContent[1];
-                        relevant = true;
-                        lastAddedHeader = false;
+                        relevant = !sharedPreferences.getBoolean("pref_filter_general", false);
+                        if (relevant)
+                            lastAddedHeader = false;
                     }
                     else{
                         add = tmpRowContent[2] + " " + (useFullTeacherNames ? getTeacherCombinationString(lessonPlan, tmpRowContent[1]) : tmpRowContent[1]) + " →";

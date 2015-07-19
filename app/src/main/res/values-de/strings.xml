@@ -237,4 +237,7 @@
         <item quantity="other">%d neue relevante Vertretungen</item>
     </plurals>
 
+    <string name="pref_filter_general">Allgemeine Vertretungen herausfiltern</string>
+    <string name="pref_filter_general_summary">Bei aktiviertem Vertretungsfilter allgemeine Vertretungen ausblenden (nur bei konfiguriertem Stundenplan)</string>
+
 </resources>

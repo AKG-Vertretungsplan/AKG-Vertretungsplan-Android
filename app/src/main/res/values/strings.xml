@@ -306,4 +306,7 @@
         <item quantity="other">%d new pieces of relevant information</item>
     </plurals>
 
+    <string name="pref_filter_general">Filter general</string>
+    <string name="pref_filter_general_summary">When filtering the plan, hide general information</string>
+
 </resources>
