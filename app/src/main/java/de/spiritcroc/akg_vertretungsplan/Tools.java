@@ -188,6 +188,31 @@ public abstract class Tools {
     }
     //VPlan helper methods end
 
+    public static boolean ignoreSubstitution(String substitution){
+        String ignore = "Version";
+        if (substitution.contains(ignore)){//Check if no other information given
+            int ignorePos = 0;
+            boolean ignoreSpecialChar = false;//required for "&nbsp;"
+            for (int  substitutionPos = 0; substitutionPos < substitution.length(); substitutionPos++){
+                char c = substitution.charAt(substitutionPos);
+                if (c == '&')
+                    ignoreSpecialChar = true;
+                if (ignoreSpecialChar){
+                    if (c == ';')
+                        ignoreSpecialChar = false;
+                }
+                else {
+                    if (ignorePos < ignore.length() && c == ignore.charAt(ignorePos))
+                        ignorePos++;
+                    else if (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z')//There is also other text
+                        return false;
+                }
+            }
+            return true;//No other information found: ignore this
+        }
+        else
+            return false;
+    }
     /*public static void saveStringToFile (String string, String filePath){
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath));
