@@ -167,7 +167,20 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
         if (reloadItem != null)
             reloadItem.setVisible(!sharedPreferences.getBoolean("pref_hide_action_reload", false));
 
+        //Apply color settings:
         setActionBarColor();
+
+        if (fragment1 != null)
+            fragment1.reloadContent();
+        if (fragment2 != null)
+            fragment2.reloadContent();
+        if (style != Tools.getStyle(this)) {//Theme has to be set before activity is created, so restart activity
+            Intent intent = getIntent();
+            finish();
+            overridePendingTransition(0, 0);
+            startActivity(intent);
+            overridePendingTransition(0, 0);
+        }
     }
     @Override
     protected void onPause(){

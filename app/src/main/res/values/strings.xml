@@ -138,7 +138,6 @@
     <string name="pref_developing_enabled">Secret code</string>
     <string name="pref_developing_enabled_summary">Do not use this unless you are me</string>
     <string name="pref_theme">Theme</string>
-    <string name="pref_theme_summary">You might want to restart App after changing theme</string>
     <string-array name="pref_theme_array">
         <item>Light</item>
         <item>Dark</item>

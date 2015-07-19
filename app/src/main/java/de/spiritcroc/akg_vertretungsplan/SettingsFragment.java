@@ -71,13 +71,11 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         setSummaryToValue("pref_relevant_text_background_color_highlight");
         setSummaryToValue("pref_action_bar_normal_background_color");
         setSummaryToValue("pref_action_bar_filtered_background_color");
+        setSummaryToValue("pref_theme");
 
         EditTextPreference tmpEditTextPreference = (EditTextPreference) findPreference("pref_auto_load_on_open");
         int tmpValue = correctInteger(getSharedPreferences(), "pref_auto_load_on_open", tmpEditTextPreference.getText(), 5);
         tmpEditTextPreference.setSummary(resources.getQuantityString(R.plurals.pref_auto_load_on_open_summary, tmpValue, tmpValue));
-
-        ListPreference tmpListPreference = (ListPreference) findPreference("pref_theme");
-        tmpListPreference.setSummary(tmpListPreference.getEntry() + "\n" + getString(R.string.pref_theme_summary));
 
         tmpEditTextPreference = (EditTextPreference) findPreference("pref_background_update_interval");
         tmpValue = Integer.parseInt(tmpEditTextPreference.getText());
@@ -132,7 +130,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         else if (key.equals("pref_theme")){
             ListPreference listPreference = (ListPreference) findPreference("pref_theme");
             String theme = listPreference.getValue();
-            listPreference.setSummary(listPreference.getEntry() + "\n" + getString(R.string.pref_theme_summary));
+            setSummaryToValue(key);
             SharedPreferences.Editor editor = sharedPreferences.edit();
 
             //adapt custom colors to new theme:

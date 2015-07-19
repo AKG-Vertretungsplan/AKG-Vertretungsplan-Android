@@ -52,6 +52,14 @@ public class WebActivity extends AppCompatActivity {
         notificationManager.cancel(1);
 
         IsRunningSingleton.getInstance().registerActivity(this);
+
+        if (style != Tools.getStyle(this)) {//Theme has to be set before activity is created, so restart activity
+            Intent intent = getIntent();
+            finish();
+            overridePendingTransition(0, 0);
+            startActivity(intent);
+            overridePendingTransition(0, 0);
+        }
     }
     @Override
     protected void onPause(){

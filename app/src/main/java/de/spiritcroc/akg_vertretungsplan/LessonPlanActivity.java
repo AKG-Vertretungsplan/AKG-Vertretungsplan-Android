@@ -88,6 +88,17 @@ public class LessonPlanActivity extends AppCompatActivity {
         }
     }
     @Override
+    protected void onResume(){
+        super.onResume();
+        if (style != Tools.getStyle(this)) {//Theme has to be set before activity is created, so restart activity
+            Intent intent = getIntent();
+            finish();
+            overridePendingTransition(0, 0);
+            startActivity(intent);
+            overridePendingTransition(0, 0);
+        }
+    }
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_lesson_plan, menu);
 
