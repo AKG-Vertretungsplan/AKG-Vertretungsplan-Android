@@ -51,8 +51,8 @@
     <string name="pref_no_change_since_max_precision">Zeitangabe</string>
     <string name="pref_no_change_since_max_precision_summary_none">Es werden keine Werte angezeigt</string>
     <plurals name="pref_no_change_since_max_precision_summary">
-        <item quantity="one">Es wird bis zu %d Wert angezeigt</item>
-        <item quantity="other">Es werden bis zu %d Werte angezeigt</item>
+        <item quantity="one">Es wird bis zu %d Zeiteinheit in der Statusinformation angezeigt</item>
+        <item quantity="other">Es werden bis zu %d Zeiteinheiten in der Statusinformation angezeigt</item>
     </plurals>
     <string name="pref_user_interface">Darstellung</string>
     <string name="no_change">Keine neuen Vertretungen</string>
@@ -82,7 +82,6 @@
     <string name="pref_normal_text">Vertretungen</string>
     <string name="pref_text_color">Textfarbe</string>
     <string name="pref_text_color_highlight">Textfarbe bei Änderungen</string>
-    <string name="pref_colors_summary">Farben des formatierten Plans</string>
     <string-array name="pref_auto_mark_read_array">
         <item>Beim Verlassen der Anzeige</item>
         <item>Beim erneuten Laden</item>
@@ -96,7 +95,6 @@
     <string name="pref_widget_summary">Farben der Widgets</string>
     <string name="dialog_yes">Ja</string>
     <string name="dialog_later">Später</string>
-    <string name="pref_general">Allgemein</string>
     <string name="welcome">Willkommen</string>
     <string name="pref_auto_load_on_open">Lade beim Start</string>
     <plurals name="pref_auto_load_on_open_summary">
@@ -244,5 +242,13 @@
 
     <string name="pref_hide_text_view">Verstecke Statusinformationen</string>
     <string name="pref_hide_text_view_summary">Verstecke den Text unter der Aktionsleiste, der Statusinformationen anzeigt</string>
+    <string name="pref_individualisation">Individualisierung</string>
+    <string name="pref_notification_appearance">Darstellung</string>
+    <string name="pref_notification_rules">Regeln</string>
+    <string name="pref_user_interface_elements">Angezeigte Elemente</string>
+    <string name="pref_user_interface_behaviour">Verhalten</string>
+    <string name="pref_formatted_colors">Formatierter Plan</string>
+    <string name="pref_formatted_colors_summary">Farben des formatierten Vertretungsplans</string>
+    <string name="pref_general_behaviour">Verhalten</string>
 
 </resources>

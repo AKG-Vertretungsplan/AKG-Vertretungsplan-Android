@@ -51,8 +51,8 @@
     <string name="pref_no_change_since_max_precision">Time span</string>
     <string name="pref_no_change_since_max_precision_summary_none">No values are displayed</string>
     <plurals name="pref_no_change_since_max_precision_summary">
-        <item quantity="one">Up to %d value is displayed</item>
-        <item quantity="other">Up to %d values are displayed</item>
+        <item quantity="one">Up to %d time value is displayed as status text</item>
+        <item quantity="other">Up to %d time values are displayed as status text</item>
     </plurals>
     <string name="pref_user_interface">User interface</string>
     <string name="no_change">No change</string>
@@ -98,8 +98,6 @@
         <item>-33024</item>
     </string-array>
 
-    <string name="pref_colors_summary">Colors used in the formatted display</string>
-
     <string-array name="pref_auto_mark_read_array">
         <item>On display paused</item>
         <item>On plan reloaded</item>
@@ -119,7 +117,6 @@
     <string name="pref_widget_summary">Widget colors</string>
     <string name="dialog_yes">Yes</string>
     <string name="dialog_later">Later</string>
-    <string name="pref_general">General</string>
     <string name="welcome">Welcome</string>
     <string name="pref_auto_load_on_open">Load on app start</string>
     <plurals name="pref_auto_load_on_open_summary">
@@ -313,5 +310,13 @@
 
     <string name="pref_hide_text_view">Hide status information</string>
     <string name="pref_hide_text_view_summary">Hide the text below the action bar that shows some status information</string>
+    <string name="pref_individualisation">Individualisation</string>
+    <string name="pref_notification_appearance">Appearance</string>
+    <string name="pref_notification_rules">Rules</string>
+    <string name="pref_user_interface_elements">Shown elements</string>
+    <string name="pref_user_interface_behaviour">Behaviour</string>
+    <string name="pref_formatted_colors">Formatted plan</string>
+    <string name="pref_formatted_colors_summary">Colors used in the formatted display</string>
+    <string name="pref_general_behaviour">Behaviour</string>
 
 </resources>

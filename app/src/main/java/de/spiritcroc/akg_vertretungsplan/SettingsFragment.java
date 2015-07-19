@@ -236,7 +236,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             hits[hits.length-1] = SystemClock.uptimeMillis();
             if (!getSharedPreferences().getBoolean("pref_hidden_debug_enabled", false) && hits[0] >= (SystemClock.uptimeMillis()-1300)){
                 getSharedPreferences().edit().putBoolean("pref_hidden_debug_enabled", true).apply();
-                Toast.makeText(getActivity(), R.string.toast_enabled_hidden_debug, Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), R.string.toast_enabled_hidden_debug, Toast.LENGTH_SHORT).show();
                 basePrefScreen.removePreference(hiddenDebug);
                 basePrefScreen.addPreference(hiddenDebugPrefScreen);
                 ((CheckBoxPreference)findPreference("pref_hidden_debug_enabled")).setChecked(true);
