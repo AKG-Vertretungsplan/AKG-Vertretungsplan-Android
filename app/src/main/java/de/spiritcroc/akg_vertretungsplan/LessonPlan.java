@@ -86,6 +86,15 @@ public class LessonPlan {
         }
         return result.toArray(new String[result.size()]);
     }
+    public String[] getRooms(){
+        ArrayList<String> result = new ArrayList<>();
+        for (int j = 0; j < lessons.length; j++) {
+            for (int i = 0; i < lessons[j].length; i++)
+                if (!lessons[j][i].isFreeTime() && !Tools.stringAvailable(result, lessons[j][i].getRoom()) && !"".equals(lessons[j][i].getRoom()))
+                    result.add(lessons[j][i].getRoom());
+        }
+        return result.toArray(new String[result.size()]);
+    }
     public String getTeacherShortForSubject(String subject){
         Lesson lesson = getLessonForSubject(subject);
         return lesson == null ? "" : lesson.getTeacherShort();
@@ -109,6 +118,17 @@ public class LessonPlan {
                     return lessons[j][i];
         }
         return null;
+    }
+    public String getRoomForSubject(String subject){
+        for (int j = 0; j < lessons.length; j++) {
+            for (int i = 0; i < lessons[j].length; i++)
+                if (subject.equals(lessons[j][i].getSubject())){
+                    String room = lessons[j][i].getRoom();
+                    if (room != null && !"".equals(room))
+                        return room;
+                }
+        }
+        return "";
     }
 
     public void resetLessons(){

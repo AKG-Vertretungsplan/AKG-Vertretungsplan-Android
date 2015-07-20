@@ -21,11 +21,11 @@ import android.util.Log;
 public class Lesson {
     public static final char VALUE_SEPARATOR = '©';
 
-    private String teacherFull, teacherShort, subject;
+    private String teacherFull, teacherShort, subject, room;
     private boolean freeTime;
 
-    public Lesson (String teacherShort, String teacherFull, String subject){
-        setValues(teacherShort, teacherFull, subject);
+    public Lesson (String teacherShort, String teacherFull, String subject, String room){
+        setValues(teacherShort, teacherFull, subject, room);
     }
     public Lesson (){
         setFree();
@@ -43,6 +43,10 @@ public class Lesson {
         return subject;
     }
 
+    public String getRoom() {
+        return room;
+    }
+
     public boolean teacherShortNameAvailable(){
         return teacherShort != null && !teacherShort.equals("");
     }
@@ -58,15 +62,16 @@ public class Lesson {
         return freeTime;
     }
 
-    public void setValues(String teacherShort, String teacherFull, String subject){
+    public void setValues(String teacherShort, String teacherFull, String subject, String room){
         this.teacherShort = teacherShort;
         this.teacherFull = teacherFull;
         this.subject = subject;
+        this.room = room;
         freeTime = false;
     }
     public void setFree(){
         freeTime = true;
-        teacherShort = teacherFull = subject = null;
+        teacherShort = teacherFull = subject = room = null;
     }
 
     public static Lesson recoverFromRecreationKey(String key){
@@ -79,7 +84,8 @@ public class Lesson {
             String teacherShort = Tools.getLine(key, 2, VALUE_SEPARATOR);
             String teacherFull = Tools.getLine(key, 3, VALUE_SEPARATOR);
             String subject = Tools.getLine(key, 4, VALUE_SEPARATOR);
-            return new Lesson(teacherShort, teacherFull, subject);
+            String room = Tools.getLine(key, 5, VALUE_SEPARATOR);
+            return new Lesson(teacherShort, teacherFull, subject, room);
         }
         catch (Exception e){
             Log.e("Lesson", "recoverFromRecreationKey: illegal key: " + key);
@@ -88,6 +94,6 @@ public class Lesson {
         }
     }
     public String getRecreationKey(){
-        return "" + freeTime + VALUE_SEPARATOR + teacherShort + VALUE_SEPARATOR + teacherFull + VALUE_SEPARATOR + subject + VALUE_SEPARATOR;
+        return "" + freeTime + VALUE_SEPARATOR + teacherShort + VALUE_SEPARATOR + teacherFull + VALUE_SEPARATOR + subject + VALUE_SEPARATOR + room + VALUE_SEPARATOR;
     }
 }

@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -60,27 +61,29 @@ public class LessonPlanFragment extends ListFragment {
         update();
     }
 
-    private String[] createContent(){
+    private LessonViewContent[] createContent(){
         textColors.clear();
         int style = Tools.getStyle(getActivity());
         boolean lightStyle = style == R.style.AppTheme || style == R.style.Theme_AppCompat_Light || style == R.style.Theme_AppCompat_Light_DarkActionBar;
 
         lessons = LessonPlan.getInstance(PreferenceManager.getDefaultSharedPreferences(getActivity())).getLessonsForDay(day);
-        String shownContent[] = new String[lessons.length];
-        for (int i = 0; i < shownContent.length; i++){
-            shownContent[i] = (i+1) + ": ";
+        LessonViewContent[] lessonViewContent = new LessonViewContent[lessons.length];
+        for (int i = 0; i < lessonViewContent.length; i++){
+            lessonViewContent[i] = new LessonViewContent();
+            lessonViewContent[i].content = (i+1) + ": ";
             if (lessons[i].isFreeTime()) {
                 if (i+1 == LessonPlan.LUNCH_BREAK)
-                    shownContent[i] += getString(R.string.lunch_break);
+                    lessonViewContent[i].content += getString(R.string.lunch_break);
                 else
-                    shownContent[i] += getString(R.string.free_time);
+                    lessonViewContent[i].content += getString(R.string.free_time);
                 textColors.add(Color.GRAY);
             } else {
-                shownContent[i] += lessons[i].getReadableName();
+                lessonViewContent[i].content += lessons[i].getReadableName();
                 textColors.add(lightStyle ? Color.BLACK : Color.WHITE);
+                lessonViewContent[i].room = lessons[i].getRoom();
             }
         }
-        return shownContent;
+        return lessonViewContent;
     }
     @Override
     public void onPause(){
@@ -98,22 +101,49 @@ public class LessonPlanFragment extends ListFragment {
 
 
     public void update(){
-        setListAdapter(new CustomArrayAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, createContent()));
+        setListAdapter(new CustomArrayAdapter(getActivity().getApplicationContext(), R.layout.lesson_plan_item, createContent()));
     }
 
     public class CustomArrayAdapter extends ArrayAdapter {
-        public CustomArrayAdapter (Context context, int resource, String[] objects){
+        public CustomArrayAdapter (Context context, int resource, LessonViewContent[] objects){
             super(context, resource, objects);
         }
         @Override
         public View getView(int position, View convertView, ViewGroup parent){
-            View view = super.getView(position, convertView, parent);
-            TextView textView = (TextView) view.findViewById(android.R.id.text1);
+            LessonViewHolder holder;
+            View view;
+
+            if (convertView == null){
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(R.layout.lesson_plan_item, parent, false);
+
+                holder = new LessonViewHolder();
+                holder.subjectView = (TextView) view.findViewById(R.id.subject_view);
+                holder.roomView = (TextView) view.findViewById(R.id.room_view);
+
+                view.setTag(holder);
+            }
+            else{
+                holder = (LessonViewHolder) convertView.getTag();
+                view = convertView;
+            }
+
+            holder.subjectView.setText(((LessonViewContent) getItem(position)).content);
+            holder.roomView.setText(((LessonViewContent) getItem(position)).room);
+
             if (textColors.size()>position)
-                textView.setTextColor(textColors.get(position));
+                holder.subjectView.setTextColor(textColors.get(position));
             else
-                textView.setTextColor(Color.GRAY);//default color for not crashing the app
+                holder.subjectView.setTextColor(Color.GRAY);//default color for not crashing the app
             return view;
         }
+    }
+
+    static class LessonViewHolder{
+        TextView subjectView, roomView;
+    }
+
+    private class LessonViewContent{
+        String content, room;
     }
 }

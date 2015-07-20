@@ -321,4 +321,9 @@
     <string name="pref_show_mark_read_as_action">Mark read as action</string>
     <string name="pref_show_mark_read_as_action_summary">Show option to mark plan as read directly in the action bar</string>
 
+    <string name="dialog_room">Room:</string>
+    <string name="dialog_room_summary">Voluntary</string>
+
+    <string name="toast_room_illegal_character">Your room contains an illegal character!</string>
+
 </resources>

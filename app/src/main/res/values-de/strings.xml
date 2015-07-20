@@ -253,4 +253,9 @@
     <string name="pref_show_mark_read_as_action">Gelesen markieren als Aktion</string>
     <string name="pref_show_mark_read_as_action_summary">Zeige die Option \"Als gelesen markieren\" direkt in der Aktionsleiste</string>
 
+    <string name="dialog_room">Raum:</string>
+    <string name="dialog_room_summary">Freiwillig</string>
+
+    <string name="toast_room_illegal_character">Der eingegebene Raum enthält ein ungültiges Zeichen!</string>
+
 </resources>

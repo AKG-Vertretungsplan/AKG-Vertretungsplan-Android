@@ -50,17 +50,20 @@ public class EditLessonDialog extends DialogFragment {
             title = getString(R.string.dialog_edit_lesson);
 
         final AutoCompleteTextView editSubject = (AutoCompleteTextView) view.findViewById(R.id.edit_subject),
-                editTeacherShort = (AutoCompleteTextView) view.findViewById(R.id.edit_teacher_short);
+                editTeacherShort = (AutoCompleteTextView) view.findViewById(R.id.edit_teacher_short),
+                editRoom = (AutoCompleteTextView) view.findViewById(R.id.edit_room);
         final EditText editTeacherFull = (EditText) view.findViewById(R.id.edit_teacher_full);
 
         final LessonPlan lessonPlan = LessonPlan.getInstance(PreferenceManager.getDefaultSharedPreferences(activity));
         editSubject.setAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, lessonPlan.getSubjects()));
         editTeacherShort.setAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, lessonPlan.getTeachersShort()));
+        editRoom.setAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, lessonPlan.getRooms()));
         editSubject.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 editTeacherShort.setText(lessonPlan.getTeacherShortForSubject(editSubject.getText().toString()));
                 editTeacherFull.setText(lessonPlan.getTeacherFullForSubject(editSubject.getText().toString()));
+                editRoom.setText(lessonPlan.getRoomForSubject(editSubject.getText().toString()));
             }
         });
         editTeacherShort.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -78,6 +81,7 @@ public class EditLessonDialog extends DialogFragment {
             editSubject.setText(lesson.getSubject());
             editTeacherShort.setText(lesson.getTeacherShort());
             editTeacherFull.setText(lesson.getTeacherFull());
+            editRoom.setText(lesson.getRoom());
         }
 
         builder.setTitle(title)
@@ -104,6 +108,7 @@ public class EditLessonDialog extends DialogFragment {
             public void onShow(final DialogInterface dialog) {
                 editSubject.dismissDropDown();//prevent them from opening in edit dialog without editing
                 editTeacherShort.dismissDropDown();
+                editRoom.dismissDropDown();
 
                 alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {//listener added to button this way so it doesn't lead to dialog.dismiss if missing subject
                     @Override
@@ -113,15 +118,18 @@ public class EditLessonDialog extends DialogFragment {
                             Toast.makeText(getActivity(), R.string.toast_please_enter_subject, Toast.LENGTH_LONG).show();
                         else {
                             String teacherShort = editTeacherShort.getText().toString(),
-                                    teacherFull = editTeacherFull.getText().toString();
+                                    teacherFull = editTeacherFull.getText().toString(),
+                                    room = editRoom.getText().toString();
                             if (containsIllegalCharacter(subject))
                                 Toast.makeText(getActivity(), R.string.toast_subject_illegal_character, Toast.LENGTH_SHORT).show();
                             else if (containsIllegalCharacter(teacherShort))
                                 Toast.makeText(getActivity(), R.string.toast_teacher_short_illegal_character, Toast.LENGTH_SHORT).show();
                             else if (containsIllegalCharacter(teacherFull))
                                 Toast.makeText(getActivity(), R.string.toast_teacher_full_illegal_character, Toast.LENGTH_SHORT).show();
+                            else if (containsIllegalCharacter(room))
+                                Toast.makeText(getActivity(), R.string.toast_room_illegal_character, Toast.LENGTH_SHORT).show();
                             else {
-                                lesson.setValues(teacherShort, teacherFull, subject);
+                                lesson.setValues(teacherShort, teacherFull, subject, room);
                                 fragment.update();
                                 dismiss();
                             }
