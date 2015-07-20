@@ -181,13 +181,13 @@ public class ItemFragment extends ListFragment{
         else if (dividedText[1]==null || dividedText[1].length()==0)
             mListener.showDialog(dividedText[0], shareMessage + "\n" + dividedText[0]);
         else if (dividedText[2]==null || dividedText[2].length()==0)//→ two row table
-            mListener.showDialog(dividedText[0] + "\n" + dividedText[1], shareMessage + "\n" + dividedText[0] + "\n" + dividedText[1]);
+            mListener.showDialog(getLessonTimeCombinationString(dividedText[0]) + "\n" + dividedText[1], shareMessage + "\n" + dividedText[0] + "\n" + dividedText[1]);
         else{
             String text = "";
             LessonPlan lessonPlan = LessonPlan.getInstance(sharedPreferences);
             for (int i = 0; i < dividedText.length; i++) {
                 if (dividedText[i] != null && dividedText[i].length() > 0) {
-                    text += (text.length() == 0 ? "" : "\n") + (headerRow[i] == null || headerRow[i].length() == 0 ? "" : headerRow[i] + "\n\t") + getTeacherCombinationString(lessonPlan, dividedText[i]);
+                    text += (text.length() == 0 ? "" : "\n") + (headerRow[i] == null || headerRow[i].length() == 0 ? "" : headerRow[i] + "\n\t") + (i == 2 ? getLessonTimeCombinationString(dividedText[i]) : getTeacherCombinationString(lessonPlan, dividedText[i]));
                     shareMessage += "\n" + (headerRow[i] == null || headerRow[i].length() == 0 ? "" : headerRow[i] + ": ") + getTeacherCombinationString(lessonPlan, dividedText[i]);
                 }
             }
@@ -395,6 +395,15 @@ public class ItemFragment extends ListFragment{
         else
             result += " (" + teacherShort + ")";
         return result;
+    }
+    private String getLessonTimeCombinationString(String time){
+        try{
+            return time + " (" + getResources().getStringArray(R.array.lesson_plan_times)[Integer.parseInt(time)] + ")";
+        }
+        catch (Exception e){
+            Log.e("ItemFragment", "getLessonTimeCombinationString: Got exception: " + e);
+            return time;
+        }
     }
 
     public class CustomArrayAdapter extends ArrayAdapter{
