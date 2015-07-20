@@ -318,5 +318,7 @@
     <string name="pref_formatted_colors">Formatted plan</string>
     <string name="pref_formatted_colors_summary">Colors used in the formatted display</string>
     <string name="pref_general_behaviour">Behaviour</string>
+    <string name="pref_show_mark_read_as_action">Mark read as action</string>
+    <string name="pref_show_mark_read_as_action_summary">Show option to mark plan as read directly in the action bar</string>
 
 </resources>

@@ -58,7 +58,7 @@
     <string name="no_change">Keine neuen Vertretungen</string>
     <string name="title_activity_formatted">Vertretungsplan</string>
     <string name="original_activity">Webplan</string>
-    <string name="action_mark_read">Markiere als gelesen</string>
+    <string name="action_mark_read">Als gelesen markieren</string>
     <string name="pref_colors">Farben</string>
     <string name="pref_auto_mark_read">Automatisch als gelesen markieren</string>
     <string-array name="pref_color_array">
@@ -215,7 +215,7 @@
     <string name="pref_action_bar_color">Hintergrundfarbe</string>
     <string name="pref_action_bar_dark_text">Verwende dunklen Text</string>
     <string name="pref_show_filtered_plan_as_action">Vertretungsfilter als Aktion</string>
-    <string name="pref_show_filtered_plan_as_action_summary">Zeige die Option \"Vertretungsfilter\" direkt auf der Aktionsleiste (nur bei konfiguriertem Stundenplan)</string>
+    <string name="pref_show_filtered_plan_as_action_summary">Zeige die Option \"Vertretungsfilter\" direkt in der Aktionsleiste (nur bei konfiguriertem Stundenplan)</string>
     <string name="pref_hide_action_reload">Verstecke Aktion \"Neu laden\"</string>
     <string name="pref_hide_action_reload_summary">Der Vertretungsplan kann dann immer noch durch herunterwischen aktualisiert werden</string>
 
@@ -250,5 +250,7 @@
     <string name="pref_formatted_colors">Formatierter Plan</string>
     <string name="pref_formatted_colors_summary">Farben des formatierten Vertretungsplans</string>
     <string name="pref_general_behaviour">Verhalten</string>
+    <string name="pref_show_mark_read_as_action">Gelesen markieren als Aktion</string>
+    <string name="pref_show_mark_read_as_action_summary">Zeige die Option \"Als gelesen markieren\" direkt in der Aktionsleiste</string>
 
 </resources>

@@ -166,6 +166,8 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
             filterItem.setShowAsAction(sharedPreferences.getBoolean("pref_show_filtered_plan_as_action", false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
         if (reloadItem != null)
             reloadItem.setVisible(!sharedPreferences.getBoolean("pref_hide_action_reload", false));
+        if (markReadItem != null)
+            markReadItem.setShowAsAction(sharedPreferences.getBoolean("pref_show_mark_read_as_action", false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
 
         //Apply color settings:
         setActionBarColor();
@@ -214,6 +216,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
             filterItem = menu.findItem(R.id.action_filter_plan);
             filterItem.setShowAsAction(sharedPreferences.getBoolean("pref_show_filtered_plan_as_action", false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
             markReadItem = menu.findItem(R.id.action_mark_read);
+            markReadItem.setShowAsAction(sharedPreferences.getBoolean("pref_show_mark_read_as_action", false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
             requestRecheckUnreadChanges();
 
             //http://stackoverflow.com/questions/22046903/changing-the-android-overflow-menu-icon-programmatically/22106474#22106474
@@ -288,6 +291,8 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
                 overflow.setColorFilter(darkText ? Color.BLACK : Color.WHITE);
             if (filterItem != null)
                 filterItem.setIcon(darkText ? R.drawable.ic_filter_list_black_36dp : R.drawable.ic_filter_list_white_36dp);
+            if (markReadItem != null)
+                markReadItem.setIcon(darkText ? R.drawable.ic_done_black_36dp : R.drawable.ic_done_white_36dp);
             else if (tryAgain)
                 new Handler().postDelayed(SetActionBarColorRunnable, 100);
         }

@@ -135,6 +135,11 @@
                     android:defaultValue="2"
                     android:dependency="pref_hide_text_view"/>
                 <CheckBoxPreference
+                    android:key="pref_show_mark_read_as_action"
+                    android:title="@string/pref_show_mark_read_as_action"
+                    android:summary="@string/pref_show_mark_read_as_action_summary"
+                    android:defaultValue="false"/>
+                <CheckBoxPreference
                     android:key="pref_show_filtered_plan_as_action"
                     android:title="@string/pref_show_filtered_plan_as_action"
                     android:summary="@string/pref_show_filtered_plan_as_action_summary"
