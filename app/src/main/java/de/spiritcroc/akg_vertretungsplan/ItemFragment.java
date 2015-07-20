@@ -398,7 +398,7 @@ public class ItemFragment extends ListFragment{
     }
     private String getLessonTimeCombinationString(String time){
         try{
-            return time + " (" + getResources().getStringArray(R.array.lesson_plan_times)[Integer.parseInt(time)] + ")";
+            return time + " (" + getResources().getStringArray(R.array.lesson_plan_times)[Integer.parseInt(time)-1] + ")";
         }
         catch (Exception e){
             Log.e("ItemFragment", "getLessonTimeCombinationString: Got exception: " + e);
