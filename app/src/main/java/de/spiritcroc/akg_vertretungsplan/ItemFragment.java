@@ -249,10 +249,10 @@ public class ItemFragment extends ListFragment{
                         fullFormattedContent.add(tmpRowContent.clone());
                         if (Tools.lineAvailable(oldPlan, tmp)) {
                             textColors.add(Integer.parseInt(sharedPreferences.getString("pref_header_text_text_color", "" + Color.BLACK)));
-                            backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_header_text_background_color", "" + Color.WHITE)));
+                            backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_header_text_background_color", "" + Color.TRANSPARENT)));
                         } else {       //highlight changes
                             textColors.add(Integer.parseInt(sharedPreferences.getString("pref_header_text_text_color_highlight", "" + Color.RED)));
-                            backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_header_text__background_color_highlight", "" + Color.WHITE)));
+                            backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_header_text__background_color_highlight", "" + Color.TRANSPARENT)));
                             unreadContent = true;
                         }
                         currentClass = "";
@@ -268,7 +268,7 @@ public class ItemFragment extends ListFragment{
                             result.add(currentClass);    //class text
                             fullFormattedContent.add(null);
                             textColors.add(Integer.parseInt(sharedPreferences.getString("pref_class_text_text_color", "" + Color.BLUE)));
-                            backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_class_text_background_color", "" + Color.WHITE)));
+                            backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_class_text_background_color", "" + Color.TRANSPARENT)));
                             putHeaderAsClass = false;
                         }
                         //else: no header available
@@ -281,7 +281,7 @@ public class ItemFragment extends ListFragment{
                         result.add(headerRow[0] + " " + tmpRowContent[0]);    //class text
                         fullFormattedContent.add(null);
                         textColors.add(Integer.parseInt(sharedPreferences.getString("pref_class_text_text_color", "" + Color.BLUE)));
-                        backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_class_text_background_color", "" + Color.WHITE)));
+                        backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_class_text_background_color", "" + Color.TRANSPARENT)));
                     }
                     if (headerRow[0]==null) { //e.g. when extra table "Gesamte Schule:"
                         add = tmpRowContent[0] + " → " + tmpRowContent[1];
@@ -319,7 +319,7 @@ public class ItemFragment extends ListFragment{
                             }
                             else {
                                 textColors.add(Integer.parseInt(sharedPreferences.getString("pref_normal_text_text_color", "" + Color.BLACK)));
-                                backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_normal_text_background_color", "" + Color.WHITE)));
+                                backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_normal_text_background_color", "" + Color.TRANSPARENT)));
                             }
                         } else {       //highlight changes
                             if (relevant && !filterResults) {
@@ -328,7 +328,7 @@ public class ItemFragment extends ListFragment{
                             }
                             else{
                                 textColors.add(Integer.parseInt(sharedPreferences.getString("pref_normal_text_text_color_highlight", "" + Color.RED)));
-                                backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_normal_text__background_color_highlight", "" + Color.WHITE)));
+                                backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_normal_text__background_color_highlight", "" + Color.TRANSPARENT)));
                             }
                             unreadContent = true;
                         }
@@ -407,12 +407,10 @@ public class ItemFragment extends ListFragment{
                 textView.setTextColor(textColors.get(position));
             else
                 textView.setTextColor(Color.BLACK);     //default color
-            if (sharedPreferences.getBoolean("pref_customize_background_colors", true)){
-                if (backgroundColors.size()>position)
-                    view.setBackgroundColor(backgroundColors.get(position));
-                else
-                    view.setBackgroundColor(Color.WHITE);   //default background color
-            }
+            if (backgroundColors.size()>position)
+                view.setBackgroundColor(backgroundColors.get(position));
+            else
+                view.setBackgroundColor(Color.WHITE);   //default background color
             return view;
         }
     }
