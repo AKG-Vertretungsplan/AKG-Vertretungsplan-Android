@@ -64,7 +64,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
     private int style;
     private boolean created = false;
     private static boolean shortCutToPageTwo = false, filteredMode;
-    private MenuItem reloadItem, filterItem;
+    private MenuItem reloadItem, filterItem, markReadItem;
     private TintImageView overflow;
 
     @Override
@@ -213,6 +213,8 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
             reloadItem.setVisible(!sharedPreferences.getBoolean("pref_hide_action_reload", false));
             filterItem = menu.findItem(R.id.action_filter_plan);
             filterItem.setShowAsAction(sharedPreferences.getBoolean("pref_show_filtered_plan_as_action", false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
+            markReadItem = menu.findItem(R.id.action_mark_read);
+            requestRecheckUnreadChanges();
 
             //http://stackoverflow.com/questions/22046903/changing-the-android-overflow-menu-icon-programmatically/22106474#22106474
             final String overflowDescription = getString(R.string.abc_action_menu_overflow_description);
@@ -346,9 +348,24 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 return true;
+            case R.id.action_mark_read:
+                if (fragment1 != null)
+                    fragment1.markChangesAsRead();
+                else
+                    Log.e("FormattedActivity", "action_mark_read: fragment1 == null");
+                if (fragment2 != null)
+                    fragment2.markChangesAsRead();
+                else
+                    Log.e("FormattedActivity", "action_mark_read: fragment1 == null");
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void requestRecheckUnreadChanges(){
+        if (fragment1 != null && fragment2 != null && markReadItem != null)
+            markReadItem.setVisible(fragment1.hasUnreadContent() || fragment2.hasUnreadContent());
     }
 
     @Override

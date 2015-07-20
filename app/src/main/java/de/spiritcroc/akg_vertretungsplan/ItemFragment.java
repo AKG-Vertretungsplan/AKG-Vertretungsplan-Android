@@ -55,6 +55,7 @@ public class ItemFragment extends ListFragment{
     private String currentClass = "";
     private int tmpCellCount;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private boolean unreadContent = false;
 
     private static final String ARG_CONTENT = "content";
     private static final String ARG_DATE = "date";
@@ -86,8 +87,6 @@ public class ItemFragment extends ListFragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setHasOptionsMenu(true);
 
         if (getArguments() != null) {
             content = getArguments().getString(ARG_CONTENT);
@@ -132,22 +131,6 @@ public class ItemFragment extends ListFragment{
             }
         });
     }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_item_fragment, menu);
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
-            case R.id.action_mark_read:
-                markChangesAsRead();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -193,6 +176,10 @@ public class ItemFragment extends ListFragment{
             }
             mListener.showDialog(text, shareMessage);
         }
+    }
+
+    public boolean hasUnreadContent(){
+        return unreadContent;
     }
 
     public void setRefreshing(boolean refreshing){
@@ -255,6 +242,7 @@ public class ItemFragment extends ListFragment{
         boolean useFullTeacherNames = sharedPreferences.getBoolean("pref_formatted_plan_replace_teacher_short_with_teacher_full", true),
                 filterResults = sharedPreferences.getBoolean("pref_filter_plan", false) && LessonPlan.getInstance(sharedPreferences).isConfigured(),
                 lastAddedHeader = false;
+        unreadContent = false;
         for (int i = 0; !tmp.equals(""); i++){
             tmp = Tools.getLine(unformattedContent, i + 1);
             if (getRow(tmp, "" + DownloadService.ContentType.TABLE_ROW)){
@@ -268,6 +256,7 @@ public class ItemFragment extends ListFragment{
                         } else {       //highlight changes
                             textColors.add(Integer.parseInt(sharedPreferences.getString("pref_header_text_text_color_highlight", "" + Color.RED)));
                             backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_header_text__background_color_highlight", "" + Color.WHITE)));
+                            unreadContent = true;
                         }
                         currentClass = "";
                     }
@@ -344,6 +333,7 @@ public class ItemFragment extends ListFragment{
                                 textColors.add(Integer.parseInt(sharedPreferences.getString("pref_normal_text_text_color_highlight", "" + Color.RED)));
                                 backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_normal_text__background_color_highlight", "" + Color.WHITE)));
                             }
+                            unreadContent = true;
                         }
                     }
                 }
@@ -355,6 +345,8 @@ public class ItemFragment extends ListFragment{
         }
         if (filterResults && lastAddedHeader)
             removeLastAddedItem(result);
+        if (getActivity() instanceof FormattedActivity)
+            ((FormattedActivity) getActivity()).requestRecheckUnreadChanges();
         return result.toArray(new String[result.size()]);
     }
     private void removeLastAddedItem(ArrayList result){

@@ -27,6 +27,9 @@
         android:checkable="true"
         android:icon="@drawable/ic_filter_list_white_36dp"
         app:showAsAction="never"/>
+    <item android:id="@+id/action_mark_read"
+        android:title="@string/action_mark_read"
+        android:orderInCategory="50"/>
     <item android:id="@+id/action_original_activity"
         android:title="@string/original_activity"
         android:orderInCategory="97"/>
