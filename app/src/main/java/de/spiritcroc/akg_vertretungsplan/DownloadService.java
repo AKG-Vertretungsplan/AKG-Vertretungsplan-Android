@@ -575,13 +575,14 @@ public class DownloadService extends IntentService {
                                 tmpCellCount++;
                         }
 
-                        if (tmpCellCount <= 2 && !sharedPreferences.getBoolean("pref_notification_general_not_relevant", false)) {//general info for whole school
-                            if (tmpCellCount == 1) {
-                                if (!Tools.ignoreSubstitution(tmpRowContent[0]))
+                        if (tmpCellCount <= 2) {//general info for whole school
+                            if (!sharedPreferences.getBoolean("pref_notification_general_not_relevant", false)) {
+                                if (tmpCellCount == 1) {
+                                    if (!Tools.ignoreSubstitution(tmpRowContent[0]))
+                                        count++;
+                                } else
                                     count++;
                             }
-                            else
-                                count++;
                         }
                         else {
                             try {
