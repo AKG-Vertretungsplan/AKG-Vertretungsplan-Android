@@ -261,6 +261,7 @@ public class ItemFragment extends ListFragment{
                 if (tmpCellCount==1) {
                     if (!filterResults || !sharedPreferences.getBoolean("pref_filter_general", false)) {
                         result.add(tmpRowContent[0]);       //header text
+                        fullFormattedContent.add(tmpRowContent.clone());
                         if (Tools.lineAvailable(oldPlan, tmp)) {
                             textColors.add(Integer.parseInt(sharedPreferences.getString("pref_header_text_text_color", "" + Color.BLACK)));
                             backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_header_text_background_color", "" + Color.WHITE)));
@@ -324,6 +325,7 @@ public class ItemFragment extends ListFragment{
                     }
                     if (!filterResults || relevant) {
                         result.add(add);                    //substitution text
+                        fullFormattedContent.add(tmpRowContent.clone());
                         if (Tools.lineAvailable(oldPlan, tmp)) {
                             if (relevant && !filterResults){
                                 textColors.add(Integer.parseInt(sharedPreferences.getString("pref_relevant_text_text_color", "" + Color.BLACK)));
@@ -345,7 +347,6 @@ public class ItemFragment extends ListFragment{
                         }
                     }
                 }
-                fullFormattedContent.add(tmpRowContent.clone());
             }
             else if (getRow(tmp, "" + DownloadService.ContentType.TABLE_START_FLAG)){
                 currentClass = tmpRowContent[0];
