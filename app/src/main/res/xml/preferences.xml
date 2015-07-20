@@ -148,11 +148,6 @@
             <PreferenceCategory
                 android:title="@string/pref_user_interface_behaviour">
                 <CheckBoxPreference
-                    android:key="pref_filter_general"
-                    android:title="@string/pref_filter_general"
-                    android:summary="@string/pref_filter_general_summary"
-                    android:defaultValue="false"/>
-                <CheckBoxPreference
                     android:key="pref_formatted_plan_auto_select_day"
                     android:title="@string/pref_formatted_plan_auto_select_day"
                     android:summary="@string/pref_formatted_plan_auto_select_day_summary"
@@ -163,6 +158,11 @@
                     android:numeric="integer"
                     android:defaultValue="17"
                     android:dependency="pref_formatted_plan_auto_select_day"/>
+                <CheckBoxPreference
+                    android:key="pref_filter_general"
+                    android:title="@string/pref_filter_general"
+                    android:summary="@string/pref_filter_general_summary"
+                    android:defaultValue="false"/>
             </PreferenceCategory>
             <PreferenceCategory
                 android:title="@string/pref_colors">
