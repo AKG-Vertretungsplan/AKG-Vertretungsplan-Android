@@ -538,8 +538,10 @@ public class DownloadService extends IntentService {
     }
 
     public static int getNewRelevantInformationCount(SharedPreferences sharedPreferences){
-        return getNewRelevantInformationCount(sharedPreferences, sharedPreferences.getString("pref_current_plan_1", ""), sharedPreferences.getString("pref_current_title_1", "")) +
-                getNewRelevantInformationCount(sharedPreferences, sharedPreferences.getString("pref_current_plan_2", ""), sharedPreferences.getString("pref_current_title_2", ""));
+        return LessonPlan.getInstance(sharedPreferences).isConfigured() ?
+                getNewRelevantInformationCount(sharedPreferences, sharedPreferences.getString("pref_current_plan_1", ""), sharedPreferences.getString("pref_current_title_1", "")) +
+                getNewRelevantInformationCount(sharedPreferences, sharedPreferences.getString("pref_current_plan_2", ""), sharedPreferences.getString("pref_current_title_2", "")) :
+                0;
     }
     private static int getNewRelevantInformationCount(SharedPreferences sharedPreferences, String currentContent, String title){
         String latestContent;
