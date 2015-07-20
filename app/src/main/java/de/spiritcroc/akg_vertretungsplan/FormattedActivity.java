@@ -185,6 +185,9 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
         }
 
         textView.setVisibility(sharedPreferences.getBoolean("pref_hide_text_view", false) ? View.GONE : View.VISIBLE);
+
+        if (sharedPreferences.getBoolean("pref_reload_on_resume", false))
+            startDownloadService();
     }
     @Override
     protected void onPause(){

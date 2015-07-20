@@ -62,6 +62,7 @@ public class DownloadService extends IntentService {
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_DOWNLOAD_PLAN.equals(action)){
+                getSharedPreferences().edit().putBoolean("pref_reload_on_resume", false).apply();
                 if (!loginFailed) {
                     downloading = true;
                     //hidden debug stuff start
@@ -221,8 +222,10 @@ public class DownloadService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         setTextViewText(text);
     }
-    protected void startLoginActivity(){
+
+    protected void startLoginActivity() {
         startActivity(new Intent(this, SettingsActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        getSharedPreferences().edit().putBoolean("pref_reload_on_resume", true).apply();//reload on resume of FormattedActivity at the latest
     }
 
     private String timeAndDateToString (Calendar calendar){
