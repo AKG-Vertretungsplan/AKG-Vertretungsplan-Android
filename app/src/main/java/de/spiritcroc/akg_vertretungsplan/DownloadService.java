@@ -172,6 +172,8 @@ public class DownloadService extends IntentService {
                 if (!sharedPreferences.getBoolean("pref_notification_only_if_relevant", false) || newRelevantNotificationCount > 0) {
                     String message = (newRelevantNotificationCount > 0 ? getResources().getQuantityString(R.plurals.new_relevant_information, newRelevantNotificationCount, newRelevantNotificationCount) : getString(R.string.last_checked) + " " + time);
                     maybePostNotification(getString(R.string.new_version), message);
+                    if (newRelevantNotificationCount > 0)
+                        setTextViewText(getResources().getQuantityString(R.plurals.new_relevant_information, newRelevantNotificationCount, newRelevantNotificationCount));
                 }
             }
         }
