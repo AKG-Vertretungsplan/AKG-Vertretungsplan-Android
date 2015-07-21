@@ -22,6 +22,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -34,7 +35,8 @@ public class BReceiver extends BroadcastReceiver {
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction()) && sharedPreferences.getBoolean("pref_background_service", false)){
             startDownloadService(context);
         }
-        else if (ACTION_START_DOWNLOAD_SERVICE.equals(intent.getAction())){
+        else if (ACTION_START_DOWNLOAD_SERVICE.equals(intent.getAction()) ||
+                ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction()) && sharedPreferences.getBoolean("pref_last_offline", false)){
             if (!DownloadService.isDownloading() && !IsRunningSingleton.getInstance().isRunning())
                 context.startService(new Intent(context, DownloadService.class).setAction(DownloadService.ACTION_DOWNLOAD_PLAN));
         }

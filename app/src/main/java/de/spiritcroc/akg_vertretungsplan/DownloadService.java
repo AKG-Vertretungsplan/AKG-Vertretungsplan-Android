@@ -23,6 +23,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.RingtoneManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
@@ -62,20 +64,31 @@ public class DownloadService extends IntentService {
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_DOWNLOAD_PLAN.equals(action)){
-                getSharedPreferences().edit().putBoolean("pref_reload_on_resume", false).apply();
-                if (!loginFailed) {
-                    downloading = true;
-                    //hidden debug stuff start
-                    int tmp = 0;
-                    try {
-                        tmp = Integer.parseInt(getSharedPreferences().getString("pref_debugging_enabled", "0"));
+                getSharedPreferences().edit().putBoolean("pref_reload_on_resume", false)
+                        .putBoolean("pref_last_offline", false).apply();
+
+                ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+                NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+                if (networkInfo != null && networkInfo.isConnected()) {
+                    if (!loginFailed) {
+                        downloading = true;
+                        //hidden debug stuff start
+                        int tmp = 0;
+                        try {
+                            tmp = Integer.parseInt(getSharedPreferences().getString("pref_debugging_enabled", "0"));
+                        } catch (Exception e) {
+                        }
+
+                        if (tmp != 0)
+                            dummyHandleActionDownloadPlan(tmp);
+                        else//hidden debug stuff end
+                            handleActionDownloadPlan();
+                        downloading = false;
                     }
-                    catch (Exception e){};
-                    if (tmp != 0)
-                        dummyHandleActionDownloadPlan(tmp);
-                    else//hidden debug stuff end
-                        handleActionDownloadPlan();
-                    downloading = false;
+                }
+                else{
+                    getSharedPreferences().edit().putBoolean("pref_last_offline", true).apply();
+                    loadOfflinePlan();
                 }
             }
             if (ACTION_RETRY.equals(action)){
