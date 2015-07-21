@@ -90,6 +90,21 @@
         <item>Gelb</item>
         <item>Orange</item>
     </string-array>
+    <string-array name="pref_action_bar_color_array">
+        <item>Standard</item>
+        <item>Schwarz</item>
+        <item>Blau</item>
+        <item>Cyan</item>
+        <item>Dunkelgrau</item>
+        <item>Grau</item>
+        <item>Grün</item>
+        <item>Hellgrau</item>
+        <item>Magenta</item>
+        <item>Rot</item>
+        <item>Weiß</item>
+        <item>Gelb</item>
+        <item>Orange</item>
+    </string-array>
     <string name="pref_background_color">Hintergrundfarbe</string>
     <string name="pref_background_color_highlight">Hintergrundfarbe bei Änderungen</string>
     <string name="pref_class_text">Klasse</string>

@@ -287,9 +287,9 @@
                         <ListPreference
                             android:key="pref_action_bar_normal_background_color"
                             android:title="@string/pref_action_bar_color"
-                            android:entries="@array/pref_color_array"
-                            android:entryValues="@array/pref_color_array_values"
-                            android:defaultValue="-12303292"/>
+                            android:entries="@array/pref_action_bar_color_array"
+                            android:entryValues="@array/pref_action_bar_color_array_values"
+                            android:defaultValue="-14606047"/>
                         <CheckBoxPreference
                             android:key="pref_action_bar_normal_dark_text"
                             android:title="@string/pref_action_bar_dark_text"

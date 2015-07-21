@@ -276,7 +276,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
         if (actionBar != null) {
             int backgroundColor = filteredMode ?
                     Integer.parseInt(sharedPreferences.getString("pref_action_bar_filtered_background_color", "-33024")) :
-                    Integer.parseInt(sharedPreferences.getString("pref_action_bar_normal_background_color", "" + Color.DKGRAY));
+                    Integer.parseInt(sharedPreferences.getString("pref_action_bar_normal_background_color", "" + getResources().getColor(R.color.primary_material_dark)));
             boolean darkText = filteredMode ?
                     sharedPreferences.getBoolean("pref_action_bar_filtered_dark_text", true) :
                     sharedPreferences.getBoolean("pref_action_bar_normal_dark_text", false);
