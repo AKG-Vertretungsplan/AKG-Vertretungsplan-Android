@@ -213,6 +213,9 @@ public abstract class Tools {
         else
             return false;
     }
+    public static class Int{//Make int reference-able (Java is too silly to natively support this)
+        public int value;
+    }
     /*public static void saveStringToFile (String string, String filePath){
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath));

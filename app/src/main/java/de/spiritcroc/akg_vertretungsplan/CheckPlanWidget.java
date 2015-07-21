@@ -78,10 +78,12 @@ public class CheckPlanWidget extends AppWidgetProvider {
             views.setTextViewText(R.id.appwidget_button, context.getString(R.string.error_illegal_plan));
         }
         else if (sharedPreferences.getBoolean("pref_unseen_changes", false)){
-            int newRelevantNotificationCount = DownloadService.getNewRelevantInformationCount(sharedPreferences);
+            Tools.Int newGeneralNotificationCount = new Tools.Int();
+            int newRelevantNotificationCount = DownloadService.getNewRelevantInformationCount(sharedPreferences, newGeneralNotificationCount);
             String text = (newRelevantNotificationCount > 0 ?
                     context.getResources().getQuantityString(R.plurals.new_relevant_information, newRelevantNotificationCount, newRelevantNotificationCount) :
-                    context.getString(R.string.new_version) + " " + sharedPreferences.getString("pref_last_update", context.getString(R.string.error_could_not_load)));
+                    (newGeneralNotificationCount.value > 0 ?  context.getResources().getQuantityString(R.plurals.new_general_information, newGeneralNotificationCount.value, newGeneralNotificationCount.value) :
+                    context.getString(R.string.new_version) + " " + sharedPreferences.getString("pref_last_update", context.getString(R.string.error_could_not_load))));
             views.setTextViewText(R.id.appwidget_button, text);
             views.setTextColor(R.id.appwidget_button, Integer.parseInt(sharedPreferences.getString("pref_widget_text_color_highlight", "" + Color.RED)));
         }

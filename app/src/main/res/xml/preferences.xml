@@ -109,7 +109,7 @@
                     android:title="@string/pref_notification_general_not_relevant"
                     android:summary="@string/pref_notification_general_not_relevant_summary"
                     android:defaultValue="false"
-                    android:dependency="pref_notification_enabled"/>
+                    android:dependency="pref_notification_only_if_relevant"/>
             </PreferenceCategory>
         </PreferenceScreen>
 

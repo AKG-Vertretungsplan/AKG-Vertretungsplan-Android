@@ -169,9 +169,13 @@ public class DownloadService extends IntentService {
             if (!loadFormattedPlans(result))
                 setTextViewText(getString(R.string.error_illegal_plan));
             if (newVersion) {//Notification after loadFormattedPlans, because getNewRelevantInformationCount depends on it
-                int newRelevantNotificationCount = getNewRelevantInformationCount(sharedPreferences);
-                if (!sharedPreferences.getBoolean("pref_notification_only_if_relevant", false) || newRelevantNotificationCount > 0) {
-                    String message = (newRelevantNotificationCount > 0 ? getResources().getQuantityString(R.plurals.new_relevant_information, newRelevantNotificationCount, newRelevantNotificationCount) : getString(R.string.last_checked) + " " + time);
+                Tools.Int newGeneralNotificationCount = new Tools.Int();
+                int newRelevantNotificationCount = getNewRelevantInformationCount(sharedPreferences, newGeneralNotificationCount);
+                if (!sharedPreferences.getBoolean("pref_notification_only_if_relevant", false) || newRelevantNotificationCount > 0
+                        || (!sharedPreferences.getBoolean("pref_notification_general_not_relevant", false) && newGeneralNotificationCount.value > 0)) {
+                    String message = (newRelevantNotificationCount > 0 ? getResources().getQuantityString(R.plurals.new_relevant_information, newRelevantNotificationCount, newRelevantNotificationCount) :
+                            (newGeneralNotificationCount.value > 0 ?  getResources().getQuantityString(R.plurals.new_general_information, newGeneralNotificationCount.value, newGeneralNotificationCount.value) :
+                            getString(R.string.last_checked) + " " + time));
                     maybePostNotification(getString(R.string.new_version), message);
                     if (newRelevantNotificationCount > 0)
                         setTextViewText(getResources().getQuantityString(R.plurals.new_relevant_information, newRelevantNotificationCount, newRelevantNotificationCount));
@@ -540,13 +544,14 @@ public class DownloadService extends IntentService {
         notificationManager.notify(1, builder.build());
     }
 
-    public static int getNewRelevantInformationCount(SharedPreferences sharedPreferences){
+    public static int getNewRelevantInformationCount(SharedPreferences sharedPreferences, Tools.Int newGeneralInformationCount){
+        newGeneralInformationCount.value = 0;
         return LessonPlan.getInstance(sharedPreferences).isConfigured() ?
-                getNewRelevantInformationCount(sharedPreferences, sharedPreferences.getString("pref_current_plan_1", ""), sharedPreferences.getString("pref_current_title_1", "")) +
-                getNewRelevantInformationCount(sharedPreferences, sharedPreferences.getString("pref_current_plan_2", ""), sharedPreferences.getString("pref_current_title_2", "")) :
+                getNewRelevantInformationCount(sharedPreferences, sharedPreferences.getString("pref_current_plan_1", ""), sharedPreferences.getString("pref_current_title_1", ""), newGeneralInformationCount) +
+                getNewRelevantInformationCount(sharedPreferences, sharedPreferences.getString("pref_current_plan_2", ""), sharedPreferences.getString("pref_current_title_2", ""), newGeneralInformationCount) :
                 0;
     }
-    private static int getNewRelevantInformationCount(SharedPreferences sharedPreferences, String currentContent, String title){
+    private static int getNewRelevantInformationCount(SharedPreferences sharedPreferences, String currentContent, String title, Tools.Int newGeneralInformationCount){
         String latestContent;
         if (title.equals(sharedPreferences.getString("pref_latest_title_1", "")))    //check date for comparison
             latestContent = sharedPreferences.getString("pref_latest_plan_1", "");
@@ -581,13 +586,11 @@ public class DownloadService extends IntentService {
                         }
 
                         if (tmpCellCount <= 2) {//general info for whole school
-                            if (!sharedPreferences.getBoolean("pref_notification_general_not_relevant", false)) {
-                                if (tmpCellCount == 1) {
-                                    if (!Tools.ignoreSubstitution(tmpRowContent[0]))
-                                        count++;
-                                } else
-                                    count++;
-                            }
+                            if (tmpCellCount == 1) {
+                                if (!Tools.ignoreSubstitution(tmpRowContent[0]))
+                                    newGeneralInformationCount.value++;
+                            } else
+                                newGeneralInformationCount.value++;
                         }
                         else {
                             try {

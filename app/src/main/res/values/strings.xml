@@ -357,4 +357,9 @@
 
     <string name="toast_room_illegal_character">Your room contains an illegal character!</string>
 
+    <plurals name="new_general_information">
+        <item quantity="one">%d new piece of general information</item>
+        <item quantity="other">%d new pieces of general information</item>
+    </plurals>
+
 </resources>

@@ -273,4 +273,9 @@
 
     <string name="toast_room_illegal_character">Der eingegebene Raum enthält ein ungültiges Zeichen!</string>
 
+    <plurals name="new_general_information">
+        <item quantity="one">%d neue allgemeine Vertretung</item>
+        <item quantity="other">%d neue allgemeine Vertretungen</item>
+    </plurals>
+
 </resources>
