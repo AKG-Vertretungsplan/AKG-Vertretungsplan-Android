@@ -435,6 +435,17 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
             String action = intent.getStringExtra("action");
             if (action.equals("loadFragmentData")){
                 Tools.setUnseenFalse(getApplicationContext());
+                Calendar oldDate2;
+                if (viewPager.getCurrentItem() == 1) {//When showing plan for tomorrow
+                    try {
+                        oldDate2 = Tools.getDateFromPlanTitle(title2);
+                    } catch (Exception e) {
+                        Log.e("FormattedActivity", "Got error while trying to check for page move: " + e);
+                        oldDate2 = null;
+                    }
+                }
+                else
+                    oldDate2 = null;
                 title1 = intent.getStringExtra("title1");
                 plan1 = intent.getStringExtra("plan1");
                 title2 = intent.getStringExtra("title2");
@@ -446,6 +457,12 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
                     Log.e("FormattedActivity", "Got error while trying to extract date1 from the titles: " + e);
                     date1 = null;//Deactivate date functionality
                 }
+                if (oldDate2 != null && date1 != null && ((
+                        date1.get(Calendar.YEAR) == oldDate2.get(Calendar.YEAR) &&
+                        date1.get(Calendar.MONTH) == oldDate2.get(Calendar.MONTH) &&
+                        date1.get(Calendar.DAY_OF_MONTH) == oldDate2.get(Calendar.DAY_OF_MONTH)) ||
+                        date1.after(oldDate2)))
+                    viewPager.setCurrentItem(0);//Keep showing the same day (or the nearer day)
                 if (fragment1!=null)
                     fragment1.reloadContent(plan1, title1);
                 if (fragment2!=null)
