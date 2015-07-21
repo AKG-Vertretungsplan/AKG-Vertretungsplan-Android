@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="16sp"
-    android:paddingRight="16dp">
+    android:paddingLeft="@dimen/list_padding_left_right"
+    android:paddingRight="@dimen/list_padding_left_right">
 
     <TextView
         android:id="@+id/subject_view"
@@ -11,16 +11,16 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center_vertical"
-        android:textSize="16sp"
-        android:paddingTop="16sp"
-        android:paddingBottom="16sp"/>
+        android:textSize="@dimen/list_text_size"
+        android:paddingTop="@dimen/list_padding_top_bottom"
+        android:paddingBottom="@dimen/list_padding_top_bottom"/>
     <TextView
         android:id="@+id/room_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:textSize="16sp"
-        android:paddingTop="16sp"
-        android:paddingBottom="16sp"/>
+        android:textSize="@dimen/list_text_size"
+        android:paddingTop="@dimen/list_padding_top_bottom"
+        android:paddingBottom="@dimen/list_padding_top_bottom"/>
 
 </LinearLayout>
