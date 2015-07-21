@@ -1,7 +1,15 @@
 Changelog hint: 1. big changes / features added, 2. usefull little changes / features added, 3. bug fixes, minor changes
 Changelog:
 
-Version 3.4.2 (16) WIP
+Version 4.0 (16) WIP
+- Stundenplan
+- Hervorheben von Vertretungen / Vertretungsfilter durch eingegebenen Stundenplan
+- Zeige ganze Lehrernamen aufgrund des eingegebenen Stundenplans
+- Automatische Auswahl des interessanteren Vertretungsplans (durch Datum und Zeit)
+- Option "Teilen" für einzelne Vertretungen
+- Benachrichtigungen: Ignoriere Stundenplaneinträge, die nur die Version des Plans anzeigen
+- Mehr Einstellungen, Einstellungsanzeige umstrukturiert
+- Weitere Verbesserungen
 
 Version 3.4.1 (15)
 - Kleine Verbesserungen
@@ -79,14 +87,12 @@ Version 1.0
 
 
 
-todo: future release:
-- add share button to ElementDialog
-- add setting hide update info (=textview)
-- apply theme to options menu
+Possible improvements for a future release:
+- List for teacher abbreviations → also show full names of teachers entered there (in addition to lesson plan's teachers)
+todo - apply theme to options menu
 - add action bar with up navigation to nested PreferenceScreens
 - instead of checking if already downloading before starting DownloadService, do in DownloadService itself by extending Service instead of IntentService
-- lesson plan: enter class for better individualized vplan results (see christmas 2014 plan)
+- lesson plan: enter class for better individualized vplan results? (see christmas 2014 plan)
 - add reset colors settings setting
 - widget background button color settings
 - add save current vplan feature?
-- do not show markRead button in ItemFragment if already read (requires addition of optionMenuItems from code)
