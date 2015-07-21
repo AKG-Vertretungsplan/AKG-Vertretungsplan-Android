@@ -174,7 +174,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         else if (key.equals("pref_background_service")){
             CheckBoxPreference tmpCheckBoxPreference = (CheckBoxPreference) findPreference("pref_background_service");
             if (tmpCheckBoxPreference.isChecked())
-                BReceiver.startDownloadService(getActivity());
+                BReceiver.startDownloadService(getActivity(), false);
             else
                 BReceiver.stopDownloadService(getActivity());
         }
@@ -190,7 +190,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             tmpEditTextPreference.setSummary(getResources().getQuantityString(R.plurals.plural_minute, tmpValue, tmpValue));
 
             BReceiver.stopDownloadService(getActivity());
-            BReceiver.startDownloadService(getActivity());
+            BReceiver.startDownloadService(getActivity(), false);
         }
         else if (key.equals("pref_no_change_since_max_precision")){
             EditTextPreference tmpEditTextPreference = (EditTextPreference) findPreference("pref_no_change_since_max_precision");

@@ -23,7 +23,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
-import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -32,8 +31,8 @@ public class BReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction()) && sharedPreferences.getBoolean("pref_background_service", false)){
-            startDownloadService(context);
+        if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction()) && sharedPreferences.getBoolean("pref_background_service", true)){
+            startDownloadService(context, true);
         }
         else if (ACTION_START_DOWNLOAD_SERVICE.equals(intent.getAction()) ||
                 ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction()) && sharedPreferences.getBoolean("pref_last_offline", false)){
@@ -46,10 +45,10 @@ public class BReceiver extends BroadcastReceiver {
         Intent resultIntent = new Intent(context, BReceiver.class).setAction(ACTION_START_DOWNLOAD_SERVICE);
         return PendingIntent.getBroadcast(context.getApplicationContext(), 0, resultIntent, flag);
     }
-    public static void startDownloadService(Context context){
+    public static void startDownloadService(Context context, boolean now){
         int period = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString("pref_background_update_interval", "60"))*60000;
-        Log.d("startDownloadService", "period: " + period);
-        ((AlarmManager) context.getSystemService(context.ALARM_SERVICE)).setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), period, getAlarmPendingIntent(context, PendingIntent.FLAG_CANCEL_CURRENT));
+        Log.d("startDownloadService", now ? "now" : "period: " + period);
+        ((AlarmManager) context.getSystemService(context.ALARM_SERVICE)).set(AlarmManager.ELAPSED_REALTIME, now ? 0 : period, getAlarmPendingIntent(context, PendingIntent.FLAG_CANCEL_CURRENT));
     }
     public static void stopDownloadService(Context context){
         ((AlarmManager) context.getSystemService(context.ALARM_SERVICE)).cancel(getAlarmPendingIntent(context, PendingIntent.FLAG_CANCEL_CURRENT));

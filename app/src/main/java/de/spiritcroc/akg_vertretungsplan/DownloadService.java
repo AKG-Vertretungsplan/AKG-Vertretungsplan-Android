@@ -67,6 +67,9 @@ public class DownloadService extends IntentService {
                 getSharedPreferences().edit().putBoolean("pref_reload_on_resume", false)
                         .putBoolean("pref_last_offline", false).apply();
 
+                if (sharedPreferences.getBoolean("pref_background_service", true))
+                    BReceiver.startDownloadService(getApplicationContext(), false);//Schedule next download
+
                 ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
                 if (networkInfo != null && networkInfo.isConnected()) {
@@ -91,7 +94,7 @@ public class DownloadService extends IntentService {
                     loadOfflinePlan();
                 }
             }
-            if (ACTION_RETRY.equals(action)){
+            else if (ACTION_RETRY.equals(action)){
                 loginFailed = false;
             }
         }

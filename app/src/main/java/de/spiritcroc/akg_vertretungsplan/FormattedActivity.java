@@ -106,8 +106,6 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
     public void onCreateAfterDisclaimer(){
         if (created)//only run once
             return;
-        if (sharedPreferences.getBoolean("pref_background_service", false) && BReceiver.getAlarmPendingIntent(this, PendingIntent.FLAG_NO_CREATE) == null)
-            BReceiver.startDownloadService(this);
         //Download plan stuff  start
         Calendar calendar = DownloadService.stringToCalendar(sharedPreferences.getString("pref_last_checked", "???"));
         boolean startedDownloadService = false;
