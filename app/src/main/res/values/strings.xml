@@ -21,9 +21,9 @@
     <string name="action_reload_web_view">Reload</string>
     <string name="loading">Load…</string>
     <string name="loading_widget">Load widget…</string>
-    <string name="enter_userdata">Please enter userdata</string>
-    <string name="correct_userdata">Wrong userdata! Please enter userdata</string>
-    <string name="userdata">Userdata</string>
+    <string name="enter_userdata">Please enter credentials</string>
+    <string name="correct_userdata">Wrong credentials! Please enter credentials</string>
+    <string name="userdata">Credentials</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="no_change_for">No change for</string>
