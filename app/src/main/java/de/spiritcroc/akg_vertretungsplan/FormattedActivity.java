@@ -420,7 +420,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
             super.finishUpdate(container);
 
             if (shortCutToPageTwo) {
-                viewPager.setCurrentItem(1);
+                viewPager.setCurrentItem(1, false);
                 shortCutToPageTwo = false;//use shortcut only once
             }
         }
@@ -459,7 +459,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
                         date1.get(Calendar.MONTH) == oldDate2.get(Calendar.MONTH) &&
                         date1.get(Calendar.DAY_OF_MONTH) == oldDate2.get(Calendar.DAY_OF_MONTH)) ||
                         date1.after(oldDate2)))
-                    viewPager.setCurrentItem(0);//Keep showing the same day (or the nearer day)
+                    viewPager.setCurrentItem(0, false);//Keep showing the same day (or the nearer day)
                 if (fragment1!=null)
                     fragment1.reloadContent(plan1, title1);
                 if (fragment2!=null)
