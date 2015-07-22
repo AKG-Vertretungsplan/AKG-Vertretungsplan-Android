@@ -41,7 +41,7 @@
                 android:title="@string/pref_auto_mark_read"
                 android:entries="@array/pref_auto_mark_read_array"
                 android:entryValues="@array/pref_auto_mark_read_array_values"
-                android:defaultValue="onPlanReloaded"/>
+                android:defaultValue="@string/pref_auto_mark_read_on_plan_reloaded_value"/>
             <EditTextPreference
                 android:key="pref_auto_load_on_open"
                 android:title="@string/pref_auto_load_on_open"
@@ -89,7 +89,7 @@
                     android:entries="@array/pref_led_color_array"
                     android:entryValues="@array/pref_led_color_array_values"
                     android:dependency="pref_led_notification_enabled"
-                    android:defaultValue="-1"/>
+                    android:defaultValue="@string/pref_color_white_value"/>
                 <CheckBoxPreference
                     android:key="pref_vibrate_notification_enabled"
                     android:title="@string/pref_vibrate_notification_enabled"
@@ -176,7 +176,7 @@
                     android:title="@string/pref_theme"
                     android:entries="@array/pref_theme_array"
                     android:entryValues="@array/pref_theme_array_values"
-                    android:defaultValue="light"/>
+                    android:defaultValue="@string/pref_theme_light_value"/>
                 <PreferenceScreen
                     android:title="@string/pref_formatted_colors"
                     android:summary="@string/pref_formatted_colors_summary">
@@ -187,25 +187,25 @@
                             android:title="@string/pref_text_color"
                             android:entries="@array/pref_color_array"
                             android:entryValues="@array/pref_color_array_values"
-                            android:defaultValue="-16777216"/>
+                            android:defaultValue="@string/pref_color_black_value"/>
                         <ListPreference
                             android:key="pref_header_text_background_color"
                             android:title="@string/pref_background_color"
                             android:entries="@array/pref_background_color_array"
                             android:entryValues="@array/pref_background_color_array_values"
-                            android:defaultValue="0"/>
+                            android:defaultValue="@string/pref_color_transparent_value"/>
                         <ListPreference
                             android:key="pref_header_text_text_color_highlight"
                             android:title="@string/pref_text_color_highlight"
                             android:entries="@array/pref_color_array"
                             android:entryValues="@array/pref_color_array_values"
-                            android:defaultValue="-65536"/>
+                            android:defaultValue="@string/pref_color_red_value"/>
                         <ListPreference
                             android:key="pref_header_text__background_color_highlight"
                             android:title="@string/pref_background_color_highlight"
                             android:entries="@array/pref_background_color_array"
                             android:entryValues="@array/pref_background_color_array_values"
-                            android:defaultValue="0"/>
+                            android:defaultValue="@string/pref_color_transparent_value"/>
                     </PreferenceCategory>
                     <PreferenceCategory
                         android:title="@string/pref_class_text">
@@ -214,13 +214,13 @@
                             android:title="@string/pref_text_color"
                             android:entries="@array/pref_color_array"
                             android:entryValues="@array/pref_color_array_values"
-                            android:defaultValue="-16776961"/>
+                            android:defaultValue="@string/pref_color_blue_value"/>
                         <ListPreference
                             android:key="pref_class_text_background_color"
                             android:title="@string/pref_background_color"
                             android:entries="@array/pref_background_color_array"
                             android:entryValues="@array/pref_background_color_array_values"
-                            android:defaultValue="0"/>
+                            android:defaultValue="@string/pref_color_transparent_value"/>
                     </PreferenceCategory>
                     <PreferenceCategory
                         android:title="@string/pref_normal_text">
@@ -229,25 +229,25 @@
                             android:title="@string/pref_text_color"
                             android:entries="@array/pref_color_array"
                             android:entryValues="@array/pref_color_array_values"
-                            android:defaultValue="-16777216"/>
+                            android:defaultValue="@string/pref_color_black_value"/>
                         <ListPreference
                             android:key="pref_normal_text_background_color"
                             android:title="@string/pref_background_color"
                             android:entries="@array/pref_background_color_array"
                             android:entryValues="@array/pref_background_color_array_values"
-                            android:defaultValue="0"/>
+                            android:defaultValue="@string/pref_color_transparent_value"/>
                         <ListPreference
                             android:key="pref_normal_text_text_color_highlight"
                             android:title="@string/pref_text_color_highlight"
                             android:entries="@array/pref_color_array"
                             android:entryValues="@array/pref_color_array_values"
-                            android:defaultValue="-65536"/>
+                            android:defaultValue="@string/pref_color_red_value"/>
                         <ListPreference
                             android:key="pref_normal_text__background_color_highlight"
                             android:title="@string/pref_background_color_highlight"
                             android:entries="@array/pref_background_color_array"
                             android:entryValues="@array/pref_background_color_array_values"
-                            android:defaultValue="0"/>
+                            android:defaultValue="@string/pref_color_transparent_value"/>
                     </PreferenceCategory>
                     <PreferenceCategory
                         android:title="@string/pref_relevant_text">
@@ -258,25 +258,25 @@
                             android:title="@string/pref_text_color"
                             android:entries="@array/pref_color_array"
                             android:entryValues="@array/pref_color_array_values"
-                            android:defaultValue="-16777216"/>
+                            android:defaultValue="@string/pref_color_black_value"/>
                         <ListPreference
                             android:key="pref_relevant_text_background_color"
                             android:title="@string/pref_background_color"
                             android:entries="@array/pref_background_color_array"
                             android:entryValues="@array/pref_background_color_array_values"
-                            android:defaultValue="-256"/>
+                            android:defaultValue="@string/pref_color_yellow_value"/>
                         <ListPreference
                             android:key="pref_relevant_text_text_color_highlight"
                             android:title="@string/pref_text_color_highlight"
                             android:entries="@array/pref_color_array"
                             android:entryValues="@array/pref_color_array_values"
-                            android:defaultValue="-65536"/>
+                            android:defaultValue="@string/pref_color_red_value"/>
                         <ListPreference
                             android:key="pref_relevant_text_background_color_highlight"
                             android:title="@string/pref_background_color_highlight"
                             android:entries="@array/pref_background_color_array"
                             android:entryValues="@array/pref_background_color_array_values"
-                            android:defaultValue="-256"/>
+                            android:defaultValue="@string/pref_color_yellow_value"/>
                     </PreferenceCategory>
                 </PreferenceScreen>
                 <PreferenceScreen
@@ -289,7 +289,7 @@
                             android:title="@string/pref_action_bar_color"
                             android:entries="@array/pref_action_bar_color_array"
                             android:entryValues="@array/pref_action_bar_color_array_values"
-                            android:defaultValue="-14606047"/>
+                            android:defaultValue="@string/pref_color_default_value"/>
                         <CheckBoxPreference
                             android:key="pref_action_bar_normal_dark_text"
                             android:title="@string/pref_action_bar_dark_text"
@@ -302,7 +302,7 @@
                             android:title="@string/pref_action_bar_color"
                             android:entries="@array/pref_color_array"
                             android:entryValues="@array/pref_color_array_values"
-                            android:defaultValue="-33024"/>
+                            android:defaultValue="@string/pref_color_orange_value"/>
                         <CheckBoxPreference
                             android:key="pref_action_bar_filtered_dark_text"
                             android:title="@string/pref_action_bar_dark_text"
@@ -317,13 +317,13 @@
                         android:title="@string/pref_text_color"
                         android:entries="@array/pref_color_array"
                         android:entryValues="@array/pref_color_array_values"
-                        android:defaultValue="-1"/>
+                        android:defaultValue="@string/pref_color_white_value"/>
                     <ListPreference
                         android:key="pref_widget_text_color_highlight"
                         android:title="@string/pref_text_color_highlight"
                         android:entries="@array/pref_color_array"
                         android:entryValues="@array/pref_color_array_values"
-                        android:defaultValue="-65536"/>
+                        android:defaultValue="@string/pref_color_red_value"/>
                 </PreferenceScreen>
             </PreferenceCategory>
         </PreferenceScreen>

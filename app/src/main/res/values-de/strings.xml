@@ -61,50 +61,20 @@
     <string name="action_mark_read">Als gelesen markieren</string>
     <string name="pref_colors">Farben</string>
     <string name="pref_auto_mark_read">Automatisch als gelesen markieren</string>
-    <string-array name="pref_color_array">
-        <item>Schwarz</item>
-        <item>Blau</item>
-        <item>Cyan</item>
-        <item>Dunkelgrau</item>
-        <item>Grau</item>
-        <item>Grün</item>
-        <item>Hellgrau</item>
-        <item>Magenta</item>
-        <item>Rot</item>
-        <item>Weiß</item>
-        <item>Gelb</item>
-        <item>Orange</item>
-    </string-array>
-    <string-array name="pref_background_color_array">
-        <item>Transparent</item>
-        <item>Schwarz</item>
-        <item>Blau</item>
-        <item>Cyan</item>
-        <item>Dunkelgrau</item>
-        <item>Grau</item>
-        <item>Grün</item>
-        <item>Hellgrau</item>
-        <item>Magenta</item>
-        <item>Rot</item>
-        <item>Weiß</item>
-        <item>Gelb</item>
-        <item>Orange</item>
-    </string-array>
-    <string-array name="pref_action_bar_color_array">
-        <item>Standard</item>
-        <item>Schwarz</item>
-        <item>Blau</item>
-        <item>Cyan</item>
-        <item>Dunkelgrau</item>
-        <item>Grau</item>
-        <item>Grün</item>
-        <item>Hellgrau</item>
-        <item>Magenta</item>
-        <item>Rot</item>
-        <item>Weiß</item>
-        <item>Gelb</item>
-        <item>Orange</item>
-    </string-array>
+    <string name="pref_color_black">Schwarz</string>
+    <string name="pref_color_blue">Blau</string>
+    <string name="pref_color_cyan">Cyan</string>
+    <string name="pref_color_dkgray">Dunkelgrau</string>
+    <string name="pref_color_gray">Grau</string>
+    <string name="pref_color_green">Grün</string>
+    <string name="pref_color_ltgray">Hellgrau</string>
+    <string name="pref_color_magenta">Magenta</string>
+    <string name="pref_color_red">Rot</string>
+    <string name="pref_color_white">Weiß</string>
+    <string name="pref_color_yellow">Gelb</string>
+    <string name="pref_color_orange">Orange</string>
+    <string name="pref_color_transparent">Transparent</string>
+    <string name="pref_color_default">Standard</string>
     <string name="pref_background_color">Hintergrundfarbe</string>
     <string name="pref_background_color_highlight">Hintergrundfarbe bei Änderungen</string>
     <string name="pref_class_text">Klasse</string>
@@ -112,11 +82,9 @@
     <string name="pref_normal_text">Vertretungen</string>
     <string name="pref_text_color">Textfarbe</string>
     <string name="pref_text_color_highlight">Textfarbe bei Änderungen</string>
-    <string-array name="pref_auto_mark_read_array">
-        <item>Beim Verlassen der Anzeige</item>
-        <item>Beim erneuten Laden</item>
-        <item>Nie</item>
-    </string-array>
+    <string name="pref_auto_mark_read_on_activity_pause">Beim Verlassen der Anzeige</string>
+    <string name="pref_auto_mark_read_on_plan_reloaded">Beim erneuten Laden</string>
+    <string name="pref_auto_mark_read_never">Nie</string>
     <string name="today">Heute</string>
     <string name="tomorrow">Morgen</string>
     <string name="last_checked">Stand:</string>
@@ -143,10 +111,8 @@
     <string name="pref_developing_enabled">Geheimcode</string>
     <string name="pref_developing_enabled_summary">Verwende dies nicht, wenn du nicht ich bist</string>
     <string name="pref_theme">Theme</string>
-    <string-array name="pref_theme_array">
-        <item>Hell</item>
-        <item>Dunkel</item>
-    </string-array>
+    <string name="pref_theme_light">Hell</string>
+    <string name="pref_theme_dark">Dunkel</string>
     <string name="pref_customize_background_colors">Verändere Hintergrund</string>
     <string name="pref_customize_background_colors_summary">Setze individuelle Hintergrundfarben</string>
     <string name="pref_background_service">Hintergrundservice</string>
@@ -159,16 +125,6 @@
     <string name="pref_notification_sound">Benachrichtigungston auswählen</string>
     <string name="pref_led_notification_enabled">LED aktivieren</string>
     <string name="pref_led_notification_color">LED Farbe</string>
-    <string-array name="pref_led_color_array">
-        <item>Blau</item>
-        <item>Cyan</item>
-        <item>Grün</item>
-        <item>Magenta</item>
-        <item>Rot</item>
-        <item>Weiß</item>
-        <item>Gelb</item>
-        <item>Orange</item>
-    </string-array>
     <string name="pref_vibrate_notification_enabled">Vibrieren</string>
     <string name="action_about">Über</string>
 

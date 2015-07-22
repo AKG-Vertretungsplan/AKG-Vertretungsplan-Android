@@ -69,106 +69,142 @@
     <string name="pref_text_color_highlight">Highlight text color</string>
     <string name="pref_background_color_highlight">Highlight background color</string>
 
-    <string-array name="pref_color_array">
-        <item>Black</item>
-        <item>Blue</item>
-        <item>Cyan</item>
-        <item>Dark gray</item>
-        <item>Gray</item>
-        <item>Green</item>
-        <item>Light gray</item>
-        <item>Magenta</item>
-        <item>Red</item>
-        <item>White</item>
-        <item>Yellow</item>
-        <item>Orange</item>
+    <string name="pref_color_black">Black</string>
+    <string name="pref_color_blue">Blue</string>
+    <string name="pref_color_cyan">Cyan</string>
+    <string name="pref_color_dkgray">Dark gray</string>
+    <string name="pref_color_gray">Gray</string>
+    <string name="pref_color_green">Green</string>
+    <string name="pref_color_ltgray">Light gray</string>
+    <string name="pref_color_magenta">Magenta</string>
+    <string name="pref_color_red">Red</string>
+    <string name="pref_color_white">White</string>
+    <string name="pref_color_yellow">Yellow</string>
+    <string name="pref_color_orange">Orange</string>
+    <string name="pref_color_transparent">Transparent</string>
+    <string name="pref_color_default">Default</string>
+
+    <string name="pref_color_black_value" translatable="false">-16777216</string>
+    <string name="pref_color_blue_value" translatable="false">-16776961</string>
+    <string name="pref_color_cyan_value" translatable="false">-16711681</string>
+    <string name="pref_color_dkgray_value" translatable="false">-12303292</string>
+    <string name="pref_color_gray_value" translatable="false">-7829368</string>
+    <string name="pref_color_green_value" translatable="false">-16711936</string>
+    <string name="pref_color_ltgray_value" translatable="false">-3355444</string>
+    <string name="pref_color_magenta_value" translatable="false">-65281</string>
+    <string name="pref_color_red_value" translatable="false">-65536</string>
+    <string name="pref_color_white_value" translatable="false">-1</string>
+    <string name="pref_color_yellow_value" translatable="false">-256</string>
+    <string name="pref_color_orange_value" translatable="false">-33024</string>
+    <string name="pref_color_transparent_value" translatable="false">0</string>
+    <string name="pref_color_default_value" translatable="false">-14606047</string><!--= @color/primary_material_dark-->
+
+    <string-array name="pref_color_array" translatable="false">
+        <item>@string/pref_color_black</item>
+        <item>@string/pref_color_blue</item>
+        <item>@string/pref_color_cyan</item>
+        <item>@string/pref_color_dkgray</item>
+        <item>@string/pref_color_gray</item>
+        <item>@string/pref_color_green</item>
+        <item>@string/pref_color_ltgray</item>
+        <item>@string/pref_color_magenta</item>
+        <item>@string/pref_color_red</item>
+        <item>@string/pref_color_white</item>
+        <item>@string/pref_color_yellow</item>
+        <item>@string/pref_color_orange</item>
     </string-array>
     <string-array name="pref_color_array_values" translatable="false">
-        <item>-16777216</item>
-        <item>-16776961</item>
-        <item>-16711681</item>
-        <item>-12303292</item>
-        <item>-7829368</item>
-        <item>-16711936</item>
-        <item>-3355444</item>
-        <item>-65281</item>
-        <item>-65536</item>
-        <item>-1</item>
-        <item>-256</item>
-        <item>-33024</item>
+        <item>@string/pref_color_black_value</item>
+        <item>@string/pref_color_blue_value</item>
+        <item>@string/pref_color_cyan_value</item>
+        <item>@string/pref_color_dkgray_value</item>
+        <item>@string/pref_color_gray_value</item>
+        <item>@string/pref_color_green_value</item>
+        <item>@string/pref_color_ltgray_value</item>
+        <item>@string/pref_color_magenta_value</item>
+        <item>@string/pref_color_red_value</item>
+        <item>@string/pref_color_white_value</item>
+        <item>@string/pref_color_yellow_value</item>
+        <item>@string/pref_color_orange_value</item>
     </string-array>
 
-    <string-array name="pref_background_color_array">
-        <item>Transparent</item>
-        <item>Black</item>
-        <item>Blue</item>
-        <item>Cyan</item>
-        <item>Dark gray</item>
-        <item>Gray</item>
-        <item>Green</item>
-        <item>Light gray</item>
-        <item>Magenta</item>
-        <item>Red</item>
-        <item>White</item>
-        <item>Yellow</item>
-        <item>Orange</item>
+    <string-array name="pref_background_color_array" translatable="false">
+        <item>@string/pref_color_transparent</item>
+        <item>@string/pref_color_black</item>
+        <item>@string/pref_color_blue</item>
+        <item>@string/pref_color_cyan</item>
+        <item>@string/pref_color_dkgray</item>
+        <item>@string/pref_color_gray</item>
+        <item>@string/pref_color_green</item>
+        <item>@string/pref_color_ltgray</item>
+        <item>@string/pref_color_magenta</item>
+        <item>@string/pref_color_red</item>
+        <item>@string/pref_color_white</item>
+        <item>@string/pref_color_yellow</item>
+        <item>@string/pref_color_orange</item>
     </string-array>
     <string-array name="pref_background_color_array_values" translatable="false">
-        <item>0</item>
-        <item>-16777216</item>
-        <item>-16776961</item>
-        <item>-16711681</item>
-        <item>-12303292</item>
-        <item>-7829368</item>
-        <item>-16711936</item>
-        <item>-3355444</item>
-        <item>-65281</item>
-        <item>-65536</item>
-        <item>-1</item>
-        <item>-256</item>
-        <item>-33024</item>
+        <item>@string/pref_color_transparent_value</item>
+        <item>@string/pref_color_black_value</item>
+        <item>@string/pref_color_blue_value</item>
+        <item>@string/pref_color_cyan_value</item>
+        <item>@string/pref_color_dkgray_value</item>
+        <item>@string/pref_color_gray_value</item>
+        <item>@string/pref_color_green_value</item>
+        <item>@string/pref_color_ltgray_value</item>
+        <item>@string/pref_color_magenta_value</item>
+        <item>@string/pref_color_red_value</item>
+        <item>@string/pref_color_white_value</item>
+        <item>@string/pref_color_yellow_value</item>
+        <item>@string/pref_color_orange_value</item>
     </string-array>
 
-    <string-array name="pref_action_bar_color_array">
-        <item>Default</item>
-        <item>Black</item>
-        <item>Blue</item>
-        <item>Cyan</item>
-        <item>Dark gray</item>
-        <item>Gray</item>
-        <item>Green</item>
-        <item>Light gray</item>
-        <item>Magenta</item>
-        <item>Red</item>
-        <item>White</item>
-        <item>Yellow</item>
-        <item>Orange</item>
+    <string-array name="pref_action_bar_color_array" translatable="false">
+        <item>@string/pref_color_default</item>
+        <item>@string/pref_color_black</item>
+        <item>@string/pref_color_blue</item>
+        <item>@string/pref_color_cyan</item>
+        <item>@string/pref_color_dkgray</item>
+        <item>@string/pref_color_gray</item>
+        <item>@string/pref_color_green</item>
+        <item>@string/pref_color_ltgray</item>
+        <item>@string/pref_color_magenta</item>
+        <item>@string/pref_color_red</item>
+        <item>@string/pref_color_white</item>
+        <item>@string/pref_color_yellow</item>
+        <item>@string/pref_color_orange</item>
     </string-array>
     <string-array name="pref_action_bar_color_array_values" translatable="false">
-        <item>-14606047</item><!--= @color/primary_material_dark-->
-        <item>-16777216</item>
-        <item>-16776961</item>
-        <item>-16711681</item>
-        <item>-12303292</item>
-        <item>-7829368</item>
-        <item>-16711936</item>
-        <item>-3355444</item>
-        <item>-65281</item>
-        <item>-65536</item>
-        <item>-1</item>
-        <item>-256</item>
-        <item>-33024</item>
+        <item>@string/pref_color_default_value</item>
+        <item>@string/pref_color_black_value</item>
+        <item>@string/pref_color_blue_value</item>
+        <item>@string/pref_color_cyan_value</item>
+        <item>@string/pref_color_dkgray_value</item>
+        <item>@string/pref_color_gray_value</item>
+        <item>@string/pref_color_green_value</item>
+        <item>@string/pref_color_ltgray_value</item>
+        <item>@string/pref_color_magenta_value</item>
+        <item>@string/pref_color_red_value</item>
+        <item>@string/pref_color_white_value</item>
+        <item>@string/pref_color_yellow_value</item>
+        <item>@string/pref_color_orange_value</item>
     </string-array>
 
-    <string-array name="pref_auto_mark_read_array">
-        <item>On display paused</item>
-        <item>On plan reloaded</item>
-        <item>Never</item>
+    <string name="pref_auto_mark_read_on_activity_pause">On display paused</string>
+    <string name="pref_auto_mark_read_on_plan_reloaded">On plan reloaded</string>
+    <string name="pref_auto_mark_read_never">Never</string>
+    <string name="pref_auto_mark_read_on_activity_pause_value" translatable="false">onActivityPause</string>
+    <string name="pref_auto_mark_read_on_plan_reloaded_value" translatable="false">onPlanReloaded</string>
+    <string name="pref_auto_mark_read_never_value" translatable="false">never</string>
+    <string-array name="pref_auto_mark_read_array" translatable="false">
+        <item>@string/pref_auto_mark_read_on_activity_pause</item>
+        <item>@string/pref_auto_mark_read_on_plan_reloaded</item>
+        <item>@string/pref_auto_mark_read_never</item>
     </string-array>
     <string-array name="pref_auto_mark_read_array_values" translatable="false">
-        <item>onActivityPause</item>
-        <item>onPlanReloaded</item>
-        <item>never</item>
+        <item>@string/pref_auto_mark_read_on_activity_pause_value</item>
+        <item>@string/pref_auto_mark_read_on_plan_reloaded_value</item>
+        <item>@string/pref_auto_mark_read_never_value</item>
     </string-array>
 
     <string name="today">Today</string>
@@ -197,13 +233,17 @@
     <string name="pref_developing_enabled">Secret code</string>
     <string name="pref_developing_enabled_summary">Do not use this unless you are me</string>
     <string name="pref_theme">Theme</string>
-    <string-array name="pref_theme_array">
-        <item>Light</item>
-        <item>Dark</item>
+    <string name="pref_theme_light">Light</string>
+    <string name="pref_theme_dark">Dark</string>
+    <string name="pref_theme_light_value" translatable="false">light</string>
+    <string name="pref_theme_dark_value" translatable="false">dark</string>
+    <string-array name="pref_theme_array" translatable="false">
+        <item>@string/pref_theme_light</item>
+        <item>@string/pref_theme_dark</item>
     </string-array>
     <string-array name="pref_theme_array_values" translatable="false">
-        <item>light</item>
-        <item>dark</item>
+        <item>@string/pref_theme_light_value</item>
+        <item>@string/pref_theme_dark_value</item>
     </string-array>
     <string name="pref_customize_background_colors">Customize background</string>
     <string name="pref_customize_background_colors_summary">Customize background colors</string>
@@ -217,25 +257,25 @@
     <string name="pref_notification_sound">Choose notification sound</string>
     <string name="pref_led_notification_enabled">Enable LED</string>
     <string name="pref_led_notification_color">LED color</string>
-    <string-array name="pref_led_color_array">
-        <item>Blue</item>
-        <item>Cyan</item>
-        <item>Green</item>
-        <item>Magenta</item>
-        <item>Red</item>
-        <item>White</item>
-        <item>Yellow</item>
-        <item>Orange</item>
+    <string-array name="pref_led_color_array" translatable="false">
+        <item>@string/pref_color_blue</item>
+        <item>@string/pref_color_cyan</item>
+        <item>@string/pref_color_green</item>
+        <item>@string/pref_color_magenta</item>
+        <item>@string/pref_color_red</item>
+        <item>@string/pref_color_white</item>
+        <item>@string/pref_color_yellow</item>
+        <item>@string/pref_color_orange</item>
     </string-array>
     <string-array name="pref_led_color_array_values" translatable="false">
-        <item>-16776961</item>
-        <item>-16711681</item>
-        <item>-16711936</item>
-        <item>-65281</item>
-        <item>-65536</item>
-        <item>-1</item>
-        <item>-256</item>
-        <item>-33024</item>
+        <item>@string/pref_color_blue_value</item>
+        <item>@string/pref_color_cyan_value</item>
+        <item>@string/pref_color_green_value</item>
+        <item>@string/pref_color_magenta_value</item>
+        <item>@string/pref_color_red_value</item>
+        <item>@string/pref_color_white_value</item>
+        <item>@string/pref_color_yellow_value</item>
+        <item>@string/pref_color_orange_value</item>
     </string-array>
     <string name="pref_vibrate_notification_enabled">Enable vibration</string>
     <string name="action_about">About</string>

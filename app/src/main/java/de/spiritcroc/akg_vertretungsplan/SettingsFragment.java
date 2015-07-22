@@ -134,40 +134,36 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             SharedPreferences.Editor editor = sharedPreferences.edit();
 
             //adapt custom colors to new theme:
-            if (theme.equals("light")){
-                if (sharedPreferences.getString("pref_header_text_text_color", "").equals("-1"))
-                    editor.putString("pref_header_text_text_color", "-16777216");
-                if (sharedPreferences.getString("pref_class_text_text_color", "").equals("-16711681"))
-                    editor.putString("pref_class_text_text_color", "-16776961");
-                if (sharedPreferences.getString("pref_normal_text_text_color", "").equals("-1"))
-                    editor.putString("pref_normal_text_text_color", "-16777216");
-                if (sharedPreferences.getString("pref_relevant_text_text_color", "").equals("-1"))
-                    editor.putString("pref_relevant_text_text_color", "-16777216");
-                if (sharedPreferences.getString("pref_relevant_text_text_color_highlight", "").equals("-16711681"))
-                    editor.putString("pref_relevant_text_text_color_highlight", "-16776961");
+            if (theme.equals(getString(R.string.pref_theme_light_value))){
+                if (sharedPreferences.getString("pref_header_text_text_color", "").equals(getString(R.string.pref_color_white_value)))
+                    editor.putString("pref_header_text_text_color", getString(R.string.pref_color_black_value));
+                if (sharedPreferences.getString("pref_class_text_text_color", "").equals(getString(R.string.pref_color_cyan_value)))
+                    editor.putString("pref_class_text_text_color", getString(R.string.pref_color_blue_value));
+                if (sharedPreferences.getString("pref_normal_text_text_color", "").equals(getString(R.string.pref_color_white_value)))
+                    editor.putString("pref_normal_text_text_color", getString(R.string.pref_color_black_value));
+                if (sharedPreferences.getString("pref_relevant_text_text_color", "").equals(getString(R.string.pref_color_white_value)))
+                    editor.putString("pref_relevant_text_text_color", getString(R.string.pref_color_black_value));
 
-                if (sharedPreferences.getString("pref_relevant_text_background_color", "").equals("-16776961"))
-                    editor.putString("pref_relevant_text_background_color", "-256");
-                if (sharedPreferences.getString("pref_relevant_text_background_color_highlight", "").equals("-16776961"))
-                    editor.putString("pref_relevant_text_background_color_highlight", "-256");
+                if (sharedPreferences.getString("pref_relevant_text_background_color", "").equals(getString(R.string.pref_color_blue_value)))
+                    editor.putString("pref_relevant_text_background_color", getString(R.string.pref_color_yellow_value));
+                if (sharedPreferences.getString("pref_relevant_text_background_color_highlight", "").equals(getString(R.string.pref_color_blue_value)))
+                    editor.putString("pref_relevant_text_background_color_highlight", getString(R.string.pref_color_yellow_value));
             }
-            else if (theme.equals("dark")){
-                if (sharedPreferences.getString("pref_header_text_text_color", "").equals("-16777216"))
-                    editor.putString("pref_header_text_text_color", "-1");
-                if (sharedPreferences.getString("pref_class_text_text_color", "").equals("-16776961"))
-                    editor.putString("pref_class_text_text_color", "-16711681");
-                if (sharedPreferences.getString("pref_normal_text_text_color", "").equals("-16777216"))
-                    editor.putString("pref_normal_text_text_color", "-1");
-                if (sharedPreferences.getString("pref_relevant_text_text_color", "").equals("-16777216"))
-                    editor.putString("pref_relevant_text_text_color", "-1");
-                if (sharedPreferences.getString("pref_relevant_text_text_color_highlight", "").equals("-16776961"))
-                    editor.putString("pref_relevant_text_text_color_highlight", "-16711681");
+            else if (theme.equals(getString(R.string.pref_theme_dark_value))){
+                if (sharedPreferences.getString("pref_header_text_text_color", "").equals(getString(R.string.pref_color_black_value)))
+                    editor.putString("pref_header_text_text_color", getString(R.string.pref_color_white_value));
+                if (sharedPreferences.getString("pref_class_text_text_color", "").equals(getString(R.string.pref_color_blue_value)))
+                    editor.putString("pref_class_text_text_color", getString(R.string.pref_color_cyan_value));
+                if (sharedPreferences.getString("pref_normal_text_text_color", "").equals(getString(R.string.pref_color_black_value)))
+                    editor.putString("pref_normal_text_text_color", getString(R.string.pref_color_white_value));
+                if (sharedPreferences.getString("pref_relevant_text_text_color", "").equals(getString(R.string.pref_color_black_value)))
+                    editor.putString("pref_relevant_text_text_color", getString(R.string.pref_color_white_value));
 
 
-                if (sharedPreferences.getString("pref_relevant_text_background_color", "").equals("-256"))
-                    editor.putString("pref_relevant_text_background_color", "-16776961");
-                if (sharedPreferences.getString("pref_relevant_text_background_color_highlight", "").equals("-256"))
-                    editor.putString("pref_relevant_text_background_color_highlight", "-16776961");
+                if (sharedPreferences.getString("pref_relevant_text_background_color", "").equals(getString(R.string.pref_color_yellow_value)))
+                    editor.putString("pref_relevant_text_background_color", getString(R.string.pref_color_blue_value));
+                if (sharedPreferences.getString("pref_relevant_text_background_color_highlight", "").equals(getString(R.string.pref_color_yellow_value)))
+                    editor.putString("pref_relevant_text_background_color_highlight", getString(R.string.pref_color_blue_value));
             }
             editor.apply();
         }
