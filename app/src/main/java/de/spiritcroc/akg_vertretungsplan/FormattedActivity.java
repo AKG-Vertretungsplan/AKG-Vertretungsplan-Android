@@ -233,6 +233,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
                         decorView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                     else
                         decorView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    setActionBarColor();
                 }
             });
 
@@ -263,15 +264,6 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
         return super.onCreateOptionsMenu(menu);
     }
     private void setActionBarColor(){
-        setActionBarColor(true);
-    }
-    private Runnable SetActionBarColorRunnable = new Runnable() {
-        @Override
-        public void run() {
-            setActionBarColor(false);
-        }
-    };
-    private void setActionBarColor(boolean tryAgain){
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             int backgroundColor = filteredMode ?
@@ -293,8 +285,6 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
                 filterItem.setIcon(darkText ? R.drawable.ic_filter_list_black_36dp : R.drawable.ic_filter_list_white_36dp);
             if (markReadItem != null)
                 markReadItem.setIcon(darkText ? R.drawable.ic_done_black_36dp : R.drawable.ic_done_white_36dp);
-            else if (tryAgain)
-                new Handler().postDelayed(SetActionBarColorRunnable, 100);
         }
     }
 
