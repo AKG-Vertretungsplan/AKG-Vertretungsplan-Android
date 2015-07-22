@@ -28,4 +28,14 @@ public class SettingsActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsFragment()).commit();
     }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        IsRunningSingleton.getInstance().registerActivity(this);
+    }
+    @Override
+    protected void onPause(){
+        super.onPause();
+        IsRunningSingleton.getInstance().unregisterActivity(this);
+    }
 }
