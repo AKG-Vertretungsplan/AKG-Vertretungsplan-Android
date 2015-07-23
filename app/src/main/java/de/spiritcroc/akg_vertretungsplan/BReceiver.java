@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -48,7 +49,7 @@ public class BReceiver extends BroadcastReceiver {
     public static void startDownloadService(Context context, boolean now){
         int period = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString("pref_background_update_interval", "60"))*60000;
         Log.d("startDownloadService", now ? "now" : "period: " + period);
-        ((AlarmManager) context.getSystemService(context.ALARM_SERVICE)).set(AlarmManager.ELAPSED_REALTIME, now ? 0 : period, getAlarmPendingIntent(context, PendingIntent.FLAG_CANCEL_CURRENT));
+        ((AlarmManager) context.getSystemService(context.ALARM_SERVICE)).set(AlarmManager.ELAPSED_REALTIME, now ? 0 : SystemClock.elapsedRealtime() + period, getAlarmPendingIntent(context, PendingIntent.FLAG_CANCEL_CURRENT));
     }
     public static void stopDownloadService(Context context){
         ((AlarmManager) context.getSystemService(context.ALARM_SERVICE)).cancel(getAlarmPendingIntent(context, PendingIntent.FLAG_CANCEL_CURRENT));
