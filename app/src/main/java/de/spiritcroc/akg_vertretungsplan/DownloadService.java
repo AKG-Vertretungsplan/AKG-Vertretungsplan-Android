@@ -211,13 +211,13 @@ public class DownloadService extends IntentService {
             Tools.updateWidgets(this);
         }
     }
-    protected void loadWebViewData(String data){
+    private void loadWebViewData(String data){
         Intent intent = new Intent("PlanDownloadServiceUpdate");
         intent.putExtra("action", "loadWebViewData");
         intent.putExtra("data", data);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
-    protected void loadFragmentData(String title1, String plan1, String title2, String plan2){
+    private void loadFragmentData(String title1, String plan1, String title2, String plan2){
         Intent intent = new Intent("PlanDownloadServiceUpdate");
         intent.putExtra("action", "loadFragmentData");
         intent.putExtra("title1", title1);
@@ -226,7 +226,7 @@ public class DownloadService extends IntentService {
         intent.putExtra("plan2", plan2);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
-    protected void setTextViewText(String text){
+    private void setTextViewText(String text){
         SharedPreferences.Editor editor = getSharedPreferences().edit();
         editor.putString("pref_text_view_text", text);
         editor.apply();
@@ -235,7 +235,7 @@ public class DownloadService extends IntentService {
         intent.putExtra("text", text);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
-    protected void showText(String text){   //toast+textView
+    private void showText(String text){   //toast+textView
         Intent intent = new Intent("PlanDownloadServiceUpdate");
         intent.putExtra("action", "showToast");
         intent.putExtra("text", text);
@@ -243,7 +243,7 @@ public class DownloadService extends IntentService {
         setTextViewText(text);
     }
 
-    protected void startLoginActivity() {
+    private void startLoginActivity() {
         startActivity(new Intent(this, SettingsActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
         getSharedPreferences().edit().putBoolean("pref_reload_on_resume", true).apply();//reload on resume of FormattedActivity at the latest
     }
@@ -659,7 +659,7 @@ public class DownloadService extends IntentService {
 
         processPlan(result);
     }
-    String dummyCSS = "body { margin-top:20px;font-family:sans-serif;\n" +
+    private final String dummyCSS = "body { margin-top:20px;font-family:sans-serif;\n" +
             "       }\n" +
             "\n" +
             "th { color: #eee; \n" +
@@ -687,7 +687,7 @@ public class DownloadService extends IntentService {
             "{   \n" +
             "  text-align:left;\n" +
             "}\n";
-    String dummy1 = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n" +
+    private final String dummy1 = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n" +
             "<html><head>\n" +
             "<meta http-equiv=\"content-type\" content=\"text/html; charset=windows-1252\"><link rel=\"stylesheet\" type=\"text/css\" href=\"WILLI-Dateien/willi.css\"><script src=\"WILLI-Dateien/willi.htm\" type=\"text/javascript\"></script><title>WILLI</title></head>\n" +
             "<body>\n" +
@@ -935,7 +935,7 @@ public class DownloadService extends IntentService {
             "<a href=\"https://itunes.apple.code/app/akg-vertretungsplan/id918844717?l=de&amp;ls=1&amp;mt=8\" target=\"_new\">zur IOS-App von Yann Rekker</a>&nbsp; -&nbsp; <a href=\"https://play.google.com/store/apps/details?id=de.atozdev.vertretungsplanapp&amp;hl=de\" target=\"_new\">zur Android-App von Philipp B&uuml;chner</a> </p>\n" +
             "<hr>\n" +
             "</body></html>";
-    String dummy2 = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n" +
+    private final String dummy2 = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n" +
             "<html><head>\n" +
             "<meta http-equiv=\"content-type\" content=\"text/html; charset=windows-1252\"><link rel=\"stylesheet\" type=\"text/css\" href=\"WILLI-Dateien/willi.css\"><script src=\"WILLI-Dateien/willi.htm\" type=\"text/javascript\"></script><title>WILLI</title></head>\n" +
             "<body>\n" +
@@ -1208,7 +1208,7 @@ public class DownloadService extends IntentService {
             "<a href=\"https://itunes.apple.code/app/akg-vertretungsplan/id918844717?l=de&amp;ls=1&amp;mt=8\" target=\"_new\">zur IOS-App von Yann Rekker</a>&nbsp; -&nbsp; <a href=\"https://play.google.com/store/apps/details?id=de.atozdev.vertretungsplanapp&amp;hl=de\" target=\"_new\">zur Android-App von Philipp Büchner</a> </p>\n" +
             "<hr>\n" +
             "</body></html>";
-    String dummy3 = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xht=\n" +
+    private final String dummy3 = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xht=\n" +
             "ml11/DTD/xhtml11.dtd\"><html><head><meta charset=3D\"ISO-8859-1\"><link rel=3D=\n" +
             "\"stylesheet\" type=3D\"text/css\" href=3D\"http://www.sc.shuttle.de/sc/akg/Ver/=\n" +
             "willi.css\"><title>WILLI</title></head>\n" +
@@ -1494,7 +1494,7 @@ public class DownloadService extends IntentService {
             "von Philipp Büchner</a> </p>\n" +
             "<hr>\n" +
             "</body></html>";
-    String dummy4 = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xht=\n" +
+    private final String dummy4 = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xht=\n" +
             "ml11/DTD/xhtml11.dtd\"><html><head><meta charset=3D\"ISO-8859-1\"><link rel=3D=\n" +
             "\"stylesheet\" type=3D\"text/css\" href=3D\"http://www.sc.shuttle.de/sc/akg/Ver/=\n" +
             "willi.css\"><title>WILLI</title></head>\n" +
@@ -1786,7 +1786,7 @@ public class DownloadService extends IntentService {
             "von Philipp Büchner</a> </p>\n" +
             "<hr>\n" +
             "</body></html>";
-    String dummy5 = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n" +
+    private final String dummy5 = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n" +
             "<html><head>\n" +
             "<meta http-equiv=\"content-type\" content=\"text/html; charset=windows-1252\"><link rel=\"stylesheet\" type=\"text/css\" href=\"WILLI-Dateien/willi.css\"><script src=\"WILLI-Dateien/willi.htm\" type=\"text/javascript\"></script><title>WILLI</title></head>\n" +
             "<body>\n" +
@@ -2034,7 +2034,7 @@ public class DownloadService extends IntentService {
             "<a href=\"https://itunes.apple.code/app/akg-vertretungsplan/id918844717?l=de&amp;ls=1&amp;mt=8\" target=\"_new\">zur IOS-App von Yann Rekker</a>&nbsp; -&nbsp; <a href=\"https://play.google.com/store/apps/details?id=de.atozdev.vertretungsplanapp&amp;hl=de\" target=\"_new\">zur Android-App von Philipp B&uuml;chner</a> </p>\n" +
             "<hr>\n" +
             "</body></html>";
-    String dummy6 = "<style media=&quot;screen&quot; type=&quot;text/css&quot;>body { margin-top:20px;font-family:sans-serif;\n" +
+    private final String dummy6 = "<style media=&quot;screen&quot; type=&quot;text/css&quot;>body { margin-top:20px;font-family:sans-serif;\n" +
             "       }\n" +
             "\n" +
             "th { color: #eee; \n" +
@@ -2075,7 +2075,7 @@ public class DownloadService extends IntentService {
             "</h1>\n" +
             "</center>\n" +
             "</body></html>\n";
-    String dummy7 = "<style media=\"screen\" type=\"text/css\">body { margin-top:20px;font-family:sans-serif;\n" +
+    private final String dummy7 = "<style media=\"screen\" type=\"text/css\">body { margin-top:20px;font-family:sans-serif;\n" +
             "       }\n" +
             "\n" +
             "th { color: #eee; \n" +
@@ -2613,7 +2613,7 @@ public class DownloadService extends IntentService {
             "<a href=\"https://appsto.re/de/X3S64.i\" target=\"_new\">zur IOS-App von Yann Rekker</a>&nbsp; -&nbsp; <a href=\"https://play.google.com/store/appsetails?id=de.atozdev.vertretungsplanapp&hl=de\" target=\"_new\">zur Android-App von Philipp B&uuml;chner</a> - <a href=\"https://play.google.com/store/apps/details?id=de.spiritcroc.akg_vertretungsplan\" target=\"_new\">zur Android-App von Tobias B&uuml;ttner</a> </p>\n" +
             "<hr />\n" +
             "</body></html>";
-    String dummy8 = "<style media=\"screen\" type=\"text/css\">body { margin-top:20px;font-family:sans-serif;\n" +
+    private final String dummy8 = "<style media=\"screen\" type=\"text/css\">body { margin-top:20px;font-family:sans-serif;\n" +
             "       }\n" +
             "\n" +
             "th { color: #eee; \n" +

@@ -25,7 +25,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 public class ElementDialog extends DialogFragment{
-    String message, shareMessage;
+    private String message, shareMessage;
     private static final String ARG_MESSAGE = "message";
     private static final String ARG_SHARE_MESSAGE = "share_message";
     @Override

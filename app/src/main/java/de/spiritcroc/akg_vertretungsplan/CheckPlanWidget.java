@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.widget.RemoteViews;
 
 public class CheckPlanWidget extends AppWidgetProvider {
@@ -56,7 +57,7 @@ public class CheckPlanWidget extends AppWidgetProvider {
     }
 
     @Override
-    public void onReceive(Context context, Intent intent){
+    public void onReceive(@NonNull Context context, @NonNull Intent intent){
         super.onReceive(context, intent);
 
         if (intent.getAction().equals(WIDGET_BUTTON_CLICKED)){        //open App
