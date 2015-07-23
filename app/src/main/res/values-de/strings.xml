@@ -117,7 +117,7 @@
     <string name="pref_customize_background_colors_summary">Setze individuelle Hintergrundfarben</string>
     <string name="pref_background_service">Hintergrundservice</string>
     <string name="pref_background_service_summary">Lade den Plan regelmäßig im Hintergrund herunter</string>
-    <string name="pref_background_update_interval">Update Intervall</string>
+    <string name="pref_background_update_interval">Überprüfungsintervall</string>
     <string name="pref_notification">Benachrichtigungen</string>
     <string name="pref_notification_enabled">Benachrichtigungen aktivieren</string>
     <string name="pref_notification_enabled_summary">Zeige eine Benachrichtigung, wenn neue Vertretungen verfügbar sind</string>
@@ -248,5 +248,8 @@
         <item quantity="one">%d neue allgemeine Vertretung</item>
         <item quantity="other">%d neue allgemeine Vertretungen</item>
     </plurals>
+
+    <string name="pref_allow_low_update_intervals">Erlaube niedrige Überprüfungsintervalle</string>
+    <string name="pref_allow_low_update_intervals_summary">Erlaube Überprüfungsintervalle unter 15 Minuten</string>
 
 </resources>

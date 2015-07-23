@@ -433,4 +433,7 @@
         <item quantity="other">%d new pieces of general information</item>
     </plurals>
 
+    <string name="pref_allow_low_update_intervals">Allow low update intervals</string>
+    <string name="pref_allow_low_update_intervals_summary">Allow update intervals lower than 15 minutes</string>
+
 </resources>

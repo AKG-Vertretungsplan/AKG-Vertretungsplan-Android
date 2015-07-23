@@ -354,14 +354,23 @@
             android:title="@string/pref_hidden_debug_enabled"
             android:summary="@string/pref_hidden_debug_enabled_summary" />
         <CheckBoxPreference
+            android:key="pref_allow_low_update_intervals"
+            android:title="@string/pref_allow_low_update_intervals"
+            android:summary="@string/pref_allow_low_update_intervals_summary"
+            android:defaultValue="false"
+            android:dependency="pref_hidden_debug_enabled"/>
+        <CheckBoxPreference
             android:key="pref_enable_option_send_debug_email"
             android:title="@string/pref_enable_option_send_debug_email"
-            android:summary="@string/pref_enable_option_send_debug_email_summary" />
+            android:summary="@string/pref_enable_option_send_debug_email_summary"
+            android:defaultValue="false"
+            android:dependency="pref_hidden_debug_enabled"/>
         <EditTextPreference
             android:key="pref_debugging_enabled"
             android:title="@string/pref_developing_enabled"
             android:summary="@string/pref_developing_enabled_summary"
             android:numeric="integer"
-            android:defaultValue="0"/>
+            android:defaultValue="0"
+            android:dependency="pref_hidden_debug_enabled"/>
     </PreferenceCategory>
 </PreferenceScreen>

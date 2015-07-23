@@ -177,7 +177,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         else if (key.equals("pref_background_update_interval")){
             EditTextPreference tmpEditTextPreference = (EditTextPreference) findPreference("pref_background_update_interval");
             int tmpValue = correctInteger(sharedPreferences, "pref_background_update_interval", tmpEditTextPreference.getText(), 60);
-            if (tmpValue < 15){
+            if (tmpValue < 15 && (!getSharedPreferences().getBoolean("pref_hidden_debug_enabled", false) || !getSharedPreferences().getBoolean("pref_allow_low_update_intervals", false))){
                 tmpValue = 15;
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("pref_background_update_interval", String.valueOf(tmpValue));
