@@ -39,6 +39,8 @@ public class BReceiver extends BroadcastReceiver {
                 ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction()) && sharedPreferences.getBoolean("pref_last_offline", false)){
             if (!DownloadService.isDownloading() && !IsRunningSingleton.getInstance().isRunning())
                 context.startService(new Intent(context, DownloadService.class).setAction(DownloadService.ACTION_DOWNLOAD_PLAN));
+            else
+                startDownloadService(context.getApplicationContext(), false);//Schedule next download nevertheless
         }
     }
 
