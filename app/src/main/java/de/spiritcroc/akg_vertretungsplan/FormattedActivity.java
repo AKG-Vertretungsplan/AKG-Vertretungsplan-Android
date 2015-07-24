@@ -227,12 +227,14 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
                 public void onGlobalLayout() {
                     final ArrayList<View> outViews = new ArrayList<>();
                     Tools.findViewsWithText(outViews, decorView, overflowDescription);
-                    overflow = (TintImageView) outViews.get(0);
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
-                        decorView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                    else
-                        decorView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    setActionBarColor();
+                    if (!outViews.isEmpty()) {
+                        overflow = (TintImageView) outViews.get(0);
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
+                            decorView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        else
+                            decorView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        setActionBarColor();
+                    }
                 }
             });
 
