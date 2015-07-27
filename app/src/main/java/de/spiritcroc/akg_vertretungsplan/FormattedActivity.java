@@ -18,6 +18,7 @@ package de.spiritcroc.akg_vertretungsplan;
 
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -152,6 +153,20 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(1);
+
+
+        try{
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("tag", "de.spiritcroc.akg_vertretungsplan/.FormattedActivity");
+            contentValues.put("count", 0);
+            getContentResolver().insert(Uri.parse("content://com.teslacoilsw.notifier/unread_count"), contentValues);
+        }
+        catch (IllegalArgumentException e){
+            Log.d("FormattedActivity", "TeslaUnread is not installed");
+        }
+        catch (Exception e){
+            Log.e("FormattedActivity", "Got exception while trying to sending count to TeslaUnread: " + e);
+        }
 
         IsRunningSingleton.getInstance().registerActivity(this);
 

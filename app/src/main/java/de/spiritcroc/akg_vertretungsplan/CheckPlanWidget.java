@@ -79,8 +79,9 @@ public class CheckPlanWidget extends AppWidgetProvider {
             views.setTextViewText(R.id.appwidget_button, context.getString(R.string.error_illegal_plan));
         }
         else if (sharedPreferences.getBoolean("pref_unseen_changes", false)){
-            Tools.Int newGeneralNotificationCount = new Tools.Int();
-            int newRelevantNotificationCount = DownloadService.getNewRelevantInformationCount(sharedPreferences, newGeneralNotificationCount);
+            Tools.Int newGeneralNotificationCount = new Tools.Int(),
+                newIrrelevantNotificationCount = new Tools.Int();
+            int newRelevantNotificationCount = DownloadService.getNewRelevantInformationCount(sharedPreferences, newGeneralNotificationCount, newIrrelevantNotificationCount);
             String text = (newRelevantNotificationCount > 0 ?
                     context.getResources().getQuantityString(R.plurals.new_relevant_information, newRelevantNotificationCount, newRelevantNotificationCount) :
                     (newGeneralNotificationCount.value > 0 ?  context.getResources().getQuantityString(R.plurals.new_general_information, newGeneralNotificationCount.value, newGeneralNotificationCount.value) :

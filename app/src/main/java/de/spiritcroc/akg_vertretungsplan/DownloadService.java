@@ -19,6 +19,7 @@ package de.spiritcroc.akg_vertretungsplan;
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -185,8 +186,9 @@ public class DownloadService extends IntentService {
             if (!loadFormattedPlans(result))
                 setTextViewText(getString(R.string.error_illegal_plan));
             if (newVersion) {//Notification after loadFormattedPlans, because getNewRelevantInformationCount depends on it
-                Tools.Int newGeneralNotificationCount = new Tools.Int();
-                int newRelevantNotificationCount = getNewRelevantInformationCount(sharedPreferences, newGeneralNotificationCount);
+                Tools.Int newGeneralNotificationCount = new Tools.Int(),
+                    newIrrelevantNotificationCount = new Tools.Int();
+                int newRelevantNotificationCount = getNewRelevantInformationCount(sharedPreferences, newGeneralNotificationCount, newIrrelevantNotificationCount);
                 if (!sharedPreferences.getBoolean("pref_notification_only_if_relevant", false) || newRelevantNotificationCount > 0
                         || (!sharedPreferences.getBoolean("pref_notification_general_not_relevant", false) && newGeneralNotificationCount.value > 0)) {
                     String message = (newRelevantNotificationCount > 0 ? getResources().getQuantityString(R.plurals.new_relevant_information, newRelevantNotificationCount, newRelevantNotificationCount) :
@@ -195,6 +197,27 @@ public class DownloadService extends IntentService {
                     maybePostNotification(getString(R.string.new_version), message);
                     if (newRelevantNotificationCount > 0)
                         setTextViewText(getResources().getQuantityString(R.plurals.new_relevant_information, newRelevantNotificationCount, newRelevantNotificationCount));
+                }
+                if (sharedPreferences.getBoolean("pref_tesla_unread_enable", true)){
+                    int fullCount = newRelevantNotificationCount;
+                    if (sharedPreferences.getBoolean("pref_tesla_unread_use_complete_count", false))
+                        fullCount += newGeneralNotificationCount.value + newIrrelevantNotificationCount.value;
+                    else if (sharedPreferences.getBoolean("pref_tesla_unread_include_general_information_count", true))
+                        fullCount += newGeneralNotificationCount.value;
+                    if (fullCount > 0){
+                        try{
+                            ContentValues contentValues = new ContentValues();
+                            contentValues.put("tag", "de.spiritcroc.akg_vertretungsplan/.FormattedActivity");
+                            contentValues.put("count", fullCount);
+                            getContentResolver().insert(Uri.parse("content://com.teslacoilsw.notifier/unread_count"), contentValues);
+                        }
+                        catch (IllegalArgumentException e){
+                            Log.d("DownloadService", "TeslaUnread is not installed");
+                        }
+                        catch (Exception e){
+                            Log.e("DownloadService", "Got exception while trying to sending count to TeslaUnread: " + e);
+                        }
+                    }
                 }
             }
         }
@@ -560,14 +583,15 @@ public class DownloadService extends IntentService {
         notificationManager.notify(1, builder.build());
     }
 
-    public static int getNewRelevantInformationCount(SharedPreferences sharedPreferences, Tools.Int newGeneralInformationCount){
+    public static int getNewRelevantInformationCount(SharedPreferences sharedPreferences, Tools.Int newGeneralInformationCount, Tools.Int newIrrelevantInformationCount){
         newGeneralInformationCount.value = 0;
+        newIrrelevantInformationCount.value = 0;
         return LessonPlan.getInstance(sharedPreferences).isConfigured() ?
-                getNewRelevantInformationCount(sharedPreferences, sharedPreferences.getString("pref_current_plan_1", ""), sharedPreferences.getString("pref_current_title_1", ""), newGeneralInformationCount) +
-                getNewRelevantInformationCount(sharedPreferences, sharedPreferences.getString("pref_current_plan_2", ""), sharedPreferences.getString("pref_current_title_2", ""), newGeneralInformationCount) :
+                getNewRelevantInformationCount(sharedPreferences, sharedPreferences.getString("pref_current_plan_1", ""), sharedPreferences.getString("pref_current_title_1", ""), newGeneralInformationCount, newIrrelevantInformationCount) +
+                getNewRelevantInformationCount(sharedPreferences, sharedPreferences.getString("pref_current_plan_2", ""), sharedPreferences.getString("pref_current_title_2", ""), newGeneralInformationCount, newIrrelevantInformationCount) :
                 0;
     }
-    private static int getNewRelevantInformationCount(SharedPreferences sharedPreferences, String currentContent, String title, Tools.Int newGeneralInformationCount){
+    private static int getNewRelevantInformationCount(SharedPreferences sharedPreferences, String currentContent, String title, Tools.Int newGeneralInformationCount, Tools.Int newIrrelevantInformationCount){
         String latestContent;
         if (title.equals(sharedPreferences.getString("pref_latest_title_1", "")))    //check date for comparison
             latestContent = sharedPreferences.getString("pref_latest_plan_1", "");
@@ -612,6 +636,8 @@ public class DownloadService extends IntentService {
                             try {
                                 if (lessonPlan.isRelevant(calendar.get(Calendar.DAY_OF_WEEK), Integer.parseInt(tmpRowContent[2]), tmpRowContent[1]))
                                     count++;
+                                else
+                                    newIrrelevantInformationCount.value++;
                             } catch (Exception e) {
                                 Log.e("DownloadService", "getNewRelevantInformationCount: Got exception while checking for relevancy: " + e);
                             }

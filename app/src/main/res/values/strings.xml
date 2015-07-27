@@ -435,5 +435,10 @@
 
     <string name="pref_allow_low_update_intervals">Allow low update intervals</string>
     <string name="pref_allow_low_update_intervals_summary">Allow update intervals lower than 15 minutes</string>
+    <string name="pref_tesla_unread">TeslaUnread</string>
+    <string name="pref_tesla_unread_enable">Enable TeslaUnread</string>
+    <string name="pref_tesla_unread_use_complete_count">Complete count</string>
+    <string name="pref_tesla_unread_use_complete_count_summary">Do not filter by relevancy</string>
+    <string name="pref_tesla_unread_include_general_information_count">Include general information count</string>
 
 </resources>

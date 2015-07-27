@@ -251,5 +251,10 @@
 
     <string name="pref_allow_low_update_intervals">Erlaube niedrige Überprüfungsintervalle</string>
     <string name="pref_allow_low_update_intervals_summary">Erlaube Überprüfungsintervalle unter 15 Minuten</string>
+    <string name="pref_tesla_unread">TeslaUnread</string>
+    <string name="pref_tesla_unread_enable">Aktiviere TeslaUnread</string>
+    <string name="pref_tesla_unread_use_complete_count">Vollständige Anzahl</string>
+    <string name="pref_tesla_unread_use_complete_count_summary">Kein Vertretungsfilter nach Relevanz durch den Stundenplan</string>
+    <string name="pref_tesla_unread_include_general_information_count">Zähle allgemeine Vertretungen</string>
 
 </resources>

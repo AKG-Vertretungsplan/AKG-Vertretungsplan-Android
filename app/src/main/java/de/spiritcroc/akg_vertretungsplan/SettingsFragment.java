@@ -18,6 +18,7 @@ package de.spiritcroc.akg_vertretungsplan;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.SystemClock;
 import android.preference.CheckBoxPreference;
@@ -29,6 +30,7 @@ import android.preference.PreferenceFragment;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.Toast;
 
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener{
@@ -102,6 +104,17 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             basePrefScreen.removePreference(hiddenDebug);
         else
             basePrefScreen.removePreference(hiddenDebugPrefScreen);
+
+        PackageManager packageManager = getActivity().getPackageManager();
+        try{
+            packageManager.getPackageInfo("com.teslacoilsw.notifier", PackageManager.GET_ACTIVITIES);
+        }
+        catch (PackageManager.NameNotFoundException e){
+            Log.v("SettingsFragment", "TeslaUnread not installed");
+            PreferenceScreen teslaUnreadPrefScreen = (PreferenceScreen) findPreference("pref_tesla_unread");
+            PreferenceCategory parent = (PreferenceCategory) findPreference("pref_individualisation");
+            parent.removePreference(teslaUnreadPrefScreen);
+        }
     }
 
     @Override

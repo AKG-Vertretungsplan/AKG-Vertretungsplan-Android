@@ -33,6 +33,7 @@
             android:defaultValue=""/>
         </PreferenceCategory>
     <PreferenceCategory
+        android:key="pref_individualisation"
         android:title="@string/pref_individualisation">
         <PreferenceScreen
             android:title="@string/pref_general_behaviour">
@@ -111,6 +112,27 @@
                     android:defaultValue="false"
                     android:dependency="pref_notification_only_if_relevant"/>
             </PreferenceCategory>
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:key="pref_tesla_unread"
+            android:title="@string/pref_tesla_unread">
+            <CheckBoxPreference
+                android:key="pref_tesla_unread_enable"
+                android:title="@string/pref_tesla_unread_enable"
+                android:defaultValue="true"/>
+            <CheckBoxPreference
+                android:key="pref_tesla_unread_use_complete_count"
+                android:title="@string/pref_tesla_unread_use_complete_count"
+                android:summary="@string/pref_tesla_unread_use_complete_count_summary"
+                android:defaultValue="false"
+                android:disableDependentsState="true"
+                android:dependency="pref_tesla_unread_enable"/>
+            <CheckBoxPreference
+                android:key="pref_tesla_unread_include_general_information_count"
+                android:title="@string/pref_tesla_unread_include_general_information_count"
+                android:defaultValue="true"
+                android:dependency="pref_tesla_unread_use_complete_count"/>
         </PreferenceScreen>
 
         <PreferenceScreen
