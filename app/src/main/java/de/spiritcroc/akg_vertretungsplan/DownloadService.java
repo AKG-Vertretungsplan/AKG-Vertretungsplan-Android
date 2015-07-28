@@ -204,7 +204,7 @@ public class DownloadService extends IntentService {
                         fullCount += newGeneralNotificationCount.value + newIrrelevantNotificationCount.value;
                     else if (sharedPreferences.getBoolean("pref_tesla_unread_include_general_information_count", true))
                         fullCount += newGeneralNotificationCount.value;
-                    if (fullCount > 0){
+                    if (!IsRunningSingleton.getInstance().isRunning()){
                         try{
                             ContentValues contentValues = new ContentValues();
                             contentValues.put("tag", "de.spiritcroc.akg_vertretungsplan/.FormattedActivity");
