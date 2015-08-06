@@ -104,7 +104,15 @@ public class WebActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplication(), LessonPlanActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
                 return true;
             case R.id.action_open_in_browser:
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(DownloadService.PLAN_ADDRESS)));
+                String username = sharedPreferences.getString("pref_username", ""),
+                        password = sharedPreferences.getString("pref_password", "");
+                String link = DownloadService.PLAN_ADDRESS;
+                String prefix = "http://";
+                int index = link.indexOf(prefix);
+                if (!username.equals("") && !password.equals("") && index >= 0) {
+                    link = link.replaceFirst(prefix, prefix + username + ":" + password + "@");
+                }
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
