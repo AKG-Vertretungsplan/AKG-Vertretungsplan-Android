@@ -1,6 +1,9 @@
 Changelog hint: 1. big changes / features added, 2. usefull little changes / features added, 3. bug fixes, minor changes
 Changelog:
 
+Version 4.1 (20)
+- TeslaUnread
+
 Version 4.0 (16)
 - Stundenplan
 - Hervorheben von Vertretungen / Vertretungsfilter durch eingegebenen Stundenplan
