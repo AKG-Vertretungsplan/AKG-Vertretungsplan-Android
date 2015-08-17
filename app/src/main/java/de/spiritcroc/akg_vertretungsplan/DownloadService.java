@@ -189,15 +189,18 @@ public class DownloadService extends IntentService {
                 Tools.Int newGeneralNotificationCount = new Tools.Int(),
                     newIrrelevantNotificationCount = new Tools.Int();
                 int newRelevantNotificationCount = getNewRelevantInformationCount(sharedPreferences, newGeneralNotificationCount, newIrrelevantNotificationCount);
+
+                String message = (newRelevantNotificationCount > 0 ? getResources().getQuantityString(R.plurals.new_relevant_information, newRelevantNotificationCount, newRelevantNotificationCount) :
+                        (newGeneralNotificationCount.value > 0 ?  getResources().getQuantityString(R.plurals.new_general_information, newGeneralNotificationCount.value, newGeneralNotificationCount.value) :
+                                (newIrrelevantNotificationCount.value > 0 ?  getResources().getQuantityString(R.plurals.new_irrelevant_information, newIrrelevantNotificationCount.value, newIrrelevantNotificationCount.value) :
+                        getString(R.string.last_checked) + " " + time)));
                 if (!sharedPreferences.getBoolean("pref_notification_only_if_relevant", false) || newRelevantNotificationCount > 0
                         || (!sharedPreferences.getBoolean("pref_notification_general_not_relevant", false) && newGeneralNotificationCount.value > 0)) {
-                    String message = (newRelevantNotificationCount > 0 ? getResources().getQuantityString(R.plurals.new_relevant_information, newRelevantNotificationCount, newRelevantNotificationCount) :
-                            (newGeneralNotificationCount.value > 0 ?  getResources().getQuantityString(R.plurals.new_general_information, newGeneralNotificationCount.value, newGeneralNotificationCount.value) :
-                            getString(R.string.last_checked) + " " + time));
                     maybePostNotification(getString(R.string.new_version), message);
-                    if (newRelevantNotificationCount > 0)
-                        setTextViewText(getResources().getQuantityString(R.plurals.new_relevant_information, newRelevantNotificationCount, newRelevantNotificationCount));
                 }
+                if (newRelevantNotificationCount > 0 || newGeneralNotificationCount.value > 0 || newIrrelevantNotificationCount.value > 0)
+                    setTextViewText(message);
+
                 if (sharedPreferences.getBoolean("pref_tesla_unread_enable", true)){
                     int fullCount = newRelevantNotificationCount;
                     if (sharedPreferences.getBoolean("pref_tesla_unread_use_complete_count", false))
@@ -586,10 +589,14 @@ public class DownloadService extends IntentService {
     public static int getNewRelevantInformationCount(SharedPreferences sharedPreferences, Tools.Int newGeneralInformationCount, Tools.Int newIrrelevantInformationCount){
         newGeneralInformationCount.value = 0;
         newIrrelevantInformationCount.value = 0;
-        return LessonPlan.getInstance(sharedPreferences).isConfigured() ?
-                getNewRelevantInformationCount(sharedPreferences, sharedPreferences.getString("pref_current_plan_1", ""), sharedPreferences.getString("pref_current_title_1", ""), newGeneralInformationCount, newIrrelevantInformationCount) +
-                getNewRelevantInformationCount(sharedPreferences, sharedPreferences.getString("pref_current_plan_2", ""), sharedPreferences.getString("pref_current_title_2", ""), newGeneralInformationCount, newIrrelevantInformationCount) :
-                0;
+        int count = getNewRelevantInformationCount(sharedPreferences, sharedPreferences.getString("pref_current_plan_1", ""), sharedPreferences.getString("pref_current_title_1", ""), newGeneralInformationCount, newIrrelevantInformationCount) +
+                getNewRelevantInformationCount(sharedPreferences, sharedPreferences.getString("pref_current_plan_2", ""), sharedPreferences.getString("pref_current_title_2", ""), newGeneralInformationCount, newIrrelevantInformationCount);
+        if (!LessonPlan.getInstance(sharedPreferences).isConfigured()){
+            newIrrelevantInformationCount.value += newGeneralInformationCount.value + count;
+            newGeneralInformationCount.value = 0;
+            count = 0;
+        }
+        return count;
     }
     private static int getNewRelevantInformationCount(SharedPreferences sharedPreferences, String currentContent, String title, Tools.Int newGeneralInformationCount, Tools.Int newIrrelevantInformationCount){
         String latestContent;

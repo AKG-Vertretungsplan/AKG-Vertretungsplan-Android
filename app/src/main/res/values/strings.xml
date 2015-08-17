@@ -441,4 +441,9 @@
     <string name="pref_tesla_unread_use_complete_count_summary">Do not filter by relevancy</string>
     <string name="pref_tesla_unread_include_general_information_count">Include general information count</string>
 
+    <plurals name="new_irrelevant_information">
+        <item quantity="one">%d new piece of information</item>
+        <item quantity="other">%d new pieces of information</item>
+    </plurals>
+
 </resources>

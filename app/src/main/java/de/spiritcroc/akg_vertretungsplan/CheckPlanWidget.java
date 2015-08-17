@@ -85,7 +85,8 @@ public class CheckPlanWidget extends AppWidgetProvider {
             String text = (newRelevantNotificationCount > 0 ?
                     context.getResources().getQuantityString(R.plurals.new_relevant_information, newRelevantNotificationCount, newRelevantNotificationCount) :
                     (newGeneralNotificationCount.value > 0 ?  context.getResources().getQuantityString(R.plurals.new_general_information, newGeneralNotificationCount.value, newGeneralNotificationCount.value) :
-                    context.getString(R.string.new_version) + " " + sharedPreferences.getString("pref_last_update", context.getString(R.string.error_could_not_load))));
+                            newIrrelevantNotificationCount.value > 0 ?  context.getResources().getQuantityString(R.plurals.new_irrelevant_information, newIrrelevantNotificationCount.value, newIrrelevantNotificationCount.value) :
+                                    context.getString(R.string.new_version) + " " + sharedPreferences.getString("pref_last_update", context.getString(R.string.error_could_not_load))));
             views.setTextViewText(R.id.appwidget_button, text);
             views.setTextColor(R.id.appwidget_button, Integer.parseInt(sharedPreferences.getString("pref_widget_text_color_highlight", "" + Color.RED)));
         }
