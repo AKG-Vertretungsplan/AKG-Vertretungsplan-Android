@@ -161,7 +161,7 @@
     <string name="dialog_subject">Fach:</string>
     <string name="dialog_subject_summary">Benötigt</string>
     <string name="dialog_teacher_short">Lehrerkürzel:</string>
-    <string name="dialog_teacher_short_summary">Benötigt zur individuellen Vertretungspanzeige</string>
+    <string name="dialog_teacher_short_summary">Benötigt zur individuellen Vertretungsplanpanzeige</string>
     <string name="dialog_teacher_full">Lehrername:</string>
     <string name="dialog_teacher_full_summary">Zur alternativen Anzeige</string>
     <string name="dialog_free">Freistunde</string>
