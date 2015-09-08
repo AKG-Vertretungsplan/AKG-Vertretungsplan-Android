@@ -2,3 +2,5 @@
 app-debug.apk
 app-release.apk
 app.iml
+manifest-merger-debug-report.txt
+manifest-merger-release-report.txt
