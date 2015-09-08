@@ -227,7 +227,7 @@
     <string name="version">Version</string>
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">Cancel</string>
-    <string name="dialog_about_0">\This app is OpenSource. You can find the source code here: https://github.com/SpiritCroc/AKG-Vertretungsplan\n\nContact: spiritcroc@gmail.com</string>
+    <string name="dialog_about_0">\nThis app is OpenSource. You can find the source code here: https://github.com/SpiritCroc/AKG-Vertretungsplan\n\nContact: spiritcroc@gmail.com</string>
     <string name="dialog_about_1_title">\n<u>Used 3rd party components</u></string>
     <string name="dialog_about_1_body">Some "Material Design Icons" (licensed under CC BY 4.0) by Google are used in this app.\nLink: http://www.google.com/design/spec/resources/sticker-sheets-icons.html#sticker-sheets-icons-components</string>
     <string name="pref_developing_enabled">Secret code</string>
