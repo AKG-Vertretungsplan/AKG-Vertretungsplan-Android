@@ -3,4 +3,6 @@
     <dimen name="list_padding_left_right">16dp</dimen>
     <dimen name="list_padding_top_bottom">16dp</dimen>
     <dimen name="list_text_size">16sp</dimen>
+
+    <dimen name="dialog_padding">4dp</dimen>
 </resources>
