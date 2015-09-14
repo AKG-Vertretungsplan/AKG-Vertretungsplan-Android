@@ -23,6 +23,7 @@
     <string name="loading_widget">Load widget…</string>
     <string name="enter_userdata">Please enter credentials</string>
     <string name="correct_userdata">Wrong credentials! Please enter credentials</string>
+    <string name="wrong_userdata">Wrong credentials</string>
     <string name="userdata">Credentials</string>
     <string name="username">Username</string>
     <string name="password">Password</string>

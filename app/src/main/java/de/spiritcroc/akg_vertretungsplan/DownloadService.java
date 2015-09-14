@@ -28,6 +28,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Base64;
@@ -113,6 +114,9 @@ public class DownloadService extends IntentService {
         setTextViewText(getString(R.string.loading));
         Tools.updateWidgets(this);
         maybeSaveFormattedPlan();
+        // Dismiss wrong userdata notifications
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(2);
         try {
             username = getSharedPreferences().getString("pref_username", "");
             password = getSharedPreferences().getString("pref_password", "");
@@ -152,7 +156,11 @@ public class DownloadService extends IntentService {
         if (result.contains("401 Authorization Required")) {
             showText((username.equals("") ? getString(R.string.enter_userdata) : getString(R.string.correct_userdata)));
             loginFailed = true;
-            startLoginActivity();
+            if (IsRunningSingleton.getInstance().isRunning()) {
+                startLoginActivity();
+            } else {
+                postLoginNotification();
+            }
         } else {
             String time = timeAndDateToString(Calendar.getInstance());
             SharedPreferences.Editor editor = getSharedPreferences().edit();
@@ -271,7 +279,11 @@ public class DownloadService extends IntentService {
 
     private void startLoginActivity() {
         startActivity(new Intent(this, SettingsActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-        getSharedPreferences().edit().putBoolean("pref_reload_on_resume", true).apply();//reload on resume of FormattedActivity at the latest
+        getSharedPreferences().edit().putBoolean("pref_reload_on_resume", true).apply();//reload on resume of FormattedActivity
+    }
+    private void postLoginNotification() {
+        postNotification(getString(R.string.wrong_userdata), getString(R.string.enter_userdata), 2, R.drawable.ic_stat_notify_plan_update, SettingsActivity.class, false);
+        getSharedPreferences().edit().putBoolean("pref_reload_on_resume", true).apply();//reload on resume of FormattedActivity
     }
 
     private String timeAndDateToString (Calendar calendar){
@@ -557,33 +569,36 @@ public class DownloadService extends IntentService {
 
     private void maybePostNotification(String title, String text){
         if (!IsRunningSingleton.getInstance().isRunning() && getSharedPreferences().getBoolean("pref_notification_enabled", false))
-            postNotification(title, text);
+            postNotification(title, text, 1, R.drawable.ic_stat_notify_plan_update, FormattedActivity.class, false);
     }
-    private void postNotification (String title, String text){
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this).setSmallIcon(R.drawable.ic_stat_notify_plan_update).setContentTitle(title).setContentText(text);
-        if (getSharedPreferences().getBoolean("pref_notification_sound_enabled", false)) {
-            String notificationSound = getSharedPreferences().getString("pref_notification_sound", "");
-            if (notificationSound.equals(""))
-                builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-            else
-                builder.setSound(Uri.parse(notificationSound));
-        }
-        if (getSharedPreferences().getBoolean("pref_led_notification_enabled", false))
-            builder.setLights(Integer.parseInt(getSharedPreferences().getString("pref_led_notification_color", "-1")), 500, 500);
-        if (getSharedPreferences().getBoolean("pref_vibrate_notification_enabled", false)) {
-            long[] vibrationPattern = {50, 500, 250, 500};
-            builder.setVibrate(vibrationPattern);
+    private void postNotification (String title, @Nullable String text, int id, int smallIconResource, Class touchActivity, boolean silent){
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this).setSmallIcon(smallIconResource).setContentTitle(title);
+        if (text != null)
+            builder.setContentText(text);
+        if (!silent) {
+            if (getSharedPreferences().getBoolean("pref_notification_sound_enabled", false)) {
+                String notificationSound = getSharedPreferences().getString("pref_notification_sound", "");
+                if (notificationSound.equals(""))
+                    builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+                else
+                    builder.setSound(Uri.parse(notificationSound));
+            }
+            if (getSharedPreferences().getBoolean("pref_led_notification_enabled", false))
+                builder.setLights(Integer.parseInt(getSharedPreferences().getString("pref_led_notification_color", "-1")), 500, 500);
+            if (getSharedPreferences().getBoolean("pref_vibrate_notification_enabled", false)) {
+                long[] vibrationPattern = {50, 500, 250, 500};
+                builder.setVibrate(vibrationPattern);
+            }
         }
 
-        Intent resultIntent = new Intent(this, FormattedActivity.class);
+        Intent resultIntent = new Intent(this, touchActivity);
         android.support.v4.app.TaskStackBuilder stackBuilder = android.support.v4.app.TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(FormattedActivity.class);
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(resultPendingIntent);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(1, builder.build());
+        notificationManager.notify(id, builder.build());
     }
 
     public static int getNewRelevantInformationCount(SharedPreferences sharedPreferences, Tools.Int newGeneralInformationCount, Tools.Int newIrrelevantInformationCount){

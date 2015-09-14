@@ -20,6 +20,7 @@
     <string name="action_reload_web_view">Neu laden</string>
     <string name="correct_userdata">Falsche Anmeldedaten! Bitte Anmeldedaten eingeben</string>
     <string name="enter_userdata">Bitte Anmeldedaten eingeben</string>
+    <string name="wrong_userdata">Falsche Anmeldedaten</string>
     <string name="error_could_not_load">Vertretungsplan kann nicht geladen werden</string>
     <string name="error_unknown">Unbekannter Fehler</string>
     <string name="error_download_error">Fehler beim Herunterladen</string>
