@@ -56,6 +56,7 @@ public class DownloadService extends IntentService {
     private SharedPreferences sharedPreferences;
     private boolean loginFailed = false;
     private static boolean downloading = false;
+    private boolean skipLoginActivity = false;
 
     public DownloadService() {
         super("DownloadService");
@@ -66,6 +67,8 @@ public class DownloadService extends IntentService {
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_DOWNLOAD_PLAN.equals(action)){
+                if (getSharedPreferences().getBoolean("pref_reload_on_resume", false))
+                    skipLoginActivity = true;// Don't prompt to login activity if coming from there
                 getSharedPreferences().edit().putBoolean("pref_reload_on_resume", false)
                         .putBoolean("pref_last_offline", false).apply();
 
@@ -278,12 +281,16 @@ public class DownloadService extends IntentService {
     }
 
     private void startLoginActivity() {
-        startActivity(new Intent(this, SettingsActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-        getSharedPreferences().edit().putBoolean("pref_reload_on_resume", true).apply();//reload on resume of FormattedActivity
+        if (skipLoginActivity) {
+            // Only skip once
+            skipLoginActivity = false;
+        } else {
+            startActivity(new Intent(this, SettingsActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+            getSharedPreferences().edit().putBoolean("pref_reload_on_resume", true).apply();//reload on resume of FormattedActivity
+        }
     }
     private void postLoginNotification() {
         postNotification(getString(R.string.wrong_userdata), getString(R.string.enter_userdata), 2, R.drawable.ic_stat_notify_plan_update, SettingsActivity.class, true);
-        getSharedPreferences().edit().putBoolean("pref_reload_on_resume", true).apply();//reload on resume of FormattedActivity
     }
 
     private String timeAndDateToString (Calendar calendar){
