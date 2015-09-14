@@ -93,7 +93,6 @@ Version 1.0
 
 
 Possible improvements for a future release:
-- Change notification icon in DownloadService.postLoginNotification()
 - Adapt to Android M if newer appcompat than 23.0.0 resolves https://code.google.com/p/android/issues/detail?id=183127
 - on list item click: focus animation colors? →  fix no click animation for non transparent backgrounds
 - List for teacher abbreviations → also show full names of teachers entered there (in addition to lesson plan's teachers)

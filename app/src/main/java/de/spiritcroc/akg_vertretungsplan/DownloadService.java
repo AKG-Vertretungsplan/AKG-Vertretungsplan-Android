@@ -290,7 +290,7 @@ public class DownloadService extends IntentService {
         }
     }
     private void postLoginNotification() {
-        postNotification(getString(R.string.wrong_userdata), getString(R.string.enter_userdata), 2, R.drawable.ic_stat_notify_plan_update, SettingsActivity.class, true);
+        postNotification(getString(R.string.wrong_userdata), getString(R.string.enter_userdata), 2, R.drawable.ic_stat_notify_wrong_credentials, SettingsActivity.class, true);
     }
 
     private String timeAndDateToString (Calendar calendar){
