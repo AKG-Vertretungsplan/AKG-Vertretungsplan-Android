@@ -1,0 +1,20 @@
+Für den Abruf des Vertretungsplans werden die entsprechenden Zugangsdaten benötigt!
+
+- Wähle zwischen einem optimiertem und dem unverändertem Online-Vertretungsplan des Adam Kraft Gymnasiums Schwabach
+- Hebe Änderungen seit dem letzten Aufruf farbig hervor
+- Überprüfe regelmäßig, ob der Vertretungsplan geändert wurde; Benachrichtigung bei (relevanten) Änderungen
+- Trage einen Stundenplan ein, um Vertretungen nach Relevanz farbig hervorheben und filtern zu können
+- Offline-Anzeige
+- Widget
+- Viele Einstellungsmöglichkeiten
+
+Diese App ist open source! Beteiligung am Projekt ist gerne möglich!
+Projekt auf GitHub: https://github.com/SpiritCroc/AKG-Vertretungsplan
+
+Berechtigungen:
+Voller Netzwerkzugriff:
+Benötigt zum Herunterladen des Vertretungsplans
+Netzwerkverbindungen abrufen:
+Verhindern des unnötigen Download-Versuchs, wenn das Gerät offline ist; stattdessen erneuter Versuch, sobald erneut verbunden wird
+Beim Start ausführen:
+Regelmäßige Überprüfung auf Aktualisierungen nach einem Gerät-Neustart starten
