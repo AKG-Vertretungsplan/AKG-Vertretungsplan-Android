@@ -282,7 +282,7 @@ public class DownloadService extends IntentService {
         getSharedPreferences().edit().putBoolean("pref_reload_on_resume", true).apply();//reload on resume of FormattedActivity
     }
     private void postLoginNotification() {
-        postNotification(getString(R.string.wrong_userdata), getString(R.string.enter_userdata), 2, R.drawable.ic_stat_notify_plan_update, SettingsActivity.class, false);
+        postNotification(getString(R.string.wrong_userdata), getString(R.string.enter_userdata), 2, R.drawable.ic_stat_notify_plan_update, SettingsActivity.class, true);
         getSharedPreferences().edit().putBoolean("pref_reload_on_resume", true).apply();//reload on resume of FormattedActivity
     }
 
