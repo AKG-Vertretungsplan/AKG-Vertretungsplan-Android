@@ -183,7 +183,7 @@ public class ItemFragment extends ListFragment{
     }
 
     public boolean hasUnreadContent(){
-        return unreadContent;
+        return !DownloadService.NO_PLAN.equals(date) && unreadContent;
     }
 
     public void setRefreshing(boolean refreshing){

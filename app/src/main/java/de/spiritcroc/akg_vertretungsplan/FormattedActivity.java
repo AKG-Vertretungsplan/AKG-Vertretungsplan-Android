@@ -376,7 +376,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
                 if (fragment2 != null)
                     fragment2.markChangesAsRead();
                 else
-                    Log.e("FormattedActivity", "action_mark_read: fragment1 == null");
+                    Log.d("FormattedActivity", "action_mark_read: fragment2 == null");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -384,8 +384,8 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
     }
 
     public void requestRecheckUnreadChanges(){
-        if (fragment1 != null && fragment2 != null && markReadItem != null)
-            markReadItem.setVisible(fragment1.hasUnreadContent() || fragment2.hasUnreadContent());
+        if (fragment1 != null && markReadItem != null)
+            markReadItem.setVisible(fragment1.hasUnreadContent() || fragment2 != null && fragment2.hasUnreadContent());
     }
 
     @Override
@@ -484,6 +484,9 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
                 if (fragment2!=null)
                     fragment2.reloadContent(plan2, title2);
                 fragmentPagerAdapter.notifyDataSetChanged();
+                if (fragmentPagerAdapter.getCount() == 1) {
+                    viewPager.setCurrentItem(0);
+                }
             }
             else if (action.equals("setTextViewText")){
                 String text = intent.getStringExtra("text");
