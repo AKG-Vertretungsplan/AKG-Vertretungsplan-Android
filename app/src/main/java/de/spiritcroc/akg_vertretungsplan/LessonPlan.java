@@ -111,6 +111,9 @@ public class LessonPlan {
         return lesson == null ? "" : lesson.getTeacherFull();
     }
     public String getTeacherFullForTeacherShort(String teacherShort){
+        if (teacherShort.equals("")) {
+            return "";
+        }
         for (int j = 0; j < lessons.length; j++) {
             for (int i = 0; i < lessons[j].length; i++)
                 if (teacherShort.equals(lessons[j][i].getTeacherShort()))
