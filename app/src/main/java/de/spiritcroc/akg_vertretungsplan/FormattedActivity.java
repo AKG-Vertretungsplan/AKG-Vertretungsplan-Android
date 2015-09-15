@@ -105,6 +105,11 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
     public void onCreateAfterDisclaimer(){
         if (created)//only run once
             return;
+        if (!sharedPreferences.contains("pref_plan")) {
+            new BasicSetupDialog().show(getFragmentManager(), "BasicSetupDialog");
+            // BasicSetupDialog will call this method again
+            return;
+        }
         //Download plan stuff  start
         Calendar calendar = DownloadService.stringToCalendar(sharedPreferences.getString("pref_last_checked", "???"));
         boolean startedDownloadService = false;

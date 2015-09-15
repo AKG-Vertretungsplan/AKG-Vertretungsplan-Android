@@ -459,4 +459,6 @@
         <item>2</item>
     </string-array>
 
+    <string name="dialog_select_plan">Select plan</string>
+
 </resources>
