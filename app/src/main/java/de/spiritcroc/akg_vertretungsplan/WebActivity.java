@@ -106,7 +106,7 @@ public class WebActivity extends AppCompatActivity {
             case R.id.action_open_in_browser:
                 String username = sharedPreferences.getString("pref_username", ""),
                         password = sharedPreferences.getString("pref_password", "");
-                String link = DownloadService.PLAN_ADDRESS;
+                String link = DownloadService.PLAN_1_ADDRESS;
                 String prefix = "http://";
                 int index = link.indexOf(prefix);
                 if (!username.equals("") && !password.equals("") && index >= 0) {

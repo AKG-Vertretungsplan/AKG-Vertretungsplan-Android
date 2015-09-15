@@ -38,16 +38,38 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.net.UnknownHostException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 public class DownloadService extends IntentService {
     public static final String ACTION_DOWNLOAD_PLAN = "de.spiritcroc.akg_vertretungsplan.action.downloadPlan";
     public static final String ACTION_RETRY = "de.spiritcroc.akg_vertretungsplan.action.retry";
 
-    public static final String PLAN_ADDRESS = "http://www.sc.shuttle.de/sc/akg/Ver/";
+    public static final String PLAN_1_ADDRESS = "http://www.sc.shuttle.de/sc/akg/Ver/";
+    public static final String PLAN_2_ADDRESS = "https://akg-sc.selfip.org/INFOSCREEN/";
+    public static final String PLAN_2_ADDRESS_1 = "https://akg-sc.selfip.org/INFOSCREEN/links.html?";
+    public static final String PLAN_2_ADDRESS_2 = "https://akg-sc.selfip.org/INFOSCREEN/rechts.html?";
     public static final String CSS_ADDRESS = "http://www.sc.shuttle.de/sc/akg/Ver/willi.css";
+
+    public static final String NO_PLAN = "**null**";
 
     public enum ContentType {AWAIT, IGNORE, HEADER, TABLE_START_FLAG, TABLE_END_FLAG, TABLE_ROW, TABLE_CONTENT}
     private String username, password;
@@ -121,25 +143,94 @@ public class DownloadService extends IntentService {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(2);
         try {
-            username = getSharedPreferences().getString("pref_username", "");
-            password = getSharedPreferences().getString("pref_password", "");
-            String base64EncodedCredentials = Base64.encodeToString((username + ":" + password).getBytes("US-ASCII"), Base64.URL_SAFE | Base64.NO_WRAP);
-            DefaultHttpClient httpClient = new DefaultHttpClient();//On purpose use deprecated stuff because it works better (I have problems with HttpURLConnection: it does not read the credentials each time they are needed, and if they are wrong, there is no appropriate message (just an java.io.FileNotFoundException))
-            HttpGet httpGet = new HttpGet(PLAN_ADDRESS);
-            httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
-            String result = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
-            httpGet = new HttpGet(CSS_ADDRESS);
-            httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
-            String css = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
-            processPlan(cssHeader + css + cssFoot + result);
+            int plan = Integer.parseInt(getSharedPreferences().getString("pref_plan", "1"));
+            switch (plan) {
+                case 1:
+                {
+                    username = getSharedPreferences().getString("pref_username", "");
+                    password = getSharedPreferences().getString("pref_password", "");
+                    String base64EncodedCredentials = Base64.encodeToString((username + ":" + password).getBytes("US-ASCII"), Base64.URL_SAFE | Base64.NO_WRAP);
+                    DefaultHttpClient httpClient = new DefaultHttpClient();//On purpose use deprecated stuff because it works better (I have problems with HttpURLConnection: it does not read the credentials each time they are needed, and if they are wrong, there is no appropriate message (just an java.io.FileNotFoundException))
+                    HttpGet httpGet = new HttpGet(PLAN_1_ADDRESS);
+                    httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
+                    String result = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
+                    httpGet = new HttpGet(CSS_ADDRESS);
+                    httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
+                    String css = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
+                    processPlan(cssHeader + css + cssFoot + result);
+                    break;
+                }
+                case 2:
+                {
+                    String result = getPlanInsecure(PLAN_2_ADDRESS_1) + getPlanInsecure(PLAN_2_ADDRESS_2);
+                    processPlan(result);
+                    break;
+                }
+            }
+            getSharedPreferences().edit().putInt("last_plan_type", plan).apply();
         }
         catch (UnknownHostException e){
             loadOfflinePlan();
         }
-        catch (Exception e){
+        catch (IOException e){
             Log.e("downloadPlan", "Got Exception " + e);
             showText(getString(R.string.error_download_error));
         }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private String getPlanInsecure(String address) {
+        // The infoscreen site does not provide a verified certificate, but uses https
+        String result = "";
+        HttpURLConnection connection;
+        TrustManager[] trustAll = new TrustManager[]{new X509TrustManager() {
+            public X509Certificate[] getAcceptedIssuers(){
+                return null;
+            }
+            @Override
+            public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException{}
+            @Override
+            public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException{}
+        }};
+        try {
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, trustAll, new java.security.SecureRandom());
+            URL url = new URL(address);
+            URLConnection urlConnection = url.openConnection();
+            if (urlConnection instanceof HttpsURLConnection){
+                HttpsURLConnection httpsURLConnection = (HttpsURLConnection) urlConnection;
+                httpsURLConnection.setSSLSocketFactory(sslContext.getSocketFactory());
+                httpsURLConnection.setHostnameVerifier(new HostnameVerifier() {
+                    @Override
+                    public boolean verify(String hostname, SSLSession session) {
+                        return true;
+                    }
+                });
+                connection = httpsURLConnection;
+            } else {
+                connection = (HttpURLConnection) urlConnection;
+            }
+            try {
+                int buffer;
+                InputStream in = new BufferedInputStream(connection.getInputStream());
+                while (true) {
+                    buffer = in.read();
+
+                    if (buffer == -1) {
+                        break;
+                    }
+                    result += (char) buffer;
+                }
+                in.close();
+            } finally {
+                connection.disconnect();
+            }
+        }  catch (IOException |NoSuchAlgorithmException |KeyManagementException e) {
+            Log.i("DownloadService", "getPlanInsecure(" + address + "): Got exception " + e);
+        }
+        return result;
     }
 
     private void maybeSaveFormattedPlan(){
@@ -453,9 +544,9 @@ public class DownloadService extends IntentService {
         searchingFor = ContentType.TABLE_START_FLAG + "¡Vertretungsplan für ";
         index = plan1.indexOf(searchingFor, index + searchingFor.length());
         if (index == -1){
-            Log.e("getHeadsAndDivide", "Could not find " + searchingFor + " twice");
-            editor.putBoolean("pref_illegal_plan", true).apply();
-            return false;
+            Log.d("getHeadsAndDivide", "Could not find " + searchingFor + " twice");
+            title2 = NO_PLAN;
+            plan2 = NO_PLAN;
         }
         else {
             title2 = Tools.getLine(plan1.substring(index + searchingFor.length()), 1);

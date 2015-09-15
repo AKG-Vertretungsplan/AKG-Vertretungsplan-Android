@@ -34,6 +34,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener{
+    private PreferenceCategory userdataPrefScreen;
     private Preference hiddenDebug;
     private PreferenceScreen basePrefScreen;
     private PreferenceCategory hiddenDebugPrefScreen;
@@ -52,6 +53,11 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         addPreferencesFromResource(R.xml.preferences);
 
         Resources resources = getResources();
+
+        basePrefScreen = (PreferenceScreen) findPreference("pref_screen_base");
+        userdataPrefScreen = (PreferenceCategory) findPreference("pref_userdata");
+        hiddenDebug = findPreference("hidden_debug");
+        hiddenDebugPrefScreen = (PreferenceCategory) findPreference("pref_screen_hidden_debug");
 
         setSummaryToValue("pref_class_text_text_color");
         setSummaryToValue("pref_class_text_background_color");
@@ -74,6 +80,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         setSummaryToValue("pref_action_bar_normal_background_color");
         setSummaryToValue("pref_action_bar_filtered_background_color");
         setSummaryToValue("pref_theme");
+        setSummaryToValue("pref_plan");
 
         EditTextPreference tmpEditTextPreference = (EditTextPreference) findPreference("pref_auto_load_on_open");
         int tmpValue = correctInteger(getSharedPreferences(), "pref_auto_load_on_open", tmpEditTextPreference.getText(), 5);
@@ -95,10 +102,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         tmpValue = correctInteger(getSharedPreferences(), "pref_lesson_plan_auto_select_day_time", tmpEditTextPreference.getText(), 17);
         tmpEditTextPreference.setSummary(getString(R.string.pref_lesson_plan_auto_select_day_time_summary_pre) + tmpValue + getString(R.string.pref_lesson_plan_auto_select_day_time_summary_post));
 
+        setUserdataVisibility();
+
         //hidden debug: (inspiration from AICP's hidden shit
-        basePrefScreen = (PreferenceScreen) findPreference("pref_screen_base");
-        hiddenDebug = findPreference("hidden_debug");
-        hiddenDebugPrefScreen = (PreferenceCategory) findPreference("pref_screen_hidden_debug");
         boolean hiddenDebugEnabled = getSharedPreferences().getBoolean("pref_hidden_debug_enabled", false);
         if (hiddenDebugEnabled)
             basePrefScreen.removePreference(hiddenDebug);
@@ -132,6 +138,10 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key){
         if (key.equals("pref_class_text_text_color") || key.equals("pref_class_text_background_color") || key.equals("pref_normal_text_text_color") || key.equals("pref_normal_text_background_color") || key.equals("pref_normal_text_text_color_highlight") || key.equals("pref_normal_text__background_color_highlight") || key.equals("pref_header_text_text_color") || key.equals("pref_header_text_background_color") || key.equals("pref_header_text_text_color_highlight") || key.equals("pref_header_text__background_color_highlight" ) || key.equals("pref_widget_text_color")  || key.equals("pref_widget_text_color_highlight") || key.equals("pref_auto_mark_read") || key.equals("pref_led_notification_color") || key.equals("pref_relevant_text_text_color") || key.equals("pref_relevant_text_background_color") || key.equals("pref_relevant_text_text_color_highlight") || key.equals("pref_relevant_text_background_color_highlight") || key.equals("pref_action_bar_normal_background_color") || key.equals("pref_action_bar_filtered_background_color"))
             setSummaryToValue(key);
+        else if (key.equals("pref_plan")) {
+            setSummaryToValue(key);
+            setUserdataVisibility();
+        }
         else if (key.equals("pref_username") || key.equals("pref_password")){
             getActivity().startService(new Intent(getActivity(), DownloadService.class).setAction(DownloadService.ACTION_RETRY));
         }
@@ -232,6 +242,14 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             editor.putString(key, String.valueOf(defaultValue));
             editor.apply();
             return defaultValue;
+        }
+    }
+
+    private void setUserdataVisibility(){
+        if (getSharedPreferences().getString("pref_plan", "1").equals("1")) {
+            basePrefScreen.addPreference(userdataPrefScreen);
+        } else {
+            basePrefScreen.removePreference(userdataPrefScreen);
         }
     }
 

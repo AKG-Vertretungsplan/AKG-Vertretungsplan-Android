@@ -262,5 +262,8 @@
         <item quantity="one">%d neue Vertretung</item>
         <item quantity="other">%d neue Vertretungen</item>
     </plurals>
+    <string name="pref_plan">Plan</string>
+    <string name="pref_plan_1">Oberstufenplan</string>
+    <string name="pref_plan_2">Infoscreen</string>
 
 </resources>

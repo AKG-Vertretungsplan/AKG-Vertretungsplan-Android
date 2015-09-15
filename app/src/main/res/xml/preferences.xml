@@ -18,9 +18,16 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="pref_screen_base">
 
+    <ListPreference
+        android:key="pref_plan"
+        android:title="@string/pref_plan"
+        android:entries="@array/pref_plan_array"
+        android:entryValues="@array/pref_plan_value_array"
+        android:defaultValue="1"/>
 
     <PreferenceCategory
-        android:title="@string/userdata">
+        android:title="@string/userdata"
+        android:key="pref_userdata">
         <EditTextPreference
             android:key="pref_username"
             android:title="@string/username"

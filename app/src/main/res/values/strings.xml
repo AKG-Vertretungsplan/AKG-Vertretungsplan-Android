@@ -447,4 +447,16 @@
         <item quantity="other">%d new pieces of information</item>
     </plurals>
 
+    <string name="pref_plan">Plan</string>
+    <string name="pref_plan_1">Oberstufenplan</string>
+    <string name="pref_plan_2">Infoscreen</string>
+    <string-array name="pref_plan_array" translatable="false">
+        <item>@string/pref_plan_1</item>
+        <item>@string/pref_plan_2</item>
+    </string-array>
+    <string-array name="pref_plan_value_array" translatable="false">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
 </resources>

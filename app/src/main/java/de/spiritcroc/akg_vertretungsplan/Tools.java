@@ -239,4 +239,8 @@ public abstract class Tools {
         }
         return string.substring(0,string.length()-1);
     }*/
+
+    public static boolean isWebActivityEnabled(SharedPreferences sharedPreferences) {
+        return sharedPreferences.getInt("last_plan_type", 1) == 1;
+    }
 }

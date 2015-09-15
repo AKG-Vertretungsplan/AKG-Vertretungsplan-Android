@@ -123,8 +123,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
         created = true;
 
         if (sharedPreferences.getBoolean("pref_illegal_plan", false) && !startedDownloadService) {
-            startActivity(new Intent(getApplication(), WebActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
-            Toast.makeText(getApplicationContext(), getString(R.string.error_illegal_plan), Toast.LENGTH_LONG).show();
+            illegalPlan();
         }
 
         if (date1 != null && sharedPreferences.getBoolean("pref_formatted_plan_auto_select_day", true)) {//Try to show most relevant day
@@ -314,7 +313,12 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
                 startDownloadService();
                 return true;
             case R.id.action_original_activity:
-                startActivity(new Intent(getApplication(), WebActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
+                if (Tools.isWebActivityEnabled(sharedPreferences)) {
+                    startActivity(new Intent(getApplication(), WebActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
+                } else {
+                    // Open in browser
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(DownloadService.PLAN_2_ADDRESS)));
+                }
                 return true;
             case R.id.action_about:
                 new AboutDialog().show(getFragmentManager(), "AboutDialog");
@@ -394,7 +398,11 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
         }
         @Override
         public int getCount(){
-            return 2;
+            if (DownloadService.NO_PLAN.equals(plan2)) {
+                return 1;
+            } else {
+                return 2;
+            }
         }
         @Override
         public Fragment getItem(int position){
@@ -425,7 +433,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
         public void finishUpdate(ViewGroup container){
             super.finishUpdate(container);
 
-            if (shortCutToPageTwo) {
+            if (shortCutToPageTwo && getCount() >= 2) {
                 viewPager.setCurrentItem(1, false);
                 shortCutToPageTwo = false;//use shortcut only once
             }
@@ -488,8 +496,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
                         fragment2.setRefreshing(false);
 
                     if (sharedPreferences.getBoolean("pref_illegal_plan", false)) {
-                        startActivity(new Intent(getApplication(), WebActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
-                        Toast.makeText(getApplicationContext(), getString(R.string.error_illegal_plan), Toast.LENGTH_LONG).show();
+                        illegalPlan();
                     }
                 }
             }
@@ -499,4 +506,11 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
             }
         }
     };
+
+    private void illegalPlan() {
+        Toast.makeText(getApplicationContext(), getString(R.string.error_illegal_plan), Toast.LENGTH_LONG).show();
+        if (Tools.isWebActivityEnabled(sharedPreferences)) {
+            startActivity(new Intent(getApplication(), WebActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
+        }
+    }
 }
