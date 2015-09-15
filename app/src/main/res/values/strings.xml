@@ -465,5 +465,8 @@
     </string-array>
 
     <string name="dialog_select_plan">Select plan</string>
+    <string name="dialog_enter_lesson_class">Enter your class</string>
+    <string name="dialog_enter_lesson_class_summary">Used for filtering relevant information</string>
+    <string name="action_lesson_class">Class</string>
 
 </resources>

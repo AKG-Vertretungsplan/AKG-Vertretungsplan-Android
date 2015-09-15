@@ -96,6 +96,11 @@ public class LessonPlanActivity extends AppCompatActivity {
             overridePendingTransition(0, 0);
             startActivity(intent);
             overridePendingTransition(0, 0);
+        } else {
+            if (!sharedPreferences.contains("pref_class")) {
+                new EnterLessonClassDialog().show(getFragmentManager(), "EnterLessonClassDialog");
+            }
+
         }
     }
     @Override
@@ -113,6 +118,9 @@ public class LessonPlanActivity extends AppCompatActivity {
                 return true;
             case R.id.action_reset:
                 new ConfirmRemoveLessonsDialog().setValues(this).show(getFragmentManager(), "ConfirmRemoveLessonsDialog");
+                return true;
+            case R.id.action_lesson_class:
+                new EnterLessonClassDialog().show(getFragmentManager(), "EnterLessonClassDialog");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

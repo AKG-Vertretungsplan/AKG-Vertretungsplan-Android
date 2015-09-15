@@ -32,6 +32,7 @@ public class LessonPlan {
     private static LessonPlan instance;
 
     private Lesson[][] lessons;
+    private String lessonClass;
     private SharedPreferences sharedPreferences;
 
     private LessonPlan(SharedPreferences sharedPreferences){
@@ -40,11 +41,17 @@ public class LessonPlan {
 
         String recreationKey = sharedPreferences.getString("pref_lesson_plan", ""), dayKey;
 
+        getLessonClass();
+
         for (int j = 0; j < lessons.length; j++) {
             dayKey = Tools.getLine(recreationKey, j+1, DAY_SEPARATOR);
             for (int i = 0; i < lessons[j].length; i++)
                 lessons[j][i] = Lesson.recoverFromRecreationKey(Tools.getLine(dayKey, i+1, LESSON_SEPARATOR));
         }
+    }
+
+    public void getLessonClass() {
+        lessonClass = sharedPreferences.getString("pref_class", "");
     }
 
     public static LessonPlan getInstance(SharedPreferences sharedPreferences){
@@ -132,6 +139,7 @@ public class LessonPlan {
     }
 
     public void resetLessons(){
+        sharedPreferences.edit().remove("pref_class").apply();
         for (int j = 0; j < lessons.length; j++) {
             for (int i = 0; i < lessons[j].length; i++)
                 lessons[j][i] = new Lesson();
@@ -139,13 +147,19 @@ public class LessonPlan {
     }
 
     public boolean isConfigured(){
+        if (sharedPreferences.contains("pref_class")) {
+            return true;
+        }
         for (int j = 0; j < lessons.length; j++)
             for (int i = 0; i < lessons[j].length; i++)
                 if (lessons[j][i].getTeacherShort() != null && !lessons[j][i].getTeacherShort().equals(""))
                     return true;
         return false;
     }
-    public boolean isRelevant(int day, int lesson, String teacherShort){
+    public boolean isRelevant(String lessonClass, int day, int lesson, String teacherShort){
+        if (lessonClass.equals(this.lessonClass)) {
+            return true;
+        }
         int dayPosition;
         switch (day) {
             case Calendar.MONDAY:

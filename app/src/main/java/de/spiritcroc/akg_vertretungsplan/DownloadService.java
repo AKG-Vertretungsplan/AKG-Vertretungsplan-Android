@@ -757,7 +757,7 @@ public class DownloadService extends IntentService {
                         }
                         else {
                             try {
-                                if (lessonPlan.isRelevant(calendar.get(Calendar.DAY_OF_WEEK), Integer.parseInt(tmpRowContent[2]), tmpRowContent[1]))
+                                if (lessonPlan.isRelevant(tmpRowContent[0], calendar.get(Calendar.DAY_OF_WEEK), Integer.parseInt(tmpRowContent[2]), tmpRowContent[1]))
                                     count++;
                                 else
                                     newIrrelevantInformationCount.value++;

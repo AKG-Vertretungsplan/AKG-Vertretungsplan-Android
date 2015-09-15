@@ -320,7 +320,7 @@ public class ItemFragment extends ListFragment{
                         if (!tmpRowContent[6].equals(""))
                             add += " " + tmpRowContent[6];
                         try{
-                            relevant = lessonPlan.isRelevant(Tools.getDateFromPlanTitle(this.date).get(Calendar.DAY_OF_WEEK), Integer.parseInt(tmpRowContent[2]), tmpRowContent[1]);
+                            relevant = lessonPlan.isRelevant( tmpRowContent[0], Tools.getDateFromPlanTitle(this.date).get(Calendar.DAY_OF_WEEK), Integer.parseInt(tmpRowContent[2]), tmpRowContent[1]);
                             if (relevant)
                                 lastAddedHeader = false;
                         }
