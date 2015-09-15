@@ -35,6 +35,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -198,12 +199,21 @@ public class ItemFragment extends ListFragment{
         if (activity == null)
             Log.e("reloadContent", "getActivity()==null");
         else {
+            setListAdapterRememberPos(new CustomArrayAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, createContent(content)));
+        }
+    }
+
+    private void setListAdapterRememberPos(ListAdapter listAdapter) {
+        Activity activity = getActivity();
+        if (activity == null)
+            Log.e("ItemFragment", "setListAdapter: getActivity()==null");
+        else {
             ListView listView = getListView();
             View view = listView.getChildAt(0);
             //int top = (view == null ? 0 : (view.getTop() - listView.getPaddingTop()));    //http://stackoverflow.com/questions/3014089/maintain-save-restore-scroll-position-when-returning-to-a-listview says that
             int top = (view == null ? 0 : view.getTop());
             int index = listView.getFirstVisiblePosition();
-            setListAdapter(new CustomArrayAdapter(activity.getApplicationContext(), android.R.layout.simple_list_item_1, createContent(content)));
+            setListAdapter(listAdapter);
             listView.setSelectionFromTop(index, top);
         }
     }
@@ -219,7 +229,7 @@ public class ItemFragment extends ListFragment{
         editor.putString("pref_latest_plan_"+number, content);
         editor.apply();
 
-        setListAdapter(new CustomArrayAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, createContent(content)));
+        setListAdapterRememberPos(new CustomArrayAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, createContent(content)));
     }
 
     private String[] createContent(String unformattedContent){
