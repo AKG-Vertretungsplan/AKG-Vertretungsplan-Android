@@ -712,6 +712,9 @@ public class DownloadService extends IntentService {
         return count;
     }
     private static int getNewRelevantInformationCount(SharedPreferences sharedPreferences, String currentContent, String title, Tools.Int newGeneralInformationCount, Tools.Int newIrrelevantInformationCount){
+        if (title.equals(NO_PLAN)) {
+            return 0;
+        }
         String latestContent;
         if (title.equals(sharedPreferences.getString("pref_latest_title_1", "")))    //check date for comparison
             latestContent = sharedPreferences.getString("pref_latest_plan_1", "");
@@ -723,7 +726,7 @@ public class DownloadService extends IntentService {
         Calendar calendar = Tools.getDateFromPlanTitle(title);
         if (calendar == null){
             Log.e("DownloadService", "getNewRelevantInformationCount: Could not read calendar " + title);
-            return -1;
+            return 0;
         }
 
         int count = 0, tmpCellCount;

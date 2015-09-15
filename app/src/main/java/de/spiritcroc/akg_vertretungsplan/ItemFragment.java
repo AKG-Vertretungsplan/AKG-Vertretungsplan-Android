@@ -233,6 +233,10 @@ public class ItemFragment extends ListFragment{
     }
 
     private String[] createContent(String unformattedContent){
+        if (date.equals(DownloadService.NO_PLAN)) {
+            return new String[0];
+        }
+
         String oldPlan;
         if (date.equals(sharedPreferences.getString("pref_latest_title_1", "")))    //check date for comparison
             oldPlan = sharedPreferences.getString("pref_latest_plan_1", "");
