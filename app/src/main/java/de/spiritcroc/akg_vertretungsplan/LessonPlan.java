@@ -140,6 +140,7 @@ public class LessonPlan {
 
     public void resetLessons(){
         sharedPreferences.edit().remove("pref_class").apply();
+        lessonClass = "";
         for (int j = 0; j < lessons.length; j++) {
             for (int i = 0; i < lessons[j].length; i++)
                 lessons[j][i] = new Lesson();
