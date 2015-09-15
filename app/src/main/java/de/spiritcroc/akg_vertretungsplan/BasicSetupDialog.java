@@ -41,7 +41,7 @@ public class BasicSetupDialog extends DialogFragment {
             selection = 0;
         }
         return builder.setTitle(R.string.dialog_select_plan)
-                .setPositiveButton(R.string.dialog_agree, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         sharedPreferences.edit().putString("pref_plan", planValues[selection]).apply();
