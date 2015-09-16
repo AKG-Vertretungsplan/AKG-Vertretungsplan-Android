@@ -473,6 +473,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
                     Log.e("FormattedActivity", "Got error while trying to extract date1 from the titles: " + e);
                     date1 = null;//Deactivate date functionality
                 }
+                fragmentPagerAdapter.notifyDataSetChanged();
                 if (oldDate2 != null && date1 != null && ((
                         date1.get(Calendar.YEAR) == oldDate2.get(Calendar.YEAR) &&
                         date1.get(Calendar.MONTH) == oldDate2.get(Calendar.MONTH) &&
@@ -483,7 +484,6 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
                     fragment1.reloadContent(plan1, title1);
                 if (fragment2!=null)
                     fragment2.reloadContent(plan2, title2);
-                fragmentPagerAdapter.notifyDataSetChanged();
                 if (fragmentPagerAdapter.getCount() == 1) {
                     viewPager.setCurrentItem(0);
                 }
