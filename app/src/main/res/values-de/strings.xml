@@ -264,7 +264,7 @@
     </plurals>
     <string name="pref_plan">Plan</string>
     <string name="pref_plan_1">Oberstufenplan</string>
-    <string name="pref_plan_2">Infoscreen</string>
+    <string name="pref_plan_2">Infoscreen (experimentell)</string>
     <string name="dialog_select_plan">Plan auswählen</string>
     <string name="dialog_enter_lesson_class">Klasse eingeben</string>
     <string name="dialog_enter_lesson_class_summary">Wird zum Erkennen von relevanten Vertretungen verwendet</string>
