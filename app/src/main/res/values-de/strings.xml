@@ -270,4 +270,8 @@
     <string name="dialog_enter_lesson_class_summary">Wird zum Erkennen von relevanten Vertretungen verwendet</string>
     <string name="action_lesson_class">Klasse</string>
 
+    <string name="dialog_warning">Achtung!</string>
+    <string name="dialog_infoscreen_warning_message">Die Anzeige des Vertretungsplans vom Infoscreen könnte jeden Moment aufhören, zu funktionieren, da noch nicht sicher ist, für wie lange der Infoscreen noch online bleibt. Möglicherweise ist der momentane Zugang nicht von der Schulleitung beabsichtigt.</string>
+    <string name="dialog_do_not_show_again">Nicht mehr anzeigen</string>
+
 </resources>

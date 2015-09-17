@@ -469,4 +469,8 @@
     <string name="dialog_enter_lesson_class_summary">Used for filtering relevant information</string>
     <string name="action_lesson_class">Class</string>
 
+    <string name="dialog_warning">Warning</string>
+    <string name="dialog_infoscreen_warning_message">The display of the infoscreen plan could stop working at any moment as the school administration could remove online access to the infoscreen.</string>
+    <string name="dialog_do_not_show_again">Don\'t show again</string>
+
 </resources>

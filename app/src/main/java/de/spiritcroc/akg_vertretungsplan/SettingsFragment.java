@@ -141,6 +141,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         else if (key.equals("pref_plan")) {
             setSummaryToValue(key);
             setUserdataVisibility();
+            if (getSharedPreferences().getString("pref_plan", "1").equals("2") && !getSharedPreferences().getBoolean("seen_infoscreen_warning", false)) {
+                new InfoscreenWarningDialog().show(getFragmentManager(), "InfoscreenWarningDialog");
+            }
         }
         else if (key.equals("pref_username") || key.equals("pref_password")){
             getActivity().startService(new Intent(getActivity(), DownloadService.class).setAction(DownloadService.ACTION_RETRY));
