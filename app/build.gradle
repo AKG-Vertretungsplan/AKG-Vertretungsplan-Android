@@ -7,8 +7,8 @@ android {
         applicationId 'de.spiritcroc.akg_vertretungsplan'
         minSdkVersion 11
         targetSdkVersion 22
-        versionName '4.2.2'
-        versionCode 26
+        versionName '4.3'
+        versionCode 27
     }
     buildTypes {
         release {
