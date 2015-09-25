@@ -274,9 +274,14 @@
     <string name="dialog_infoscreen_warning_message">Der Infoscreen war anscheinend nur aus Versehen und ohne Absicht der Schulleitung allgemein zugänglich; jetzt wird wieder ein Lehrerpasswort verlangt.
         \nSomit lässt sich diese App leider wieder nur noch zur Anzeige des Oberstufen-Vertretungsplans verwenden.
         \nFür mögliche Unannehmlichkeiten möchte ich mich entschuldigen.\n
-        \nWer möchte, kann die App immer noch weiter zur Stundenplananzeige verwenden. Dazu deaktiviert man am besten die Hintergrundprüfung der App in den Einstellungen unter Verhalten/Hintergrundservice. Es existiert auch eine Launcher-Verknüpfung für den Stundenplan, um diesen direkt ohne Vertretungsplan-Anzeige anzuzeigen.\n</string>
+        \nWer möchte, kann die App immer noch weiter zur Stundenplananzeige verwenden. Dazu deaktiviert man am besten die Hintergrundprüfung der App in den Einstellungen unter \"Verhalten/Hintergrundservice\".
+        \nEine Startbildschirm-Verknüpfung zum Stundenplan kann in den Einstellungen unter \"Stundenplan/Launcher-Verknüpfung erstellen\" erstellt werden.</string>
     <string name="dialog_use_plan_1">Oberstufenplan</string>
     <string name="dialog_close_app">App schließen</string>
     <string name="dialog_do_not_show_again">Nicht mehr anzeigen</string>
+
+    <string name="pref_lesson_plan_add_launcher_shortcut">Launcher-Verknüpfung erstellen</string>
+    <string name="pref_lesson_plan_add_launcher_shortcut_summary">Versuche, eine Stundenplan-Verknüpfung zum Startbildschirm hinzuzufügen (könnte bei manchen Launchern nicht funktionieren)</string>
+    <string name="launcher_added_successfully">Verknüpfung erfolgreich erstellt</string>
 
 </resources>

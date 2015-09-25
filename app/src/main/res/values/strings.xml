@@ -475,4 +475,8 @@
     <string name="dialog_close_app">Close app</string>
     <string name="dialog_do_not_show_again">Don\'t show again</string>
 
+    <string name="pref_lesson_plan_add_launcher_shortcut">Add launcher shortcut</string>
+    <string name="pref_lesson_plan_add_launcher_shortcut_summary">Try to add a lesson plan shortcut to your launcher (might not work on some launchers)</string>
+    <string name="launcher_added_successfully">Launcher added successfully</string>
+
 </resources>

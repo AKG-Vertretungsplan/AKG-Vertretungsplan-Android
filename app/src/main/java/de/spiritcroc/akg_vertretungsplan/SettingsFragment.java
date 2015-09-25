@@ -259,7 +259,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference){
-        if (preference == hiddenDebug){
+        if (preference == hiddenDebug) {
             System.arraycopy(hits, 1, hits, 0, hits.length-1);
             hits[hits.length-1] = SystemClock.uptimeMillis();
             if (!getSharedPreferences().getBoolean("pref_hidden_debug_enabled", false) && hits[0] >= (SystemClock.uptimeMillis()-1300)){
@@ -269,9 +269,13 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 basePrefScreen.addPreference(hiddenDebugPrefScreen);
                 ((CheckBoxPreference)findPreference("pref_hidden_debug_enabled")).setChecked(true);
             }
-        }
-        else
+        } else if ("pref_lesson_plan_add_launcher_shortcut".equals(preference.getKey())){
+            Intent intent = ShortcutActivity.getLessonPlanLauncherShortcut(getActivity().getApplicationContext());
+            getActivity().sendBroadcast(intent);
+            Toast.makeText(getActivity(), R.string.launcher_added_successfully, Toast.LENGTH_SHORT).show();
+        } else {
             return super.onPreferenceTreeClick(preferenceScreen, preference);
+        }
         return false;
     }
 }

@@ -369,6 +369,10 @@
                 android:numeric="integer"
                 android:defaultValue="17"
                 android:dependency="pref_lesson_plan_auto_select_day"/>
+            <Preference
+                android:key="pref_lesson_plan_add_launcher_shortcut"
+                android:title="@string/pref_lesson_plan_add_launcher_shortcut"
+                android:summary="@string/pref_lesson_plan_add_launcher_shortcut_summary"/>
         </PreferenceScreen>
     </PreferenceCategory>
 

@@ -17,6 +17,7 @@
 package de.spiritcroc.akg_vertretungsplan;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,19 +31,26 @@ public class ShortcutActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        try {
-            Intent intent = new Intent(INSTALL_SHORTCUT);
-            Intent shortcutIntent = new Intent(getApplicationContext(), LessonPlanActivity.class);
-            shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-            intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.lesson_plan));
-            intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(getApplicationContext(), R.mipmap.ic_launcher));
+        Intent intent = getLessonPlanLauncherShortcut(getApplicationContext());
+        if (intent != null) {
             setResult(RESULT_OK, intent);
         }
-        catch (Exception e){
-            Toast.makeText(getApplicationContext(), R.string.error_could_not_create_shortcut, Toast.LENGTH_LONG).show();
-            Log.e("ShortcutActivity", "Got exception while trying to create launcher shortcut: " + e);
-        }
         finish();
+    }
+
+    public static Intent getLessonPlanLauncherShortcut(Context context) {
+        try {
+            Intent intent = new Intent(INSTALL_SHORTCUT);
+            Intent shortcutIntent = new Intent(context, LessonPlanActivity.class);
+            shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+            intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, context.getString(R.string.lesson_plan));
+            intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(context, R.mipmap.ic_launcher));
+            return intent;
+        } catch (Exception e){
+            Toast.makeText(context, R.string.error_could_not_create_shortcut, Toast.LENGTH_LONG).show();
+            Log.e("addLauncherShortcut", "Got exception: " + e);
+            return null;
+        }
     }
 }
