@@ -15,16 +15,19 @@ public class InfoscreenWarningDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         return builder.setTitle(R.string.dialog_warning)
                 .setMessage(R.string.dialog_infoscreen_warning_message)
-                .setNeutralButton(R.string.dialog_do_not_show_again, new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.dialog_close_app, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putBoolean("seen_infoscreen_warning", true).apply();
+                        getActivity().finish();
                     }
                 })
-                .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.dialog_use_plan_1, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Show again next time; only close dialog
+                        PreferenceManager.getDefaultSharedPreferences(getActivity()).edit()
+                                .putString("pref_plan", "1")
+                                .remove("seen_infoscreen_warning")// Does not exist anymore
+                                .apply();
                     }
                 }).create();
     }

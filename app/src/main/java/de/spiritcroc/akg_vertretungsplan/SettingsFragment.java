@@ -80,7 +80,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         setSummaryToValue("pref_action_bar_normal_background_color");
         setSummaryToValue("pref_action_bar_filtered_background_color");
         setSummaryToValue("pref_theme");
-        setSummaryToValue("pref_plan");
+        //setSummaryToValue("pref_plan");
 
         EditTextPreference tmpEditTextPreference = (EditTextPreference) findPreference("pref_auto_load_on_open");
         int tmpValue = correctInteger(getSharedPreferences(), "pref_auto_load_on_open", tmpEditTextPreference.getText(), 5);
@@ -138,13 +138,13 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key){
         if (key.equals("pref_class_text_text_color") || key.equals("pref_class_text_background_color") || key.equals("pref_normal_text_text_color") || key.equals("pref_normal_text_background_color") || key.equals("pref_normal_text_text_color_highlight") || key.equals("pref_normal_text__background_color_highlight") || key.equals("pref_header_text_text_color") || key.equals("pref_header_text_background_color") || key.equals("pref_header_text_text_color_highlight") || key.equals("pref_header_text__background_color_highlight" ) || key.equals("pref_widget_text_color")  || key.equals("pref_widget_text_color_highlight") || key.equals("pref_auto_mark_read") || key.equals("pref_led_notification_color") || key.equals("pref_relevant_text_text_color") || key.equals("pref_relevant_text_background_color") || key.equals("pref_relevant_text_text_color_highlight") || key.equals("pref_relevant_text_background_color_highlight") || key.equals("pref_action_bar_normal_background_color") || key.equals("pref_action_bar_filtered_background_color"))
             setSummaryToValue(key);
-        else if (key.equals("pref_plan")) {
+        /*else if (key.equals("pref_plan")) {
             setSummaryToValue(key);
             setUserdataVisibility();
             if (getSharedPreferences().getString("pref_plan", "1").equals("2") && !getSharedPreferences().getBoolean("seen_infoscreen_warning", false)) {
                 new InfoscreenWarningDialog().show(getFragmentManager(), "InfoscreenWarningDialog");
             }
-        }
+        }*/
         else if (key.equals("pref_username") || key.equals("pref_password")){
             getActivity().startService(new Intent(getActivity(), DownloadService.class).setAction(DownloadService.ACTION_RETRY));
         }
@@ -249,11 +249,12 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     }
 
     private void setUserdataVisibility(){
-        if (getSharedPreferences().getString("pref_plan", "1").equals("1")) {
+        // Always visible
+        /*if (getSharedPreferences().getString("pref_plan", "1").equals("1")) {
             basePrefScreen.addPreference(userdataPrefScreen);
         } else {
             basePrefScreen.removePreference(userdataPrefScreen);
-        }
+        }*/
     }
 
     @Override

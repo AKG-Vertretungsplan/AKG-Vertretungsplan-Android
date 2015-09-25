@@ -143,10 +143,10 @@ public class DownloadService extends IntentService {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(2);
         try {
-            int plan = Integer.parseInt(getSharedPreferences().getString("pref_plan", "1"));
-            switch (plan) {
-                case 1:
-                {
+            //int plan = Integer.parseInt(getSharedPreferences().getString("pref_plan", "1"));
+            //switch (plan) {
+            //    case 1:
+            //    {
                     username = getSharedPreferences().getString("pref_username", "");
                     password = getSharedPreferences().getString("pref_password", "");
                     String base64EncodedCredentials = Base64.encodeToString((username + ":" + password).getBytes("US-ASCII"), Base64.URL_SAFE | Base64.NO_WRAP);
@@ -158,16 +158,16 @@ public class DownloadService extends IntentService {
                     httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
                     String css = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
                     processPlan(cssHeader + css + cssFoot + result);
-                    break;
-                }
-                case 2:
-                {
-                    String result = getPlanInsecure(PLAN_2_ADDRESS_1) + getPlanInsecure(PLAN_2_ADDRESS_2);
-                    processPlan(result);
-                    break;
-                }
-            }
-            getSharedPreferences().edit().putInt("last_plan_type", plan).apply();
+            //      break;
+            //    }
+            //    case 2:
+            //    {
+            //        String result = getPlanInsecure(PLAN_2_ADDRESS_1) + getPlanInsecure(PLAN_2_ADDRESS_2);
+            //        processPlan(result);
+            //        break;
+            //    }
+            //}
+            getSharedPreferences().edit().putInt("last_plan_type", 1).apply();
         }
         catch (UnknownHostException e){
             loadOfflinePlan();
@@ -780,6 +780,10 @@ public class DownloadService extends IntentService {
         maybeSaveFormattedPlan();
         String result = cssHeader + dummyCSS + cssFoot;
         switch (no){
+            case -1:
+                // Not actually dummy, but infoscreen
+                result = getPlanInsecure(PLAN_2_ADDRESS_1) + getPlanInsecure(PLAN_2_ADDRESS_2);
+                break;
             case 1:
                 result += dummy1;
                 break;

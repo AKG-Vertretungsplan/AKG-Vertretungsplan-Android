@@ -110,7 +110,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
             // BasicSetupDialog will call this method again
             return;
         }
-        if (sharedPreferences.getString("pref_plan", "1").equals("2") && !sharedPreferences.getBoolean("seen_infoscreen_warning", false)) {
+        if (sharedPreferences.getString("pref_plan", "1").equals("2")) {
             new InfoscreenWarningDialog().show(getFragmentManager(), "InfoscreenWarningDialog");
         }
         //Download plan stuff  start

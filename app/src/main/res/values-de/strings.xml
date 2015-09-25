@@ -270,8 +270,13 @@
     <string name="dialog_enter_lesson_class_summary">Wird zum Erkennen von relevanten Vertretungen verwendet</string>
     <string name="action_lesson_class">Klasse</string>
 
-    <string name="dialog_warning">Achtung!</string>
-    <string name="dialog_infoscreen_warning_message">Die Anzeige des Vertretungsplans vom Infoscreen könnte jeden Moment aufhören, zu funktionieren, da noch nicht sicher ist, für wie lange der Infoscreen noch online bleibt. Möglicherweise ist der momentane Zugang nicht von der Schulleitung beabsichtigt.</string>
+    <string name="dialog_warning">Ende der Infoscreen-Unterstützung</string>
+    <string name="dialog_infoscreen_warning_message">Der Infoscreen war anscheinend nur aus Versehen und ohne Absicht der Schulleitung allgemein zugänglich; jetzt wird wieder ein Lehrerpasswort verlangt.
+        \nSomit lässt sich diese App leider wieder nur noch zur Anzeige des Oberstufen-Vertretungsplans verwenden.
+        \nFür mögliche Unannehmlichkeiten möchte ich mich entschuldigen.\n
+        \nWer möchte, kann die App immer noch weiter zur Stundenplananzeige verwenden. Dazu deaktiviert man am besten die Hintergrundprüfung der App in den Einstellungen unter Verhalten/Hintergrundservice. Es existiert auch eine Launcher-Verknüpfung für den Stundenplan, um diesen direkt ohne Vertretungsplan-Anzeige anzuzeigen.\n</string>
+    <string name="dialog_use_plan_1">Oberstufenplan</string>
+    <string name="dialog_close_app">App schließen</string>
     <string name="dialog_do_not_show_again">Nicht mehr anzeigen</string>
 
 </resources>
