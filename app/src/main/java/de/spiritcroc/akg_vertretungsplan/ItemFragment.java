@@ -256,8 +256,7 @@ public class ItemFragment extends ListFragment{
         backgroundColors.clear();
         String add;
         String tmp = "a";   //not empty
-        boolean useFullTeacherNames = sharedPreferences.getBoolean("pref_formatted_plan_replace_teacher_short_with_teacher_full", true),
-                filterResults = sharedPreferences.getBoolean("pref_filter_plan", false) && LessonPlan.getInstance(sharedPreferences).isConfigured(),
+        boolean filterResults = sharedPreferences.getBoolean("pref_filter_plan", false) && LessonPlan.getInstance(sharedPreferences).isConfigured(),
                 lastAddedHeader = false;
         unreadContent = false;
         for (int i = 0; !tmp.equals(""); i++){
@@ -304,27 +303,17 @@ public class ItemFragment extends ListFragment{
                         backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_class_text_background_color", "" + Color.TRANSPARENT)));
                     }
                     if (headerRow[0]==null) { //e.g. when extra table "Gesamte Schule:"
-                        add = tmpRowContent[0] + " → " + tmpRowContent[1];
+                        add = createItem(getActivity(), tmpRowContent, true);
                         relevant = !sharedPreferences.getBoolean("pref_filter_general", false);
                         if (relevant)
                             lastAddedHeader = false;
-                    }
-                    else{
-                        add = tmpRowContent[2] + " " + (useFullTeacherNames ? getTeacherCombinationString(lessonPlan, tmpRowContent[1]) : tmpRowContent[1]) + " →";
-                        if (!tmpRowContent[3].equals(""))
-                            add += " " + (useFullTeacherNames ? getTeacherCombinationString(lessonPlan, tmpRowContent[3]) : tmpRowContent[3]);
-                        if (!tmpRowContent[4].equals(""))
-                            add += " (" + tmpRowContent[4] + ")";
-                        if (!tmpRowContent[5].equals(""))
-                            add += " " + tmpRowContent[5];
-                        if (!tmpRowContent[6].equals(""))
-                            add += " " + tmpRowContent[6];
-                        try{
+                    } else {
+                        add = createItem(getActivity(), tmpRowContent, false);
+                        try {
                             relevant = lessonPlan.isRelevant( tmpRowContent[0], Tools.getDateFromPlanTitle(this.date).get(Calendar.DAY_OF_WEEK), Integer.parseInt(tmpRowContent[2]), tmpRowContent[1]);
                             if (relevant)
                                 lastAddedHeader = false;
-                        }
-                        catch (Exception e){
+                        } catch (Exception e) {
                             Log.e("ItemFragment", "Check for relevancy threw exception: " + e);
                             relevant = false;
                         }
@@ -366,6 +355,29 @@ public class ItemFragment extends ListFragment{
             ((FormattedActivity) getActivity()).requestRecheckUnreadChanges();
         return result.toArray(new String[result.size()]);
     }
+
+    /**
+     * @param noHeader
+     * true e.g. when extra table "Gesamte Schule:" else false
+     */
+    public static String createItem(Context context, String[] values, boolean noHeader) {
+        if (noHeader) {
+            return values[0] + (values[1].equals("") ? "" : " → " + values[1]);
+        }
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        LessonPlan lessonPlan = LessonPlan.getInstance(sharedPreferences);
+        boolean useFullTeacherNames = sharedPreferences.getBoolean("pref_formatted_plan_replace_teacher_short_with_teacher_full", true);
+        String result = values[2] + " " + (useFullTeacherNames ? getTeacherCombinationString(lessonPlan, values[1]) : values[1]) + " →";
+        if (!values[3].equals(""))
+            result += " " + (useFullTeacherNames ? getTeacherCombinationString(lessonPlan, values[3]) : values[3]);
+        if (!values[4].equals(""))
+            result += " (" + values[4] + ")";
+        if (!values[5].equals(""))
+            result += " " + values[5];
+        if (!values[6].equals(""))
+            result += " " + values[6];
+        return result;
+    }
     private void removeLastAddedItem(ArrayList result){
         result.remove(result.size()-1);
         fullFormattedContent.remove(fullFormattedContent.size()-1);
@@ -397,7 +409,7 @@ public class ItemFragment extends ListFragment{
             return false;
     }
 
-    private String getTeacherCombinationString(LessonPlan lessonPlan, String teacherShort){
+    private static String getTeacherCombinationString(LessonPlan lessonPlan, String teacherShort){
         String result = lessonPlan.getTeacherFullForTeacherShort(teacherShort);
         if (result == null || result.equals(""))
             result = teacherShort;

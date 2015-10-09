@@ -49,6 +49,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -293,31 +294,32 @@ public class DownloadService extends IntentService {
             if (!loadFormattedPlans(result))
                 setTextViewText(getString(R.string.error_illegal_plan));
             if (newVersion) {//Notification after loadFormattedPlans, because getNewRelevantInformationCount depends on it
-                Tools.Int newGeneralNotificationCount = new Tools.Int(),
-                    newIrrelevantNotificationCount = new Tools.Int();
-                int newRelevantNotificationCount = getNewRelevantInformationCount(sharedPreferences, newGeneralNotificationCount, newIrrelevantNotificationCount);
+                Tools.Int newIrrelevantNotificationCount = new Tools.Int();
+                ArrayList<String> relevantInformation = new ArrayList<>();
+                ArrayList<String> generalInformation = new ArrayList<>();
+                int newRelevantNotificationCount = getNewRelevantInformationCount(this, newIrrelevantNotificationCount, relevantInformation, generalInformation);
 
                 String message = (newRelevantNotificationCount > 0 ? getResources().getQuantityString(R.plurals.new_relevant_information, newRelevantNotificationCount, newRelevantNotificationCount) :
-                        (newGeneralNotificationCount.value > 0 ?  getResources().getQuantityString(R.plurals.new_general_information, newGeneralNotificationCount.value, newGeneralNotificationCount.value) :
+                        (generalInformation.size() > 0 ?  getResources().getQuantityString(R.plurals.new_general_information, generalInformation.size(), generalInformation.size()) :
                                 (newIrrelevantNotificationCount.value > 0 ?  getResources().getQuantityString(R.plurals.new_irrelevant_information, newIrrelevantNotificationCount.value, newIrrelevantNotificationCount.value) :
                         getString(R.string.last_checked) + " " + time)));
                 if (!sharedPreferences.getBoolean("pref_notification_only_if_relevant", false) || newRelevantNotificationCount > 0
-                        || (!sharedPreferences.getBoolean("pref_notification_general_not_relevant", false) && newGeneralNotificationCount.value > 0)) {
+                        || (!sharedPreferences.getBoolean("pref_notification_general_not_relevant", false) && generalInformation.size() > 0)) {
                     int importance = newRelevantNotificationCount > 0 ? NOTIFICATION_IMPORTANCE_RELEVANT :
-                            (newGeneralNotificationCount.value > 0 ? NOTIFICATION_IMPORTANCE_GENERAL :
+                            (generalInformation.size() > 0 ? NOTIFICATION_IMPORTANCE_GENERAL :
                                     (newIrrelevantNotificationCount.value > 0 ? NOTIFICATION_IMPORTANCE_IRRELEVANT : NOTIFICATION_IMPORTANCE_NONE));
 
-                    maybePostNotification(getString(R.string.new_version), message, importance);
+                    maybePostNotification(getString(R.string.new_version), message, importance, relevantInformation, generalInformation);
                 }
-                if (newRelevantNotificationCount > 0 || newGeneralNotificationCount.value > 0 || newIrrelevantNotificationCount.value > 0)
+                if (newRelevantNotificationCount > 0 || generalInformation.size() > 0 || newIrrelevantNotificationCount.value > 0)
                     setTextViewText(message);
 
                 if (sharedPreferences.getBoolean("pref_tesla_unread_enable", true)){
                     int fullCount = newRelevantNotificationCount;
                     if (sharedPreferences.getBoolean("pref_tesla_unread_use_complete_count", false))
-                        fullCount += newGeneralNotificationCount.value + newIrrelevantNotificationCount.value;
+                        fullCount += generalInformation.size() + newIrrelevantNotificationCount.value;
                     else if (sharedPreferences.getBoolean("pref_tesla_unread_include_general_information_count", true))
-                        fullCount += newGeneralNotificationCount.value;
+                        fullCount += generalInformation.size();
                     if (!IsRunningSingleton.getInstance().isRunning()){
                         try{
                             ContentValues contentValues = new ContentValues();
@@ -390,7 +392,7 @@ public class DownloadService extends IntentService {
         }
     }
     private void postLoginNotification() {
-        postNotification(getString(R.string.wrong_userdata), getString(R.string.enter_userdata), 2, R.drawable.ic_stat_notify_wrong_credentials, SettingsActivity.class, true, NOTIFICATION_IMPORTANCE_NONE);
+        postNotification(getString(R.string.wrong_userdata), getString(R.string.enter_userdata), 2, R.drawable.ic_stat_notify_wrong_credentials, SettingsActivity.class, true, NOTIFICATION_IMPORTANCE_NONE, null, null);
     }
 
     private String timeAndDateToString (Calendar calendar){
@@ -674,11 +676,11 @@ public class DownloadService extends IntentService {
         return false;
     }
 
-    private void maybePostNotification(String title, String text, int importance){
+    private void maybePostNotification(String title, String text, int importance, ArrayList<String> relevantInformation, ArrayList<String> generalInformation) {
         if (!IsRunningSingleton.getInstance().isRunning() && getSharedPreferences().getBoolean("pref_notification_enabled", false))
-            postNotification(title, text, 1, R.drawable.ic_stat_notify_plan_update, FormattedActivity.class, false, importance);
+            postNotification(title, text, 1, R.drawable.ic_stat_notify_plan_update, FormattedActivity.class, false, importance, relevantInformation, generalInformation);
     }
-    private void postNotification (String title, @Nullable String text, int id, int smallIconResource, Class touchActivity, boolean silent, int importance){
+    private void postNotification(String title, @Nullable String text, int id, int smallIconResource, Class touchActivity, boolean silent, int importance, @Nullable ArrayList<String> relevantInformation, @Nullable ArrayList<String> generalInformation) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this).setSmallIcon(smallIconResource).setContentTitle(title);
         if (text != null)
             builder.setContentText(text);
@@ -711,6 +713,25 @@ public class DownloadService extends IntentService {
                 }
                 builder.setVibrate(vibrationPattern);
             }
+            if (importance >= NOTIFICATION_IMPORTANCE_GENERAL) {
+                NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+                boolean addedItems = false;
+                if (relevantInformation != null) {
+                    addedItems = !relevantInformation.isEmpty();
+                    for (int i = 0; i < relevantInformation.size(); i++) {
+                        inboxStyle.addLine(relevantInformation.get(i));
+                    }
+                }
+                if (!addedItems && generalInformation != null) {
+                    for (int i = 0; i < generalInformation.size(); i++) {
+                        inboxStyle.addLine(generalInformation.get(i));
+                    }
+                }
+
+                if (text != null)
+                    inboxStyle.setSummaryText(text);
+                builder.setStyle(inboxStyle);
+            }
         }
 
         Intent resultIntent = new Intent(this, touchActivity);
@@ -723,23 +744,26 @@ public class DownloadService extends IntentService {
         notificationManager.notify(id, builder.build());
     }
 
-    public static int getNewRelevantInformationCount(SharedPreferences sharedPreferences, Tools.Int newGeneralInformationCount, Tools.Int newIrrelevantInformationCount){
-        newGeneralInformationCount.value = 0;
+    public static int getNewRelevantInformationCount(Context context, Tools.Int newIrrelevantInformationCount, ArrayList<String> relevantInformation, ArrayList<String> generalInformation){
         newIrrelevantInformationCount.value = 0;
-        int count = getNewRelevantInformationCount(sharedPreferences, sharedPreferences.getString("pref_current_plan_1", ""), sharedPreferences.getString("pref_current_title_1", ""), newGeneralInformationCount, newIrrelevantInformationCount) +
-                getNewRelevantInformationCount(sharedPreferences, sharedPreferences.getString("pref_current_plan_2", ""), sharedPreferences.getString("pref_current_title_2", ""), newGeneralInformationCount, newIrrelevantInformationCount);
+        relevantInformation.clear();
+        generalInformation.clear();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        int count = getNewRelevantInformationCount(context, sharedPreferences.getString("pref_current_plan_1", ""), sharedPreferences.getString("pref_current_title_1", ""), newIrrelevantInformationCount, relevantInformation, generalInformation) +
+                getNewRelevantInformationCount(context, sharedPreferences.getString("pref_current_plan_2", ""), sharedPreferences.getString("pref_current_title_2", ""), newIrrelevantInformationCount, relevantInformation, generalInformation);
         if (!LessonPlan.getInstance(sharedPreferences).isConfigured()){
-            newIrrelevantInformationCount.value += newGeneralInformationCount.value + count;
-            newGeneralInformationCount.value = 0;
+            newIrrelevantInformationCount.value += generalInformation.size() + count;
+            generalInformation.clear();
             count = 0;
         }
         return count;
     }
-    private static int getNewRelevantInformationCount(SharedPreferences sharedPreferences, String currentContent, String title, Tools.Int newGeneralInformationCount, Tools.Int newIrrelevantInformationCount){
+    private static int getNewRelevantInformationCount(Context context, String currentContent, String title, Tools.Int newIrrelevantInformationCount, ArrayList<String> relevantInformation, ArrayList<String> generalInformation) {
         if (title.equals(NO_PLAN)) {
             return 0;
         }
         String latestContent;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         if (title.equals(sharedPreferences.getString("pref_latest_title_1", "")))    //check date for comparison
             latestContent = sharedPreferences.getString("pref_latest_plan_1", "");
         else if (title.equals(sharedPreferences.getString("pref_latest_title_2", "")))
@@ -774,17 +798,21 @@ public class DownloadService extends IntentService {
 
                         if (tmpCellCount <= 2) {//general info for whole school
                             if (tmpCellCount == 1) {
-                                if (!Tools.ignoreSubstitution(tmpRowContent[0]))
-                                    newGeneralInformationCount.value++;
-                            } else
-                                newGeneralInformationCount.value++;
+                                if (!Tools.ignoreSubstitution(tmpRowContent[0])) {
+                                    generalInformation.add(ItemFragment.createItem(context, tmpRowContent, true));
+                                }
+                            } else {
+                                generalInformation.add(ItemFragment.createItem(context, tmpRowContent, false));
+                            }
                         }
                         else {
                             try {
-                                if (lessonPlan.isRelevant(tmpRowContent[0], calendar.get(Calendar.DAY_OF_WEEK), Integer.parseInt(tmpRowContent[2]), tmpRowContent[1]))
+                                if (lessonPlan.isRelevant(tmpRowContent[0], calendar.get(Calendar.DAY_OF_WEEK), Integer.parseInt(tmpRowContent[2]), tmpRowContent[1])) {
                                     count++;
-                                else
+                                    relevantInformation.add(ItemFragment.createItem(context, tmpRowContent, false));
+                                } else {
                                     newIrrelevantInformationCount.value++;
+                                }
                             } catch (Exception e) {
                                 Log.e("DownloadService", "getNewRelevantInformationCount: Got exception while checking for relevancy: " + e);
                             }

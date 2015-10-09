@@ -27,6 +27,8 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.widget.RemoteViews;
 
+import java.util.ArrayList;
+
 public class CheckPlanWidget extends AppWidgetProvider {
     private static final String WIDGET_BUTTON_CLICKED = "widget_button_clicked";
     private final String WIDGET_RELOAD_BUTTON_CLICKED = "widget_reload_button_clicked";
@@ -79,12 +81,13 @@ public class CheckPlanWidget extends AppWidgetProvider {
             views.setTextViewText(R.id.appwidget_button, context.getString(R.string.error_illegal_plan));
         }
         else if (sharedPreferences.getBoolean("pref_unseen_changes", false)){
-            Tools.Int newGeneralNotificationCount = new Tools.Int(),
-                newIrrelevantNotificationCount = new Tools.Int();
-            int newRelevantNotificationCount = DownloadService.getNewRelevantInformationCount(sharedPreferences, newGeneralNotificationCount, newIrrelevantNotificationCount);
+            Tools.Int newIrrelevantNotificationCount = new Tools.Int();
+            ArrayList<String> relevantInformation = new ArrayList<>(),
+                    generalInformation = new ArrayList<>();
+            int newRelevantNotificationCount = DownloadService.getNewRelevantInformationCount(context, newIrrelevantNotificationCount, relevantInformation, generalInformation);
             String text = (newRelevantNotificationCount > 0 ?
                     context.getResources().getQuantityString(R.plurals.new_relevant_information, newRelevantNotificationCount, newRelevantNotificationCount) :
-                    (newGeneralNotificationCount.value > 0 ?  context.getResources().getQuantityString(R.plurals.new_general_information, newGeneralNotificationCount.value, newGeneralNotificationCount.value) :
+                    (generalInformation.size() > 0 ?  context.getResources().getQuantityString(R.plurals.new_general_information, generalInformation.size(), generalInformation.size()) :
                             newIrrelevantNotificationCount.value > 0 ?  context.getResources().getQuantityString(R.plurals.new_irrelevant_information, newIrrelevantNotificationCount.value, newIrrelevantNotificationCount.value) :
                                     context.getString(R.string.new_version) + " " + sharedPreferences.getString("pref_last_update", context.getString(R.string.error_could_not_load))));
             views.setTextViewText(R.id.appwidget_button, text);
