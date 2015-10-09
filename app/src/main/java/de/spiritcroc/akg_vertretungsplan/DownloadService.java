@@ -71,6 +71,11 @@ public class DownloadService extends IntentService {
 
     public static final String NO_PLAN = "**null**";
 
+    public static final int NOTIFICATION_IMPORTANCE_RELEVANT = 3;
+    public static final int NOTIFICATION_IMPORTANCE_GENERAL = 2;
+    public static final int NOTIFICATION_IMPORTANCE_IRRELEVANT = 1;
+    public static final int NOTIFICATION_IMPORTANCE_NONE = 0;
+
     public enum ContentType {AWAIT, IGNORE, HEADER, TABLE_START_FLAG, TABLE_END_FLAG, TABLE_ROW, TABLE_CONTENT}
     private String username, password;
     private final String cssHeader = "<style media=\"screen\" type=\"text/css\">";
@@ -298,7 +303,11 @@ public class DownloadService extends IntentService {
                         getString(R.string.last_checked) + " " + time)));
                 if (!sharedPreferences.getBoolean("pref_notification_only_if_relevant", false) || newRelevantNotificationCount > 0
                         || (!sharedPreferences.getBoolean("pref_notification_general_not_relevant", false) && newGeneralNotificationCount.value > 0)) {
-                    maybePostNotification(getString(R.string.new_version), message);
+                    int importance = newRelevantNotificationCount > 0 ? NOTIFICATION_IMPORTANCE_RELEVANT :
+                            (newGeneralNotificationCount.value > 0 ? NOTIFICATION_IMPORTANCE_GENERAL :
+                                    (newIrrelevantNotificationCount.value > 0 ? NOTIFICATION_IMPORTANCE_IRRELEVANT : NOTIFICATION_IMPORTANCE_NONE));
+
+                    maybePostNotification(getString(R.string.new_version), message, importance);
                 }
                 if (newRelevantNotificationCount > 0 || newGeneralNotificationCount.value > 0 || newIrrelevantNotificationCount.value > 0)
                     setTextViewText(message);
@@ -381,7 +390,7 @@ public class DownloadService extends IntentService {
         }
     }
     private void postLoginNotification() {
-        postNotification(getString(R.string.wrong_userdata), getString(R.string.enter_userdata), 2, R.drawable.ic_stat_notify_wrong_credentials, SettingsActivity.class, true);
+        postNotification(getString(R.string.wrong_userdata), getString(R.string.enter_userdata), 2, R.drawable.ic_stat_notify_wrong_credentials, SettingsActivity.class, true, NOTIFICATION_IMPORTANCE_NONE);
     }
 
     private String timeAndDateToString (Calendar calendar){
@@ -665,11 +674,11 @@ public class DownloadService extends IntentService {
         return false;
     }
 
-    private void maybePostNotification(String title, String text){
+    private void maybePostNotification(String title, String text, int importance){
         if (!IsRunningSingleton.getInstance().isRunning() && getSharedPreferences().getBoolean("pref_notification_enabled", false))
-            postNotification(title, text, 1, R.drawable.ic_stat_notify_plan_update, FormattedActivity.class, false);
+            postNotification(title, text, 1, R.drawable.ic_stat_notify_plan_update, FormattedActivity.class, false, importance);
     }
-    private void postNotification (String title, @Nullable String text, int id, int smallIconResource, Class touchActivity, boolean silent){
+    private void postNotification (String title, @Nullable String text, int id, int smallIconResource, Class touchActivity, boolean silent, int importance){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this).setSmallIcon(smallIconResource).setContentTitle(title);
         if (text != null)
             builder.setContentText(text);
@@ -684,7 +693,22 @@ public class DownloadService extends IntentService {
             if (getSharedPreferences().getBoolean("pref_led_notification_enabled", false))
                 builder.setLights(Integer.parseInt(getSharedPreferences().getString("pref_led_notification_color", "-1")), 500, 500);
             if (getSharedPreferences().getBoolean("pref_vibrate_notification_enabled", false)) {
-                long[] vibrationPattern = {50, 500, 250, 500};
+                long[] vibrationPattern;
+                switch (importance) {
+                    case NOTIFICATION_IMPORTANCE_RELEVANT:
+                        vibrationPattern = new long[] {50, 500, 250, 500};
+                        break;
+                    case NOTIFICATION_IMPORTANCE_GENERAL:
+                        vibrationPattern = new long[] {50, 500};
+                        break;
+                    case NOTIFICATION_IMPORTANCE_IRRELEVANT:
+                        vibrationPattern = new long[] {50, 200};
+                        break;
+                    default:
+                    case NOTIFICATION_IMPORTANCE_NONE:
+                        vibrationPattern = new long[] {50, 100};
+                        break;
+                }
                 builder.setVibrate(vibrationPattern);
             }
         }
