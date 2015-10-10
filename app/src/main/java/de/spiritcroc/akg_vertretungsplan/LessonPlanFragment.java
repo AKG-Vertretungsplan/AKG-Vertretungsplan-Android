@@ -17,6 +17,7 @@
 package de.spiritcroc.akg_vertretungsplan;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -36,7 +37,13 @@ public class LessonPlanFragment extends ListFragment {
 
     private int day;
     private Lesson[] lessons;
+    private String[] startTimes;
+    private String[] fullTimes;
     private ArrayList<Integer> textColors = new ArrayList<>();
+
+    private SharedPreferences sharedPreferences;
+    private boolean showTime;
+    private boolean showFullTime;
 
     public static LessonPlanFragment newInstance(int day) {
         LessonPlanFragment fragment = new LessonPlanFragment();
@@ -58,6 +65,14 @@ public class LessonPlanFragment extends ListFragment {
             day = 0;
         }
 
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        fullTimes = getResources().getStringArray(R.array.lesson_plan_times);
+        startTimes = new String[LessonPlan.LESSON_COUNT];
+        for (int i = 0; i < startTimes.length; i++) {
+            startTimes[i] = fullTimes[i].substring(0, fullTimes[i].indexOf(" "));
+        }
+
         update();
     }
 
@@ -70,7 +85,7 @@ public class LessonPlanFragment extends ListFragment {
         LessonViewContent[] lessonViewContent = new LessonViewContent[lessons.length];
         for (int i = 0; i < lessonViewContent.length; i++){
             lessonViewContent[i] = new LessonViewContent();
-            lessonViewContent[i].content = (i+1) + ": ";
+            lessonViewContent[i].content = (showTime ? (showFullTime ? fullTimes[i] : startTimes[i]) : (i+1)) + ": ";
             if (lessons[i].isFreeTime()) {
                 if (i+1 == LessonPlan.LUNCH_BREAK)
                     lessonViewContent[i].content += getString(R.string.lunch_break);
@@ -101,6 +116,8 @@ public class LessonPlanFragment extends ListFragment {
 
 
     public void update(){
+        showTime = sharedPreferences.getBoolean("pref_lesson_plan_show_time", false);
+        showFullTime = sharedPreferences.getBoolean("pref_lesson_plan_show_full_time", false);
         setListAdapter(new CustomArrayAdapter(getActivity().getApplicationContext(), R.layout.lesson_plan_item, createContent()));
     }
 

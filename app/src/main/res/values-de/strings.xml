@@ -284,4 +284,7 @@
     <string name="pref_lesson_plan_add_launcher_shortcut_summary">Versuche, eine Stundenplan-Verknüpfung zum Startbildschirm hinzuzufügen (könnte bei manchen Launchern nicht funktionieren)</string>
     <string name="launcher_added_successfully">Verknüpfung erfolgreich erstellt</string>
 
+    <string name="action_show_time">Zeige Zeit</string>
+    <string name="action_show_full_time">Vollständige Zeit</string>
+
 </resources>

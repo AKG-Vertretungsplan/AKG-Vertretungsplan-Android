@@ -479,4 +479,7 @@
     <string name="pref_lesson_plan_add_launcher_shortcut_summary">Try to add a lesson plan shortcut to your launcher (might not work on some launchers)</string>
     <string name="launcher_added_successfully">Launcher added successfully</string>
 
+    <string name="action_show_time">Show time</string>
+    <string name="action_show_full_time">Full time</string>
+
 </resources>

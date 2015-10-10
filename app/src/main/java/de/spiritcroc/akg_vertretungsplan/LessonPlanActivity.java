@@ -41,6 +41,8 @@ public class LessonPlanActivity extends AppCompatActivity {
     private static LessonPlanFragment[] lessonPlanFragments;
     private static int shortcutDay = -1;//-1 if no shortcut
 
+    private MenuItem showFullTimeMenuItem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         style = Tools.getStyle(this);
@@ -107,6 +109,11 @@ public class LessonPlanActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_lesson_plan, menu);
 
+        boolean showTime = sharedPreferences.getBoolean("pref_lesson_plan_show_time", false);
+        menu.findItem(R.id.action_show_time).setChecked(showTime);
+        showFullTimeMenuItem = menu.findItem(R.id.action_show_full_time).setChecked(sharedPreferences.getBoolean("pref_lesson_plan_show_full_time", false));
+        showFullTimeMenuItem.setVisible(showTime);
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -121,6 +128,19 @@ public class LessonPlanActivity extends AppCompatActivity {
                 return true;
             case R.id.action_lesson_class:
                 new EnterLessonClassDialog().show(getFragmentManager(), "EnterLessonClassDialog");
+                return true;
+            case R.id.action_show_time:
+                boolean showTime = !item.isChecked();
+                item.setChecked(showTime);
+                sharedPreferences.edit().putBoolean("pref_lesson_plan_show_time", showTime).apply();
+                showFullTimeMenuItem.setVisible(showTime);
+                updateAll();
+                return true;
+            case R.id.action_show_full_time:
+                boolean showFullTime = !item.isChecked();
+                item.setChecked(showFullTime);
+                sharedPreferences.edit().putBoolean("pref_lesson_plan_show_full_time", showFullTime).apply();
+                updateAll();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
