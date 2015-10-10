@@ -99,10 +99,10 @@ public class LessonPlanActivity extends AppCompatActivity {
             startActivity(intent);
             overridePendingTransition(0, 0);
         } else {
+            updateAll();// Colors could have changed
             if (!sharedPreferences.contains("pref_class")) {
                 new EnterLessonClassDialog().show(getFragmentManager(), "EnterLessonClassDialog");
             }
-
         }
     }
     @Override

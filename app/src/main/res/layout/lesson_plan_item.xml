@@ -10,10 +10,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/list_text_size"
-        android:textColor="#FFFF00"
         android:paddingTop="@dimen/list_padding_top_bottom"
         android:paddingBottom="@dimen/list_padding_top_bottom"
-        android:layout_marginRight="@dimen/list_content_margin"/><!--todo text color-->
+        android:layout_marginRight="@dimen/list_content_margin"/>
     <TextView
         android:id="@+id/subject_view"
         android:layout_width="0dp"

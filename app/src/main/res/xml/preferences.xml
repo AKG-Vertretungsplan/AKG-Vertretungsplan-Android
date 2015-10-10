@@ -373,6 +373,33 @@
                 android:key="pref_lesson_plan_add_launcher_shortcut"
                 android:title="@string/pref_lesson_plan_add_launcher_shortcut"
                 android:summary="@string/pref_lesson_plan_add_launcher_shortcut_summary"/>
+            <PreferenceCategory
+                android:title="@string/pref_colors">
+                <ListPreference
+                    android:key="pref_lesson_plan_color_time"
+                    android:title="@string/pref_lesson_plan_color_time"
+                    android:entries="@array/pref_color_array"
+                    android:entryValues="@array/pref_color_array_values"
+                    android:defaultValue="@string/pref_color_blue_value"/>
+                <ListPreference
+                    android:key="pref_lesson_plan_color_lesson"
+                    android:title="@string/pref_lesson_plan_color_lesson"
+                    android:entries="@array/pref_color_array"
+                    android:entryValues="@array/pref_color_array_values"
+                    android:defaultValue="@string/pref_color_black_value"/>
+                <ListPreference
+                    android:key="pref_lesson_plan_color_free_time"
+                    android:title="@string/pref_lesson_plan_color_free_time"
+                    android:entries="@array/pref_color_array"
+                    android:entryValues="@array/pref_color_array_values"
+                    android:defaultValue="@string/pref_color_gray_value"/>
+                <ListPreference
+                    android:key="pref_lesson_plan_color_room"
+                    android:title="@string/pref_lesson_plan_color_room"
+                    android:entries="@array/pref_color_array"
+                    android:entryValues="@array/pref_color_array_values"
+                    android:defaultValue="@string/pref_color_dkgray_value"/>
+            </PreferenceCategory>
         </PreferenceScreen>
     </PreferenceCategory>
 

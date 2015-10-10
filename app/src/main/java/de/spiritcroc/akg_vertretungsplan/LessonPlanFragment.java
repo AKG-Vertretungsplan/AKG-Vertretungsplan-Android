@@ -87,8 +87,9 @@ public class LessonPlanFragment extends ListFragment {
 
     private LessonViewContent[] createContent(){
         textColors.clear();
-        int style = Tools.getStyle(getActivity());
-        boolean lightStyle = style == R.style.AppTheme || style == R.style.Theme_AppCompat_Light || style == R.style.Theme_AppCompat_Light_DarkActionBar;
+
+        int color = Integer.parseInt(sharedPreferences.getString("pref_lesson_plan_color_lesson", "" + Color.BLACK)),
+                colorFreeTime = Integer.parseInt(sharedPreferences.getString("pref_lesson_plan_color_free_time", "" + Color.GRAY));
 
         lessons = LessonPlan.getInstance(PreferenceManager.getDefaultSharedPreferences(getActivity())).getLessonsForDay(day);
         LessonViewContent[] lessonViewContent = new LessonViewContent[lessons.length];
@@ -100,10 +101,10 @@ public class LessonPlanFragment extends ListFragment {
                     lessonViewContent[i].content = getString(R.string.lunch_break);
                 else
                     lessonViewContent[i].content = getString(R.string.free_time);
-                textColors.add(Color.GRAY);
+                textColors.add(colorFreeTime);
             } else {
                 lessonViewContent[i].content = lessons[i].getReadableName();
-                textColors.add(lightStyle ? Color.BLACK : Color.WHITE);
+                textColors.add(color);
                 lessonViewContent[i].room = lessons[i].getRoom();
             }
         }
@@ -185,10 +186,12 @@ public class LessonPlanFragment extends ListFragment {
 
             holder.timeView.setGravity(showTime && showFullTime ? Gravity.CENTER : Gravity.CENTER_VERTICAL | Gravity.RIGHT);
 
+            holder.timeView.setTextColor(Integer.parseInt(sharedPreferences.getString("pref_lesson_plan_color_time", "" + Color.BLUE)));
             if (textColors.size()>position)
                 holder.subjectView.setTextColor(textColors.get(position));
             else
                 holder.subjectView.setTextColor(Color.GRAY);//default color for not crashing the app
+            holder.roomView.setTextColor(Integer.parseInt(sharedPreferences.getString("pref_lesson_plan_color_room", "" + Color.DKGRAY)));
             return view;
         }
     }

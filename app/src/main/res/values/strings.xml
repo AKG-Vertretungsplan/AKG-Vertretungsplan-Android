@@ -482,4 +482,9 @@
     <string name="action_show_time">Show time</string>
     <string name="action_show_full_time">Full time</string>
 
+    <string name="pref_lesson_plan_color_time">Time</string>
+    <string name="pref_lesson_plan_color_lesson">Lesson</string>
+    <string name="pref_lesson_plan_color_free_time">Free time</string>
+    <string name="pref_lesson_plan_color_room">Room</string>
+
 </resources>

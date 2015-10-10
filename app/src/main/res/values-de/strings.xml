@@ -287,4 +287,9 @@
     <string name="action_show_time">Zeige Zeit</string>
     <string name="action_show_full_time">Vollständige Zeit</string>
 
+    <string name="pref_lesson_plan_color_time">Zeit</string>
+    <string name="pref_lesson_plan_color_lesson">Fach</string>
+    <string name="pref_lesson_plan_color_free_time">Freistunde</string>
+    <string name="pref_lesson_plan_color_room">Raum</string>
+
 </resources>

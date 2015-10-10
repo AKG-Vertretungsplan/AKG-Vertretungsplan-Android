@@ -80,6 +80,10 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         setSummaryToValue("pref_action_bar_normal_background_color");
         setSummaryToValue("pref_action_bar_filtered_background_color");
         setSummaryToValue("pref_theme");
+        setSummaryToValue("pref_lesson_plan_color_time");
+        setSummaryToValue("pref_lesson_plan_color_lesson");
+        setSummaryToValue("pref_lesson_plan_color_free_time");
+        setSummaryToValue("pref_lesson_plan_color_room");
         //setSummaryToValue("pref_plan");
 
         EditTextPreference tmpEditTextPreference = (EditTextPreference) findPreference("pref_auto_load_on_open");
@@ -136,7 +140,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key){
-        if (key.equals("pref_class_text_text_color") || key.equals("pref_class_text_background_color") || key.equals("pref_normal_text_text_color") || key.equals("pref_normal_text_background_color") || key.equals("pref_normal_text_text_color_highlight") || key.equals("pref_normal_text__background_color_highlight") || key.equals("pref_header_text_text_color") || key.equals("pref_header_text_background_color") || key.equals("pref_header_text_text_color_highlight") || key.equals("pref_header_text__background_color_highlight" ) || key.equals("pref_widget_text_color")  || key.equals("pref_widget_text_color_highlight") || key.equals("pref_auto_mark_read") || key.equals("pref_led_notification_color") || key.equals("pref_relevant_text_text_color") || key.equals("pref_relevant_text_background_color") || key.equals("pref_relevant_text_text_color_highlight") || key.equals("pref_relevant_text_background_color_highlight") || key.equals("pref_action_bar_normal_background_color") || key.equals("pref_action_bar_filtered_background_color"))
+        if (key.equals("pref_class_text_text_color") || key.equals("pref_class_text_background_color") || key.equals("pref_normal_text_text_color") || key.equals("pref_normal_text_background_color") || key.equals("pref_normal_text_text_color_highlight") || key.equals("pref_normal_text__background_color_highlight") || key.equals("pref_header_text_text_color") || key.equals("pref_header_text_background_color") || key.equals("pref_header_text_text_color_highlight") || key.equals("pref_header_text__background_color_highlight" ) || key.equals("pref_widget_text_color")  || key.equals("pref_widget_text_color_highlight") || key.equals("pref_auto_mark_read") || key.equals("pref_led_notification_color") || key.equals("pref_relevant_text_text_color") || key.equals("pref_relevant_text_background_color") || key.equals("pref_relevant_text_text_color_highlight") || key.equals("pref_relevant_text_background_color_highlight") || key.equals("pref_action_bar_normal_background_color") || key.equals("pref_action_bar_filtered_background_color") ||
+                key.equals("pref_lesson_plan_color_time") || key.equals("pref_lesson_plan_color_lesson") || key.equals("pref_lesson_plan_color_free_time") || key.equals("pref_lesson_plan_color_room"))
             setSummaryToValue(key);
         /*else if (key.equals("pref_plan")) {
             setSummaryToValue(key);
@@ -174,6 +179,13 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                     editor.putString("pref_relevant_text_background_color", getString(R.string.pref_color_yellow_value));
                 if (sharedPreferences.getString("pref_relevant_text_background_color_highlight", "").equals(getString(R.string.pref_color_blue_value)))
                     editor.putString("pref_relevant_text_background_color_highlight", getString(R.string.pref_color_yellow_value));
+
+                if (sharedPreferences.getString("pref_lesson_plan_color_time", "").equals(getString(R.string.pref_color_cyan_value)))
+                    editor.putString("pref_lesson_plan_color_time", getString(R.string.pref_color_blue_value));
+                if (sharedPreferences.getString("pref_lesson_plan_color_lesson", "").equals(getString(R.string.pref_color_white_value)))
+                    editor.putString("pref_lesson_plan_color_lesson", getString(R.string.pref_color_black_value));
+                if (sharedPreferences.getString("pref_lesson_plan_color_room", "").equals(getString(R.string.pref_color_ltgray_value)))
+                    editor.putString("pref_lesson_plan_color_room", getString(R.string.pref_color_dkgray_value));
             }
             else if (theme.equals(getString(R.string.pref_theme_dark_value))){
                 if (sharedPreferences.getString("pref_header_text_text_color", "").equals(getString(R.string.pref_color_black_value)))
@@ -190,6 +202,13 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                     editor.putString("pref_relevant_text_background_color", getString(R.string.pref_color_blue_value));
                 if (sharedPreferences.getString("pref_relevant_text_background_color_highlight", "").equals(getString(R.string.pref_color_yellow_value)))
                     editor.putString("pref_relevant_text_background_color_highlight", getString(R.string.pref_color_blue_value));
+
+                if (sharedPreferences.getString("pref_lesson_plan_color_time", "").equals(getString(R.string.pref_color_blue_value)))
+                    editor.putString("pref_lesson_plan_color_time", getString(R.string.pref_color_cyan_value));
+                if (sharedPreferences.getString("pref_lesson_plan_color_lesson", "").equals(getString(R.string.pref_color_black_value)))
+                    editor.putString("pref_lesson_plan_color_lesson", getString(R.string.pref_color_white_value));
+                if (sharedPreferences.getString("pref_lesson_plan_color_room", "").equals(getString(R.string.pref_color_dkgray_value)))
+                    editor.putString("pref_lesson_plan_color_room", getString(R.string.pref_color_ltgray_value));
             }
             editor.apply();
         }
