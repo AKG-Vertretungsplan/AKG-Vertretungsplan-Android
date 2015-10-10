@@ -183,7 +183,7 @@ public class LessonPlanFragment extends ListFragment {
             holder.subjectView.setText(((LessonViewContent) getItem(position)).content);
             holder.roomView.setText(((LessonViewContent) getItem(position)).room);
 
-            holder.timeView.setGravity(showTime && showFullTime ? Gravity.CENTER_HORIZONTAL : Gravity.CENTER_VERTICAL | Gravity.RIGHT);
+            holder.timeView.setGravity(showTime && showFullTime ? Gravity.CENTER : Gravity.CENTER_VERTICAL | Gravity.RIGHT);
 
             if (textColors.size()>position)
                 holder.subjectView.setTextColor(textColors.get(position));
