@@ -29,6 +29,7 @@ import android.widget.EditText;
 
 public class EnterLessonClassDialog extends DialogFragment {
     private SharedPreferences sharedPreferences;
+    private LessonPlanActivity updateActivity;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -47,7 +48,10 @@ public class EnterLessonClassDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         sharedPreferences.edit().putString("pref_class", editLessonClass.getText().toString()).apply();
-                        LessonPlan.getInstance(sharedPreferences).getLessonClass();
+                        LessonPlan.getInstance(sharedPreferences).retrieveLessonClass();
+                        if (updateActivity != null) {
+                            updateActivity.setActionBarTitle();
+                        }
                     }
                 })
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
@@ -56,5 +60,10 @@ public class EnterLessonClassDialog extends DialogFragment {
                         // Only close
                     }
                 }).create();
+    }
+
+    public EnterLessonClassDialog setUpdateActivity(LessonPlanActivity updateActivity) {
+        this.updateActivity = updateActivity;
+        return this;
     }
 }

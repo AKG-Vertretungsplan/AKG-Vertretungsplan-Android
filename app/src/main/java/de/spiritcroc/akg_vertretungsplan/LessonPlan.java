@@ -41,7 +41,7 @@ public class LessonPlan {
 
         String recreationKey = sharedPreferences.getString("pref_lesson_plan", ""), dayKey;
 
-        getLessonClass();
+        retrieveLessonClass();
 
         for (int j = 0; j < lessons.length; j++) {
             dayKey = Tools.getLine(recreationKey, j+1, DAY_SEPARATOR);
@@ -50,8 +50,11 @@ public class LessonPlan {
         }
     }
 
-    public void getLessonClass() {
+    public void retrieveLessonClass() {
         lessonClass = sharedPreferences.getString("pref_class", "");
+    }
+    public String getLessonClass() {
+        return lessonClass;
     }
 
     public static LessonPlan getInstance(SharedPreferences sharedPreferences){

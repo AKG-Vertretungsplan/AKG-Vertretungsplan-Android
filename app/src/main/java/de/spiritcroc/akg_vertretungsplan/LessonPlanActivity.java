@@ -24,6 +24,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -101,9 +102,10 @@ public class LessonPlanActivity extends AppCompatActivity {
         } else {
             updateAll();// Colors could have changed
             if (!sharedPreferences.contains("pref_class")) {
-                new EnterLessonClassDialog().show(getFragmentManager(), "EnterLessonClassDialog");
+                new EnterLessonClassDialog().setUpdateActivity(this).show(getFragmentManager(), "EnterLessonClassDialog");
             }
         }
+        setActionBarTitle();
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -127,7 +129,7 @@ public class LessonPlanActivity extends AppCompatActivity {
                 new ConfirmRemoveLessonsDialog().setValues(this).show(getFragmentManager(), "ConfirmRemoveLessonsDialog");
                 return true;
             case R.id.action_lesson_class:
-                new EnterLessonClassDialog().show(getFragmentManager(), "EnterLessonClassDialog");
+                new EnterLessonClassDialog().setUpdateActivity(this).show(getFragmentManager(), "EnterLessonClassDialog");
                 return true;
             case R.id.action_show_time:
                 boolean showTime = !item.isChecked();
@@ -144,6 +146,19 @@ public class LessonPlanActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void setActionBarTitle() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            String lessonClass = LessonPlan.getInstance(sharedPreferences).getLessonClass();
+            if (lessonClass != null && !lessonClass.equals(""))
+                actionBar.setTitle(getString(R.string.lesson_plan) + ": " + lessonClass);
+            else
+                actionBar.setTitle(getString(R.string.lesson_plan));
+        } else {
+            Log.d("LessonPlanActivity", "setActionBarTitle: actionBar is null");
         }
     }
 
