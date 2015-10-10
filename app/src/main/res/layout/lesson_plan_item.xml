@@ -6,6 +6,15 @@
     android:paddingRight="@dimen/list_padding_left_right">
 
     <TextView
+        android:id="@+id/time_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/list_text_size"
+        android:textColor="#FFFF00"
+        android:paddingTop="@dimen/list_padding_top_bottom"
+        android:paddingBottom="@dimen/list_padding_top_bottom"
+        android:layout_marginRight="@dimen/list_content_margin"/><!--todo text color-->
+    <TextView
         android:id="@+id/subject_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
