@@ -105,11 +105,11 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
     public void onCreateAfterDisclaimer(){
         if (created)//only run once
             return;
-        if (!sharedPreferences.contains("pref_plan")) {
+        /*if (!sharedPreferences.contains("pref_plan")) {
             new BasicSetupDialog().show(getFragmentManager(), "BasicSetupDialog");
             // BasicSetupDialog will call this method again
             return;
-        }
+        }*/
         if (sharedPreferences.getString("pref_plan", "1").equals("2")) {
             new InfoscreenWarningDialog().show(getFragmentManager(), "InfoscreenWarningDialog");
         }
