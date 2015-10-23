@@ -346,13 +346,13 @@
     <string name="dialog_reset_lesson_plan">Reset lesson plan</string>
     <string name="dialog_reset_lesson_plan_message">Do you really want to reset your lesson plan? All lessons will be set to be free time.</string>
 
-    <string-array name="lesson_plan_times" translatable="false">
+    <string-array name="lesson_plan_times" translatable="false"><!--http://www.akg-schwabach.de/joomla/index.php/83-beitraege/unsere-schule/83-zeiten-->
         <item>7:45 – 8:30</item>
         <item>8:35 – 9:20</item>
         <item>9:35 – 10:20</item>
         <item>10:20 – 11:05</item>
         <item>11:20 – 12:05</item>
-        <item>12:10 – 12:50</item>
+        <item>12:05 – 12:50</item>
         <item>13:05 – 13:50</item>
         <item>13:50 – 14:35</item>
         <item>14:35 – 15:20</item>
