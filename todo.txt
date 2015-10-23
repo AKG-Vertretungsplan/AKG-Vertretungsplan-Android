@@ -1,7 +1,5 @@
 Possible improvements for a future release:
 - shortcut to unformatted plan (already possible with lesson plan)
-- Adapt to Android M if newer appcompat than 23.0.1 resolves https://code.google.com/p/android/issues/detail?id=183127
-    (also requires new download method, as DefaultHttpClient is not supported anymore on Android M)
 - Option to replace entries of lessonPlan with matching substitutions
 - on list item click: focus animation colors? →  fix no click animation for non transparent backgrounds
 - List for teacher abbreviations → also show full names of teachers entered there (in addition to lesson plan's teachers)

@@ -36,7 +36,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.internal.widget.TintImageView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -46,6 +45,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,7 +64,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
     private boolean created = false;
     private static boolean shortCutToPageTwo = false, filteredMode;
     private MenuItem reloadItem, filterItem, markReadItem;
-    private TintImageView overflow;
+    private ImageView overflow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -250,7 +250,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
                     final ArrayList<View> outViews = new ArrayList<>();
                     Tools.findViewsWithText(outViews, decorView, overflowDescription);
                     if (!outViews.isEmpty()) {
-                        overflow = (TintImageView) outViews.get(0);
+                        overflow = (ImageView) outViews.get(0);
                         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
                             decorView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                         else
