@@ -69,6 +69,9 @@
     <string name="pref_background_color">Background color</string>
     <string name="pref_text_color_highlight">Highlight text color</string>
     <string name="pref_background_color_highlight">Highlight background color</string>
+    <string name="pref_widget_text_color_highlight_new">New text color</string>
+    <string name="pref_widget_text_color_highlight_new_relevant">New relevant text color</string>
+    <string name="pref_widget_text_color_highlight_new_general">New general text color</string>
 
     <string name="pref_color_black">Black</string>
     <string name="pref_color_blue">Blue</string>

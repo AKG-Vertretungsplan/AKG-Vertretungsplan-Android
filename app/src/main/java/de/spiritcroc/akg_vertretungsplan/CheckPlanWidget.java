@@ -85,13 +85,23 @@ public class CheckPlanWidget extends AppWidgetProvider {
             ArrayList<String> relevantInformation = new ArrayList<>(),
                     generalInformation = new ArrayList<>();
             int newRelevantNotificationCount = DownloadService.getNewRelevantInformationCount(context, newIrrelevantNotificationCount, relevantInformation, generalInformation);
-            String text = (newRelevantNotificationCount > 0 ?
-                    context.getResources().getQuantityString(R.plurals.new_relevant_information, newRelevantNotificationCount, newRelevantNotificationCount) :
-                    (generalInformation.size() > 0 ?  context.getResources().getQuantityString(R.plurals.new_general_information, generalInformation.size(), generalInformation.size()) :
-                            newIrrelevantNotificationCount.value > 0 ?  context.getResources().getQuantityString(R.plurals.new_irrelevant_information, newIrrelevantNotificationCount.value, newIrrelevantNotificationCount.value) :
-                                    context.getString(R.string.new_version) + " " + sharedPreferences.getString("pref_last_update", context.getString(R.string.error_could_not_load))));
+            String text;
+            int color;
+            if (newRelevantNotificationCount > 0) {
+                text = context.getResources().getQuantityString(R.plurals.new_relevant_information, newRelevantNotificationCount, newRelevantNotificationCount);
+                color = Integer.parseInt(sharedPreferences.getString("pref_widget_text_color_highlight_relevant", "" + Color.RED));
+            } else if (generalInformation.size() > 0) {
+                text = context.getResources().getQuantityString(R.plurals.new_general_information, generalInformation.size(), generalInformation.size());
+                color = Integer.parseInt(sharedPreferences.getString("pref_widget_text_color_highlight_general", "" + Color.RED));
+            } else if (newIrrelevantNotificationCount.value > 0) {
+                text = context.getResources().getQuantityString(R.plurals.new_irrelevant_information, newIrrelevantNotificationCount.value, newIrrelevantNotificationCount.value);
+                color = Integer.parseInt(sharedPreferences.getString("pref_widget_text_color_highlight", "" + Color.RED));
+            } else {
+                text = context.getString(R.string.new_version) + " " + sharedPreferences.getString("pref_last_update", context.getString(R.string.error_could_not_load));
+                color = Integer.parseInt(sharedPreferences.getString("pref_widget_text_color", "" + Color.WHITE));
+            }
             views.setTextViewText(R.id.appwidget_button, text);
-            views.setTextColor(R.id.appwidget_button, Integer.parseInt(sharedPreferences.getString("pref_widget_text_color_highlight", "" + Color.RED)));
+            views.setTextColor(R.id.appwidget_button, color);
         }
         else{
             views.setTextViewText(R.id.appwidget_button, context.getString(R.string.last_checked) + " " + sharedPreferences.getString("pref_last_checked", context.getString(R.string.error_could_not_load)));

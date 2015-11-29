@@ -71,6 +71,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         setSummaryToValue("pref_header_text__background_color_highlight");
         setSummaryToValue("pref_widget_text_color");
         setSummaryToValue("pref_widget_text_color_highlight");
+        setSummaryToValue("pref_widget_text_color_highlight_relevant");
+        setSummaryToValue("pref_widget_text_color_highlight_general");
         setSummaryToValue("pref_auto_mark_read");
         setSummaryToValue("pref_led_notification_color");
         setSummaryToValue("pref_relevant_text_text_color");
@@ -140,7 +142,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key){
-        if (key.equals("pref_class_text_text_color") || key.equals("pref_class_text_background_color") || key.equals("pref_normal_text_text_color") || key.equals("pref_normal_text_background_color") || key.equals("pref_normal_text_text_color_highlight") || key.equals("pref_normal_text__background_color_highlight") || key.equals("pref_header_text_text_color") || key.equals("pref_header_text_background_color") || key.equals("pref_header_text_text_color_highlight") || key.equals("pref_header_text__background_color_highlight" ) || key.equals("pref_widget_text_color")  || key.equals("pref_widget_text_color_highlight") || key.equals("pref_auto_mark_read") || key.equals("pref_led_notification_color") || key.equals("pref_relevant_text_text_color") || key.equals("pref_relevant_text_background_color") || key.equals("pref_relevant_text_text_color_highlight") || key.equals("pref_relevant_text_background_color_highlight") || key.equals("pref_action_bar_normal_background_color") || key.equals("pref_action_bar_filtered_background_color") ||
+        if (key.equals("pref_class_text_text_color") || key.equals("pref_class_text_background_color") || key.equals("pref_normal_text_text_color") || key.equals("pref_normal_text_background_color") || key.equals("pref_normal_text_text_color_highlight") || key.equals("pref_normal_text__background_color_highlight") || key.equals("pref_header_text_text_color") || key.equals("pref_header_text_background_color") || key.equals("pref_header_text_text_color_highlight") || key.equals("pref_header_text__background_color_highlight" ) || key.equals("pref_widget_text_color")  || key.equals("pref_widget_text_color_highlight") || key.equals("pref_widget_text_color_highlight_relevant") || key.equals("pref_widget_text_color_highlight_general") || key.equals("pref_auto_mark_read") || key.equals("pref_led_notification_color") || key.equals("pref_relevant_text_text_color") || key.equals("pref_relevant_text_background_color") || key.equals("pref_relevant_text_text_color_highlight") || key.equals("pref_relevant_text_background_color_highlight") || key.equals("pref_action_bar_normal_background_color") || key.equals("pref_action_bar_filtered_background_color") ||
                 key.equals("pref_lesson_plan_color_time") || key.equals("pref_lesson_plan_color_lesson") || key.equals("pref_lesson_plan_color_free_time") || key.equals("pref_lesson_plan_color_room"))
             setSummaryToValue(key);
         /*else if (key.equals("pref_plan")) {
