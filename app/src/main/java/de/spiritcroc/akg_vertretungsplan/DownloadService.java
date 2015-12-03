@@ -395,7 +395,7 @@ public class DownloadService extends IntentService {
         postNotification(getString(R.string.wrong_userdata), getString(R.string.enter_userdata), 2, R.drawable.ic_stat_notify_wrong_credentials, SettingsActivity.class, true, NOTIFICATION_IMPORTANCE_NONE, null, null);
     }
 
-    private String timeAndDateToString (Calendar calendar){
+    public static String timeAndDateToString (Calendar calendar){
         String minute = "" + calendar.get(Calendar.MINUTE);
         while (minute.length() < 2)
             minute = "0"+minute;

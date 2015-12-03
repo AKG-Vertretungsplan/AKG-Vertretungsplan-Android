@@ -28,6 +28,7 @@ import android.support.annotation.NonNull;
 import android.widget.RemoteViews;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class CheckPlanWidget extends AppWidgetProvider {
     private static final String WIDGET_BUTTON_CLICKED = "widget_button_clicked";
@@ -128,6 +129,15 @@ public class CheckPlanWidget extends AppWidgetProvider {
             if (separatorIndex > 0) {
                 time = time.substring(0, separatorIndex);
             }
+        }
+        // Try to find out whether last update was today
+        String currentTime = DownloadService.timeAndDateToString(Calendar.getInstance());
+        int i1 = time.indexOf(" ");
+        int i2 = currentTime.indexOf(" ");
+        if (i1 > 0 && i2 > 0 &&
+                time.substring(0, i1).equals(currentTime.substring(0, i2))) {
+            // Don't show date
+            time = time.substring(i1+1);
         }
         return time;
     }
