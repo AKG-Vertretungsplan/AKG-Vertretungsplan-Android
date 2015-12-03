@@ -338,34 +338,6 @@
                             android:defaultValue="true"/>
                     </PreferenceCategory>
                 </PreferenceScreen>
-                <PreferenceScreen
-                    android:title="@string/pref_widget"
-                    android:summary="@string/pref_widget_summary">
-                    <ListPreference
-                        android:key="pref_widget_text_color"
-                        android:title="@string/pref_text_color"
-                        android:entries="@array/pref_color_array"
-                        android:entryValues="@array/pref_color_array_values"
-                        android:defaultValue="@string/pref_color_white_value"/>
-                    <ListPreference
-                        android:key="pref_widget_text_color_highlight"
-                        android:title="@string/pref_widget_text_color_highlight_new"
-                        android:entries="@array/pref_color_array"
-                        android:entryValues="@array/pref_color_array_values"
-                        android:defaultValue="@string/pref_color_red_value"/>
-                    <ListPreference
-                        android:key="pref_widget_text_color_highlight_relevant"
-                        android:title="@string/pref_widget_text_color_highlight_new_relevant"
-                        android:entries="@array/pref_color_array"
-                        android:entryValues="@array/pref_color_array_values"
-                        android:defaultValue="@string/pref_color_red_value"/>
-                    <ListPreference
-                        android:key="pref_widget_text_color_highlight_general"
-                        android:title="@string/pref_widget_text_color_highlight_new_general"
-                        android:entries="@array/pref_color_array"
-                        android:entryValues="@array/pref_color_array_values"
-                        android:defaultValue="@string/pref_color_red_value"/>
-                </PreferenceScreen>
             </PreferenceCategory>
         </PreferenceScreen>
         <PreferenceScreen
@@ -414,6 +386,36 @@
             </PreferenceCategory>
         </PreferenceScreen>
     </PreferenceCategory>
+    <PreferenceScreen
+        android:title="@string/pref_widget">
+        <PreferenceCategory
+            android:title="@string/pref_colors">
+            <ListPreference
+                android:key="pref_widget_text_color"
+                android:title="@string/pref_text_color"
+                android:entries="@array/pref_color_array"
+                android:entryValues="@array/pref_color_array_values"
+                android:defaultValue="@string/pref_color_white_value"/>
+            <ListPreference
+                android:key="pref_widget_text_color_highlight"
+                android:title="@string/pref_widget_text_color_highlight_new"
+                android:entries="@array/pref_color_array"
+                android:entryValues="@array/pref_color_array_values"
+                android:defaultValue="@string/pref_color_red_value"/>
+            <ListPreference
+                android:key="pref_widget_text_color_highlight_relevant"
+                android:title="@string/pref_widget_text_color_highlight_new_relevant"
+                android:entries="@array/pref_color_array"
+                android:entryValues="@array/pref_color_array_values"
+                android:defaultValue="@string/pref_color_red_value"/>
+            <ListPreference
+                android:key="pref_widget_text_color_highlight_general"
+                android:title="@string/pref_widget_text_color_highlight_new_general"
+                android:entries="@array/pref_color_array"
+                android:entryValues="@array/pref_color_array_values"
+                android:defaultValue="@string/pref_color_red_value"/>
+        </PreferenceCategory>
+    </PreferenceScreen>
 
     <Preference
         android:key="hidden_debug"
