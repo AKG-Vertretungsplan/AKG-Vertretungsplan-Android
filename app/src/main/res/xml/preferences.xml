@@ -397,12 +397,6 @@
                 android:entryValues="@array/pref_color_array_values"
                 android:defaultValue="@string/pref_color_white_value"/>
             <ListPreference
-                android:key="pref_widget_text_color_highlight"
-                android:title="@string/pref_widget_text_color_highlight_new"
-                android:entries="@array/pref_color_array"
-                android:entryValues="@array/pref_color_array_values"
-                android:defaultValue="@string/pref_color_red_value"/>
-            <ListPreference
                 android:key="pref_widget_text_color_highlight_relevant"
                 android:title="@string/pref_widget_text_color_highlight_new_relevant"
                 android:entries="@array/pref_color_array"
@@ -411,6 +405,12 @@
             <ListPreference
                 android:key="pref_widget_text_color_highlight_general"
                 android:title="@string/pref_widget_text_color_highlight_new_general"
+                android:entries="@array/pref_color_array"
+                android:entryValues="@array/pref_color_array_values"
+                android:defaultValue="@string/pref_color_red_value"/>
+            <ListPreference
+                android:key="pref_widget_text_color_highlight"
+                android:title="@string/pref_widget_text_color_highlight_new"
                 android:entries="@array/pref_color_array"
                 android:entryValues="@array/pref_color_array_values"
                 android:defaultValue="@string/pref_color_red_value"/>
