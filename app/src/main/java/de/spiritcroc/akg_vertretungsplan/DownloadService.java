@@ -294,30 +294,30 @@ public class DownloadService extends IntentService {
             if (!loadFormattedPlans(result))
                 setTextViewText(getString(R.string.error_illegal_plan));
             if (newVersion) {//Notification after loadFormattedPlans, because getNewRelevantInformationCount depends on it
-                Tools.Int newIrrelevantNotificationCount = new Tools.Int();
                 ArrayList<String> relevantInformation = new ArrayList<>();
                 ArrayList<String> generalInformation = new ArrayList<>();
-                int newRelevantNotificationCount = getNewRelevantInformationCount(this, newIrrelevantNotificationCount, relevantInformation, generalInformation);
+                ArrayList<String> irrelevantInformation = new ArrayList<>();
+                int newRelevantNotificationCount = getNewRelevantInformationCount(this, relevantInformation, generalInformation, irrelevantInformation);
 
                 String message = (newRelevantNotificationCount > 0 ? getResources().getQuantityString(R.plurals.new_relevant_information, newRelevantNotificationCount, newRelevantNotificationCount) :
                         (generalInformation.size() > 0 ?  getResources().getQuantityString(R.plurals.new_general_information, generalInformation.size(), generalInformation.size()) :
-                                (newIrrelevantNotificationCount.value > 0 ?  getResources().getQuantityString(R.plurals.new_irrelevant_information, newIrrelevantNotificationCount.value, newIrrelevantNotificationCount.value) :
+                                (irrelevantInformation.size() > 0 ?  getResources().getQuantityString(R.plurals.new_irrelevant_information, irrelevantInformation.size(), irrelevantInformation.size()) :
                         getString(R.string.last_checked) + " " + time)));
                 if (!sharedPreferences.getBoolean("pref_notification_only_if_relevant", false) || newRelevantNotificationCount > 0
                         || (!sharedPreferences.getBoolean("pref_notification_general_not_relevant", false) && generalInformation.size() > 0)) {
                     int importance = newRelevantNotificationCount > 0 ? NOTIFICATION_IMPORTANCE_RELEVANT :
                             (generalInformation.size() > 0 ? NOTIFICATION_IMPORTANCE_GENERAL :
-                                    (newIrrelevantNotificationCount.value > 0 ? NOTIFICATION_IMPORTANCE_IRRELEVANT : NOTIFICATION_IMPORTANCE_NONE));
+                                    (irrelevantInformation.size() > 0 ? NOTIFICATION_IMPORTANCE_IRRELEVANT : NOTIFICATION_IMPORTANCE_NONE));
 
-                    maybePostNotification(getString(R.string.new_version), message, importance, relevantInformation, generalInformation);
+                    maybePostNotification(getString(R.string.new_version), message, importance, relevantInformation, generalInformation, irrelevantInformation);
                 }
-                if (newRelevantNotificationCount > 0 || generalInformation.size() > 0 || newIrrelevantNotificationCount.value > 0)
+                if (newRelevantNotificationCount > 0 || generalInformation.size() > 0 || irrelevantInformation.size() > 0)
                     setTextViewText(message);
 
                 if (sharedPreferences.getBoolean("pref_tesla_unread_enable", true)){
                     int fullCount = newRelevantNotificationCount;
                     if (sharedPreferences.getBoolean("pref_tesla_unread_use_complete_count", false))
-                        fullCount += generalInformation.size() + newIrrelevantNotificationCount.value;
+                        fullCount += generalInformation.size() + irrelevantInformation.size();
                     else if (sharedPreferences.getBoolean("pref_tesla_unread_include_general_information_count", true))
                         fullCount += generalInformation.size();
                     if (!IsRunningSingleton.getInstance().isRunning()){
@@ -392,7 +392,7 @@ public class DownloadService extends IntentService {
         }
     }
     private void postLoginNotification() {
-        postNotification(getString(R.string.wrong_userdata), getString(R.string.enter_userdata), 2, R.drawable.ic_stat_notify_wrong_credentials, SettingsActivity.class, true, NOTIFICATION_IMPORTANCE_NONE, null, null);
+        postNotification(getString(R.string.wrong_userdata), getString(R.string.enter_userdata), 2, R.drawable.ic_stat_notify_wrong_credentials, SettingsActivity.class, true, NOTIFICATION_IMPORTANCE_NONE, null, null, null);
     }
 
     public static String timeAndDateToString (Calendar calendar){
@@ -676,11 +676,11 @@ public class DownloadService extends IntentService {
         return false;
     }
 
-    private void maybePostNotification(String title, String text, int importance, ArrayList<String> relevantInformation, ArrayList<String> generalInformation) {
+    private void maybePostNotification(String title, String text, int importance, ArrayList<String> relevantInformation, ArrayList<String> generalInformation, @Nullable ArrayList<String> irrelevantInformation) {
         if (!IsRunningSingleton.getInstance().isRunning() && getSharedPreferences().getBoolean("pref_notification_enabled", false))
-            postNotification(title, text, 1, R.drawable.ic_stat_notify_plan_update, FormattedActivity.class, false, importance, relevantInformation, generalInformation);
+            postNotification(title, text, 1, R.drawable.ic_stat_notify_plan_update, FormattedActivity.class, false, importance, relevantInformation, generalInformation, irrelevantInformation);
     }
-    private void postNotification(String title, @Nullable String text, int id, int smallIconResource, Class touchActivity, boolean silent, int importance, @Nullable ArrayList<String> relevantInformation, @Nullable ArrayList<String> generalInformation) {
+    private void postNotification(String title, @Nullable String text, int id, int smallIconResource, Class touchActivity, boolean silent, int importance, @Nullable ArrayList<String> relevantInformation, @Nullable ArrayList<String> generalInformation, @Nullable ArrayList<String> irrelevantInformation) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this).setSmallIcon(smallIconResource).setContentTitle(title);
         if (text != null)
             builder.setContentText(text);
@@ -713,25 +713,29 @@ public class DownloadService extends IntentService {
                 }
                 builder.setVibrate(vibrationPattern);
             }
-            if (importance >= NOTIFICATION_IMPORTANCE_GENERAL) {
-                NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
-                boolean addedItems = false;
-                if (relevantInformation != null) {
-                    addedItems = !relevantInformation.isEmpty();
-                    for (int i = 0; i < relevantInformation.size(); i++) {
-                        inboxStyle.addLine(relevantInformation.get(i));
-                    }
+            NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+            boolean addedItems = false;
+            if (relevantInformation != null) {
+                addedItems = !relevantInformation.isEmpty();
+                for (int i = 0; i < relevantInformation.size(); i++) {
+                    inboxStyle.addLine(relevantInformation.get(i));
                 }
-                if (!addedItems && generalInformation != null) {
-                    for (int i = 0; i < generalInformation.size(); i++) {
-                        inboxStyle.addLine(generalInformation.get(i));
-                    }
-                }
-
-                if (text != null)
-                    inboxStyle.setSummaryText(text);
-                builder.setStyle(inboxStyle);
             }
+            if (!addedItems && generalInformation != null) {
+                addedItems = !generalInformation.isEmpty();
+                for (int i = 0; i < generalInformation.size(); i++) {
+                    inboxStyle.addLine(generalInformation.get(i));
+                }
+            }
+            if (!addedItems && irrelevantInformation != null) {
+                for (int i = 0; i < irrelevantInformation.size(); i++) {
+                    inboxStyle.addLine(irrelevantInformation.get(i));
+                }
+            }
+
+            if (text != null)
+                inboxStyle.setSummaryText(text);
+            builder.setStyle(inboxStyle);
         }
 
         Intent resultIntent = new Intent(this, touchActivity);
@@ -744,21 +748,24 @@ public class DownloadService extends IntentService {
         notificationManager.notify(id, builder.build());
     }
 
-    public static int getNewRelevantInformationCount(Context context, Tools.Int newIrrelevantInformationCount, ArrayList<String> relevantInformation, ArrayList<String> generalInformation){
-        newIrrelevantInformationCount.value = 0;
+    public static int getNewRelevantInformationCount(Context context, ArrayList<String> relevantInformation, ArrayList<String> generalInformation, ArrayList<String> irrelevantInformation){
         relevantInformation.clear();
         generalInformation.clear();
+        irrelevantInformation.clear();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        int count = getNewRelevantInformationCount(context, sharedPreferences.getString("pref_current_plan_1", ""), sharedPreferences.getString("pref_current_title_1", ""), newIrrelevantInformationCount, relevantInformation, generalInformation) +
-                getNewRelevantInformationCount(context, sharedPreferences.getString("pref_current_plan_2", ""), sharedPreferences.getString("pref_current_title_2", ""), newIrrelevantInformationCount, relevantInformation, generalInformation);
+        int count = getNewRelevantInformationCount(context, sharedPreferences.getString("pref_current_plan_1", ""), sharedPreferences.getString("pref_current_title_1", ""), relevantInformation, generalInformation, irrelevantInformation) +
+                getNewRelevantInformationCount(context, sharedPreferences.getString("pref_current_plan_2", ""), sharedPreferences.getString("pref_current_title_2", ""), relevantInformation, generalInformation, irrelevantInformation);
         if (!LessonPlan.getInstance(sharedPreferences).isConfigured()){
-            newIrrelevantInformationCount.value += generalInformation.size() + count;
+            ArrayList<String> irrelevantCopy = (ArrayList<String>) irrelevantInformation.clone();
+            irrelevantInformation.clear();
+            irrelevantInformation.addAll(generalInformation);
+            irrelevantInformation.addAll(irrelevantCopy);
             generalInformation.clear();
             count = 0;
         }
         return count;
     }
-    private static int getNewRelevantInformationCount(Context context, String currentContent, String title, Tools.Int newIrrelevantInformationCount, ArrayList<String> relevantInformation, ArrayList<String> generalInformation) {
+    private static int getNewRelevantInformationCount(Context context, String currentContent, String title, ArrayList<String> relevantInformation, ArrayList<String> generalInformation, ArrayList<String> irrelevantInformation) {
         if (title.equals(NO_PLAN)) {
             return 0;
         }
@@ -811,7 +818,7 @@ public class DownloadService extends IntentService {
                                     count++;
                                     relevantInformation.add(ItemFragment.createItem(context, tmpRowContent, false));
                                 } else {
-                                    newIrrelevantInformationCount.value++;
+                                    irrelevantInformation.add(ItemFragment.createItem(context, tmpRowContent, false));
                                 }
                             } catch (Exception e) {
                                 Log.e("DownloadService", "getNewRelevantInformationCount: Got exception while checking for relevancy: " + e);

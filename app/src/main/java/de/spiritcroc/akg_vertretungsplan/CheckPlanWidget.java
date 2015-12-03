@@ -82,10 +82,10 @@ public class CheckPlanWidget extends AppWidgetProvider {
             views.setTextViewText(R.id.appwidget_button, context.getString(R.string.error_illegal_plan));
         }
         else if (sharedPreferences.getBoolean("pref_unseen_changes", false)){
-            Tools.Int newIrrelevantNotificationCount = new Tools.Int();
             ArrayList<String> relevantInformation = new ArrayList<>(),
-                    generalInformation = new ArrayList<>();
-            int newRelevantNotificationCount = DownloadService.getNewRelevantInformationCount(context, newIrrelevantNotificationCount, relevantInformation, generalInformation);
+                    generalInformation = new ArrayList<>(),
+                    irrelevantInformation = new ArrayList<>();
+            int newRelevantNotificationCount = DownloadService.getNewRelevantInformationCount(context, relevantInformation, generalInformation, irrelevantInformation);
             String text;
             int color;
             boolean amendUpdateTime;
@@ -97,8 +97,8 @@ public class CheckPlanWidget extends AppWidgetProvider {
                 text = context.getResources().getQuantityString(R.plurals.new_general_information, generalInformation.size(), generalInformation.size());
                 color = Integer.parseInt(sharedPreferences.getString("pref_widget_text_color_highlight_general", "" + Color.RED));
                 amendUpdateTime = sharedPreferences.getBoolean("pref_widget_last_update_general", false);
-            } else if (newIrrelevantNotificationCount.value > 0) {
-                text = context.getResources().getQuantityString(R.plurals.new_irrelevant_information, newIrrelevantNotificationCount.value, newIrrelevantNotificationCount.value);
+            } else if (irrelevantInformation.size() > 0) {
+                text = context.getResources().getQuantityString(R.plurals.new_irrelevant_information, irrelevantInformation.size(), irrelevantInformation.size());
                 color = Integer.parseInt(sharedPreferences.getString("pref_widget_text_color_highlight", "" + Color.RED));
                 amendUpdateTime = sharedPreferences.getBoolean("pref_widget_last_update_irrelevant", false);
             } else {
