@@ -294,4 +294,15 @@
     <string name="pref_widget_text_color_highlight_new">Textfarbe bei Änderungen</string>
     <string name="pref_widget_text_color_highlight_new_relevant">Textfarbe bei relevanten Änderungen</string>
     <string name="pref_widget_text_color_highlight_new_general">Textfarbe bei allgemeinen Änderungen</string>
+
+    <string name="pref_widget_last_update">Stand</string>
+    <string name="pref_widget_last_update_show_seconds">Zeige Zeit auf Sekunden genau</string>
+    <string name="pref_widget_last_update_relevant">Relevant</string>
+    <string name="pref_widget_last_update_relevant_summary">Zeige Zeit des letzten Updates, falls neue relevante Vertretungen vorhanden sind</string>
+    <string name="pref_widget_last_update_general">Allgemein</string>
+    <string name="pref_widget_last_update_general_summary">Zeige Zeit des letzten Updates, falls neue allgemeine Vertretungen vorhanden sind</string>
+    <string name="pref_widget_last_update_irrelevant">Irrelevant</string>
+    <string name="pref_widget_last_update_irrelevant_summary">Zeige Zeit des letzten Updates, falls neue irrelevante Vertretungen vorhanden sind</string>
+    <string name="pref_widget_last_update_none">Keine</string>
+    <string name="pref_widget_last_update_none_summary">Zeige Zeit des letzten Updates, falls keine neuen Vertretungen vorhanden sind</string>
 </resources>

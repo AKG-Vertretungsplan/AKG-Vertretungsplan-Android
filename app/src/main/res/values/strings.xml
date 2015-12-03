@@ -489,4 +489,15 @@
     <string name="pref_lesson_plan_color_free_time">Free time</string>
     <string name="pref_lesson_plan_color_room">Room</string>
 
+    <string name="pref_widget_last_update">Last update</string>
+    <string name="pref_widget_last_update_show_seconds">Show seconds</string>
+    <string name="pref_widget_last_update_relevant">Relevant</string>
+    <string name="pref_widget_last_update_relevant_summary">Show update time if new relevant information is available</string>
+    <string name="pref_widget_last_update_general">General</string>
+    <string name="pref_widget_last_update_general_summary">Show update time if new general information is available</string>
+    <string name="pref_widget_last_update_irrelevant">Irrelevant</string>
+    <string name="pref_widget_last_update_irrelevant_summary">Show update time if new irrelevant information is available</string>
+    <string name="pref_widget_last_update_none">None</string>
+    <string name="pref_widget_last_update_none_summary">Show update time if no new information is available</string>
+
 </resources>

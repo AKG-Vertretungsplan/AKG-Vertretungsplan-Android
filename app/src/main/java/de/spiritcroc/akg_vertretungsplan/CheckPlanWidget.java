@@ -87,25 +87,48 @@ public class CheckPlanWidget extends AppWidgetProvider {
             int newRelevantNotificationCount = DownloadService.getNewRelevantInformationCount(context, newIrrelevantNotificationCount, relevantInformation, generalInformation);
             String text;
             int color;
+            boolean amendUpdateTime;
             if (newRelevantNotificationCount > 0) {
                 text = context.getResources().getQuantityString(R.plurals.new_relevant_information, newRelevantNotificationCount, newRelevantNotificationCount);
                 color = Integer.parseInt(sharedPreferences.getString("pref_widget_text_color_highlight_relevant", "" + Color.RED));
+                amendUpdateTime = sharedPreferences.getBoolean("pref_widget_last_update_relevant", false);
             } else if (generalInformation.size() > 0) {
                 text = context.getResources().getQuantityString(R.plurals.new_general_information, generalInformation.size(), generalInformation.size());
                 color = Integer.parseInt(sharedPreferences.getString("pref_widget_text_color_highlight_general", "" + Color.RED));
+                amendUpdateTime = sharedPreferences.getBoolean("pref_widget_last_update_general", false);
             } else if (newIrrelevantNotificationCount.value > 0) {
                 text = context.getResources().getQuantityString(R.plurals.new_irrelevant_information, newIrrelevantNotificationCount.value, newIrrelevantNotificationCount.value);
                 color = Integer.parseInt(sharedPreferences.getString("pref_widget_text_color_highlight", "" + Color.RED));
+                amendUpdateTime = sharedPreferences.getBoolean("pref_widget_last_update_irrelevant", false);
             } else {
-                text = context.getString(R.string.new_version) + " " + sharedPreferences.getString("pref_last_update", context.getString(R.string.error_could_not_load));
+                text = context.getString(R.string.new_version);
                 color = Integer.parseInt(sharedPreferences.getString("pref_widget_text_color", "" + Color.WHITE));
+                amendUpdateTime = sharedPreferences.getBoolean("pref_widget_last_update_none", true);
+            }
+            if (amendUpdateTime) {
+                text += " (" + getLastUpdateTime(context, sharedPreferences) + ")";
             }
             views.setTextViewText(R.id.appwidget_button, text);
             views.setTextColor(R.id.appwidget_button, color);
         }
         else{
-            views.setTextViewText(R.id.appwidget_button, context.getString(R.string.last_checked) + " " + sharedPreferences.getString("pref_last_checked", context.getString(R.string.error_could_not_load)));
+            if (sharedPreferences.getBoolean("pref_widget_last_update_none", true)) {
+                views.setTextViewText(R.id.appwidget_button, context.getString(R.string.last_checked) + " " + getLastUpdateTime(context, sharedPreferences));
+            } else {
+                views.setTextViewText(R.id.appwidget_button, context.getString(R.string.no_change));
+            }
             views.setTextColor(R.id.appwidget_button, Integer.parseInt(sharedPreferences.getString("pref_widget_text_color", "" + Color.WHITE)));
         }
+    }
+
+    private static String getLastUpdateTime(Context context, SharedPreferences sharedPreferences) {
+        String time = sharedPreferences.getString("pref_last_checked", context.getString(R.string.error_could_not_load));
+        if (!sharedPreferences.getBoolean("pref_widget_last_update_show_seconds", false)) {
+            int separatorIndex = time.lastIndexOf(":");
+            if (separatorIndex > 0) {
+                time = time.substring(0, separatorIndex);
+            }
+        }
+        return time;
     }
 }

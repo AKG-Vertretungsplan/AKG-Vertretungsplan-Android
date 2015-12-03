@@ -415,6 +415,33 @@
                 android:entryValues="@array/pref_color_array_values"
                 android:defaultValue="@string/pref_color_red_value"/>
         </PreferenceCategory>
+        <PreferenceCategory
+            android:title="@string/pref_widget_last_update">
+            <CheckBoxPreference
+                android:key="pref_widget_last_update_show_seconds"
+                android:title="@string/pref_widget_last_update_show_seconds"
+                android:defaultValue="false"/>
+            <CheckBoxPreference
+                android:key="pref_widget_last_update_relevant"
+                android:title="@string/pref_widget_last_update_relevant"
+                android:summary="@string/pref_widget_last_update_relevant_summary"
+                android:defaultValue="false"/>
+            <CheckBoxPreference
+                android:key="pref_widget_last_update_general"
+                android:title="@string/pref_widget_last_update_general"
+                android:summary="@string/pref_widget_last_update_general_summary"
+                android:defaultValue="false"/>
+            <CheckBoxPreference
+                android:key="pref_widget_last_update_irrelevant"
+                android:title="@string/pref_widget_last_update_irrelevant"
+                android:summary="@string/pref_widget_last_update_irrelevant_summary"
+                android:defaultValue="false"/>
+            <CheckBoxPreference
+                android:key="pref_widget_last_update_none"
+                android:title="@string/pref_widget_last_update_none"
+                android:summary="@string/pref_widget_last_update_none_summary"
+                android:defaultValue="true"/>
+        </PreferenceCategory>
     </PreferenceScreen>
 
     <Preference
