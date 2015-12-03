@@ -130,14 +130,27 @@ public class CheckPlanWidget extends AppWidgetProvider {
                 time = time.substring(0, separatorIndex);
             }
         }
-        // Try to find out whether last update was today
+        // Try to find out whether last update was today or this year
         String currentTime = DownloadService.timeAndDateToString(Calendar.getInstance());
         int i1 = time.indexOf(" ");
         int i2 = currentTime.indexOf(" ");
-        if (i1 > 0 && i2 > 0 &&
-                time.substring(0, i1).equals(currentTime.substring(0, i2))) {
-            // Don't show date
-            time = time.substring(i1+1);
+        if (i1 > 0 && i2 > 0) {
+            if (time.substring(0, i1).equals(currentTime.substring(0, i2))) {
+                // Don't show date
+                time = time.substring(i1+1);
+            } else {
+                int i3 = time.indexOf(".");
+                int i4 = currentTime.indexOf(".");
+                if (i3 > 0 && i4 > 0) {
+                    int i5 = time.indexOf(".", i3+1);
+                    int i6 = currentTime.indexOf(".", i4+1);
+                    if (i5 > 0 && i6 > 0 && i5 < i1 && i6 < i2 &&
+                            time.substring(i5, i1).equals(currentTime.substring(i6, i2))) {
+                        // Don't show year
+                        time = time.substring(0, i5+1) + time.substring(i1);
+                    }
+                }
+            }
         }
         return time;
     }
