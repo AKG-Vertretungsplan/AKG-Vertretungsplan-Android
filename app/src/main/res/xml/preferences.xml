@@ -226,6 +226,12 @@
                     android:title="@string/pref_formatted_plan_replace_teacher_short_with_teacher_full"
                     android:summary="@string/pref_formatted_plan_replace_teacher_short_with_teacher_full_summary"
                     android:defaultValue="true"/>
+                <CheckBoxPreference
+                    android:key="pref_formatted_plan_show_teacher_full_and_short"
+                    android:title="@string/pref_formatted_plan_show_teacher_full_and_short"
+                    android:summary="@string/pref_formatted_plan_show_teacher_full_and_short_summary"
+                    android:dependency="pref_formatted_plan_replace_teacher_short_with_teacher_full"
+                    android:defaultValue="true"/>
             </PreferenceCategory>
             <PreferenceCategory
                 android:title="@string/pref_user_interface_behaviour">

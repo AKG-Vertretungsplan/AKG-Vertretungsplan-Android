@@ -173,8 +173,8 @@ public class ItemFragment extends ListFragment{
                 LessonPlan lessonPlan = LessonPlan.getInstance(sharedPreferences);
                 for (int i = 0; i < dividedText.length; i++) {
                     if (dividedText[i] != null && dividedText[i].length() > 0) {
-                        text += (text.length() == 0 ? "" : "\n") + (headerRow[i] == null || headerRow[i].length() == 0 ? "" : headerRow[i] + "\n\t") + (i == 2 ? getLessonTimeCombinationString(dividedText[i]) : getTeacherCombinationString(lessonPlan, dividedText[i]));
-                        shareMessage += "\n" + (headerRow[i] == null || headerRow[i].length() == 0 ? "" : headerRow[i] + ": ") + getTeacherCombinationString(lessonPlan, dividedText[i]);
+                        text += (text.length() == 0 ? "" : "\n") + (headerRow[i] == null || headerRow[i].length() == 0 ? "" : headerRow[i] + "\n\t") + (i == 2 ? getLessonTimeCombinationString(dividedText[i]) : getTeacherCombinationString(sharedPreferences, lessonPlan, dividedText[i]));
+                        shareMessage += "\n" + (headerRow[i] == null || headerRow[i].length() == 0 ? "" : headerRow[i] + ": ") + getTeacherCombinationString(sharedPreferences, lessonPlan, dividedText[i]);
                     }
                 }
                 mListener.showDialog(text, shareMessage);
@@ -367,9 +367,9 @@ public class ItemFragment extends ListFragment{
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         LessonPlan lessonPlan = LessonPlan.getInstance(sharedPreferences);
         boolean useFullTeacherNames = sharedPreferences.getBoolean("pref_formatted_plan_replace_teacher_short_with_teacher_full", true);
-        String result = values[2] + " " + (useFullTeacherNames ? getTeacherCombinationString(lessonPlan, values[1]) : values[1]) + " →";
+        String result = values[2] + " " + (useFullTeacherNames ? getTeacherCombinationString(sharedPreferences, lessonPlan, values[1]) : values[1]) + " →";
         if (!values[3].equals(""))
-            result += " " + (useFullTeacherNames ? getTeacherCombinationString(lessonPlan, values[3]) : values[3]);
+            result += " " + (useFullTeacherNames ? getTeacherCombinationString(sharedPreferences, lessonPlan, values[3]) : values[3]);
         if (!values[4].equals(""))
             result += " (" + values[4] + ")";
         if (!values[5].equals(""))
@@ -409,11 +409,11 @@ public class ItemFragment extends ListFragment{
             return false;
     }
 
-    private static String getTeacherCombinationString(LessonPlan lessonPlan, String teacherShort){
+    private static String getTeacherCombinationString(SharedPreferences sharedPreferences, LessonPlan lessonPlan, String teacherShort){
         String result = lessonPlan.getTeacherFullForTeacherShort(teacherShort);
         if (result == null || result.equals(""))
             result = teacherShort;
-        else
+        else if (sharedPreferences.getBoolean("pref_formatted_plan_show_teacher_full_and_short", true))
             result += " (" + teacherShort + ")";
         return result;
     }
