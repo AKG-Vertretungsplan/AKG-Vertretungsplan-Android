@@ -544,4 +544,26 @@
         <item quantity="other">" "pieces of information new</item>
     </plurals>
     <string name="new_information_chain_separator">", "</string>
+    <string name="mark_seen">Mark seen</string>
+    <string name="pref_notification_button_mark_seen">Action \"mark seen\"</string>
+    <string name="pref_notification_button_mark_seen_always">Always</string>
+    <string name="pref_notification_button_mark_seen_if_max_5">If up to 5 new pieces of information</string>
+    <string name="pref_notification_button_mark_seen_if_max_7">If up to 7 new pieces of information</string>
+    <string name="pref_notification_button_mark_seen_never">Never</string>
+    <string name="pref_notification_button_mark_seen_always_value" translatable="false">always</string>
+    <string name="pref_notification_button_mark_seen_if_max_5_value" translatable="false">max5</string>
+    <string name="pref_notification_button_mark_seen_if_max_7_value" translatable="false">max7</string>
+    <string name="pref_notification_button_mark_seen_never_value" translatable="false">never</string>
+    <string-array name="pref_notification_button_mark_seen" translatable="false">
+        <item>@string/pref_notification_button_mark_seen_always</item>
+        <item>@string/pref_notification_button_mark_seen_if_max_5</item>
+        <item>@string/pref_notification_button_mark_seen_if_max_7</item>
+        <item>@string/pref_notification_button_mark_seen_never</item>
+    </string-array>
+    <string-array name="pref_notification_button_mark_seen_values" translatable="false">
+        <item>@string/pref_notification_button_mark_seen_always_value</item>
+        <item>@string/pref_notification_button_mark_seen_if_max_5_value</item>
+        <item>@string/pref_notification_button_mark_seen_if_max_7_value</item>
+        <item>@string/pref_notification_button_mark_seen_never_value</item>
+    </string-array>
 </resources>

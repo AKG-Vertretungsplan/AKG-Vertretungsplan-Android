@@ -744,6 +744,7 @@ public class DownloadService extends IntentService {
                 builder.setVibrate(vibrationPattern);
             }
             NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+            int lineCount = 0;
             if (relevantInformation != null) {
                 int color = Integer.parseInt(sharedPreferences.getString("pref_notification_preview_relevant_color", "" + Color.RED));
                 for (int i = 0; i < relevantInformation.size(); i++) {
@@ -754,6 +755,7 @@ public class DownloadService extends IntentService {
                         s.setSpan(styleSpan, 0, s.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
                     }
                     inboxStyle.addLine(s);
+                    lineCount++;
                 }
             }
             boolean relevantOnly = sharedPreferences.getBoolean("pref_notification_only_if_relevant", false);
@@ -767,6 +769,7 @@ public class DownloadService extends IntentService {
                         s.setSpan(styleSpan, 0, s.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
                     }
                     inboxStyle.addLine(s);
+                    lineCount++;
                 }
             }
             if (!relevantOnly && irrelevantInformation != null) {
@@ -779,11 +782,29 @@ public class DownloadService extends IntentService {
                         s.setSpan(styleSpan, 0, s.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
                     }
                     inboxStyle.addLine(s);
+                    lineCount++;
                 }
             }
 
-            if (text != null)
-                inboxStyle.setSummaryText(text);
+            boolean showMarkSeen = false;
+            String markSeenPref = sharedPreferences.getString("pref_notification_button_mark_seen", getString(R.string.pref_notification_button_mark_seen_if_max_5_value));
+            if (getString(R.string.pref_notification_button_mark_seen_always_value).equals(markSeenPref)) {
+                showMarkSeen = true;
+            } else if (getString(R.string.pref_notification_button_mark_seen_if_max_5_value).equals(markSeenPref)) {
+                showMarkSeen = lineCount <= 5;
+            } else if (getString(R.string.pref_notification_button_mark_seen_if_max_7_value).equals(markSeenPref)) {
+                showMarkSeen = lineCount <= 7;
+            }
+            if (showMarkSeen) {
+                // All information is shown
+                Intent clickIntent = new Intent(this, BReceiver.class).setAction(BReceiver.ACTION_MARK_SEEN);
+                PendingIntent clickPendingIntent = PendingIntent.getBroadcast(this, 1, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                builder.addAction(R.drawable.ic_done_black_36dp, getString(R.string.mark_seen), clickPendingIntent);
+                if (text != null) {
+                    inboxStyle.setSummaryText(text);
+                }
+            }
+
             builder.setStyle(inboxStyle);
         }
 

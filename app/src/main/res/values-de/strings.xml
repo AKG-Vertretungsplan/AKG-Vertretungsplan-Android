@@ -333,4 +333,10 @@
         <item quantity="other">" "Vertretungen neu</item>
     </plurals>
     <string name="new_information_chain_separator">", "</string>
+    <string name="mark_seen">Als gesehen markieren</string>
+    <string name="pref_notification_button_mark_seen">Aktion \"Als gesehen markieren\"</string>
+    <string name="pref_notification_button_mark_seen_always">Immer</string>
+    <string name="pref_notification_button_mark_seen_if_max_5">Falls bis zu 5 neue Vertretungen</string>
+    <string name="pref_notification_button_mark_seen_if_max_7">Falls bis zu 7 neue Vertretungen</string>
+    <string name="pref_notification_button_mark_seen_never">Nie</string>
 </resources>

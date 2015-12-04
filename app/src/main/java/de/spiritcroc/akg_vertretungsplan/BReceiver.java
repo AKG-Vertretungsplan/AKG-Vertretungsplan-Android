@@ -17,6 +17,7 @@
 package de.spiritcroc.akg_vertretungsplan;
 
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -29,6 +30,7 @@ import android.util.Log;
 
 public class BReceiver extends BroadcastReceiver {
     public static final String ACTION_START_DOWNLOAD_SERVICE = "action_start_download_service";
+    public static final String ACTION_MARK_SEEN = "de.spiritcroc.akg_vertretungsplan.action.markSeen";
     @Override
     public void onReceive(Context context, Intent intent){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -41,6 +43,11 @@ public class BReceiver extends BroadcastReceiver {
                 context.startService(new Intent(context, DownloadService.class).setAction(DownloadService.ACTION_DOWNLOAD_PLAN));
             else
                 startDownloadService(context.getApplicationContext(), false);//Schedule next download nevertheless
+        } else if (ACTION_MARK_SEEN.equals(intent.getAction())) {
+            sharedPreferences.edit().putBoolean("pref_unseen_changes", false).apply();
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancel(1);
+            Tools.updateWidgets(context);
         }
     }
 
