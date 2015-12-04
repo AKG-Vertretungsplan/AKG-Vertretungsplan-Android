@@ -119,6 +119,47 @@
                     android:defaultValue="false"
                     android:dependency="pref_notification_only_if_relevant"/>
             </PreferenceCategory>
+            <PreferenceCategory
+                android:title="@string/pref_content">
+                <ListPreference
+                    android:key="pref_notification_preview_relevant_color"
+                    android:title="@string/pref_notification_preview_relevant_color"
+                    android:entries="@array/pref_color_array"
+                    android:entryValues="@array/pref_color_array_values"
+                    android:defaultValue="@string/pref_color_gray_value"
+                    android:dependency="pref_notification_enabled"/>
+                <ListPreference
+                    android:key="pref_notification_preview_relevant_style"
+                    android:title="@string/pref_notification_preview_relevant_style"
+                    android:entries="@array/pref_text_style"
+                    android:entryValues="@array/pref_text_style_values"
+                    android:defaultValue="@string/pref_text_style_bold_value"
+                    android:dependency="pref_notification_enabled"/>
+                <ListPreference
+                    android:key="pref_notification_preview_general_color"
+                    android:title="@string/pref_notification_preview_general_color"
+                    android:entries="@array/pref_color_array"
+                    android:entryValues="@array/pref_color_array_values"
+                    android:defaultValue="@string/pref_color_gray_value"/>
+                <ListPreference
+                    android:key="pref_notification_preview_general_style"
+                    android:title="@string/pref_notification_preview_general_style"
+                    android:entries="@array/pref_text_style"
+                    android:entryValues="@array/pref_text_style_values"
+                    android:defaultValue="@string/pref_text_style_italic_value"/>
+                <ListPreference
+                    android:key="pref_notification_preview_irrelevant_color"
+                    android:title="@string/pref_notification_preview_irrelevant_color"
+                    android:entries="@array/pref_color_array"
+                    android:entryValues="@array/pref_color_array_values"
+                    android:defaultValue="@string/pref_color_gray_value"/>
+                <ListPreference
+                    android:key="pref_notification_preview_irrelevant_style"
+                    android:title="@string/pref_notification_preview_irrelevant_style"
+                    android:entries="@array/pref_text_style"
+                    android:entryValues="@array/pref_text_style_values"
+                    android:defaultValue="@string/pref_text_style_normal_value"/>
+            </PreferenceCategory>
         </PreferenceScreen>
 
         <PreferenceScreen

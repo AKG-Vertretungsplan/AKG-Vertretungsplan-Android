@@ -229,7 +229,7 @@
     <string name="pref_hide_text_view">Verstecke Statusinformationen</string>
     <string name="pref_hide_text_view_summary">Verstecke den Text unter der Aktionsleiste, der Statusinformationen anzeigt</string>
     <string name="pref_individualisation">Individualisierung</string>
-    <string name="pref_notification_appearance">Darstellung</string>
+    <string name="pref_notification_appearance">Erscheinung</string>
     <string name="pref_notification_rules">Regeln</string>
     <string name="pref_user_interface_elements">Angezeigte Elemente</string>
     <string name="pref_user_interface_behaviour">Verhalten</string>
@@ -305,4 +305,15 @@
     <string name="pref_widget_last_update_irrelevant_summary">Zeige Zeit des letzten Updates, falls neue irrelevante Vertretungen vorhanden sind</string>
     <string name="pref_widget_last_update_none">Keine</string>
     <string name="pref_widget_last_update_none_summary">Zeige Zeit des letzten Updates, falls keine neuen Vertretungen vorhanden sind</string>
+    <string name="pref_content">Darstellung</string>
+    <string name="pref_notification_preview_relevant_color">Relevante Textfarbe</string>
+    <string name="pref_notification_preview_general_color">Allgemeine Textfarbe</string>
+    <string name="pref_notification_preview_irrelevant_color">Irrelevante Textfarbe</string>
+    <string name="pref_text_style_normal">Normal</string>
+    <string name="pref_text_style_bold">Fett</string>
+    <string name="pref_text_style_italic">Kursiv</string>
+    <string name="pref_text_style_bold_italic">Fett + kursiv</string>
+    <string name="pref_notification_preview_relevant_style">Relevanter Textstil</string>
+    <string name="pref_notification_preview_general_style">Allgemeiner Textstil</string>
+    <string name="pref_notification_preview_irrelevant_style">Irrelevanter Textstil</string>
 </resources>

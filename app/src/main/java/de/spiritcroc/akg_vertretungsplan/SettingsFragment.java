@@ -41,6 +41,14 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     private long[] hits = new long[7];
     private SharedPreferences sharedPreferences;
 
+    private CheckBoxPreference notificationEnabled;
+    private CheckBoxPreference notificationRelevantOnly;
+    private CheckBoxPreference notificationGeneralIrrelevant;
+    private Preference notificationTextColorGeneral;
+    private Preference notificationTextStyleGeneral;
+    private Preference notificationTextColorIrrelevant;
+    private Preference notificationTextStyleIrrelevant;
+
     private SharedPreferences getSharedPreferences(){
         if (sharedPreferences == null)
             sharedPreferences = getPreferenceManager().getSharedPreferences();
@@ -58,6 +66,15 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         userdataPrefScreen = (PreferenceCategory) findPreference("pref_userdata");
         hiddenDebug = findPreference("hidden_debug");
         hiddenDebugPrefScreen = (PreferenceCategory) findPreference("pref_screen_hidden_debug");
+
+        notificationEnabled = (CheckBoxPreference) findPreference("pref_notification_enabled");
+        notificationRelevantOnly = (CheckBoxPreference) findPreference("pref_notification_only_if_relevant");
+        notificationGeneralIrrelevant = (CheckBoxPreference) findPreference("pref_notification_general_not_relevant");
+        notificationTextColorGeneral = findPreference("pref_notification_preview_general_color");
+        notificationTextStyleGeneral = findPreference("pref_notification_preview_general_style");
+        notificationTextColorIrrelevant = findPreference("pref_notification_preview_irrelevant_color");
+        notificationTextStyleIrrelevant = findPreference("pref_notification_preview_irrelevant_style");
+        setNotificationDependencies();
 
         setSummaryToValue("pref_class_text_text_color");
         setSummaryToValue("pref_class_text_background_color");
@@ -87,6 +104,12 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         setSummaryToValue("pref_lesson_plan_color_free_time");
         setSummaryToValue("pref_lesson_plan_color_room");
         //setSummaryToValue("pref_plan");
+        setSummaryToValue("pref_notification_preview_relevant_color");
+        setSummaryToValue("pref_notification_preview_relevant_style");
+        setSummaryToValue("pref_notification_preview_general_color");
+        setSummaryToValue("pref_notification_preview_general_style");
+        setSummaryToValue("pref_notification_preview_irrelevant_color");
+        setSummaryToValue("pref_notification_preview_irrelevant_style");
 
         EditTextPreference tmpEditTextPreference = (EditTextPreference) findPreference("pref_auto_load_on_open");
         int tmpValue = correctInteger(getSharedPreferences(), "pref_auto_load_on_open", tmpEditTextPreference.getText(), 5);
@@ -143,7 +166,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key){
         if (key.equals("pref_class_text_text_color") || key.equals("pref_class_text_background_color") || key.equals("pref_normal_text_text_color") || key.equals("pref_normal_text_background_color") || key.equals("pref_normal_text_text_color_highlight") || key.equals("pref_normal_text__background_color_highlight") || key.equals("pref_header_text_text_color") || key.equals("pref_header_text_background_color") || key.equals("pref_header_text_text_color_highlight") || key.equals("pref_header_text__background_color_highlight" ) || key.equals("pref_widget_text_color")  || key.equals("pref_widget_text_color_highlight") || key.equals("pref_widget_text_color_highlight_relevant") || key.equals("pref_widget_text_color_highlight_general") || key.equals("pref_auto_mark_read") || key.equals("pref_led_notification_color") || key.equals("pref_relevant_text_text_color") || key.equals("pref_relevant_text_background_color") || key.equals("pref_relevant_text_text_color_highlight") || key.equals("pref_relevant_text_background_color_highlight") || key.equals("pref_action_bar_normal_background_color") || key.equals("pref_action_bar_filtered_background_color") ||
-                key.equals("pref_lesson_plan_color_time") || key.equals("pref_lesson_plan_color_lesson") || key.equals("pref_lesson_plan_color_free_time") || key.equals("pref_lesson_plan_color_room"))
+                key.equals("pref_lesson_plan_color_time") || key.equals("pref_lesson_plan_color_lesson") || key.equals("pref_lesson_plan_color_free_time") || key.equals("pref_lesson_plan_color_room") || key.equals("pref_notification_preview_relevant_color") || key.equals("pref_notification_preview_relevant_style") || key.equals("pref_notification_preview_general_color") || key.equals("pref_notification_preview_general_style") || key.equals("pref_notification_preview_irrelevant_color") || key.equals("pref_notification_preview_irrelevant_style"))
             setSummaryToValue(key);
         /*else if (key.equals("pref_plan")) {
             setSummaryToValue(key);
@@ -249,6 +272,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             EditTextPreference tmpEditTextPreference = (EditTextPreference) findPreference("pref_lesson_plan_auto_select_day_time");
             int tmpValue = correctInteger(getSharedPreferences(), "pref_lesson_plan_auto_select_day_time", tmpEditTextPreference.getText(), 17);
             tmpEditTextPreference.setSummary(getString(R.string.pref_lesson_plan_auto_select_day_time_summary_pre) + tmpValue + getString(R.string.pref_lesson_plan_auto_select_day_time_summary_post));
+        } else if (key.equals("pref_notification_enabled") || key.equals("pref_notification_only_if_relevant") || key.equals("pref_notification_general_not_relevant")) {
+            setNotificationDependencies();
         }
     }
 
@@ -276,6 +301,25 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         } else {
             basePrefScreen.removePreference(userdataPrefScreen);
         }*/
+    }
+    private void setNotificationDependencies() {
+        boolean notificationEnabled = this.notificationEnabled.isChecked();
+        boolean notificationRelevantOnly = this.notificationRelevantOnly.isChecked();
+        boolean notificationGeneralIrrelevant = this.notificationGeneralIrrelevant.isChecked();
+        if (notificationEnabled && (!notificationRelevantOnly||!notificationGeneralIrrelevant)) {
+            notificationTextColorGeneral.setEnabled(true);
+            notificationTextStyleGeneral.setEnabled(true);
+        } else {
+            notificationTextColorGeneral.setEnabled(false);
+            notificationTextStyleGeneral.setEnabled(false);
+        }
+        if (notificationEnabled && !notificationRelevantOnly) {
+            notificationTextColorIrrelevant.setEnabled(true);
+            notificationTextStyleIrrelevant.setEnabled(true);
+        } else {
+            notificationTextColorIrrelevant.setEnabled(false);
+            notificationTextStyleIrrelevant.setEnabled(false);
+        }
     }
 
     @Override

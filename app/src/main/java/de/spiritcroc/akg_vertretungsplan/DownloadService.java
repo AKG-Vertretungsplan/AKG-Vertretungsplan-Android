@@ -23,6 +23,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -31,6 +32,10 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.Base64;
 import android.util.Log;
 
@@ -714,22 +719,41 @@ public class DownloadService extends IntentService {
                 builder.setVibrate(vibrationPattern);
             }
             NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
-            boolean addedItems = false;
             if (relevantInformation != null) {
-                addedItems = !relevantInformation.isEmpty();
+                int color = Integer.parseInt(sharedPreferences.getString("pref_notification_preview_relevant_color", "" + Color.RED));
                 for (int i = 0; i < relevantInformation.size(); i++) {
-                    inboxStyle.addLine(relevantInformation.get(i));
+                    Spannable s = new SpannableString(relevantInformation.get(i));
+                    s.setSpan(new ForegroundColorSpan(color), 0, s.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                    StyleSpan styleSpan = Tools.getStyleSpanFromPref(this, sharedPreferences.getString("pref_notification_preview_relevant_style", getString(R.string.pref_text_style_normal_value)));
+                    if (styleSpan != null) {
+                        s.setSpan(styleSpan, 0, s.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                    }
+                    inboxStyle.addLine(s);
                 }
             }
-            if (!addedItems && generalInformation != null) {
-                addedItems = !generalInformation.isEmpty();
+            boolean relevantOnly = sharedPreferences.getBoolean("pref_notification_only_if_relevant", false);
+            if ((!relevantOnly || !sharedPreferences.getBoolean("pref_notification_general_not_relevant", false)) && generalInformation != null) {
+                int color = Integer.parseInt(sharedPreferences.getString("pref_notification_preview_general_color", "" + getString(R.string.pref_color_orange)));
                 for (int i = 0; i < generalInformation.size(); i++) {
-                    inboxStyle.addLine(generalInformation.get(i));
+                    Spannable s = new SpannableString(generalInformation.get(i));
+                    s.setSpan(new ForegroundColorSpan(color), 0, s.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                    StyleSpan styleSpan = Tools.getStyleSpanFromPref(this, sharedPreferences.getString("pref_notification_preview_general_style", getString(R.string.pref_text_style_normal_value)));
+                    if (styleSpan != null) {
+                        s.setSpan(styleSpan, 0, s.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                    }
+                    inboxStyle.addLine(s);
                 }
             }
-            if (!addedItems && irrelevantInformation != null) {
+            if (!relevantOnly && irrelevantInformation != null) {
+                int color = Integer.parseInt(sharedPreferences.getString("pref_notification_preview_irrelevant_color", "" + Color.DKGRAY));
                 for (int i = 0; i < irrelevantInformation.size(); i++) {
-                    inboxStyle.addLine(irrelevantInformation.get(i));
+                    Spannable s = new SpannableString(irrelevantInformation.get(i));
+                    s.setSpan(new ForegroundColorSpan(color), 0, s.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                    StyleSpan styleSpan = Tools.getStyleSpanFromPref(this, sharedPreferences.getString("pref_notification_preview_irrelevant_style", getString(R.string.pref_text_style_normal_value)));
+                    if (styleSpan != null) {
+                        s.setSpan(styleSpan, 0, s.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                    }
+                    inboxStyle.addLine(s);
                 }
             }
 

@@ -499,5 +499,32 @@
     <string name="pref_widget_last_update_irrelevant_summary">Show update time if new irrelevant information is available</string>
     <string name="pref_widget_last_update_none">None</string>
     <string name="pref_widget_last_update_none_summary">Show update time if no new information is available</string>
+    <string name="pref_content">Content</string>
+    <string name="pref_notification_preview_relevant_color">Relevant text color</string>
+    <string name="pref_notification_preview_general_color">General text color</string>
+    <string name="pref_notification_preview_irrelevant_color">Irrelevant text color</string>
+    <string name="pref_text_style_normal">Normal</string>
+    <string name="pref_text_style_bold">Bold</string>
+    <string name="pref_text_style_italic">Italic</string>
+    <string name="pref_text_style_bold_italic">Bold + italic</string>
+    <string name="pref_text_style_normal_value" translatable="false">normal</string>
+    <string name="pref_text_style_bold_value" translatable="false">bold</string>
+    <string name="pref_text_style_italic_value" translatable="false">italic</string>
+    <string name="pref_text_style_bold_italic_value" translatable="false">bold_italic</string>
+    <string-array name="pref_text_style" translatable="false">
+        <item>@string/pref_text_style_normal</item>
+        <item>@string/pref_text_style_bold</item>
+        <item>@string/pref_text_style_italic</item>
+        <item>@string/pref_text_style_bold_italic</item>
+    </string-array>
+    <string-array name="pref_text_style_values" translatable="false">
+        <item>@string/pref_text_style_normal_value</item>
+        <item>@string/pref_text_style_bold_value</item>
+        <item>@string/pref_text_style_italic_value</item>
+        <item>@string/pref_text_style_bold_italic_value</item>
+    </string-array>
+    <string name="pref_notification_preview_relevant_style">Relevant text style</string>
+    <string name="pref_notification_preview_general_style">General text style</string>
+    <string name="pref_notification_preview_irrelevant_style">Irrelevant text style</string>
 
 </resources>

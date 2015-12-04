@@ -21,8 +21,10 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -239,5 +241,17 @@ public abstract class Tools {
 
     public static boolean isWebActivityEnabled(SharedPreferences sharedPreferences) {
         return sharedPreferences.getInt("last_plan_type", 1) == 1;
+    }
+
+    public static StyleSpan getStyleSpanFromPref(Context context, String stylePrefValue) {
+        if (context.getString(R.string.pref_text_style_bold_value).equals(stylePrefValue)) {
+            return new StyleSpan(Typeface.BOLD);
+        } else if (context.getString(R.string.pref_text_style_italic_value).equals(stylePrefValue)) {
+            return new StyleSpan(Typeface.ITALIC);
+        } else if (context.getString(R.string.pref_text_style_bold_italic_value).equals(stylePrefValue)) {
+            return new StyleSpan(Typeface.BOLD_ITALIC);
+        } else {
+            return null;
+        }
     }
 }
