@@ -316,4 +316,21 @@
     <string name="pref_notification_preview_relevant_style">Relevanter Textstil</string>
     <string name="pref_notification_preview_general_style">Allgemeiner Textstil</string>
     <string name="pref_notification_preview_irrelevant_style">Irrelevanter Textstil</string>
+    <plurals name="new_relevant_information_chain">
+        <item quantity="one">%d relevante</item>
+        <item quantity="other">%d relevante</item>
+    </plurals>
+    <plurals name="new_general_information_chain">
+        <item quantity="one">%d allgemeine</item>
+        <item quantity="other">%d allgemeine</item>
+    </plurals>
+    <plurals name="new_irrelevant_information_chain">
+        <item quantity="one">%d weitere</item>
+        <item quantity="other">%d weitere</item>
+    </plurals>
+    <plurals name="new_information_chain_end">
+        <item quantity="one">" "Vertretung neu</item>
+        <item quantity="other">" "Vertretungen neu</item>
+    </plurals>
+    <string name="new_information_chain_separator">", "</string>
 </resources>

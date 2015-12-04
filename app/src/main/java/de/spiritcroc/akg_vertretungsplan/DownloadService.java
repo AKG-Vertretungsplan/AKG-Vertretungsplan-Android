@@ -304,16 +304,41 @@ public class DownloadService extends IntentService {
                 ArrayList<String> irrelevantInformation = new ArrayList<>();
                 int newRelevantNotificationCount = getNewRelevantInformationCount(this, relevantInformation, generalInformation, irrelevantInformation);
 
-                String message = (newRelevantNotificationCount > 0 ? getResources().getQuantityString(R.plurals.new_relevant_information, newRelevantNotificationCount, newRelevantNotificationCount) :
-                        (generalInformation.size() > 0 ?  getResources().getQuantityString(R.plurals.new_general_information, generalInformation.size(), generalInformation.size()) :
-                                (irrelevantInformation.size() > 0 ?  getResources().getQuantityString(R.plurals.new_irrelevant_information, irrelevantInformation.size(), irrelevantInformation.size()) :
-                        getString(R.string.last_checked) + " " + time)));
-                if (!sharedPreferences.getBoolean("pref_notification_only_if_relevant", false) || newRelevantNotificationCount > 0
-                        || (!sharedPreferences.getBoolean("pref_notification_general_not_relevant", false) && generalInformation.size() > 0)) {
-                    int importance = newRelevantNotificationCount > 0 ? NOTIFICATION_IMPORTANCE_RELEVANT :
-                            (generalInformation.size() > 0 ? NOTIFICATION_IMPORTANCE_GENERAL :
-                                    (irrelevantInformation.size() > 0 ? NOTIFICATION_IMPORTANCE_IRRELEVANT : NOTIFICATION_IMPORTANCE_NONE));
-
+                String message = null;
+                int importance = NOTIFICATION_IMPORTANCE_NONE;
+                int count = 0;
+                if (newRelevantNotificationCount > 0) {
+                    message = getResources().getQuantityString(R.plurals.new_relevant_information_chain, newRelevantNotificationCount, newRelevantNotificationCount);
+                    importance = NOTIFICATION_IMPORTANCE_RELEVANT;
+                    count += newRelevantNotificationCount;
+                }
+                boolean relevantOnly = sharedPreferences.getBoolean("pref_notification_only_if_relevant", false);
+                if (!generalInformation.isEmpty() && (!relevantOnly || !sharedPreferences.getBoolean("pref_notification_general_not_relevant", false))) {
+                    if (message == null) {
+                        importance = NOTIFICATION_IMPORTANCE_GENERAL;
+                        message = "";
+                    } else {
+                        message += getString(R.string.new_information_chain_separator);
+                    }
+                    message += getResources().getQuantityString(R.plurals.new_general_information_chain, generalInformation.size(), generalInformation.size());
+                    count += generalInformation.size();
+                }
+                if (!irrelevantInformation.isEmpty() && !relevantOnly) {
+                    if (message == null) {
+                        importance = NOTIFICATION_IMPORTANCE_IRRELEVANT;
+                        message = getResources().getQuantityString(R.plurals.new_irrelevant_information, irrelevantInformation.size(), irrelevantInformation.size());
+                    } else {
+                        message += getString(R.string.new_information_chain_separator) +
+                                getResources().getQuantityString(R.plurals.new_irrelevant_information_chain, irrelevantInformation.size(), irrelevantInformation.size());
+                    }
+                    count += irrelevantInformation.size();
+                }
+                if (message == null) {
+                    message = getString(R.string.last_checked) + " " + time;
+                } else if (importance != NOTIFICATION_IMPORTANCE_IRRELEVANT){
+                    message += getResources().getQuantityString(R.plurals.new_information_chain_end, count);
+                }
+                if (count > 0) {
                     maybePostNotification(getString(R.string.new_version), message, importance, relevantInformation, generalInformation, irrelevantInformation);
                 }
                 if (newRelevantNotificationCount > 0 || generalInformation.size() > 0 || irrelevantInformation.size() > 0)

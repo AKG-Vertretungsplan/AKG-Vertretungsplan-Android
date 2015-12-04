@@ -527,4 +527,21 @@
     <string name="pref_notification_preview_general_style">General text style</string>
     <string name="pref_notification_preview_irrelevant_style">Irrelevant text style</string>
 
+    <plurals name="new_relevant_information_chain">
+        <item quantity="one">%d relevant</item>
+        <item quantity="other">%d relevant</item>
+    </plurals>
+    <plurals name="new_general_information_chain">
+        <item quantity="one">%d general</item>
+        <item quantity="other">%d general</item>
+    </plurals>
+    <plurals name="new_irrelevant_information_chain">
+        <item quantity="one">%d other</item>
+        <item quantity="other">%d other</item>
+    </plurals>
+    <plurals name="new_information_chain_end">
+        <item quantity="one">" "piece of information new</item>
+        <item quantity="other">" "pieces of information new</item>
+    </plurals>
+    <string name="new_information_chain_separator">", "</string>
 </resources>
