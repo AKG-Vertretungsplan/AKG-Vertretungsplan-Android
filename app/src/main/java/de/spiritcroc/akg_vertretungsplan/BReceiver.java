@@ -28,14 +28,20 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import java.util.Calendar;
+
 public class BReceiver extends BroadcastReceiver {
     public static final String ACTION_START_DOWNLOAD_SERVICE = "action_start_download_service";
     public static final String ACTION_MARK_SEEN = "de.spiritcroc.akg_vertretungsplan.action.markSeen";
+    public static final String ACTION_UPDATE_WIDGETS = "de.spiritcroc.akg_vertretungsplan.action.UPDATE_WIDGETS";
     @Override
     public void onReceive(Context context, Intent intent){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction()) && sharedPreferences.getBoolean("pref_background_service", true)){
-            startDownloadService(context, true);
+        if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
+            if (sharedPreferences.getBoolean("pref_background_service", true)) {
+                startDownloadService(context, true);
+            }
+            setWidgetUpdateAlarm(context);
         }
         else if (ACTION_START_DOWNLOAD_SERVICE.equals(intent.getAction()) ||
                 ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction()) && sharedPreferences.getBoolean("pref_last_offline", false)){
@@ -48,6 +54,9 @@ public class BReceiver extends BroadcastReceiver {
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.cancel(1);
             Tools.updateWidgets(context);
+        } else if (ACTION_UPDATE_WIDGETS.equals(intent.getAction())) {
+            Tools.updateWidgets(context);
+            setWidgetUpdateAlarm(context);
         }
     }
 
@@ -62,5 +71,16 @@ public class BReceiver extends BroadcastReceiver {
     }
     public static void stopDownloadService(Context context){
         ((AlarmManager) context.getSystemService(Context.ALARM_SERVICE)).cancel(getAlarmPendingIntent(context, PendingIntent.FLAG_CANCEL_CURRENT));
+    }
+    public static void setWidgetUpdateAlarm(Context context) {
+        // Set alarm to next midnight to update widgets
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        c.add(Calendar.DAY_OF_MONTH, 1);
+        Intent resultIntent = new Intent(context, BReceiver.class).setAction(ACTION_UPDATE_WIDGETS);
+        ((AlarmManager) context.getSystemService(Context.ALARM_SERVICE)).set(AlarmManager.RTC, c.getTimeInMillis(), PendingIntent.getBroadcast(context.getApplicationContext(), 0, resultIntent, 0));
     }
 }

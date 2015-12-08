@@ -206,6 +206,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
 
         if (sharedPreferences.getBoolean("pref_reload_on_resume", false))
             startDownloadService();
+        BReceiver.setWidgetUpdateAlarm(this);
     }
     @Override
     protected void onPause(){
