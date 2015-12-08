@@ -162,8 +162,8 @@
                 <ListPreference
                     android:key="pref_notification_button_mark_seen"
                     android:title="@string/pref_notification_button_mark_seen"
-                    android:entries="@array/pref_notification_button_mark_seen"
-                    android:entryValues="@array/pref_notification_button_mark_seen_values"
+                    android:entries="@array/pref_notification_button_mark_seen_array"
+                    android:entryValues="@array/pref_notification_button_mark_seen_array_values"
                     android:defaultValue="@string/pref_notification_button_mark_seen_if_max_5_value"
                     android:dependency="pref_notification_enabled"/>
             </PreferenceCategory>
