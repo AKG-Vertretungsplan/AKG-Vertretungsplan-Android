@@ -106,15 +106,28 @@ public abstract class Tools {
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
         context.getApplicationContext().sendBroadcast(intent);
     }
-    public static int getStyle(Context context){
-        String style = PreferenceManager.getDefaultSharedPreferences(context).getString("pref_theme", "");
-        if (style.equals("light"))
-            return R.style.Theme_AppCompat_Light_DarkActionBar;
-        else if (style.equals("dark"))
-            return R.style.Theme_AppCompat;
-        else
-            return R.style.AppTheme;    //default
+
+    private static final int lightTheme = R.style.Theme_AppCompat_Light_DarkActionBar;
+    private static final int darkTheme = R.style.Theme_AppCompat;
+    private static final int defaultTheme = R.style.AppTheme;
+    public static int getStyle(Context context) {
+        return getStyle(PreferenceManager.getDefaultSharedPreferences(context).getString("pref_theme", ""));
     }
+    public static int getStyle(String style){
+        if (style.equals("light"))
+            return lightTheme;
+        else if (style.equals("dark"))
+            return darkTheme;
+        else
+            return defaultTheme;
+    }
+    public static boolean isLightStyle(int style) {
+        return style == lightTheme;
+    }
+    public static boolean isDarkStyle(int style) {
+        return style == darkTheme;
+    }
+
     public static Calendar getDateFromPlanTitle(String title){
         int day = 0, month = 0, year = 0, position = 0, progress = 0;
         boolean lastWasInt = false;

@@ -99,7 +99,7 @@ public class ItemFragment extends ListFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         final View listFragmentView = super.onCreateView(inflater, container, savedInstanceState);
 
-        swipeRefreshLayout = new ListFragmentSwipeRefreshLayout(container.getContext());
+        swipeRefreshLayout = new ListFragmentSwipeRefreshLayout(container == null ? getActivity() : container.getContext());
 
         swipeRefreshLayout.addView(listFragmentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 

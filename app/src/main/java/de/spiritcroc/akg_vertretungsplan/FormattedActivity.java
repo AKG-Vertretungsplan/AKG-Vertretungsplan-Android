@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -46,6 +47,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,7 +58,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
     private CustomFragmentPagerAdapter fragmentPagerAdapter;
     private static ViewPager viewPager;
     private static String plan1, plan2, title1, title2;
-    private TextView textView;
+    private TextView textView, title1View, title2View;
     private SharedPreferences sharedPreferences;
     private static ItemFragment fragment1, fragment2;
     private static Calendar date1;
@@ -65,6 +67,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
     private static boolean shortCutToPageTwo = false, filteredMode;
     private MenuItem reloadItem, filterItem, markReadItem;
     private ImageView overflow;
+    private boolean landscape, orientationChange = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,10 +94,34 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
             date1 = null;//Deactivate date functionality
         }
 
-        viewPager = (ViewPager) findViewById(R.id.pager);
+        landscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
 
-        fragmentPagerAdapter = new CustomFragmentPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(fragmentPagerAdapter);
+        if (landscape) {
+            title1View = (TextView) findViewById(R.id.title_1);
+            title2View = (TextView) findViewById(R.id.title_2);
+            if (Tools.isLightStyle(style)) {
+                title1View.setTextColor(getResources().getColor(R.color.title_color_light));
+                title2View.setTextColor(getResources().getColor(R.color.title_color_light));
+            } else if (Tools.isDarkStyle(style)) {
+                title1View.setTextColor(getResources().getColor(R.color.title_color_dark));
+                title2View.setTextColor(getResources().getColor(R.color.title_color_dark));
+            }
+            title1View.setText(title1);
+            title2View.setText(title2);
+            LinearLayout plan1Layout = (LinearLayout) findViewById(R.id.plan_1_layout);
+            LinearLayout plan2Layout = (LinearLayout) findViewById(R.id.plan_2_layout);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragment1 = ItemFragment.newInstance(1);
+            fragment2 = ItemFragment.newInstance(2);
+            fragmentManager.beginTransaction().add(plan1Layout.getId(), fragment1)
+                    .add(plan2Layout.getId(), fragment2)
+                    .commit();
+        } else {
+            viewPager = (ViewPager) findViewById(R.id.pager);
+
+            fragmentPagerAdapter = new CustomFragmentPagerAdapter(getSupportFragmentManager());
+            viewPager.setAdapter(fragmentPagerAdapter);
+        }
 
         LocalBroadcastManager.getInstance(this).registerReceiver(downloadInfoReceiver, new IntentFilter("PlanDownloadServiceUpdate"));
 
@@ -191,9 +218,9 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
         setActionBarColor();
 
         if (fragment1 != null)
-            fragment1.reloadContent();
+            fragment1.reloadContent(plan1, title1);
         if (fragment2 != null)
-            fragment2.reloadContent();
+            fragment2.reloadContent(plan2, title2);
         if (style != Tools.getStyle(this)) {//Theme has to be set before activity is created, so restart activity
             Intent intent = getIntent();
             finish();
@@ -219,6 +246,25 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
         super.onDestroy();
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if ((!landscape && newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) ||
+                (landscape && newConfig.orientation == Configuration.ORIENTATION_PORTRAIT)) {
+            // Orientation changed
+
+            // Don't save fragments onSaveInstanceState
+            getSupportFragmentManager().beginTransaction().remove(fragment1).remove(fragment2).commit();
+            getSupportFragmentManager().executePendingTransactions();
+
+            // Restart
+            finish();
+            overridePendingTransition(0, 0);
+            startActivity(getIntent());
+            overridePendingTransition(0, 0);
+        }
+    }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu){
@@ -446,8 +492,10 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
             super.finishUpdate(container);
 
             if (shortCutToPageTwo && getCount() >= 2) {
-                viewPager.setCurrentItem(1, false);
-                shortCutToPageTwo = false;//use shortcut only once
+                if (viewPager != null) {
+                    viewPager.setCurrentItem(1, false);
+                    shortCutToPageTwo = false;//use shortcut only once
+                }
             }
         }
     }
@@ -459,7 +507,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
             if (action.equals("loadFragmentData")){
                 Tools.setUnseenFalse(getApplicationContext());
                 Calendar oldDate2;
-                if (viewPager.getCurrentItem() == 1) {//When showing plan for tomorrow
+                if (!landscape && viewPager.getCurrentItem() == 1) {//When showing plan for tomorrow
                     try {
                         oldDate2 = Tools.getDateFromPlanTitle(title2);
                     } catch (Exception e) {
@@ -473,25 +521,30 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
                 plan1 = intent.getStringExtra("plan1");
                 title2 = intent.getStringExtra("title2");
                 plan2 = intent.getStringExtra("plan2");
-                try {
-                    date1 = Tools.getDateFromPlanTitle(title1);
+                if (!landscape) {
+                    try {
+                        date1 = Tools.getDateFromPlanTitle(title1);
+                    }
+                    catch (Exception e){
+                        Log.e("FormattedActivity", "Got error while trying to extract date1 from the titles: " + e);
+                        date1 = null;//Deactivate date functionality
+                    }
+                    fragmentPagerAdapter.notifyDataSetChanged();
+                    if (oldDate2 != null && date1 != null && ((
+                            date1.get(Calendar.YEAR) == oldDate2.get(Calendar.YEAR) &&
+                                    date1.get(Calendar.MONTH) == oldDate2.get(Calendar.MONTH) &&
+                                    date1.get(Calendar.DAY_OF_MONTH) == oldDate2.get(Calendar.DAY_OF_MONTH)) ||
+                            date1.after(oldDate2)))
+                        viewPager.setCurrentItem(0, false);//Keep showing the same day (or the nearer day)
                 }
-                catch (Exception e){
-                    Log.e("FormattedActivity", "Got error while trying to extract date1 from the titles: " + e);
-                    date1 = null;//Deactivate date functionality
-                }
-                fragmentPagerAdapter.notifyDataSetChanged();
-                if (oldDate2 != null && date1 != null && ((
-                        date1.get(Calendar.YEAR) == oldDate2.get(Calendar.YEAR) &&
-                        date1.get(Calendar.MONTH) == oldDate2.get(Calendar.MONTH) &&
-                        date1.get(Calendar.DAY_OF_MONTH) == oldDate2.get(Calendar.DAY_OF_MONTH)) ||
-                        date1.after(oldDate2)))
-                    viewPager.setCurrentItem(0, false);//Keep showing the same day (or the nearer day)
                 if (fragment1!=null)
                     fragment1.reloadContent(plan1, title1);
                 if (fragment2!=null)
                     fragment2.reloadContent(plan2, title2);
-                if (fragmentPagerAdapter.getCount() == 1) {
+                if (landscape) {
+                    title1View.setText(title1);
+                    title2View.setText(title2);
+                } else if (fragmentPagerAdapter.getCount() == 1) {
                     viewPager.setCurrentItem(0);
                 }
             }

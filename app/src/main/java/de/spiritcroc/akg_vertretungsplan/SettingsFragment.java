@@ -191,7 +191,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             SharedPreferences.Editor editor = sharedPreferences.edit();
 
             //adapt custom colors to new theme:
-            if (theme.equals(getString(R.string.pref_theme_light_value))){
+            if (Tools.isLightStyle(Tools.getStyle(theme))) {
                 if (sharedPreferences.getString("pref_header_text_text_color", "").equals(getString(R.string.pref_color_white_value)))
                     editor.putString("pref_header_text_text_color", getString(R.string.pref_color_black_value));
                 if (sharedPreferences.getString("pref_class_text_text_color", "").equals(getString(R.string.pref_color_cyan_value)))
@@ -212,8 +212,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                     editor.putString("pref_lesson_plan_color_lesson", getString(R.string.pref_color_black_value));
                 if (sharedPreferences.getString("pref_lesson_plan_color_room", "").equals(getString(R.string.pref_color_ltgray_value)))
                     editor.putString("pref_lesson_plan_color_room", getString(R.string.pref_color_dkgray_value));
-            }
-            else if (theme.equals(getString(R.string.pref_theme_dark_value))){
+            } else if (Tools.isDarkStyle(Tools.getStyle(theme))) {
                 if (sharedPreferences.getString("pref_header_text_text_color", "").equals(getString(R.string.pref_color_black_value)))
                     editor.putString("pref_header_text_text_color", getString(R.string.pref_color_white_value));
                 if (sharedPreferences.getString("pref_class_text_text_color", "").equals(getString(R.string.pref_color_blue_value)))
