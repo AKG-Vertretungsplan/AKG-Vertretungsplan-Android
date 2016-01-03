@@ -55,8 +55,6 @@ public class ItemFragment extends ListFragment{
     private SwipeRefreshLayout swipeRefreshLayout;
     private boolean unreadContent = false;
 
-    private static final String ARG_CONTENT = "content";
-    private static final String ARG_DATE = "date";
     private static final String ARG_NUMBER = "number";
 
     private String content;
@@ -65,11 +63,9 @@ public class ItemFragment extends ListFragment{
 
     private OnFragmentInteractionListener mListener;
 
-    public static ItemFragment newInstance(String content, String date, int number) {
+    public static ItemFragment newInstance(int number) {
         ItemFragment fragment = new ItemFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_CONTENT, content);
-        args.putString(ARG_DATE, date);
         args.putInt(ARG_NUMBER, number);
         fragment.setArguments(args);
         return fragment;
@@ -87,17 +83,16 @@ public class ItemFragment extends ListFragment{
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            content = getArguments().getString(ARG_CONTENT);
-            date = getArguments().getString(ARG_DATE);
             number = getArguments().getInt(ARG_NUMBER);
         }
         else {
             Log.e("ItemFragment.onCreate", "getArguments()==null");
-            content = date = "error";
         }
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
 
-        setListAdapter(new CustomArrayAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, createContent(content)));
+        if (content != null) {
+            setListAdapter(new CustomArrayAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, createContent(content)));
+        }
     }
 
     @Override
@@ -197,7 +192,7 @@ public class ItemFragment extends ListFragment{
     public void reloadContent(){
         Activity activity = getActivity();
         if (activity == null)
-            Log.e("reloadContent", "getActivity()==null");
+            Log.w("reloadContent", "getActivity()==null");
         else {
             setListAdapterRememberPos(new CustomArrayAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, createContent(content)));
         }
