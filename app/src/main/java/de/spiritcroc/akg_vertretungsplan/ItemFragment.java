@@ -299,7 +299,7 @@ public class ItemFragment extends ListFragment{
                     }
                     if (headerRow[0]==null) { //e.g. when extra table "Gesamte Schule:"
                         add = createItem(getActivity(), tmpRowContent, true);
-                        relevant = !sharedPreferences.getBoolean("pref_filter_general", false);
+                        relevant = lessonPlan.isConfigured() && !sharedPreferences.getBoolean("pref_filter_general", false);
                         if (relevant)
                             lastAddedHeader = false;
                     } else {
