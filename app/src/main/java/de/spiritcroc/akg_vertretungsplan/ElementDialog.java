@@ -25,13 +25,15 @@ import android.os.Bundle;
 import android.util.Log;
 
 public class ElementDialog extends DialogFragment{
-    private String message, shareMessage;
+    private String title, message, shareMessage;
+    private static final String ARG_TITLE = "title";
     private static final String ARG_MESSAGE = "message";
     private static final String ARG_SHARE_MESSAGE = "share_message";
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(message)
+        builder.setTitle(title)
+                .setMessage(message)
                 .setNeutralButton(R.string.dialog_share, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -51,9 +53,10 @@ public class ElementDialog extends DialogFragment{
         return builder.create();
     }
 
-    public static ElementDialog newInstance(String message, String shareMessage) {
+    public static ElementDialog newInstance(String title, String message, String shareMessage) {
         ElementDialog fragment = new ElementDialog();
         Bundle args = new Bundle();
+        args.putString(ARG_TITLE, title);
         args.putString(ARG_MESSAGE, message);
         args.putString(ARG_SHARE_MESSAGE, shareMessage);
         fragment.setArguments(args);
@@ -64,12 +67,13 @@ public class ElementDialog extends DialogFragment{
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
+            title = getArguments().getString(ARG_TITLE);
             message = getArguments().getString(ARG_MESSAGE);
             shareMessage = getArguments().getString(ARG_SHARE_MESSAGE);
         }
         else {
             Log.e("ElementDialog.onCreate", "getArguments()==null");
-            message = shareMessage = getString(R.string.error_unknown);
+            title = message = shareMessage = getString(R.string.error_unknown);
             dismiss();
         }
     }

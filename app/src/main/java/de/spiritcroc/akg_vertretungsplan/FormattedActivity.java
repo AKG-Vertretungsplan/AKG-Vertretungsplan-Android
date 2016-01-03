@@ -439,8 +439,8 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
     }
 
     @Override
-    public void showDialog(String text, String shareText){
-        ElementDialog.newInstance(text, shareText).show(getFragmentManager(), "ElementDialog");
+    public void showDialog(String title, String text, String shareText){
+        ElementDialog.newInstance(title, text, shareText).show(getFragmentManager(), "ElementDialog");
     }
     public void startDownloadService(){
         if (!DownloadService.isDownloading() && !sharedPreferences.getBoolean("pref_unseen_changes", false))

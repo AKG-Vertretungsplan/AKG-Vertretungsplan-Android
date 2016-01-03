@@ -160,9 +160,9 @@ public class ItemFragment extends ListFragment{
                 }
             }
             if (emptyCount == cellCount - 1 && dividedText[0]!=null && dividedText[0].length()!=0)
-                mListener.showDialog(dividedText[0], shareMessage + "\n" + dividedText[0]);
+                mListener.showDialog(date, dividedText[0], shareMessage + "\n" + dividedText[0]);
             else if (emptyCount == cellCount - 2 && dividedText[0]!=null && dividedText[0].length()!=0 && dividedText[1]!=null && dividedText[1].length()!=0)//→ two row table
-                mListener.showDialog(getLessonTimeCombinationString(dividedText[0]) + "\n" + dividedText[1], shareMessage + "\n" + dividedText[0] + "\n" + dividedText[1]);
+                mListener.showDialog(date, getLessonTimeCombinationString(dividedText[0]) + "\n" + dividedText[1], shareMessage + "\n" + dividedText[0] + "\n" + dividedText[1]);
             else {
                 String text = "";
                 LessonPlan lessonPlan = LessonPlan.getInstance(sharedPreferences);
@@ -172,7 +172,7 @@ public class ItemFragment extends ListFragment{
                         shareMessage += "\n" + (headerRow[i] == null || headerRow[i].length() == 0 ? "" : headerRow[i] + ": ") + getTeacherCombinationString(sharedPreferences, lessonPlan, dividedText[i]);
                     }
                 }
-                mListener.showDialog(text, shareMessage);
+                mListener.showDialog(date, text, shareMessage);
             }
         }
     }
@@ -215,7 +215,7 @@ public class ItemFragment extends ListFragment{
 
 
     public interface OnFragmentInteractionListener {
-        void showDialog(String text, String messageText);
+        void showDialog(String title, String text, String messageText);
     }
 
     public void markChangesAsRead(){
