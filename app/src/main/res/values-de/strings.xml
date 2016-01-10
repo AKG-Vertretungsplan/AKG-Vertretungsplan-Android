@@ -341,4 +341,6 @@
     <string name="pref_notification_button_mark_seen_never">Nie</string>
     <string name="pref_formatted_plan_show_teacher_full_and_short">Lehrerkürzel in Klammern</string>
     <string name="pref_formatted_plan_show_teacher_full_and_short_summary">Zeige Lehrerkürzel nach dem vollen Namen in Klammern</string>
+    <string name="pref_teacher_short_relevancy_ignore_case">Ignoriere Groß-/Kleinschreibung</string>
+    <string name="pref_teacher_short_relevancy_ignore_case_summary">Ignoriere Groß-/Kleinschreibung bei der Überprüfung des Lehrerkürzels auf relevante Vertretungen</string>
 </resources>

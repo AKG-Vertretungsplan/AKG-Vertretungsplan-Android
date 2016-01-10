@@ -407,6 +407,11 @@
                 android:numeric="integer"
                 android:defaultValue="17"
                 android:dependency="pref_lesson_plan_auto_select_day"/>
+            <CheckBoxPreference
+                android:key="pref_teacher_short_relevancy_ignore_case"
+                android:title="@string/pref_teacher_short_relevancy_ignore_case"
+                android:summary="@string/pref_teacher_short_relevancy_ignore_case_summary"
+                android:defaultValue="true"/>
             <Preference
                 android:key="pref_lesson_plan_add_launcher_shortcut"
                 android:title="@string/pref_lesson_plan_add_launcher_shortcut"

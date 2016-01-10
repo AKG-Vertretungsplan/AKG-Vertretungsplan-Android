@@ -568,4 +568,6 @@
     </string-array>
     <string name="pref_formatted_plan_show_teacher_full_and_short">Teacher abbr. in brackets</string>
     <string name="pref_formatted_plan_show_teacher_full_and_short_summary">Amend the teacher abbr. in brackets after the full teacher name</string>
+    <string name="pref_teacher_short_relevancy_ignore_case">Ignore case</string>
+    <string name="pref_teacher_short_relevancy_ignore_case_summary">Ignore case of teacher abbr. when checking for relevancy of information</string>
 </resources>

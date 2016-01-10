@@ -192,6 +192,13 @@ public class LessonPlan {
             Log.e("LessonPlan", "Lesson " + lesson + " not available (array to short)");
             return false;
         }
-        return !lessons[dayPosition][lesson-1].isFreeTime() && teacherShort.equals(lessons[dayPosition][lesson-1].getTeacherShort());
+        if (!lessons[dayPosition][lesson-1].isFreeTime()) {
+            if (teacherShort.equals(lessons[dayPosition][lesson-1].getTeacherShort())) {
+                return true;
+            } else if (sharedPreferences.getBoolean("pref_teacher_short_relevancy_ignore_case", true) && teacherShort.equalsIgnoreCase(lessons[dayPosition][lesson-1].getTeacherShort())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
