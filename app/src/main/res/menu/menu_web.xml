@@ -23,15 +23,16 @@
         android:title="@string/action_reload_web_view"
         app:showAsAction="ifRoom"/>
     <item android:id="@+id/action_open_in_browser"
-        android:title="@string/action_open_in_browser"/>
+        android:title="@string/action_open_in_browser"
+        app:showAsAction="never"/>
     <item android:id="@+id/action_lesson_plan"
-        android:title="@string/action_lesson_plan"/>
+        android:title="@string/action_lesson_plan"
+        app:showAsAction="never"/>
     <item android:id="@+id/action_settings"
         android:title="@string/settings"
         android:orderInCategory="100"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/action_about"
+    <item android:id="@+id/action_about"
         android:title="@string/action_about"
         android:orderInCategory="101"
         app:showAsAction="never"/>

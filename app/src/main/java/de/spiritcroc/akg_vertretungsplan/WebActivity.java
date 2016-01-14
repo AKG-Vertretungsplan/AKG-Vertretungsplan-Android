@@ -78,7 +78,7 @@ public class WebActivity extends AppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.menu_web, menu);
         if (menu != null && style == R.style.Theme_AppCompat_Light){
             MenuItem item = menu.findItem(R.id.action_reload_web_view);
             if (item != null)
