@@ -343,4 +343,8 @@
     <string name="pref_formatted_plan_show_teacher_full_and_short_summary">Zeige Lehrerkürzel nach dem vollen Namen in Klammern</string>
     <string name="pref_teacher_short_relevancy_ignore_case">Ignoriere Groß-/Kleinschreibung</string>
     <string name="pref_teacher_short_relevancy_ignore_case_summary">Ignoriere Groß-/Kleinschreibung bei der Überprüfung des Lehrerkürzels auf relevante Vertretungen</string>
+    <string name="pref_show_web_activity_as_action">Webplan als Aktion</string>
+    <string name="pref_show_web_activity_as_action_summary">Zeige die Option \"Webplan\" direkt in der Aktionsleiste</string>
+    <string name="pref_show_lesson_plan_as_action">Stundenplan als Aktion</string>
+    <string name="pref_show_lesson_plan_as_action_summary">Zeige die Option \"Stundenplan\" direkt in der Aktionsleiste</string>
 </resources>

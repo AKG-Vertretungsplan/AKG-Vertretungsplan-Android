@@ -65,7 +65,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
     private int style;
     private boolean created = false;
     private static boolean shortCutToPageTwo = false, filteredMode;
-    private MenuItem reloadItem, filterItem, markReadItem;
+    private MenuItem reloadItem, filterItem, markReadItem, webItem, lessonItem;
     private ImageView overflow;
     private boolean landscape;
 
@@ -213,6 +213,10 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
             reloadItem.setVisible(!sharedPreferences.getBoolean("pref_hide_action_reload", false));
         if (markReadItem != null)
             markReadItem.setShowAsAction(sharedPreferences.getBoolean("pref_show_mark_read_as_action", false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
+        if (webItem != null)
+            webItem.setShowAsAction(sharedPreferences.getBoolean("pref_show_web_activity_as_action", false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
+        if (lessonItem != null)
+            lessonItem.setShowAsAction(sharedPreferences.getBoolean("pref_show_lesson_plan_as_action", false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
 
         //Apply color settings:
         setActionBarColor();
@@ -285,6 +289,10 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
             filterItem.setShowAsAction(sharedPreferences.getBoolean("pref_show_filtered_plan_as_action", false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
             markReadItem = menu.findItem(R.id.action_mark_read);
             markReadItem.setShowAsAction(sharedPreferences.getBoolean("pref_show_mark_read_as_action", false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
+            webItem = menu.findItem(R.id.action_original_activity);
+            webItem.setShowAsAction(sharedPreferences.getBoolean("pref_show_web_activity_as_action", false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
+            lessonItem = menu.findItem(R.id.action_lesson_plan);
+            lessonItem.setShowAsAction(sharedPreferences.getBoolean("pref_show_lesson_plan_as_action", false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
             requestRecheckUnreadChanges();
 
             //http://stackoverflow.com/questions/22046903/changing-the-android-overflow-menu-icon-programmatically/22106474#22106474
@@ -355,6 +363,10 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
                 filterItem.setIcon(darkText ? R.drawable.ic_filter_list_black_36dp : R.drawable.ic_filter_list_white_36dp);
             if (markReadItem != null)
                 markReadItem.setIcon(darkText ? R.drawable.ic_done_black_36dp : R.drawable.ic_done_white_36dp);
+            if (webItem != null)
+                webItem.setIcon(darkText ? R.drawable.ic_web_black_36dp : R.drawable.ic_web_white_36dp);
+            if (lessonItem != null)
+                lessonItem.setIcon(darkText ? R.drawable.ic_format_list_numbered_black_36dp : R.drawable.ic_format_list_numbered_white_36dp);
         }
     }
 

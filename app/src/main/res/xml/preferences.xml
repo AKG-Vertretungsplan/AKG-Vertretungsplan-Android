@@ -222,6 +222,16 @@
                     android:summary="@string/pref_show_filtered_plan_as_action_summary"
                     android:defaultValue="false"/>
                 <CheckBoxPreference
+                    android:key="pref_show_web_activity_as_action"
+                    android:title="@string/pref_show_web_activity_as_action"
+                    android:summary="@string/pref_show_web_activity_as_action_summary"
+                    android:defaultValue="false"/>
+                <CheckBoxPreference
+                    android:key="pref_show_lesson_plan_as_action"
+                    android:title="@string/pref_show_lesson_plan_as_action"
+                    android:summary="@string/pref_show_lesson_plan_as_action_summary"
+                    android:defaultValue="false"/>
+                <CheckBoxPreference
                     android:key="pref_formatted_plan_replace_teacher_short_with_teacher_full"
                     android:title="@string/pref_formatted_plan_replace_teacher_short_with_teacher_full"
                     android:summary="@string/pref_formatted_plan_replace_teacher_short_with_teacher_full_summary"
