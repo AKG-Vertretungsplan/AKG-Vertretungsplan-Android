@@ -67,7 +67,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
     private static boolean shortCutToPageTwo = false, filteredMode;
     private MenuItem reloadItem, filterItem, markReadItem;
     private ImageView overflow;
-    private boolean landscape, orientationChange = false;
+    private boolean landscape;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
