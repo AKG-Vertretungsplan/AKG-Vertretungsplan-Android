@@ -347,4 +347,8 @@
     <string name="pref_show_web_activity_as_action_summary">Zeige die Option \"Webplan\" direkt in der Aktionsleiste</string>
     <string name="pref_show_lesson_plan_as_action">Stundenplan als Aktion</string>
     <string name="pref_show_lesson_plan_as_action_summary">Zeige die Option \"Stundenplan\" direkt in der Aktionsleiste</string>
+    <string name="pref_web_plan_use_custom_style">Verwende eigene CSS</string>
+    <string name="pref_web_plan_use_custom_style_summary">Lade nicht die CSS herunter, sondern verwende stattdessen eine eigene (nächste Einstellung)</string>
+    <string name="pref_web_plan_custom_style">Eigene CSS</string>
+    <string name="pref_web_plan_custom_style_summary">Passe die Erscheinung des Webplans an! (Plan neu herunterladen zum Anwenden)</string>
 </resources>

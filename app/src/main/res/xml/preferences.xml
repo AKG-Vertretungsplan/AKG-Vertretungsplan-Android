@@ -242,6 +242,17 @@
                     android:summary="@string/pref_formatted_plan_show_teacher_full_and_short_summary"
                     android:dependency="pref_formatted_plan_replace_teacher_short_with_teacher_full"
                     android:defaultValue="true"/>
+                <CheckBoxPreference
+                    android:key="pref_web_plan_use_custom_style"
+                    android:title="@string/pref_web_plan_use_custom_style"
+                    android:summary="@string/pref_web_plan_use_custom_style_summary"
+                    android:defaultValue="false"/>
+                <EditTextPreference
+                    android:key="pref_web_plan_custom_style"
+                    android:title="@string/pref_web_plan_custom_style"
+                    android:summary="@string/pref_web_plan_custom_style_summary"
+                    android:dependency="pref_web_plan_use_custom_style"
+                    android:defaultValue="@string/web_plan_default_custom_style"/>
             </PreferenceCategory>
             <PreferenceCategory
                 android:title="@string/pref_user_interface_behaviour">

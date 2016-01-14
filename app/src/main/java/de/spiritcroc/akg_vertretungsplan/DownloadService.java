@@ -167,7 +167,13 @@ public class DownloadService extends IntentService {
                     String result = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
                     httpGet = new HttpGet(CSS_ADDRESS);
                     httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
-                    String css = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
+                    //sharedPreferences.edit().remove("pref_web_plan_custom_style").apply();// test default
+                    String css;
+                    if (sharedPreferences.getBoolean("pref_web_plan_use_custom_style", false)) {
+                        css = sharedPreferences.getString("pref_web_plan_custom_style", getString(R.string.web_plan_default_custom_style));
+                    } else {
+                        css = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
+                    }
                     processPlan(cssHeader + css + cssFoot + result);
             //      break;
             //    }
@@ -286,7 +292,6 @@ public class DownloadService extends IntentService {
                     else
                         setTextViewText(getString(R.string.no_change));
                 }
-                editor.putString("pref_html_latest", result);
             }
             else {
                 if (Integer.parseInt(getSharedPreferences().getString("pref_no_change_since_max_precision", "2")) > 0)
@@ -294,6 +299,7 @@ public class DownloadService extends IntentService {
                 else
                     setTextViewText(getString(R.string.no_change));
             }
+            editor.putString("pref_html_latest", result);
             editor.apply();
             loadWebViewData(result);
             if (!loadFormattedPlans(result))
