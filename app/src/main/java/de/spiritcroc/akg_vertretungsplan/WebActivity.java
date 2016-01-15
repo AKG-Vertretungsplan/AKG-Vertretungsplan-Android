@@ -79,10 +79,14 @@ public class WebActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_web, menu);
-        if (menu != null && style == R.style.Theme_AppCompat_Light){
-            MenuItem item = menu.findItem(R.id.action_reload_web_view);
-            if (item != null)
+        if (menu != null){
+            MenuItem lessonItem = menu.findItem(R.id.action_lesson_plan);
+            lessonItem.setShowAsAction(sharedPreferences.getBoolean("pref_show_lesson_plan_as_action", false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
+            if (style == R.style.Theme_AppCompat_Light) {
+                MenuItem item = menu.findItem(R.id.action_reload_web_view);
                 item.setIcon(R.drawable.ic_autorenew_black_36dp);
+                lessonItem.setIcon(R.drawable.ic_format_list_numbered_black_36dp);
+            }
         }
         return super.onCreateOptionsMenu(menu);
     }

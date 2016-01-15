@@ -27,6 +27,7 @@
         app:showAsAction="never"/>
     <item android:id="@+id/action_lesson_plan"
         android:title="@string/action_lesson_plan"
+        android:icon="@drawable/ic_format_list_numbered_white_36dp"
         app:showAsAction="never"/>
     <item android:id="@+id/action_settings"
         android:title="@string/settings"
