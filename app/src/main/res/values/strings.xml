@@ -654,7 +654,7 @@
     <string name="pref_web_plan_use_custom_style">Use custom style</string>
     <string name="pref_web_plan_use_custom_style_summary">Don\'t download the CSS, but use the one below instead</string>
     <string name="pref_web_plan_custom_style">Custom style</string>
-    <string name="pref_web_plan_custom_style_summary">Customize the appearance of the web plan! (Re-download plan to apply)</string>
+    <string name="pref_web_plan_custom_style_summary">Customize the appearance of the web plan!</string>
     <string name="pref_web_plan_custom_style_preset">Load a preset CSS</string>
     <string name="pref_web_plan_custom_style_preset_summary">If you send me a good CSS, I might include it here</string>
     <string name="pref_web_plan_add_launcher_shortcut">Add launcher shortcut</string>

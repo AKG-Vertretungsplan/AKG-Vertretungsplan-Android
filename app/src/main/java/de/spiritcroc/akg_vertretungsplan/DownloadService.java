@@ -84,8 +84,6 @@ public class DownloadService extends IntentService {
 
     public enum ContentType {AWAIT, IGNORE, HEADER, TABLE_START_FLAG, TABLE_END_FLAG, TABLE_ROW, TABLE_CONTENT}
     private String username, password;
-    private final String cssHeader = "<style media=\"screen\" type=\"text/css\">";
-    private final String cssFoot = "</style>";
     private SharedPreferences sharedPreferences;
     private boolean loginFailed = false;
     private static boolean downloading = false;
@@ -168,13 +166,8 @@ public class DownloadService extends IntentService {
                     httpGet = new HttpGet(CSS_ADDRESS);
                     httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
                     //sharedPreferences.edit().remove("pref_web_plan_custom_style").apply();// test default
-                    String css;
-                    if (sharedPreferences.getBoolean("pref_web_plan_use_custom_style", false)) {
-                        css = sharedPreferences.getString("pref_web_plan_custom_style", getString(R.string.web_plan_default_custom_style));
-                    } else {
-                        css = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
-                    }
-                    processPlan(cssHeader + css + cssFoot + result);
+                    String css = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
+                    processPlan(result, css);
             //      break;
             //    }
             //    case 2:
@@ -261,7 +254,7 @@ public class DownloadService extends IntentService {
         }
     }
 
-    private void processPlan(String result){
+    private void processPlan(String result, String css){
         String latestHtml = getSharedPreferences().getString("pref_html_latest", "");
         boolean newVersion = false;
         if (result.contains("401 Authorization Required")) {
@@ -300,6 +293,7 @@ public class DownloadService extends IntentService {
                     setTextViewText(getString(R.string.no_change));
             }
             editor.putString("pref_html_latest", result);
+            editor.putString("pref_css", css);
             editor.apply();
             loadWebViewData(result);
             if (!loadFormattedPlans(result))
@@ -913,7 +907,7 @@ public class DownloadService extends IntentService {
         setTextViewText(getString(R.string.loading));
         Tools.updateWidgets(this);
         maybeSaveFormattedPlan();
-        String result = cssHeader + getString(R.string.web_plan_custom_style_akg_default) + cssFoot;
+        String result = "";
         switch (no){
             case -1:
                 // Not actually dummy, but infoscreen
@@ -945,7 +939,7 @@ public class DownloadService extends IntentService {
                 break;
         }
 
-        processPlan(result);
+        processPlan(result, getString(R.string.web_plan_custom_style_akg_default));
     }
     private final String dummy1 = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n" +
             "<html><head>\n" +

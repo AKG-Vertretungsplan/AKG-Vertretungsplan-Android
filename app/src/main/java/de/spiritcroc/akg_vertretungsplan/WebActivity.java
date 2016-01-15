@@ -20,12 +20,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class WebActivity extends AppCompatActivity {
+    private final static String cssHeader = "<style media=\"screen\" type=\"text/css\">";
+    private final static String cssFoot = "</style>";
+
     private SharedPreferences sharedPreferences;
     private WebView webView;
     private CustomWebViewClient customWebViewClient;
     private TextView textView;
     private int style;
-
+    private String css;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +41,8 @@ public class WebActivity extends AppCompatActivity {
         webView = (WebView) findViewById(R.id.web_view);
         customWebViewClient = new CustomWebViewClient();
         webView.setWebViewClient(customWebViewClient);
-        webView.loadData(sharedPreferences.getString("pref_html_latest", ""), "text/html", "utf-8");
+        updateCss();
+        loadWebView(sharedPreferences.getString("pref_html_latest", ""));
         textView = (TextView) findViewById(R.id.text_view);
         textView.setText(sharedPreferences.getString("pref_text_view_text", getString(R.string.welcome)));
 
@@ -63,6 +67,10 @@ public class WebActivity extends AppCompatActivity {
         }
 
         textView.setVisibility(sharedPreferences.getBoolean("pref_hide_text_view", false) ? View.GONE : View.VISIBLE);
+
+        if (updateCss()) {
+            loadWebView(sharedPreferences.getString("pref_html_latest", ""));
+        }
     }
     @Override
     protected void onPause(){
@@ -139,7 +147,8 @@ public class WebActivity extends AppCompatActivity {
             if (action.equals("loadWebViewData")){
                 Tools.setUnseenFalse(getApplicationContext());
                 String data = intent.getStringExtra("data");
-                webView.loadData(data, "text/html", "utf-8");
+                updateCss();
+                loadWebView(data);
             }
             else if (action.equals("setTextViewText")){
                 String text = intent.getStringExtra("text");
@@ -151,4 +160,25 @@ public class WebActivity extends AppCompatActivity {
             }
         }
     };
+
+    /**
+     * @return
+     * Whether the CSS has changed
+     */
+    private boolean updateCss() {
+        String oldCss = css;
+        if (sharedPreferences.getBoolean("pref_web_plan_use_custom_style", false)) {
+            css = sharedPreferences.getString("pref_web_plan_custom_style", getString(R.string.web_plan_default_custom_style));
+        } else {
+            css = sharedPreferences.getString("pref_css", getString(R.string.web_plan_custom_style_akg_default));
+        }
+        return oldCss == null || !oldCss.equals(css);
+    }
+
+    private void loadWebView(String data) {
+        if (css != null) {
+            data = cssHeader + css + cssFoot + data;
+        }
+        webView.loadData(data, "text/html", "utf-8");
+    }
 }
