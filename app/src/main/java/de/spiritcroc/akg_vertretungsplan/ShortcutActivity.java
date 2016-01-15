@@ -31,11 +31,13 @@ public abstract class ShortcutActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        overridePendingTransition(0, 0);
         Intent intent = getShortcut(getApplicationContext(), getShortcutIntent(), getShortcutName());
         if (intent != null) {
             setResult(RESULT_OK, intent);
         }
         finish();
+        overridePendingTransition(0, 0);
     }
 
     public static Intent getShortcut(Context context, Intent shortcutIntent, String shortcutName) {

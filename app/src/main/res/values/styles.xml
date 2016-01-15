@@ -18,4 +18,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- No customization yet. -->
     </style>
+    <style name="TransparentTheme" parent="Theme.AppCompat">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
 </resources>
