@@ -1,5 +1,4 @@
 Possible improvements for a future release:
-- shortcut to unformatted plan (already possible with lesson plan)
 - Option to replace entries of lessonPlan with matching substitutions
 - on list item click: focus animation colors? →  fix no click animation for non transparent backgrounds
 - List for teacher abbreviations → also show full names of teachers entered there (in addition to lesson plan's teachers)

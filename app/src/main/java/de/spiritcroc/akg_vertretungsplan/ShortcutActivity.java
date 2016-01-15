@@ -24,27 +24,25 @@ import android.util.Log;
 import android.widget.Toast;
 
 //Actually, this activity is not meant to be shown, but only to install a shortcut to the launcher
-public class ShortcutActivity extends Activity {
+public abstract class ShortcutActivity extends Activity {
     // According to the AOSP browser code, there is no public string defining this intent so if Home changes the value, I  have to update this string:
-    private static final String INSTALL_SHORTCUT = "com.android.launcher.action.INSTALL_SHORTCUT";
+    protected static final String INSTALL_SHORTCUT = "com.android.launcher.action.INSTALL_SHORTCUT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        Intent intent = getLessonPlanLauncherShortcut(getApplicationContext());
+        Intent intent = getShortcut(getApplicationContext(), getShortcutIntent(), getShortcutName());
         if (intent != null) {
             setResult(RESULT_OK, intent);
         }
         finish();
     }
 
-    public static Intent getLessonPlanLauncherShortcut(Context context) {
+    public static Intent getShortcut(Context context, Intent shortcutIntent, String shortcutName) {
         try {
             Intent intent = new Intent(INSTALL_SHORTCUT);
-            Intent shortcutIntent = new Intent(context, LessonPlanActivity.class);
-            shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-            intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, context.getString(R.string.lesson_plan));
+            intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, shortcutName);
             intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(context, R.mipmap.ic_launcher));
             return intent;
         } catch (Exception e){
@@ -53,4 +51,7 @@ public class ShortcutActivity extends Activity {
             return null;
         }
     }
+
+    protected abstract Intent getShortcutIntent();
+    protected abstract String getShortcutName();
 }

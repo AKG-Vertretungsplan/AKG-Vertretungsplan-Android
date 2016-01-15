@@ -30,6 +30,10 @@
         <activity
             android:name=".WebActivity"
             android:label="@string/app_name">
+            <intent-filter>
+                <!-- Allow the launcher to launch shortcuts-->
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".SettingsActivity"
@@ -48,12 +52,22 @@
             android:name=".LessonPlanActivity"
             android:label="@string/lesson_plan">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" /><!--So the launcher is allowed to launch this after creating a shortcut-->
+                <!-- Allow the launcher to launch shortcuts-->
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name="ShortcutActivity"
+        <activity android:name=".LessonPlanShortcutActivity"
             android:theme="@style/AppTheme"
             android:label="@string/lesson_plan_shortcut"
+            android:icon="@mipmap/ic_launcher">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".WebShortcutActivity"
+            android:theme="@style/AppTheme"
+            android:label="@string/original_activity"
             android:icon="@mipmap/ic_launcher">
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
