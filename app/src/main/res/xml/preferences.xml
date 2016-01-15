@@ -423,6 +423,10 @@
                     android:entries="@array/pref_web_plan_custom_style_presets_names"
                     android:entryValues="@array/pref_web_plan_custom_style_presets"
                     android:dependency="pref_web_plan_use_custom_style"/>
+                <Preference
+                    android:key="pref_web_plan_add_launcher_shortcut"
+                    android:title="@string/pref_web_plan_add_launcher_shortcut"
+                    android:summary="@string/pref_web_plan_add_launcher_shortcut_summary"/>
             </PreferenceCategory>
         </PreferenceScreen>
         <PreferenceScreen

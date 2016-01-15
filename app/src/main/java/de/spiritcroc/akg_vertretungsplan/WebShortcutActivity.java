@@ -32,12 +32,16 @@ public class WebShortcutActivity extends ShortcutActivity {
     }
 
     /**
-     * Static method for shortcut creation from another activity
+     * Static methods for shortcut creation from another activity
      */
     public static Intent getShortcutIntent(Context context) {
         return new Intent(context, WebActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
     }
     public static String getShortcutName(Context context) {
         return context.getString(R.string.original_activity);
+    }
+
+    public static Intent getShortcut(Context context) {
+        return ShortcutActivity.getShortcut(context.getApplicationContext(), getShortcutIntent(context), getShortcutName(context));
     }
 }

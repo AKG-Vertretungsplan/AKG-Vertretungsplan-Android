@@ -657,4 +657,6 @@
     <string name="pref_web_plan_custom_style_summary">Customize the appearance of the web plan! (Re-download plan to apply)</string>
     <string name="pref_web_plan_custom_style_preset">Load a preset CSS</string>
     <string name="pref_web_plan_custom_style_preset_summary">If you send me a good CSS, I might include it here</string>
+    <string name="pref_web_plan_add_launcher_shortcut">Add launcher shortcut</string>
+    <string name="pref_web_plan_add_launcher_shortcut_summary">Try to add a webplan shortcut to your launcher (might not work on some launchers)</string>
 </resources>

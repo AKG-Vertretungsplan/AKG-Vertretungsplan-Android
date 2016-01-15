@@ -347,6 +347,10 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             Intent intent = LessonPlanShortcutActivity.getShortcut(getActivity());
             getActivity().sendBroadcast(intent);
             Toast.makeText(getActivity(), R.string.launcher_added_successfully, Toast.LENGTH_SHORT).show();
+        } else if ("pref_web_plan_add_launcher_shortcut".equals(preference.getKey())){
+            Intent intent = WebShortcutActivity.getShortcut(getActivity());
+            getActivity().sendBroadcast(intent);
+            Toast.makeText(getActivity(), R.string.launcher_added_successfully, Toast.LENGTH_SHORT).show();
         } else {
             return super.onPreferenceTreeClick(preferenceScreen, preference);
         }
