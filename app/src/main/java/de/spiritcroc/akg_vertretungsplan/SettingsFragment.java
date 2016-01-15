@@ -274,6 +274,15 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             tmpEditTextPreference.setSummary(getString(R.string.pref_lesson_plan_auto_select_day_time_summary_pre) + tmpValue + getString(R.string.pref_lesson_plan_auto_select_day_time_summary_post));
         } else if (key.equals("pref_notification_enabled") || key.equals("pref_notification_only_if_relevant") || key.equals("pref_notification_general_not_relevant")) {
             setNotificationDependencies();
+        } else if (key.equals("pref_web_plan_custom_style_preset")) {
+            String ignore = "ignore";
+            String value = ((ListPreference) findPreference(key)).getValue();
+            if (!ignore.equals(value)) {
+                sharedPreferences.edit()
+                        .putString("pref_web_plan_custom_style", value)
+                        .putString(key, ignore)// Don't save the full CSS in this pref, but don't run this code again because of sharedPref changed when removing pref
+                        .apply();
+            }
         }
     }
 

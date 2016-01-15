@@ -351,4 +351,9 @@
     <string name="pref_web_plan_use_custom_style_summary">Lade nicht die CSS herunter, sondern verwende stattdessen eine eigene (nächste Einstellung)</string>
     <string name="pref_web_plan_custom_style">Eigene CSS</string>
     <string name="pref_web_plan_custom_style_summary">Passe die Erscheinung des Webplans an! (Plan neu herunterladen zum Anwenden)</string>
+    <string name="web_plan_custom_style_akg_default_name">AKG Standard</string>
+    <string name="web_plan_custom_style_dark_name">Dunkel</string>
+    <string name="web_plan_custom_style_empty_name">Leer</string>
+    <string name="pref_web_plan_custom_style_preset">Lade eine voreingestellte CSS</string>
+    <string name="pref_web_plan_custom_style_preset_summary">Wenn mir jemand eine gute CSS schickt, könnte ich sie hier einfügen</string>
 </resources>

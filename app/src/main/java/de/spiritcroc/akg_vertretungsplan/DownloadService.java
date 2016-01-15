@@ -913,7 +913,7 @@ public class DownloadService extends IntentService {
         setTextViewText(getString(R.string.loading));
         Tools.updateWidgets(this);
         maybeSaveFormattedPlan();
-        String result = cssHeader + dummyCSS + cssFoot;
+        String result = cssHeader + getString(R.string.web_plan_custom_style_akg_default) + cssFoot;
         switch (no){
             case -1:
                 // Not actually dummy, but infoscreen
@@ -947,34 +947,6 @@ public class DownloadService extends IntentService {
 
         processPlan(result);
     }
-    private final String dummyCSS = "body { margin-top:20px;font-family:sans-serif;\n" +
-            "       }\n" +
-            "\n" +
-            "th { color: #eee; \n" +
-            "     background-color: #048; \n" +
-            "     height:0px;}\n" +
-            "\n" +
-            "td { color: #000;\n" +
-            "     background-color:#cce; \n" +
-            "     }\n" +
-            "table.innen\n" +
-            "{  \n" +
-            "  border:0;\n" +
-            "}\n" +
-            "\n" +
-            "table.F\n" +
-            "{\n" +
-            "  border-style:none;border-width:0;border-collapse:collapse; \n" +
-            "}\n" +
-            "\n" +
-            "th.a \n" +
-            "{   \n" +
-            "  text-align:left;\n" +
-            "}\n" +
-            "th.F \n" +
-            "{   \n" +
-            "  text-align:left;\n" +
-            "}\n";
     private final String dummy1 = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n" +
             "<html><head>\n" +
             "<meta http-equiv=\"content-type\" content=\"text/html; charset=windows-1252\"><link rel=\"stylesheet\" type=\"text/css\" href=\"WILLI-Dateien/willi.css\"><script src=\"WILLI-Dateien/willi.htm\" type=\"text/javascript\"></script><title>WILLI</title></head>\n" +
