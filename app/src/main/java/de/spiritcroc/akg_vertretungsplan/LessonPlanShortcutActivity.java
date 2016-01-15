@@ -40,4 +40,8 @@ public class LessonPlanShortcutActivity extends ShortcutActivity {
     public static String getShortcutName(Context context) {
         return context.getString(R.string.lesson_plan);
     }
+
+    public static Intent getShortcut(Context context) {
+        return ShortcutActivity.getShortcut(context.getApplicationContext(), getShortcutIntent(context), getShortcutName(context));
+    }
 }

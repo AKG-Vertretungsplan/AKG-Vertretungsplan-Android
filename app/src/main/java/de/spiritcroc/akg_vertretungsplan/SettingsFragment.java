@@ -344,7 +344,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 ((CheckBoxPreference)findPreference("pref_hidden_debug_enabled")).setChecked(true);
             }
         } else if ("pref_lesson_plan_add_launcher_shortcut".equals(preference.getKey())){
-            Intent intent = ShortcutActivity.getShortcut(getActivity().getApplicationContext(), LessonPlanShortcutActivity.getShortcutIntent(getActivity().getApplicationContext()), LessonPlanShortcutActivity.getShortcutName(getActivity()));
+            Intent intent = LessonPlanShortcutActivity.getShortcut(getActivity());
             getActivity().sendBroadcast(intent);
             Toast.makeText(getActivity(), R.string.launcher_added_successfully, Toast.LENGTH_SHORT).show();
         } else {
