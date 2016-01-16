@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2016 SpiritCroc
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources>
+    <string-array name="pref_web_plan_custom_style_presets_names" translatable="false">
+        <item>@string/web_plan_custom_style_akg_default_name</item>
+        <item>@string/web_plan_custom_style_dark_name</item>
+        <item>@string/web_plan_custom_style_empty_name</item>
+    </string-array>
+    <string-array name="pref_web_plan_custom_style_presets" translatable="false">
+        <item>@string/web_plan_custom_style_akg_default</item>
+        <item>@string/web_plan_custom_style_dark</item>
+        <item>""</item>
+    </string-array>
+    <string name="web_plan_default_custom_style" translatable="false">@string/web_plan_custom_style_dark</string>
+    <string name="web_plan_custom_style_akg_default" translatable="false"><!-- 2016-01-15 -->
+        "body {\n"
+        "    margin-top:20px;\n"
+        "    font-family:sans-serif;\n"
+        "}\n"
+        "th {\n"
+        "    color:#eee;\n"
+        "    background-color:#048;\n"
+        "    height:0px;\n"
+        "}\n"
+        "td {\n"
+        "    color:#000;\n"
+        "    background-color:#cce;\n"
+        "}\n"
+        "table.innen {\n"
+        "    border:0;\n"
+        "}\n"
+        "table.F {\n"
+        "    border-style:none;\n"
+        "    border-width:0;\n"
+        "    border-collapse:collapse;\n"
+        "}\n"
+        "th.a {\n"
+        "    text-align:left;\n"
+        "}\n"
+        "th.F {\n"
+        "    text-align:left;\n"
+        "}\n"
+    </string>
+    <string name="web_plan_custom_style_dark" translatable="false">
+        "body {\n"
+        "    color:white;"
+        "    background-color:black;\n"
+        "    margin-top:20px;\n"
+        "    font-family:sans-serif;\n"
+        "}\n"
+        "a:link {color:cyan}\n"
+        "a:visited {color:yellow}\n"
+        "th {\n"
+        "    color:black;\n"
+        "    background-color:cyan;\n"
+        "    height:0px;\n"
+        "}\n"
+        "td {\n"
+        "    background-color:#4d4d4d;\n"
+        "}\n"
+        "table.innen {\n"
+        "    border:0;\n"
+        "}\n"
+        "table.F {\n"
+        "    border-style:none;\n"
+        "    border-width:0;\n"
+        "    border-collapse:collapse;\n"
+        "}\n"
+        "th.a {\n"
+        "    text-align:left;\n"
+        "}\n"
+        "th.F {\n"
+        "    text-align:left;\n"
+        "}\n"
+    </string>
+</resources>
