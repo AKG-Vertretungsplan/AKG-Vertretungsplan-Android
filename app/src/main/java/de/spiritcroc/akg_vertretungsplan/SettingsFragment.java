@@ -282,6 +282,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                         .putString("pref_web_plan_custom_style", value)
                         .putString(key, ignore)// Don't save the full CSS in this pref, but don't run this code again because of sharedPref changed when removing pref
                         .apply();
+                ((EditTextPreference) findPreference("pref_web_plan_custom_style")).setText(value);
             }
         }
     }
