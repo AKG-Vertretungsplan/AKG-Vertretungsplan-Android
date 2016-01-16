@@ -35,12 +35,12 @@ import java.util.Calendar;
 
 public class LessonPlanActivity extends AppCompatActivity {
     private CustomFragmentPagerAdapter fragmentPagerAdapter;
-    private static ViewPager viewPager;
+    private ViewPager viewPager;
     private SharedPreferences sharedPreferences;
     private int style;
-    private static String[] dayName;
-    private static LessonPlanFragment[] lessonPlanFragments;
-    private static int shortcutDay = -1;//-1 if no shortcut
+    private String[] dayName;
+    private LessonPlanFragment[] lessonPlanFragments;
+    private int shortcutDay = -1;//-1 if no shortcut
 
     private MenuItem showFullTimeMenuItem;
 
@@ -175,7 +175,7 @@ public class LessonPlanActivity extends AppCompatActivity {
         new EditLessonDialog().setValues(lesson, lessonPlanFragment, lessonPosition).show(getFragmentManager(), "EditLessonDialog");
     }
 
-    public static class CustomFragmentPagerAdapter extends FragmentPagerAdapter {
+    public class CustomFragmentPagerAdapter extends FragmentPagerAdapter {
         public CustomFragmentPagerAdapter (FragmentManager fragmentManager){
             super(fragmentManager);
         }
