@@ -58,7 +58,7 @@
     </string>
     <string name="web_plan_custom_style_dark" translatable="false">
         "body {\n"
-        "    color:white;"
+        "    color:white;\n"
         "    background-color:black;\n"
         "    margin-top:20px;\n"
         "    font-family:sans-serif;\n"
