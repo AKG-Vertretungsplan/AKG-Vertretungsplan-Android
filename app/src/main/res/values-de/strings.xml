@@ -358,4 +358,8 @@
     <string name="pref_web_plan_custom_style_preset_summary">Wenn mir jemand eine gute CSS schickt, könnte ich sie hier einfügen</string>
     <string name="pref_web_plan_add_launcher_shortcut">Launcher-Verknüpfung erstellen</string>
     <string name="pref_web_plan_add_launcher_shortcut_summary">Versuche, eine Webplan-Verknüpfung zum Startbildschirm hinzuzufügen (könnte bei manchen Launchern nicht funktionieren)</string>
+    <string name="pref_lesson_plan_color_relevant_information">Relevante Vertretungen</string>
+    <string name="pref_lesson_plan_color_general_information">Allgemeine Vertretungen</string>
+
+    <string name="action_show_information">Zeige Vertretungen</string>
 </resources>

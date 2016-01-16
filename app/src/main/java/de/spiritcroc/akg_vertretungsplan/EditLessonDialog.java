@@ -92,6 +92,9 @@ public class EditLessonDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         lesson.setFree();
                         fragment.update();
+                        if (getActivity() instanceof LessonPlanActivity) {
+                            ((LessonPlanActivity) getActivity()).getRelevantInformation();
+                        }
                     }
                 })
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
@@ -131,6 +134,9 @@ public class EditLessonDialog extends DialogFragment {
                             else {
                                 lesson.setValues(teacherShort, teacherFull, subject, room);
                                 fragment.update();
+                                if (getActivity() instanceof LessonPlanActivity) {
+                                    ((LessonPlanActivity) getActivity()).getRelevantInformation();
+                                }
                                 dismiss();
                             }
                         }

@@ -585,4 +585,8 @@
     <string name="pref_web_plan_custom_style_preset_summary">If you send me a good CSS, I might include it here</string>
     <string name="pref_web_plan_add_launcher_shortcut">Add launcher shortcut</string>
     <string name="pref_web_plan_add_launcher_shortcut_summary">Try to add a webplan shortcut to your launcher (might not work on some launchers)</string>
+    <string name="pref_lesson_plan_color_relevant_information">Relevant information</string>
+    <string name="pref_lesson_plan_color_general_information">General information</string>
+
+    <string name="action_show_information">Show substitutions</string>
 </resources>

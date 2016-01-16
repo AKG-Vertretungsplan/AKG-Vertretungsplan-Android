@@ -298,12 +298,12 @@ public class ItemFragment extends ListFragment{
                         backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_class_text_background_color", "" + Color.TRANSPARENT)));
                     }
                     if (headerRow[0]==null) { //e.g. when extra table "Gesamte Schule:"
-                        add = createItem(getActivity(), tmpRowContent, true);
+                        add = createItem(getActivity(), tmpRowContent, true, true);
                         relevant = lessonPlan.isConfigured() && !sharedPreferences.getBoolean("pref_filter_general", false);
                         if (relevant)
                             lastAddedHeader = false;
                     } else {
-                        add = createItem(getActivity(), tmpRowContent, false);
+                        add = createItem(getActivity(), tmpRowContent, false, true);
                         try {
                             relevant = lessonPlan.isRelevant( tmpRowContent[0], Tools.getDateFromPlanTitle(this.date).get(Calendar.DAY_OF_WEEK), Integer.parseInt(tmpRowContent[2]), tmpRowContent[1]);
                             if (relevant)
@@ -354,15 +354,17 @@ public class ItemFragment extends ListFragment{
     /**
      * @param noHeader
      * true e.g. when extra table "Gesamte Schule:" else false
+     * @param showLesson
+     * true when using createItem() from LessonPlan, when the display of lesson would be redundant
      */
-    public static String createItem(Context context, String[] values, boolean noHeader) {
+    public static String createItem(Context context, String[] values, boolean noHeader, boolean showLesson) {
         if (noHeader) {
             return values[0] + (values[1].equals("") ? "" : " → " + values[1]);
         }
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         LessonPlan lessonPlan = LessonPlan.getInstance(sharedPreferences);
         boolean useFullTeacherNames = sharedPreferences.getBoolean("pref_formatted_plan_replace_teacher_short_with_teacher_full", true);
-        String result = values[2] + " " + (useFullTeacherNames ? getTeacherCombinationString(sharedPreferences, lessonPlan, values[1]) : values[1]) + " →";
+        String result = (showLesson ? values[2] + " " : "") + (useFullTeacherNames ? getTeacherCombinationString(sharedPreferences, lessonPlan, values[1]) : values[1]) + " →";
         if (!values[3].equals(""))
             result += " " + (useFullTeacherNames ? getTeacherCombinationString(sharedPreferences, lessonPlan, values[3]) : values[3]);
         if (!values[4].equals(""))

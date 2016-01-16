@@ -28,6 +28,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -41,6 +42,8 @@ public class LessonPlanFragment extends ListFragment {
     private String[] startTimes;
     private String[] fullTimes;
     private ArrayList<Integer> textColors = new ArrayList<>();
+    private ArrayList<String> relevantInformation, generalInformation;
+    private ArrayList<Integer> relevantInformationLessons;
 
     private ArrayList<TextView> timeViews = new ArrayList<>();
 
@@ -88,12 +91,14 @@ public class LessonPlanFragment extends ListFragment {
     private LessonViewContent[] createContent(){
         textColors.clear();
 
+        boolean addInformation = sharedPreferences.getBoolean("pref_lesson_plan_show_information", false);
+
         int color = Integer.parseInt(sharedPreferences.getString("pref_lesson_plan_color_lesson", "" + Color.BLACK)),
                 colorFreeTime = Integer.parseInt(sharedPreferences.getString("pref_lesson_plan_color_free_time", "" + Color.GRAY));
 
         lessons = LessonPlan.getInstance(PreferenceManager.getDefaultSharedPreferences(getActivity())).getLessonsForDay(day);
-        LessonViewContent[] lessonViewContent = new LessonViewContent[lessons.length];
-        for (int i = 0; i < lessonViewContent.length; i++){
+        LessonViewContent[] lessonViewContent = new LessonViewContent[addInformation ? (lessons.length + (generalInformation == null ? 0 : generalInformation.size())) : lessons.length];
+        for (int i = 0; i < lessons.length; i++){
             lessonViewContent[i] = new LessonViewContent();
             lessonViewContent[i].time = (showTime ? (showFullTime ? fullTimes[i] : startTimes[i]) : (i+1)) + ": ";
             if (lessons[i].isFreeTime()) {
@@ -106,6 +111,25 @@ public class LessonPlanFragment extends ListFragment {
                 lessonViewContent[i].content = lessons[i].getReadableName();
                 textColors.add(color);
                 lessonViewContent[i].room = lessons[i].getRoom();
+            }
+        }
+        if (addInformation) {
+            if (relevantInformation != null) {
+                for (int i = 0; i < relevantInformation.size(); i++) {
+                    int lesson = relevantInformationLessons.get(i) - 1;
+                    if (lesson < 0 || lesson > lessonViewContent.length) {
+                        Log.e("LessonPlanFragment", "createContent: cannot find lesson with index " + lesson);
+                        continue;
+                    }
+                    lessonViewContent[lesson].extraInformation = relevantInformation.get(i);
+                }
+            }
+            if (generalInformation != null) {
+                for (int i = 0; i < generalInformation.size(); i++) {
+                    lessonViewContent[lessons.length + i] = new LessonViewContent();
+                    lessonViewContent[lessons.length + i].extraInformation = generalInformation.get(i);
+                    lessonViewContent[lessons.length + i].generalInformation = true;
+                }
             }
         }
         return lessonViewContent;
@@ -126,6 +150,9 @@ public class LessonPlanFragment extends ListFragment {
 
 
     public void update(){
+        if (sharedPreferences == null) {
+            return;
+        }
         showTime = sharedPreferences.getBoolean("pref_lesson_plan_show_time", false);
         showFullTime = sharedPreferences.getBoolean("pref_lesson_plan_show_full_time", false);
         timeViews.clear();
@@ -168,9 +195,11 @@ public class LessonPlanFragment extends ListFragment {
                 view = inflater.inflate(R.layout.lesson_plan_item, parent, false);
 
                 holder = new LessonViewHolder();
+                holder.lessonLayout = (LinearLayout) view.findViewById(R.id.lesson_layout);
                 holder.timeView = (TextView) view.findViewById(R.id.time_view);
                 holder.subjectView = (TextView) view.findViewById(R.id.subject_view);
                 holder.roomView = (TextView) view.findViewById(R.id.room_view);
+                holder.informationView = (TextView) view.findViewById(R.id.information_view);
 
                 view.setTag(holder);
             }
@@ -179,12 +208,30 @@ public class LessonPlanFragment extends ListFragment {
                 view = convertView;
             }
 
-            timeViews.add(holder.timeView);
-            holder.timeView.setText(((LessonViewContent) getItem(position)).time);
-            holder.subjectView.setText(((LessonViewContent) getItem(position)).content);
-            holder.roomView.setText(((LessonViewContent) getItem(position)).room);
+            if (((LessonViewContent) getItem(position)).generalInformation) {
+                holder.lessonLayout.setVisibility(View.GONE);
+                holder.timeView.setVisibility(View.GONE);
+                holder.informationView.setText(((LessonViewContent) getItem(position)).extraInformation);
+                holder.informationView.setVisibility(View.VISIBLE);
+                holder.informationView.setTextColor(Integer.parseInt(sharedPreferences.getString("pref_lesson_plan_color_general_information", "" + Color.DKGRAY)));
+            } else {
+                holder.timeView.setText(((LessonViewContent) getItem(position)).time);
+                holder.timeView.setVisibility(View.VISIBLE);
+                holder.subjectView.setText(((LessonViewContent) getItem(position)).content);
+                holder.roomView.setText(((LessonViewContent) getItem(position)).room);
+                holder.lessonLayout.setVisibility(View.VISIBLE);
+                holder.informationView.setTextColor(Integer.parseInt(sharedPreferences.getString("pref_lesson_plan_color_relevant_information", "" + Color.DKGRAY)));
+                if (((LessonViewContent) getItem(position)).extraInformation.equals("")) {
+                    holder.informationView.setVisibility(View.GONE);
+                } else {
+                    holder.informationView.setText(((LessonViewContent) getItem(position)).extraInformation);
+                    holder.informationView.setVisibility(View.VISIBLE);
+                }
+            }
 
-            holder.timeView.setGravity(showTime && showFullTime ? Gravity.CENTER : Gravity.CENTER_VERTICAL | Gravity.RIGHT);
+            timeViews.add(holder.timeView);
+
+            holder.timeView.setGravity(showTime && showFullTime ? Gravity.CENTER_HORIZONTAL : Gravity.RIGHT);
 
             holder.timeView.setTextColor(Integer.parseInt(sharedPreferences.getString("pref_lesson_plan_color_time", "" + Color.BLUE)));
             if (textColors.size()>position)
@@ -197,10 +244,25 @@ public class LessonPlanFragment extends ListFragment {
     }
 
     static class LessonViewHolder{
-        TextView timeView, subjectView, roomView;
+        LinearLayout lessonLayout;
+        TextView timeView, subjectView, roomView, informationView;
     }
 
     private class LessonViewContent{
         String time, content, room;
+        String extraInformation = "";
+        boolean generalInformation = false;
+    }
+
+    public LessonPlanFragment setRelevantInformation(ArrayList<String> relevantInformation, ArrayList<Integer> relevantInformationLessons, ArrayList<String> generalInformation) {
+        if (relevantInformation.size() != relevantInformationLessons.size()) {
+            Log.e("LessonPlanFragment", "setRelevantInformation: relevantInformation.size() != relevantInformationLessons.size()");
+            return this;
+        }
+        this.relevantInformation = relevantInformation;
+        this.relevantInformationLessons = relevantInformationLessons;
+        this.generalInformation = generalInformation;
+        update();
+        return this;
     }
 }

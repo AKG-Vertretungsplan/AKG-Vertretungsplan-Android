@@ -477,6 +477,18 @@
                     android:entries="@array/pref_color_array"
                     android:entryValues="@array/pref_color_array_values"
                     android:defaultValue="@string/pref_color_dkgray_value"/>
+                <ListPreference
+                    android:key="pref_lesson_plan_color_relevant_information"
+                    android:title="@string/pref_lesson_plan_color_relevant_information"
+                    android:entries="@array/pref_color_array"
+                    android:entryValues="@array/pref_color_array_values"
+                    android:defaultValue="@string/pref_color_dkgray_value"/>
+                <ListPreference
+                    android:key="pref_lesson_plan_color_general_information"
+                    android:title="@string/pref_lesson_plan_color_general_information"
+                    android:entries="@array/pref_color_array"
+                    android:entryValues="@array/pref_color_array_values"
+                    android:defaultValue="@string/pref_color_dkgray_value"/>
             </PreferenceCategory>
         </PreferenceScreen>
     </PreferenceCategory>
