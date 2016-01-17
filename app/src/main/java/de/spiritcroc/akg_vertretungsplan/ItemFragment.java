@@ -364,7 +364,7 @@ public class ItemFragment extends ListFragment{
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         LessonPlan lessonPlan = LessonPlan.getInstance(sharedPreferences);
         boolean useFullTeacherNames = sharedPreferences.getBoolean("pref_formatted_plan_replace_teacher_short_with_teacher_full", true);
-        String result = (showLesson ? values[2] + " " : "") + (useFullTeacherNames ? getTeacherCombinationString(sharedPreferences, lessonPlan, values[1]) : values[1]) + " →";
+        String result = (showLesson ? values[2] + " " + (useFullTeacherNames ? getTeacherCombinationString(sharedPreferences, lessonPlan, values[1]) : values[1]) : "") + " →";
         if (!values[3].equals(""))
             result += " " + (useFullTeacherNames ? getTeacherCombinationString(sharedPreferences, lessonPlan, values[3]) : values[3]);
         if (!values[4].equals(""))
