@@ -93,7 +93,7 @@ public class EditLessonDialog extends DialogFragment {
                         lesson.setFree();
                         fragment.update();
                         if (getActivity() instanceof LessonPlanActivity) {
-                            ((LessonPlanActivity) getActivity()).getRelevantInformation();
+                            ((LessonPlanActivity) getActivity()).updateLessonPlan();
                         }
                     }
                 })
@@ -135,7 +135,7 @@ public class EditLessonDialog extends DialogFragment {
                                 lesson.setValues(teacherShort, teacherFull, subject, room);
                                 fragment.update();
                                 if (getActivity() instanceof LessonPlanActivity) {
-                                    ((LessonPlanActivity) getActivity()).getRelevantInformation();
+                                    ((LessonPlanActivity) getActivity()).updateLessonPlan();
                                 }
                                 dismiss();
                             }

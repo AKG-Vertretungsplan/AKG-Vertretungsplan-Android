@@ -213,6 +213,11 @@ public class LessonPlanActivity extends AppCompatActivity {
                 lessonPlanFragments[i].update();
     }
 
+    public void updateLessonPlan() {
+        getRelevantInformation();
+        LessonPlan.getInstance(PreferenceManager.getDefaultSharedPreferences(this)).saveLessons();
+    }
+
     public void showEditLessonDialog(Lesson lesson, LessonPlanFragment lessonPlanFragment, int lessonPosition){
         new EditLessonDialog().setValues(lesson, lessonPlanFragment, lessonPosition).show(getFragmentManager(), "EditLessonDialog");
     }
@@ -250,7 +255,7 @@ public class LessonPlanActivity extends AppCompatActivity {
         }
     }
 
-    public void getRelevantInformation() {
+    private void getRelevantInformation() {
         getRelevantInformation(sharedPreferences.getString("pref_current_title_1", ""),
                 sharedPreferences.getString("pref_current_plan_1", ""),
                 sharedPreferences.getString("pref_current_title_2", ""),

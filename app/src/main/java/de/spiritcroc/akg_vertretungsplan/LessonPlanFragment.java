@@ -134,11 +134,6 @@ public class LessonPlanFragment extends ListFragment {
         }
         return lessonViewContent;
     }
-    @Override
-    public void onPause(){
-        super.onPause();
-        LessonPlan.getInstance(PreferenceManager.getDefaultSharedPreferences(getActivity())).saveLessons();
-    }
 
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id){
