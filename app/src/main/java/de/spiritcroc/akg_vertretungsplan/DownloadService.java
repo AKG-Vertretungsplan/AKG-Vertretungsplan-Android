@@ -876,19 +876,19 @@ public class DownloadService extends IntentService {
                         if (tmpCellCount <= 2) {//general info for whole school
                             if (tmpCellCount == 1) {
                                 if (!Tools.ignoreSubstitution(tmpRowContent[0])) {
-                                    generalInformation.add(ItemFragment.createItem(context, tmpRowContent, true, true));
+                                    generalInformation.add(ItemFragment.createItem(context, tmpRowContent, true));
                                 }
                             } else {
-                                generalInformation.add(ItemFragment.createItem(context, tmpRowContent, true, true));
+                                generalInformation.add(ItemFragment.createItem(context, tmpRowContent, true));
                             }
                         }
                         else {
                             try {
                                 if (lessonPlan.isRelevant(tmpRowContent[0], calendar.get(Calendar.DAY_OF_WEEK), Integer.parseInt(tmpRowContent[2]), tmpRowContent[1])) {
                                     count++;
-                                    relevantInformation.add(ItemFragment.createItem(context, tmpRowContent, false, true));
+                                    relevantInformation.add(ItemFragment.createItem(context, tmpRowContent, false));
                                 } else {
-                                    irrelevantInformation.add(ItemFragment.createItem(context, tmpRowContent, false, true));
+                                    irrelevantInformation.add(ItemFragment.createItem(context, tmpRowContent, false));
                                 }
                             } catch (Exception e) {
                                 Log.e("DownloadService", "getNewRelevantInformationCount: Got exception while checking for relevancy: " + e);

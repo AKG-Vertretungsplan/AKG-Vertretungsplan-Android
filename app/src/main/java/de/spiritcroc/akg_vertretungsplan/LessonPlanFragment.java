@@ -42,7 +42,7 @@ public class LessonPlanFragment extends ListFragment {
     private String[] startTimes;
     private String[] fullTimes;
     private ArrayList<Integer> textColors = new ArrayList<>();
-    private ArrayList<String> relevantInformation, generalInformation;
+    private ArrayList<String> relevantInformation, relevantRoomInformation, generalInformation;
     private ArrayList<Integer> relevantInformationLessons;
 
     private ArrayList<TextView> timeViews = new ArrayList<>();
@@ -114,14 +114,15 @@ public class LessonPlanFragment extends ListFragment {
             }
         }
         if (addInformation) {
-            if (relevantInformation != null) {
-                for (int i = 0; i < relevantInformation.size(); i++) {
+            if (relevantInformationLessons != null) {
+                for (int i = 0; i < relevantInformationLessons.size(); i++) {
                     int lesson = relevantInformationLessons.get(i) - 1;
                     if (lesson < 0 || lesson > lessonViewContent.length) {
                         Log.e("LessonPlanFragment", "createContent: cannot find lesson with index " + lesson);
                         continue;
                     }
                     lessonViewContent[lesson].extraInformation = relevantInformation.get(i);
+                    lessonViewContent[lesson].roomExtraInformation = relevantRoomInformation.get(i);
                 }
             }
             if (generalInformation != null) {
@@ -198,6 +199,7 @@ public class LessonPlanFragment extends ListFragment {
                 holder.subjectView = (TextView) view.findViewById(R.id.subject_view);
                 holder.roomView = (TextView) view.findViewById(R.id.room_view);
                 holder.informationView = (TextView) view.findViewById(R.id.information_view);
+                holder.roomInformationView = (TextView) view.findViewById(R.id.room_information_view);
 
                 view.setTag(holder);
             }
@@ -227,6 +229,8 @@ public class LessonPlanFragment extends ListFragment {
                     holder.informationView.setVisibility(View.VISIBLE);
                     informationViewTopPadding = getResources().getDimensionPixelSize(R.dimen.list_content_padding);
                 }
+                holder.roomInformationView.setTextColor(Integer.parseInt(sharedPreferences.getString("pref_lesson_plan_color_relevant_information", "" + Color.DKGRAY)));
+                holder.roomInformationView.setText(((LessonViewContent) getItem(position)).roomExtraInformation);
             }
 
             holder.informationView.setPadding(holder.informationView.getPaddingLeft(),
@@ -250,21 +254,25 @@ public class LessonPlanFragment extends ListFragment {
 
     static class LessonViewHolder{
         LinearLayout lessonLayout;
-        TextView timeView, subjectView, roomView, informationView;
+        TextView timeView, subjectView, roomView, informationView, roomInformationView;
     }
 
     private class LessonViewContent{
         String time, content, room;
-        String extraInformation = "";
+        String extraInformation = "", roomExtraInformation = "";
         boolean generalInformation = false;
     }
 
-    public LessonPlanFragment setRelevantInformation(ArrayList<String> relevantInformation, ArrayList<Integer> relevantInformationLessons, ArrayList<String> generalInformation) {
-        if (relevantInformation.size() != relevantInformationLessons.size()) {
-            Log.e("LessonPlanFragment", "setRelevantInformation: relevantInformation.size() != relevantInformationLessons.size()");
+    public LessonPlanFragment setRelevantInformation(ArrayList<String> relevantInformation, ArrayList<String> relevantRoomInformation, ArrayList<Integer> relevantInformationLessons, ArrayList<String> generalInformation) {
+        if (relevantInformation.size() != relevantInformationLessons.size() || relevantRoomInformation.size() != relevantInformationLessons.size()) {
+            Log.e("LessonPlanFragment", "Relevant information arrays don\' match size: " +
+                    relevantInformation.size() + "/" +
+                    relevantRoomInformation.size() + "/" +
+                    relevantInformationLessons.size());
             return this;
         }
         this.relevantInformation = relevantInformation;
+        this.relevantRoomInformation = relevantRoomInformation;
         this.relevantInformationLessons = relevantInformationLessons;
         this.generalInformation = generalInformation;
         update();

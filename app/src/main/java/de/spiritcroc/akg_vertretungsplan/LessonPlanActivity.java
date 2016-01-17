@@ -48,7 +48,7 @@ public class LessonPlanActivity extends AppCompatActivity {
     private String[] dayName;
     private String[] dayAdd;
     private LessonPlanFragment[] lessonPlanFragments;
-    private ArrayList<String>[] relevantInformation, generalInformation;
+    private ArrayList<String>[] relevantInformation, relevantRoomInformation, generalInformation;
     private ArrayList<Integer>[] relevantInformationLessons;
     private int shortcutDay = -1;//-1 if no shortcut
     private boolean discardSavedInstance = false;
@@ -70,11 +70,13 @@ public class LessonPlanActivity extends AppCompatActivity {
         dayAdd = new String[LessonPlan.DAY_COUNT];
         lessonPlanFragments = new LessonPlanFragment[LessonPlan.DAY_COUNT];
         relevantInformation = new ArrayList[LessonPlan.DAY_COUNT];
+        relevantRoomInformation = new ArrayList[LessonPlan.DAY_COUNT];
         relevantInformationLessons = new ArrayList[LessonPlan.DAY_COUNT];
         generalInformation = new ArrayList[LessonPlan.DAY_COUNT];
         for (int i = 0; i < LessonPlan.DAY_COUNT; i++) {
             dayAdd[i] = "";
             relevantInformation[i] = new ArrayList<>();
+            relevantRoomInformation[i] = new ArrayList<>();
             relevantInformationLessons[i] = new ArrayList<>();
             generalInformation[i] = new ArrayList<>();
         }
@@ -232,7 +234,7 @@ public class LessonPlanActivity extends AppCompatActivity {
         }
         @Override
         public Fragment getItem(int position){
-            return LessonPlanFragment.newInstance(position).setRelevantInformation(relevantInformation[position], relevantInformationLessons[position], generalInformation[position]);
+            return LessonPlanFragment.newInstance(position).setRelevantInformation(relevantInformation[position], relevantRoomInformation[position], relevantInformationLessons[position], generalInformation[position]);
         }
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
@@ -265,10 +267,11 @@ public class LessonPlanActivity extends AppCompatActivity {
         for (int i = 0; i < LessonPlan.DAY_COUNT; i++) {
             dayAdd[i] = "";
             relevantInformation[i].clear();
+            relevantRoomInformation[i].clear();
             relevantInformationLessons[i].clear();
             generalInformation[i].clear();
             if (lessonPlanFragments[i] != null) {
-                lessonPlanFragments[i].setRelevantInformation(relevantInformation[i], relevantInformationLessons[i], generalInformation[i]);
+                lessonPlanFragments[i].setRelevantInformation(relevantInformation[i], relevantRoomInformation[i], relevantInformationLessons[i], generalInformation[i]);
             }
         }
         getRelevantInformation(title1, plan1);
@@ -319,17 +322,16 @@ public class LessonPlanActivity extends AppCompatActivity {
                     if (tmpCellCount <= 2) {//general info for whole school
                         if (tmpCellCount == 1) {
                             if (!Tools.ignoreSubstitution(tmpRowContent[0])) {
-                                generalInformation[day].add(ItemFragment.createItem(this, tmpRowContent, true, false));
+                                createItem(day, tmpRowContent, true);
                             }
                         } else {
-                            generalInformation[day].add(ItemFragment.createItem(this, tmpRowContent, true, false));
+                            createItem(day, tmpRowContent, true);
                         }
                     }
                     else {
                         try {
                             if (lessonPlan.isRelevant(tmpRowContent[0], calendar.get(Calendar.DAY_OF_WEEK), Integer.parseInt(tmpRowContent[2]), tmpRowContent[1])) {
-                                relevantInformationLessons[day].add(Integer.parseInt(tmpRowContent[2]));
-                                relevantInformation[day].add(ItemFragment.createItem(this, tmpRowContent, false, false));
+                                createItem(day, tmpRowContent, false);
                             }
                         } catch (Exception e) {
                             Log.w("LessonPlanActivity", "getRelevantInformation: Got exception while checking for relevancy: " + e);
@@ -340,7 +342,7 @@ public class LessonPlanActivity extends AppCompatActivity {
         }
 
         if (lessonPlanFragments[day] != null) {
-            lessonPlanFragments[day].setRelevantInformation(relevantInformation[day], relevantInformationLessons[day], generalInformation[day]);
+            lessonPlanFragments[day].setRelevantInformation(relevantInformation[day], relevantRoomInformation[day], relevantInformationLessons[day], generalInformation[day]);
         }
     }
 
@@ -362,6 +364,33 @@ public class LessonPlanActivity extends AppCompatActivity {
         overridePendingTransition(0, 0);
         startActivity(intent);
         overridePendingTransition(0, 0);
+    }
+
+    private void createItem(int day, String[] values, boolean general) {
+        if (general) {
+            generalInformation[day].add(values[0] + (values[1].equals("") ? "" : " → " + values[1]));
+        } else {
+            LessonPlan lessonPlan = LessonPlan.getInstance(sharedPreferences);
+            boolean useFullTeacherNames = sharedPreferences.getBoolean("pref_formatted_plan_replace_teacher_short_with_teacher_full", true);
+            String result = "", roomResult = "";
+            if (!values[3].equals("") && !values[3].equals(values[1]))//Ignore if same teacher
+                result += " " + (useFullTeacherNames ? ItemFragment.getTeacherCombinationString(sharedPreferences, lessonPlan, values[3]) : values[3]);
+            if (!values[4].equals(""))
+                result += " (" + values[4] + ")";
+            if (!values[5].equals(""))
+                roomResult += " " + values[5];
+            if (!values[6].equals(""))
+                result += " " + values[6];
+            if (result.length() > 0) {
+                result = "→ " + result;
+            }
+            if (roomResult.length() > 0) {
+                roomResult = "   → " + roomResult;
+            }
+            relevantInformation[day].add(result);
+            relevantRoomInformation[day].add(roomResult);
+            relevantInformationLessons[day].add(Integer.parseInt(values[2]));
+        }
     }
 
     private BroadcastReceiver downloadInfoReceiver = new BroadcastReceiver() {
