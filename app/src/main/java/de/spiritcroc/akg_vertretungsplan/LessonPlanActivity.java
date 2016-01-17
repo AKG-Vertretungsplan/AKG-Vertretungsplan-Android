@@ -322,7 +322,7 @@ public class LessonPlanActivity extends AppCompatActivity {
                                 generalInformation[day].add(ItemFragment.createItem(this, tmpRowContent, true, false));
                             }
                         } else {
-                            generalInformation[day].add(ItemFragment.createItem(this, tmpRowContent, false, false));
+                            generalInformation[day].add(ItemFragment.createItem(this, tmpRowContent, true, false));
                         }
                     }
                     else {

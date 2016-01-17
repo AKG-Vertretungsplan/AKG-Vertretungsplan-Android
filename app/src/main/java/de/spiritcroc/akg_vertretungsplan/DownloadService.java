@@ -879,7 +879,7 @@ public class DownloadService extends IntentService {
                                     generalInformation.add(ItemFragment.createItem(context, tmpRowContent, true, true));
                                 }
                             } else {
-                                generalInformation.add(ItemFragment.createItem(context, tmpRowContent, false, true));
+                                generalInformation.add(ItemFragment.createItem(context, tmpRowContent, true, true));
                             }
                         }
                         else {
