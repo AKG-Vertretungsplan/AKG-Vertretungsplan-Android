@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -50,6 +51,7 @@ public class LessonPlanActivity extends AppCompatActivity {
     private ArrayList<String>[] relevantInformation, generalInformation;
     private ArrayList<Integer>[] relevantInformationLessons;
     private int shortcutDay = -1;//-1 if no shortcut
+    private boolean discardSavedInstance = false;
 
     private MenuItem showFullTimeMenuItem;
 
@@ -225,7 +227,11 @@ public class LessonPlanActivity extends AppCompatActivity {
         }
         @Override
         public Fragment getItem(int position){
-            return lessonPlanFragments[position] = LessonPlanFragment.newInstance(position).setRelevantInformation(relevantInformation[position], relevantInformationLessons[position], generalInformation[position]);
+            return LessonPlanFragment.newInstance(position).setRelevantInformation(relevantInformation[position], relevantInformationLessons[position], generalInformation[position]);
+        }
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            return lessonPlanFragments[position] =  (LessonPlanFragment) super.instantiateItem(container, position);
         }
         @Override
         public CharSequence getPageTitle (int position){
@@ -331,6 +337,26 @@ public class LessonPlanActivity extends AppCompatActivity {
         if (lessonPlanFragments[day] != null) {
             lessonPlanFragments[day].setRelevantInformation(relevantInformation[day], relevantInformationLessons[day], generalInformation[day]);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (discardSavedInstance) {
+            outState.clear();
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration configuration) {
+        super.onConfigurationChanged(configuration);
+        // Restart without saving fragment instance state to prevent issues
+        discardSavedInstance = true;
+        Intent intent = getIntent();
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
     }
 
     private BroadcastReceiver downloadInfoReceiver = new BroadcastReceiver() {
