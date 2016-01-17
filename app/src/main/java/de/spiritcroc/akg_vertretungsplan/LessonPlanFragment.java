@@ -142,10 +142,13 @@ public class LessonPlanFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id){
-        if (getActivity() instanceof LessonPlanActivity)
-            ((LessonPlanActivity) getActivity()).showEditLessonDialog(lessons[position], this, position);
-        else
+        if (getActivity() instanceof LessonPlanActivity) {
+            if (position < lessons.length) {
+                ((LessonPlanActivity) getActivity()).showEditLessonDialog(lessons[position], this, position);
+            }
+        } else {
             Log.e("LessonPlanFragment", "getActivity is not a LessonPlanActivity");
+        }
     }
 
 
