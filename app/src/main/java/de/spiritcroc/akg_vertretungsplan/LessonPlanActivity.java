@@ -364,7 +364,6 @@ public class LessonPlanActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getStringExtra("action");
             if (action.equals("loadFragmentData")){
-                //todo if show relevant Tools.setUnseenFalse(getApplicationContext());
                 String title1 = intent.getStringExtra("title1");
                 String plan1 = intent.getStringExtra("plan1");
                 String title2 = intent.getStringExtra("title2");
