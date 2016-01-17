@@ -206,6 +206,7 @@ public class LessonPlanFragment extends ListFragment {
                 view = convertView;
             }
 
+            int informationViewTopPadding = 0;
             if (((LessonViewContent) getItem(position)).generalInformation) {
                 holder.lessonLayout.setVisibility(View.GONE);
                 holder.timeView.setVisibility(View.GONE);
@@ -224,8 +225,14 @@ public class LessonPlanFragment extends ListFragment {
                 } else {
                     holder.informationView.setText(((LessonViewContent) getItem(position)).extraInformation);
                     holder.informationView.setVisibility(View.VISIBLE);
+                    informationViewTopPadding = getResources().getDimensionPixelSize(R.dimen.list_content_padding);
                 }
             }
+
+            holder.informationView.setPadding(holder.informationView.getPaddingLeft(),
+                    informationViewTopPadding,
+                    holder.informationView.getPaddingRight(),
+                    holder.informationView.getPaddingBottom());
 
             timeViews.add(holder.timeView);
 
