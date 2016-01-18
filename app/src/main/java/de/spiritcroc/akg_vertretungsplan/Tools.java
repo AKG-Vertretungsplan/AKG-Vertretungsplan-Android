@@ -129,6 +129,10 @@ public abstract class Tools {
     public static boolean isDarkStyle(int style) {
         return style == darkTheme;
     }
+    public static boolean isStyleWithDarkActionBar(int style) {
+        // Currently all themes
+        return style == darkTheme || style == lightTheme || style == defaultTheme;
+    }
 
     public static Calendar getDateFromPlanTitle(String title){
         int day = 0, month = 0, year = 0, position = 0, progress = 0;
@@ -268,5 +272,31 @@ public abstract class Tools {
         } else {
             return null;
         }
+    }
+
+    public static String shortestTime(String time) {
+        // Try to find out whether last update was today or this year
+        String currentTime = DownloadService.timeAndDateToString(Calendar.getInstance());
+        int i1 = time.indexOf(" ");
+        int i2 = currentTime.indexOf(" ");
+        if (i1 > 0 && i2 > 0) {
+            if (time.substring(0, i1).equals(currentTime.substring(0, i2))) {
+                // Don't show date
+                time = time.substring(i1+1);
+            } else {
+                int i3 = time.indexOf(".");
+                int i4 = currentTime.indexOf(".");
+                if (i3 > 0 && i4 > 0) {
+                    int i5 = time.indexOf(".", i3+1);
+                    int i6 = currentTime.indexOf(".", i4+1);
+                    if (i5 > 0 && i6 > 0 && i5 < i1 && i6 < i2 &&
+                            time.substring(i5, i1).equals(currentTime.substring(i6, i2))) {
+                        // Don't show year
+                        time = time.substring(0, i5+1) + time.substring(i1);
+                    }
+                }
+            }
+        }
+        return time;
     }
 }

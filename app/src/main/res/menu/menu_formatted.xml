@@ -35,25 +35,4 @@
         android:orderInCategory="50"
         android:icon="@drawable/ic_done_white_36dp"
         app:showAsAction="never"/>
-    <item android:id="@+id/action_original_activity"
-        android:title="@string/original_activity"
-        android:orderInCategory="97"
-        app:showAsAction="never"/>
-    <item android:id="@+id/action_lesson_plan"
-        android:title="@string/action_lesson_plan"
-        android:orderInCategory="98"
-        app:showAsAction="never"/>
-    <item android:id="@+id/action_send_debug_email"
-        android:title="@string/action_send_debug_email"
-        android:orderInCategory="99"
-        app:showAsAction="never"/>
-    <item android:id="@+id/action_settings"
-        android:title="@string/settings"
-        android:orderInCategory="100"
-        app:showAsAction="never" />
-    <item android:id="@+id/action_about"
-        android:title="@string/action_about"
-        android:orderInCategory="101"
-        app:showAsAction="never"/>
-
 </menu>

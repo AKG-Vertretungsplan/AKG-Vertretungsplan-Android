@@ -32,7 +32,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,7 +41,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class LessonPlanActivity extends AppCompatActivity {
+public class LessonPlanActivity extends NavigationDrawerActivity {
     private CustomFragmentPagerAdapter fragmentPagerAdapter;
     private ViewPager viewPager;
     private SharedPreferences sharedPreferences;
@@ -65,6 +64,7 @@ public class LessonPlanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_lesson_plan);
+        initDrawer();
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -161,12 +161,6 @@ public class LessonPlanActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.action_settings:
-                startActivity(new Intent(this, SettingsActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
-                return true;
-            case R.id.action_about:
-                new AboutDialog().show(getFragmentManager(), "AboutDialog");
-                return true;
             case R.id.action_reset:
                 new ConfirmRemoveLessonsDialog().setValues(this).show(getFragmentManager(), "ConfirmRemoveLessonsDialog");
                 return true;
@@ -220,6 +214,7 @@ public class LessonPlanActivity extends AppCompatActivity {
     public void updateLessonPlan() {
         getRelevantInformation();
         LessonPlan.getInstance(PreferenceManager.getDefaultSharedPreferences(this)).saveLessons();
+        DownloadService.updateNavigationDrawerInformation(this);
     }
 
     public void showEditLessonDialog(Lesson lesson, LessonPlanFragment lessonPlanFragment, int lessonPosition){

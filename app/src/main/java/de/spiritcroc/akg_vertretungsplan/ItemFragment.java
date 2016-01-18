@@ -118,7 +118,7 @@ public class ItemFragment extends ListFragment{
             public void onRefresh() {
                 Activity activity = getActivity();
                 if (activity instanceof FormattedActivity)
-                    ((FormattedActivity) activity).startDownloadService();
+                    ((FormattedActivity) activity).startDownloadService(true);
                 else {
                     Log.e("ItemFragment", "cannot download plan: activity is not instance of FormattedActivity");
                     setRefreshing(false);
@@ -221,10 +221,7 @@ public class ItemFragment extends ListFragment{
     }
 
     public void markChangesAsRead(){
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("pref_latest_title_"+number, date);
-        editor.putString("pref_latest_plan_"+number, content);
-        editor.apply();
+        DownloadService.markPlanRead(getActivity());
 
         setListAdapterRememberPos(new CustomArrayAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, createContent(content)));
     }

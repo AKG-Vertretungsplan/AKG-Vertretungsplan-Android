@@ -20,4 +20,7 @@
 <resources>
     <color name="title_color_light">#000</color>
     <color name="title_color_dark">#FFF</color>
+    <color name="navigation_drawer_background">@android:color/background_dark</color>
+    <color name="navigation_drawer_divider">#88bebebe</color>
+    <color name="navigation_drawer_item_active_background">#88bebebe</color>
 </resources>

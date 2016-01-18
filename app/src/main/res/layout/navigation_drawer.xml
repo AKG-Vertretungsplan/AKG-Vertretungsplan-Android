@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (C) 2015-2016 SpiritCroc
+    Email: spiritcroc@gmail.com
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/navigation_drawer"
+    android:layout_width="320dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:background="@color/navigation_drawer_background">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/formatted_activity_button"
+            android:text="@string/title_activity_formatted"
+            style="@style/NavigationDrawerTextViewTheme"/>
+        <TextView
+            android:id="@+id/web_activity_button"
+            android:text="@string/original_activity"
+            style="@style/NavigationDrawerTextViewTheme" />
+        <TextView
+            android:id="@+id/lesson_activity_button"
+            android:text="@string/action_lesson_plan"
+            style="@style/NavigationDrawerTextViewTheme" />
+        <View
+            style="@style/DividerTheme"/>
+        <TextView
+            android:id="@+id/settings_button"
+            android:text="@string/settings"
+            style="@style/NavigationDrawerTextViewTheme" />
+        <TextView
+            android:id="@+id/about_button"
+            android:text="@string/action_about"
+            style="@style/NavigationDrawerTextViewTheme" />
+        <View
+            style="@style/DividerTheme"/>
+        <TextView
+            android:id="@+id/debug_mail_button"
+            android:text="@string/action_send_debug_email"
+            style="@style/NavigationDrawerTextViewTheme" />
+        <TextView
+            android:id="@+id/information_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/navigation_drawer_item_top_margin"
+            android:layout_marginBottom="@dimen/navigation_drawer_item_bottom_margin"
+            android:paddingLeft="@dimen/navigation_drawer_item_horizontal_padding"
+            android:paddingTop="@dimen/navigation_drawer_item_vertical_padding"
+            android:paddingRight="@dimen/navigation_drawer_item_horizontal_padding"
+            android:paddingBottom="@dimen/navigation_drawer_item_vertical_padding"
+            android:textSize="@dimen/navigation_drawer_text_size"
+            android:textColor="@color/secondary_text_dark"
+            android:gravity="start|center_vertical"/>
+    </LinearLayout>
+</ScrollView>

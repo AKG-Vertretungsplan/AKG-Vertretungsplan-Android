@@ -113,6 +113,7 @@ public class DownloadService extends IntentService {
                 if (networkInfo != null && networkInfo.isConnected()) {
                     if (!loginFailed) {
                         downloading = true;
+                        updateLoadingInformation();
                         //hidden debug stuff start
                         int tmp = 0;
                         try {
@@ -131,6 +132,7 @@ public class DownloadService extends IntentService {
                     getSharedPreferences().edit().putBoolean("pref_last_offline", true).apply();
                     loadOfflinePlan();
                 }
+                updateLoadingInformation();
             }
             else if (ACTION_RETRY.equals(action)){
                 loginFailed = false;
@@ -247,13 +249,19 @@ public class DownloadService extends IntentService {
 
     private void maybeSaveFormattedPlan(){
         if (!getSharedPreferences().getBoolean("pref_unseen_changes", false) && getSharedPreferences().getString("pref_auto_mark_read", "").equals("onPlanReloaded")){
-            SharedPreferences.Editor editor = getSharedPreferences().edit();
-            editor.putString("pref_latest_title_1", getSharedPreferences().getString("pref_current_title_1", ""));
-            editor.putString("pref_latest_plan_1", getSharedPreferences().getString("pref_current_plan_1", ""));
-            editor.putString("pref_latest_title_2", getSharedPreferences().getString("pref_current_title_2", ""));
-            editor.putString("pref_latest_plan_2", getSharedPreferences().getString("pref_current_plan_2", ""));
-            editor.apply();
+            markPlanRead(this);
         }
+    }
+
+    public static void markPlanRead(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("pref_latest_title_1", sharedPreferences.getString("pref_current_title_1", ""));
+        editor.putString("pref_latest_plan_1", sharedPreferences.getString("pref_current_plan_1", ""));
+        editor.putString("pref_latest_title_2", sharedPreferences.getString("pref_current_title_2", ""));
+        editor.putString("pref_latest_plan_2", sharedPreferences.getString("pref_current_plan_2", ""));
+        editor.apply();
+        updateNavigationDrawerInformation(context);
     }
 
     private void processPlan(String result, String css){
@@ -370,6 +378,7 @@ public class DownloadService extends IntentService {
             }
         }
         Tools.updateWidgets(this);
+        updateNavigationDrawerInformation(this);
     }
     private void loadOfflinePlan(){
         String latestHtml = getSharedPreferences().getString("pref_html_latest", "");
@@ -412,6 +421,17 @@ public class DownloadService extends IntentService {
         intent.putExtra("text", text);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         setTextViewText(text);
+    }
+    public static void updateNavigationDrawerInformation(Context context) {
+        Intent intent = new Intent("PlanDownloadServiceUpdate");
+        intent.putExtra("action", "updateNavigationDrawerInformation");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
+    private void updateLoadingInformation() {
+        Intent intent = new Intent("PlanDownloadServiceUpdate");
+        intent.putExtra("action", "updateLoadingInformation");
+        intent.putExtra("loading", isDownloading());
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
     private void startLoginActivity() {
@@ -820,24 +840,40 @@ public class DownloadService extends IntentService {
         notificationManager.notify(id, builder.build());
     }
 
-    public static int getNewRelevantInformationCount(Context context, ArrayList<String> relevantInformation, ArrayList<String> generalInformation, ArrayList<String> irrelevantInformation){
+    public static int getNewRelevantInformationCount(Context context, ArrayList<String> relevantInformation, ArrayList<String> generalInformation, ArrayList<String> irrelevantInformation) {
+        return getNewRelevantInformationCount(context, relevantInformation, generalInformation, irrelevantInformation, new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>());
+    }
+
+    public static int getNewRelevantInformationCount(Context context,
+                                                     ArrayList<String> relevantInformation, ArrayList<String> generalInformation, ArrayList<String> irrelevantInformation,
+                                                     ArrayList<String> allRelevant, ArrayList<String> allGeneral, ArrayList<String> allIrrelevant) {
         relevantInformation.clear();
         generalInformation.clear();
         irrelevantInformation.clear();
+        allRelevant.clear();
+        allGeneral.clear();
+        allIrrelevant.clear();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        int count = getNewRelevantInformationCount(context, sharedPreferences.getString("pref_current_plan_1", ""), sharedPreferences.getString("pref_current_title_1", ""), relevantInformation, generalInformation, irrelevantInformation) +
-                getNewRelevantInformationCount(context, sharedPreferences.getString("pref_current_plan_2", ""), sharedPreferences.getString("pref_current_title_2", ""), relevantInformation, generalInformation, irrelevantInformation);
+        int count = getNewRelevantInformationCount(context, sharedPreferences.getString("pref_current_plan_1", ""), sharedPreferences.getString("pref_current_title_1", ""), relevantInformation, generalInformation, irrelevantInformation, allRelevant, allGeneral, allIrrelevant) +
+                getNewRelevantInformationCount(context, sharedPreferences.getString("pref_current_plan_2", ""), sharedPreferences.getString("pref_current_title_2", ""), relevantInformation, generalInformation, irrelevantInformation, allRelevant, allGeneral, allIrrelevant);
         if (!LessonPlan.getInstance(sharedPreferences).isConfigured()){
             ArrayList<String> irrelevantCopy = (ArrayList<String>) irrelevantInformation.clone();
             irrelevantInformation.clear();
             irrelevantInformation.addAll(generalInformation);
             irrelevantInformation.addAll(irrelevantCopy);
             generalInformation.clear();
+            ArrayList<String> allIrrelevantCopy = (ArrayList<String>) allIrrelevant.clone();
+            allIrrelevant.clear();
+            allIrrelevant.addAll(allGeneral);
+            allIrrelevant.addAll(allIrrelevantCopy);
+            allGeneral.clear();
             count = 0;
         }
         return count;
     }
-    private static int getNewRelevantInformationCount(Context context, String currentContent, String title, ArrayList<String> relevantInformation, ArrayList<String> generalInformation, ArrayList<String> irrelevantInformation) {
+    private static int getNewRelevantInformationCount(Context context, String currentContent, String title,
+                                                      ArrayList<String> relevantInformation, ArrayList<String> generalInformation, ArrayList<String> irrelevantInformation,
+                                                      ArrayList<String> allRelevant, ArrayList<String> allGeneral, ArrayList<String> allIrrelevant) {
         if (title.equals(NO_PLAN)) {
             return 0;
         }
@@ -862,39 +898,55 @@ public class DownloadService extends IntentService {
         LessonPlan lessonPlan = LessonPlan.getInstance(sharedPreferences);
         for (int i = 1; !tmp.equals(""); i++) {
             tmp = Tools.getLine(currentContent, i);
-            if (!Tools.lineAvailable(latestContent, tmp)) {//new information
-                String searchingFor = "" + DownloadService.ContentType.TABLE_ROW;
+            String comparison = tmp;//to compare whether information is new
 
-                if (tmp.length() > searchingFor.length()+1 && tmp.substring(0, searchingFor.length()).equals(searchingFor)) { //ignore empty rows
-                    tmpCellCount = 0;
-                    tmp = tmp.substring(searchingFor.length());
-                    if (Tools.countHeaderCells(tmp)<=1) {//ignore headerRows
-                        for (int j = 0; j < tmpRowContent.length; j++) {
-                            tmpRowContent[j] = Tools.getCellContent(tmp, j+1);
-                            if (!tmpRowContent[j].equals(""))
-                                tmpCellCount++;
+            String searchingFor = "" + DownloadService.ContentType.TABLE_ROW;
+
+            if (tmp.length() > searchingFor.length()+1 && tmp.substring(0, searchingFor.length()).equals(searchingFor)) { //ignore empty rows
+                tmpCellCount = 0;
+                tmp = tmp.substring(searchingFor.length());
+                if (Tools.countHeaderCells(tmp)<=1) {//ignore headerRows
+                    for (int j = 0; j < tmpRowContent.length; j++) {
+                        tmpRowContent[j] = Tools.getCellContent(tmp, j+1);
+                        if (!tmpRowContent[j].equals(""))
+                            tmpCellCount++;
+                    }
+
+                    if (tmpCellCount <= 2) {//general info for whole school
+                        if (tmpCellCount == 1) {
+                            if (!Tools.ignoreSubstitution(tmpRowContent[0])) {
+                                String item = ItemFragment.createItem(context, tmpRowContent, true);
+                                allGeneral.add(item);
+                                if (!Tools.lineAvailable(latestContent, comparison)) {
+                                    generalInformation.add(item);
+                                }
+                            }
+                        } else {
+                            String item = ItemFragment.createItem(context, tmpRowContent, true);
+                            allGeneral.add(item);
+                            if (!Tools.lineAvailable(latestContent, comparison)) {
+                                generalInformation.add(item);
+                            }
                         }
-
-                        if (tmpCellCount <= 2) {//general info for whole school
-                            if (tmpCellCount == 1) {
-                                if (!Tools.ignoreSubstitution(tmpRowContent[0])) {
-                                    generalInformation.add(ItemFragment.createItem(context, tmpRowContent, true));
+                    }
+                    else {
+                        try {
+                            if (lessonPlan.isRelevant(tmpRowContent[0], calendar.get(Calendar.DAY_OF_WEEK), Integer.parseInt(tmpRowContent[2]), tmpRowContent[1])) {
+                                String item = ItemFragment.createItem(context, tmpRowContent, false);
+                                allRelevant.add(item);
+                                if (!Tools.lineAvailable(latestContent, comparison)) {
+                                    count++;
+                                    relevantInformation.add(item);
                                 }
                             } else {
-                                generalInformation.add(ItemFragment.createItem(context, tmpRowContent, true));
-                            }
-                        }
-                        else {
-                            try {
-                                if (lessonPlan.isRelevant(tmpRowContent[0], calendar.get(Calendar.DAY_OF_WEEK), Integer.parseInt(tmpRowContent[2]), tmpRowContent[1])) {
-                                    count++;
-                                    relevantInformation.add(ItemFragment.createItem(context, tmpRowContent, false));
-                                } else {
-                                    irrelevantInformation.add(ItemFragment.createItem(context, tmpRowContent, false));
+                                String item = ItemFragment.createItem(context, tmpRowContent, false);
+                                allIrrelevant.add(item);
+                                if (!Tools.lineAvailable(latestContent, comparison)) {
+                                    irrelevantInformation.add(item);
                                 }
-                            } catch (Exception e) {
-                                Log.e("DownloadService", "getNewRelevantInformationCount: Got exception while checking for relevancy: " + e);
                             }
+                        } catch (Exception e) {
+                            Log.e("DownloadService", "getNewRelevantInformationCount: Got exception while checking for relevancy: " + e);
                         }
                     }
                 }

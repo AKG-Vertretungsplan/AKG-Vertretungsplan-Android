@@ -38,7 +38,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -56,7 +55,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class FormattedActivity extends AppCompatActivity implements ItemFragment.OnFragmentInteractionListener{
+public class FormattedActivity extends NavigationDrawerActivity implements ItemFragment.OnFragmentInteractionListener{
     private CustomFragmentPagerAdapter fragmentPagerAdapter;
     private static ViewPager viewPager;
     private static String plan1, plan2, title1, title2;
@@ -67,7 +66,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
     private int style;
     private boolean created = false;
     private static boolean shortCutToPageTwo = false, filteredMode;
-    private MenuItem reloadItem, filterItem, markReadItem, webItem, lessonItem;
+    private MenuItem reloadItem, filterItem, markReadItem;
     private ImageView overflow;
     private boolean landscape;
 
@@ -79,6 +78,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_formatted);
+        initDrawer();
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -146,7 +146,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
         Calendar calendar = DownloadService.stringToCalendar(sharedPreferences.getString("pref_last_checked", "???"));
         boolean startedDownloadService = false;
         if (calendar == null || Calendar.getInstance().getTime().getTime() - calendar.getTime().getTime() > Integer.parseInt(sharedPreferences.getString("pref_auto_load_on_open", "5"))*60000) {
-            startDownloadService();
+            startDownloadService(false);
             startedDownloadService = true;
         }
         else {
@@ -215,10 +215,6 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
             reloadItem.setVisible(!sharedPreferences.getBoolean("pref_hide_action_reload", false));
         if (markReadItem != null)
             markReadItem.setShowAsAction(sharedPreferences.getBoolean("pref_show_mark_read_as_action", false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
-        if (webItem != null)
-            webItem.setShowAsAction(sharedPreferences.getBoolean("pref_show_web_activity_as_action", false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
-        if (lessonItem != null)
-            lessonItem.setShowAsAction(sharedPreferences.getBoolean("pref_show_lesson_plan_as_action", false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
 
         //Apply color settings:
         setActionBarColor();
@@ -238,7 +234,7 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
         textView.setVisibility(sharedPreferences.getBoolean("pref_hide_text_view", false) ? View.GONE : View.VISIBLE);
 
         if (sharedPreferences.getBoolean("pref_reload_on_resume", false))
-            startDownloadService();
+            startDownloadService(false);
         BReceiver.setWidgetUpdateAlarm(this);
     }
     @Override
@@ -274,7 +270,6 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu){
-        menu.findItem(R.id.action_send_debug_email).setVisible(sharedPreferences.getBoolean("pref_hidden_debug_enabled", false) && sharedPreferences.getBoolean("pref_enable_option_send_debug_email", false));
         menu.findItem(R.id.action_filter_plan).setVisible(LessonPlan.getInstance(sharedPreferences).isConfigured());
 
         return super.onPrepareOptionsMenu(menu);
@@ -291,10 +286,6 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
             filterItem.setShowAsAction(sharedPreferences.getBoolean("pref_show_filtered_plan_as_action", false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
             markReadItem = menu.findItem(R.id.action_mark_read);
             markReadItem.setShowAsAction(sharedPreferences.getBoolean("pref_show_mark_read_as_action", false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
-            webItem = menu.findItem(R.id.action_original_activity);
-            webItem.setShowAsAction(sharedPreferences.getBoolean("pref_show_web_activity_as_action", false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
-            lessonItem = menu.findItem(R.id.action_lesson_plan);
-            lessonItem.setShowAsAction(sharedPreferences.getBoolean("pref_show_lesson_plan_as_action", false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
             requestRecheckUnreadChanges();
 
             //http://stackoverflow.com/questions/22046903/changing-the-android-overflow-menu-icon-programmatically/22106474#22106474
@@ -353,6 +344,8 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
                     sharedPreferences.getBoolean("pref_action_bar_filtered_dark_text", true) :
                     sharedPreferences.getBoolean("pref_action_bar_normal_dark_text", false);
 
+            updateActionHomeAsUp(darkText);
+
             actionBar.setBackgroundDrawable(new ColorDrawable(backgroundColor));
             Spannable title = new SpannableString(actionBar.getTitle());
             title.setSpan(new ForegroundColorSpan(darkText ? Color.BLACK : Color.WHITE), 0, title.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
@@ -365,72 +358,14 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
                 filterItem.setIcon(darkText ? R.drawable.ic_filter_list_black_36dp : R.drawable.ic_filter_list_white_36dp);
             if (markReadItem != null)
                 markReadItem.setIcon(darkText ? R.drawable.ic_done_black_36dp : R.drawable.ic_done_white_36dp);
-            if (webItem != null)
-                webItem.setIcon(darkText ? R.drawable.ic_web_black_36dp : R.drawable.ic_web_white_36dp);
-            if (lessonItem != null)
-                lessonItem.setIcon(darkText ? R.drawable.ic_format_list_numbered_black_36dp : R.drawable.ic_format_list_numbered_white_36dp);
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.action_settings:
-                startActivity(new Intent(this, SettingsActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
-                return true;
             case R.id.action_reload_web_view:
-                startDownloadService();
-                return true;
-            case R.id.action_original_activity:
-                if (Tools.isWebActivityEnabled(sharedPreferences)) {
-                    startActivity(new Intent(getApplication(), WebActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
-                } else {
-                    // Open in browser
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(DownloadService.PLAN_2_ADDRESS)));
-                }
-                return true;
-            case R.id.action_about:
-                new AboutDialog().show(getFragmentManager(), "AboutDialog");
-                return true;
-            case R.id.action_lesson_plan:
-                startActivity(new Intent(getApplication(), LessonPlanActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
-                return true;
-            case R.id.action_send_debug_email:
-                Intent intent = new Intent(Intent.ACTION_SENDTO);
-                intent.setType("message/rfc822");
-                intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.debug_email_subject));
-                String text = getString(R.string.debug_email_issue_description) + "\n\n" +
-                        getString(R.string.debug_email_automatically_added_information) + "\n\n" +
-
-                        getString(R.string.debug_email_pref_last_checked) + "\n" +
-                        sharedPreferences.getString("pref_last_checked", "") + "\n\n\n" +
-                        getString(R.string.debug_email_pref_last_update) + "\n" +
-                        sharedPreferences.getString("pref_last_update", "") + "\n\n\n" +
-
-                        getString(R.string.debug_email_pref_latest_title_1) + "\n" +
-                        sharedPreferences.getString("pref_latest_title_1", "") + "\n\n\n" +
-                        getString(R.string.debug_email_pref_latest_plan_1) + "\n" +
-                        sharedPreferences.getString("pref_latest_plan_1", "") + "\n\n\n" +
-                        getString(R.string.debug_email_pref_latest_title_2) + "\n" +
-                        sharedPreferences.getString("pref_latest_title_2", "") + "\n\n\n" +
-                        getString(R.string.debug_email_pref_latest_plan_2) + "\n" +
-                        sharedPreferences.getString("pref_latest_plan_2", "") + "\n\n\n" +
-
-                        getString(R.string.debug_email_pref_current_title_1) + "\n" +
-                        sharedPreferences.getString("pref_current_title_1", "") + "\n\n\n" +
-                        getString(R.string.debug_email_pref_current_plan_1) + "\n" +
-                        sharedPreferences.getString("pref_current_plan_1", "") + "\n\n\n" +
-                        getString(R.string.debug_email_pref_current_title_2) + "\n" +
-                        sharedPreferences.getString("pref_current_title_2", "") + "\n\n\n" +
-                        getString(R.string.debug_email_pref_current_plan_2) + "\n" +
-                        sharedPreferences.getString("pref_current_plan_2", "") + "\n\n\n" +
-
-                        getString(R.string.debug_email_pref_html_latest) + "\n" +
-                        sharedPreferences.getString("pref_html_latest", "");
-                intent.putExtra(Intent.EXTRA_TEXT, text);
-                intent.setData(Uri.parse("mailto:"));
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                startDownloadService(true);
                 return true;
             case R.id.action_mark_read:
                 if (fragment1 != null)
@@ -455,10 +390,6 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
     @Override
     public void showDialog(String title, String text, String shareText){
         ElementDialog.newInstance(title, text, shareText).show(getFragmentManager(), "ElementDialog");
-    }
-    public void startDownloadService(){
-        if (!DownloadService.isDownloading() && !sharedPreferences.getBoolean("pref_unseen_changes", false))
-            startService(new Intent(this, DownloadService.class).setAction(DownloadService.ACTION_DOWNLOAD_PLAN));
     }
 
     public static class CustomFragmentPagerAdapter extends FragmentPagerAdapter{
@@ -562,16 +493,16 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
                     viewPager.setCurrentItem(0);
                 }
             }
-            else if (action.equals("setTextViewText")){
+            else if (action.equals("setTextViewText")) {
                 String text = intent.getStringExtra("text");
                 textView.setText(text);
-                if (text.equals(getString(R.string.loading))){
+            } else if (action.equals("updateLoadingInformation")) {
+                if (intent.getBooleanExtra("loading", false)) {
                     if (fragment1!=null)
                         fragment1.setRefreshing(true);
                     if (fragment2!=null)
                         fragment2.setRefreshing(true);
-                }
-                else{
+                } else {
                     if (fragment1!=null)
                         fragment1.setRefreshing(false);
                     if (fragment2!=null)
@@ -581,10 +512,6 @@ public class FormattedActivity extends AppCompatActivity implements ItemFragment
                         illegalPlan();
                     }
                 }
-            }
-            else if (action.equals("showToast")){
-                String text = intent.getStringExtra("text");
-                Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
             }
         }
     };

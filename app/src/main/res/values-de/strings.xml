@@ -141,8 +141,8 @@
     <string name="toast_enabled_hidden_debug">Du hast die versteckten Entwicklereinstellungen aktiviert!</string>
 
     <string name="pref_enable_option_send_debug_email">Aktiviere Debug-Email</string>
-    <string name="pref_enable_option_send_debug_email_summary">Aktiviere Option beim formatierten Plan zum senden einer Debug-Email</string>
-    <string name="action_send_debug_email">Sende Debug-Email</string>
+    <string name="pref_enable_option_send_debug_email_summary">Aktiviere Option zum Senden einer Debug-Email</string>
+    <string name="action_send_debug_email">Debug-Email</string>
 
     <string name="debug_email_subject">AKG-Vertretungsplan Debug-Informationen</string>
     <string name="debug_email_issue_description">Problembeschreibung:\n[Problembeschreibung hier einfügen]</string>
@@ -345,10 +345,6 @@
     <string name="pref_formatted_plan_show_teacher_full_and_short_summary">Zeige Lehrerkürzel nach dem vollen Namen in Klammern</string>
     <string name="pref_teacher_short_relevancy_ignore_case">Ignoriere Groß-/Kleinschreibung</string>
     <string name="pref_teacher_short_relevancy_ignore_case_summary">Ignoriere Groß-/Kleinschreibung bei der Überprüfung des Lehrerkürzels auf relevante Vertretungen</string>
-    <string name="pref_show_web_activity_as_action">Webplan als Aktion</string>
-    <string name="pref_show_web_activity_as_action_summary">Zeige die Option \"Webplan\" direkt in der Aktionsleiste</string>
-    <string name="pref_show_lesson_plan_as_action">Stundenplan als Aktion</string>
-    <string name="pref_show_lesson_plan_as_action_summary">Zeige die Option \"Stundenplan\" direkt in der Aktionsleiste</string>
     <string name="pref_web_plan_use_custom_style">Verwende eigene CSS</string>
     <string name="pref_web_plan_use_custom_style_summary">Lade nicht die CSS herunter, sondern verwende stattdessen eine eigene (nächste Einstellung)</string>
     <string name="pref_web_plan_custom_style">Eigene CSS</string>
@@ -366,4 +362,14 @@
     <string name="action_show_information">Zeige Vertretungen</string>
 
     <string name="pref_widget_opens_activity">Knopfdruck öffnet Anzeige</string>
+
+    <string name="action_open_drawer">Drawer öffnen</string>
+    <string name="action_close_drawer">Drawer schließen</string>
+
+    <string name="never">nie</string>
+    <string name="information_view_information">Vertretungen: %1$d/%2$d</string>
+    <string name="information_view_information_relevancy">Relevante Vertretungen: %1$d/%2$d\nAllgemeine Vertretungen: %3$d/%4$d\nAndere Vertretungen: %5$d/%6$d</string>
+    <string name="information_view_update_check">Letzte Aktualisierung: %1$s\nZuletzt geprüft: %2$s</string>
+    <string name="offline">Offline</string>
+    <string name="swipe_down_to_refresh">Zum Aktualisieren herunterwischen</string>
 </resources>

@@ -296,8 +296,8 @@
     <string name="toast_enabled_hidden_debug">You have enabled the hidden debug settings!</string>
 
     <string name="pref_enable_option_send_debug_email">Enable debug email</string>
-    <string name="pref_enable_option_send_debug_email_summary">Enable option in FormattedActivity to send debug email</string>
-    <string name="action_send_debug_email">Send debug email</string>
+    <string name="pref_enable_option_send_debug_email_summary">Enable option to send debug email</string>
+    <string name="action_send_debug_email">Debug email</string>
 
     <string name="debug_email_subject">AKG-Vertretungsplan debug information</string>
     <string name="debug_email_issue_description">Issue description:\n[insert your issue description here]</string>
@@ -572,10 +572,6 @@
     <string name="pref_formatted_plan_show_teacher_full_and_short_summary">Amend the teacher abbr. in brackets after the full teacher name</string>
     <string name="pref_teacher_short_relevancy_ignore_case">Ignore case</string>
     <string name="pref_teacher_short_relevancy_ignore_case_summary">Ignore case of teacher abbr. when checking for relevancy of information</string>
-    <string name="pref_show_web_activity_as_action">Webplan as action</string>
-    <string name="pref_show_web_activity_as_action_summary">Show option to open Webplan directly in the action bar</string>
-    <string name="pref_show_lesson_plan_as_action">Lesson plan as action</string>
-    <string name="pref_show_lesson_plan_as_action_summary">Show option to open lesson plan directly in the action bar</string>
     <string name="web_plan_custom_style_akg_default_name">AKG default</string>
     <string name="web_plan_custom_style_dark_name">Dark</string>
     <string name="web_plan_custom_style_empty_name">Empty</string>
@@ -603,4 +599,14 @@
         <item>1</item>
         <item>2</item>
     </string-array>
+
+    <string name="action_open_drawer">Open drawer</string>
+    <string name="action_close_drawer">Close drawer</string>
+
+    <string name="never">never</string>
+    <string name="information_view_information">Information: %1$d/%2$d</string>
+    <string name="information_view_information_relevancy">Relevant information: %1$d/%2$d\nGeneral information: %3$d/%4$d\nOther information: %5$d/%6$d</string>
+    <string name="information_view_update_check">Last update: %1$s\nLast checked: %2$s</string>
+    <string name="offline">Offline</string>
+    <string name="swipe_down_to_refresh">Swipe down to refresh</string>
 </resources>
