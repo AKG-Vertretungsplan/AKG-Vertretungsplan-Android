@@ -395,8 +395,8 @@
                         <ListPreference
                             android:key="pref_action_bar_filtered_background_color"
                             android:title="@string/pref_action_bar_color"
-                            android:entries="@array/pref_color_array"
-                            android:entryValues="@array/pref_color_array_values"
+                            android:entries="@array/pref_action_bar_color_array"
+                            android:entryValues="@array/pref_action_bar_color_array_values"
                             android:defaultValue="@string/pref_color_orange_value"/>
                         <CheckBoxPreference
                             android:key="pref_action_bar_filtered_dark_text"
