@@ -65,8 +65,21 @@ public class CheckPlanWidget extends AppWidgetProvider {
     public void onReceive(@NonNull Context context, @NonNull Intent intent){
         super.onReceive(context, intent);
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
         if (intent.getAction().equals(WIDGET_BUTTON_CLICKED)){        //open App
-            context.startActivity(new Intent(context, FormattedActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+            switch (Integer.parseInt(sharedPreferences.getString("pref_widget_opens_activity", "0"))) {
+                case 1:
+                    context.startActivity(new Intent(context, WebActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                    break;
+                case 2:
+                    context.startActivity(new Intent(context, LessonPlanActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                    break;
+                default:
+                case 0:
+                    context.startActivity(new Intent(context, FormattedActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                    break;
+            }
         }
         else if (intent.getAction().equals(WIDGET_RELOAD_BUTTON_CLICKED)){
             if (!DownloadService.isDownloading())

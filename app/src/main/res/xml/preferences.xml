@@ -496,6 +496,12 @@
     </PreferenceCategory>
     <PreferenceScreen
         android:title="@string/pref_widget">
+        <ListPreference
+            android:key="pref_widget_opens_activity"
+            android:title="@string/pref_widget_opens_activity"
+            android:entries="@array/pref_widget_opens_activity_array"
+            android:entryValues="@array/pref_widget_opens_activity_array_values"
+            android:defaultValue="0"/>
         <PreferenceCategory
             android:title="@string/pref_colors">
             <ListPreference
