@@ -38,6 +38,7 @@ public class ConfirmRemoveLessonsDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         LessonPlan.getInstance(PreferenceManager.getDefaultSharedPreferences(getActivity())).resetLessons();
+                        activity.updateLessonPlan();
                         activity.updateAll();
                     }
                 })
