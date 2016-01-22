@@ -102,14 +102,14 @@
         <item quantity="other">Lade den Plan beim Starten der App, falls seit der letzten Überprüfung mehr als %d Minuten vergangen sind</item>
     </plurals>
     <string name="disclaimer">Haftungsausschluss</string>
-    <string name="disclaimer_text">Benutzung dieser App nur auf eigene Gefahr/Verantwortung. Die hervorgesehene Funktionsweise dieser App bzw. die Richtigkeit der dargestellten Inhalte wird nicht garantiert!</string>
+    <string name="disclaimer_text">Benutzung dieser App nur auf eigene Gefahr/Verantwortung. Die hervorgesehene Funktionsweise dieser App bzw. die Richtigkeit der dargestellten Inhalte wird nicht garantiert!\nFür genauere Details kann die GNU General Public License eingesehen werden.</string>
     <string name="dialog_agree">Zustimmen</string>
     <string name="version">Version</string>
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">Abbrechen</string>
-    <string name="dialog_about_0">\nDiese App ist OpenSource. Der Quellcode befindet sich hier: https://github.com/SpiritCroc/AKG-Vertretungsplan\n\nBugreports, Verbesserungsvorschläge, Funktionswünsche und andere konstruktive Rückmeldungen können auch an spiritcroc@gmail.com gesendet werden.</string>
+    <string name="dialog_about_0">\n<a href="https://github.com/SpiritCroc/AKG-Vertretungsplan">Quellcode</a>\n\n<a href="https://github.com/SpiritCroc/AKG-Vertretungsplan/issues">Fehler melden</a>\n\nKontakt: <a href="mailto:spiritcroc@gmail.com?subject=AKG-Vertretungsplan">spiritcroc@gmail.com</a></string>
     <string name="dialog_about_1_title">\n<u>Verwendete Komponenten von Drittanbietern</u></string>
-    <string name="dialog_about_1_body">In dieser App werden einige von Googles Material Design Icons (lizenziert unter CC BY 4.0) verwendet.\nLink: http://www.google.com/design/spec/resources/sticker-sheets-icons.html#sticker-sheets-icons-components</string>
+    <string name="dialog_about_1_body">Diese App verwendet einige von Googles Material Design Icons (lizenziert unter CC BY 4.0).\nQuelle: https://design.google.com/icons/</string>
     <string name="pref_developing_enabled">Geheimcode</string>
     <string name="pref_developing_enabled_summary">Verwende dies nicht, wenn du nicht ich bist</string>
     <string name="pref_theme">Theme</string>

@@ -25,6 +25,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -43,6 +44,7 @@ public class AboutDialog extends DialogFragment {
             Log.e("AboutDialog", "Got exception " + e);
         }
         ((TextView) view.findViewById(R.id.version_view)).setText(text);
+        ((TextView) view.findViewById(R.id.about_view)).setMovementMethod(LinkMovementMethod.getInstance());
         builder.setView(view)
                 .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
                     @Override

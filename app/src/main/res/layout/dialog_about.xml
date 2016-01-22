@@ -50,9 +50,9 @@
         </LinearLayout>
     </LinearLayout>
     <TextView
+        android:id="@+id/about_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:autoLink="all"
         android:text="@string/dialog_about_0"
         android:textSize="14sp"/>
     <TextView

@@ -227,14 +227,14 @@
         <item quantity="other">Load plan on app start if last checked is more than %d minutes ago</item>
     </plurals>
     <string name="disclaimer">Disclaimer</string>
-    <string name="disclaimer_text">This app is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</string>
+    <string name="disclaimer_text">This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</string>
     <string name="dialog_agree">Agree</string>
     <string name="version">Version</string>
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">Cancel</string>
-    <string name="dialog_about_0">\nThis app is OpenSource. You can find the source code here: https://github.com/SpiritCroc/AKG-Vertretungsplan\n\nContact: spiritcroc@gmail.com</string>
+    <string name="dialog_about_0">\n<a href="https://github.com/SpiritCroc/AKG-Vertretungsplan">Source code</a>\n\n<a href="https://github.com/SpiritCroc/AKG-Vertretungsplan/issues">Report a bug</a>\n\nContact: <a href="mailto:spiritcroc@gmail.com?subject=AKG-Vertretungsplan">spiritcroc@gmail.com</a></string>
     <string name="dialog_about_1_title">\n<u>Used 3rd party components</u></string>
-    <string name="dialog_about_1_body">Some "Material Design Icons" (licensed under CC BY 4.0) by Google are used in this app.\nLink: http://www.google.com/design/spec/resources/sticker-sheets-icons.html#sticker-sheets-icons-components</string>
+    <string name="dialog_about_1_body">This app uses some of the "Material Design Icons" (licensed under CC BY 4.0) by Google.\nSource: https://design.google.com/icons/</string>
     <string name="pref_developing_enabled">Secret code</string>
     <string name="pref_developing_enabled_summary">Do not use this unless you are me</string>
     <string name="pref_theme">Theme</string>
