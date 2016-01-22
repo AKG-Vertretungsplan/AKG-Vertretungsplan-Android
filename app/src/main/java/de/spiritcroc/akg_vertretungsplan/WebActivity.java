@@ -135,18 +135,18 @@ public class WebActivity extends NavigationDrawerActivity {
     }
 
     private void openInBrowser() {
-        String username = sharedPreferences.getString("pref_username", ""),
-                password = sharedPreferences.getString("pref_password", "");
         String link;
         if (sharedPreferences.getInt("last_plan_type", 1) == 2) {
             link = DownloadService.PLAN_2_ADDRESS;
         } else {
             link = DownloadService.PLAN_1_ADDRESS;
-        }
-        String prefix = "http://";
-        int index = link.indexOf(prefix);
-        if (!username.equals("") && !password.equals("") && index >= 0) {
-            link = link.replaceFirst(prefix, prefix + username + ":" + password + "@");
+            String username = sharedPreferences.getString("pref_username", ""),
+                    password = sharedPreferences.getString("pref_password", "");
+            String prefix = "http://";
+            int index = link.indexOf(prefix);
+            if (!username.equals("") && !password.equals("") && index >= 0) {
+                link = link.replaceFirst(prefix, prefix + username + ":" + password + "@");
+            }
         }
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
     }
