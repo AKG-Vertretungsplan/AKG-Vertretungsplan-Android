@@ -34,7 +34,6 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class WebActivity extends NavigationDrawerActivity {
     private final static String cssHeader = "<style media=\"screen\" type=\"text/css\">";
