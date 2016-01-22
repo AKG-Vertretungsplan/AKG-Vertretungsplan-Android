@@ -519,7 +519,7 @@ public class FormattedActivity extends NavigationDrawerActivity implements ItemF
     private void illegalPlan() {
         Toast.makeText(getApplicationContext(), getString(R.string.error_illegal_plan), Toast.LENGTH_LONG).show();
         if (Tools.isWebActivityEnabled(sharedPreferences)) {
-            startActivity(new Intent(getApplication(), WebActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
+            swapActivity(WebActivity.class);
         }
     }
 }

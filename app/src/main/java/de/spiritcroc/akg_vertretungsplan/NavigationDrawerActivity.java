@@ -274,7 +274,7 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
         }
     }
 
-    private void swapActivity(Class<?> newActivity) {
+    protected void swapActivity(Class<?> newActivity) {
         overridePendingTransition(0, 0);
         finish();
         startActivity(new Intent(this, newActivity));
