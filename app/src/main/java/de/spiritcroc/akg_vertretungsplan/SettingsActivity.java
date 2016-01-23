@@ -19,7 +19,9 @@
 package de.spiritcroc.akg_vertretungsplan;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 
 public class SettingsActivity extends AppCompatActivity{
@@ -29,6 +31,11 @@ public class SettingsActivity extends AppCompatActivity{
         setTheme(Tools.getStyle(this));
         super.onCreate(savedInstanceState);
         getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsFragment()).commit();
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
     @Override
     protected void onResume(){
@@ -39,5 +46,16 @@ public class SettingsActivity extends AppCompatActivity{
     protected void onPause(){
         super.onPause();
         IsRunningSingleton.getInstance().unregisterActivity(this);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
