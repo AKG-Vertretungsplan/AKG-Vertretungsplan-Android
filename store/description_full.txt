@@ -1,11 +1,11 @@
-Für den Abruf des Oberstufen-Vertretungsplans werden die entsprechenden Zugangsdaten benötigt!
+Für den Aufruf des Oberstufen-Vertretungsplans werden die entsprechenden Zugangsdaten benötigt!
 
+- Überprüfe regelmäßig, ob der Vertretungsplan geändert wurde; Benachrichtigung bei Änderungen (optional nur bei relevanten)
 - Hebe Änderungen seit dem letzten Aufruf farbig hervor
-- Überprüfe regelmäßig, ob der Vertretungsplan geändert wurde; Benachrichtigung bei (relevanten) Änderungen
-- Trage einen Stundenplan ein, um Vertretungen nach Relevanz farbig hervorheben und filtern zu können
+- Trage einen Stundenplan ein, um relevante Vertretungen automatisch erkennen zu lassen
 - Offline-Anzeige
 - Widget
-- Viele Einstellungsmöglichkeiten
+- Sehr viele Einstellungsmöglichkeiten (z.B. Farben der Vertretungsplans)
 
 Diese App ist open source! Beteiligung am Projekt ist gerne möglich!
 Projekt auf GitHub: https://github.com/SpiritCroc/AKG-Vertretungsplan
