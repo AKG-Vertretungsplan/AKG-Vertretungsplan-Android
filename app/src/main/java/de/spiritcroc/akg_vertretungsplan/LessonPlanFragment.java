@@ -24,6 +24,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StrikethroughSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -227,6 +230,12 @@ public class LessonPlanFragment extends ListFragment {
                 if (((LessonViewContent) getItem(position)).extraInformation.equals("")) {
                     holder.informationView.setVisibility(View.GONE);
                 } else {
+                    if (((LessonViewContent) getItem(position)).extraInformation.equals("→  entfällt")) {
+                        // Strike through
+                        Spannable subject = new SpannableString(holder.subjectView.getText());
+                        subject.setSpan(new StrikethroughSpan(), 0, subject.length(), 0);
+                        holder.subjectView.setText(subject);
+                    }
                     holder.informationView.setText(((LessonViewContent) getItem(position)).extraInformation);
                     holder.informationView.setVisibility(View.VISIBLE);
                     informationViewTopPadding = getResources().getDimensionPixelSize(R.dimen.list_content_padding);
