@@ -241,31 +241,35 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
                 String text = getString(R.string.debug_email_issue_description) + "\n\n" +
                         getString(R.string.debug_email_automatically_added_information) + "\n\n" +
 
-                        getString(R.string.debug_email_pref_last_checked) + "\n" +
+                        "-------pref_last_checked-------\n" +
                         sharedPreferences.getString("pref_last_checked", "") + "\n\n\n" +
-                        getString(R.string.debug_email_pref_last_update) + "\n" +
+                        "-------pref_last_update-------\n" +
                         sharedPreferences.getString("pref_last_update", "") + "\n\n\n" +
 
-                        getString(R.string.debug_email_pref_latest_title_1) + "\n" +
+                        "-------pref_latest_title_1-------\n" +
                         sharedPreferences.getString("pref_latest_title_1", "") + "\n\n\n" +
-                        getString(R.string.debug_email_pref_latest_plan_1) + "\n" +
+                        "-------pref_latest_plan_1-------\n" +
                         sharedPreferences.getString("pref_latest_plan_1", "") + "\n\n\n" +
-                        getString(R.string.debug_email_pref_latest_title_2) + "\n" +
+                        "-------pref_latest_title_2-------\n" +
                         sharedPreferences.getString("pref_latest_title_2", "") + "\n\n\n" +
-                        getString(R.string.debug_email_pref_latest_plan_2) + "\n" +
+                        "-------pref_latest_plan_2-------\n" +
                         sharedPreferences.getString("pref_latest_plan_2", "") + "\n\n\n" +
 
-                        getString(R.string.debug_email_pref_current_title_1) + "\n" +
+                        "-------pref_current_title_1-------\n" +
                         sharedPreferences.getString("pref_current_title_1", "") + "\n\n\n" +
-                        getString(R.string.debug_email_pref_current_plan_1) + "\n" +
+                        "-------pref_current_plan_1-------\n" +
                         sharedPreferences.getString("pref_current_plan_1", "") + "\n\n\n" +
-                        getString(R.string.debug_email_pref_current_title_2) + "\n" +
+                        "-------pref_current_title_2-------\n" +
                         sharedPreferences.getString("pref_current_title_2", "") + "\n\n\n" +
-                        getString(R.string.debug_email_pref_current_plan_2) + "\n" +
+                        "-------pref_current_plan_2-------\n" +
                         sharedPreferences.getString("pref_current_plan_2", "") + "\n\n\n" +
 
-                        getString(R.string.debug_email_pref_html_latest) + "\n" +
-                        sharedPreferences.getString("pref_html_latest", "");
+                        "-------pref_html_latest-------\n" +
+                        sharedPreferences.getString("pref_html_latest", "") + "\n\n\n" +
+
+                        "-------Log-------\n" +
+                        OwnLog.getFull(sharedPreferences);
+
                 intent.putExtra(Intent.EXTRA_TEXT, text);
                 intent.setData(Uri.parse("mailto:"));
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

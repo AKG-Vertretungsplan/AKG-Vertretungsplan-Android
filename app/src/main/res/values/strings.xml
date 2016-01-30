@@ -302,17 +302,6 @@
     <string name="debug_email_subject">AKG-Vertretungsplan debug information</string>
     <string name="debug_email_issue_description">Issue description:\n[insert your issue description here]</string>
     <string name="debug_email_automatically_added_information">Automatically added information:</string>
-    <string name="debug_email_pref_html_latest" translatable="false">-------pref_html_latest-------</string>
-    <string name="debug_email_pref_latest_title_1" translatable="false">-------pref_latest_title_1-------</string>
-    <string name="debug_email_pref_latest_title_2" translatable="false">-------pref_latest_title_2-------</string>
-    <string name="debug_email_pref_latest_plan_1" translatable="false">-------pref_latest_plan_1-------</string>
-    <string name="debug_email_pref_latest_plan_2" translatable="false">-------pref_latest_plan_2-------</string>
-    <string name="debug_email_pref_last_checked" translatable="false">-------pref_last_checked-------</string>
-    <string name="debug_email_pref_last_update" translatable="false">-------pref_last_update-------</string>
-    <string name="debug_email_pref_current_title_1" translatable="false">-------pref_current_title_1-------</string>
-    <string name="debug_email_pref_current_title_2" translatable="false">-------pref_current_title_2-------</string>
-    <string name="debug_email_pref_current_plan_1" translatable="false">-------pref_current_plan_1-------</string>
-    <string name="debug_email_pref_current_plan_2" translatable="false">-------pref_current_plan_2-------</string>
 
     <string name="day_monday">Monday</string>
     <string name="day_tuesday">Tuesday</string>
@@ -609,4 +598,8 @@
     <string name="information_view_update_check">Last update: %1$s\nLast checked: %2$s</string>
     <string name="offline">Offline</string>
     <string name="swipe_down_to_refresh">Swipe down to refresh</string>
+
+    <string name="pref_own_log">Log</string>
+    <string name="pref_own_log_summary">Create a log to amend in debug mail</string>
+    <string name="pref_clear_own_log">Clear log</string>
 </resources>

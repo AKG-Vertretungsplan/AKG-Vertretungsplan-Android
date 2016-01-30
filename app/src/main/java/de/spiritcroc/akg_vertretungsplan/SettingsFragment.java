@@ -297,6 +297,12 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                         .apply();
                 ((EditTextPreference) findPreference("pref_web_plan_custom_style")).setText(value);
             }
+        } else if (key.equals("pref_own_log")) {
+            if (sharedPreferences.getBoolean("pref_own_log", false)) {
+                OwnLog.forceAdd(sharedPreferences, "Log enabled");
+            } else {
+                OwnLog.forceAdd(sharedPreferences, "Log disabled");
+            }
         }
     }
 
@@ -361,10 +367,12 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             Intent intent = LessonPlanShortcutActivity.getShortcut(getActivity());
             getActivity().sendBroadcast(intent);
             Toast.makeText(getActivity(), R.string.launcher_added_successfully, Toast.LENGTH_SHORT).show();
-        } else if ("pref_web_plan_add_launcher_shortcut".equals(preference.getKey())){
+        } else if ("pref_web_plan_add_launcher_shortcut".equals(preference.getKey())) {
             Intent intent = WebShortcutActivity.getShortcut(getActivity());
             getActivity().sendBroadcast(intent);
             Toast.makeText(getActivity(), R.string.launcher_added_successfully, Toast.LENGTH_SHORT).show();
+        } else if ("pref_clear_own_log".equals(preference.getKey())) {
+            OwnLog.clear(getSharedPreferences());
         } else {
             return super.onPreferenceTreeClick(preferenceScreen, preference);
         }

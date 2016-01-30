@@ -39,6 +39,7 @@ public class BReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        OwnLog.add(context, "BReceiver.onReceive: action: " + intent.getAction());
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
             if (sharedPreferences.getBoolean("pref_background_service", true)) {
                 startDownloadService(context, true);
@@ -68,7 +69,7 @@ public class BReceiver extends BroadcastReceiver {
     }
     public static void startDownloadService(Context context, boolean now){
         int period = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString("pref_background_update_interval", "60"))*60000;
-        Log.d("startDownloadService", now ? "now" : "period: " + period);
+        OwnLog.add(context, "BReceiver.startDownloadService: " + (now ? "now" : "period: " + period));
         ((AlarmManager) context.getSystemService(Context.ALARM_SERVICE)).set(AlarmManager.ELAPSED_REALTIME, now ? 0 : SystemClock.elapsedRealtime() + period, getAlarmPendingIntent(context, PendingIntent.FLAG_CANCEL_CURRENT));
     }
     public static void stopDownloadService(Context context){

@@ -99,11 +99,15 @@ public class DownloadService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             final String action = intent.getAction();
+            OwnLog.add(getSharedPreferences(),
+                    "DownloadService.onHandleIntent: got action: " + action);
             if (ACTION_DOWNLOAD_PLAN.equals(action)){
                 if (getSharedPreferences().getBoolean("pref_reload_on_resume", false))
                     skipLoginActivity = true;// Don't prompt to login activity if coming from there
                 getSharedPreferences().edit().putBoolean("pref_reload_on_resume", false)
                         .putBoolean("pref_last_offline", false).apply();
+                OwnLog.add(getSharedPreferences(),
+                        "DownloadService.onHandleIntent: set pref_last_offline false");
 
                 if (sharedPreferences.getBoolean("pref_background_service", true))
                     BReceiver.startDownloadService(getApplicationContext(), false);//Schedule next download
@@ -131,6 +135,8 @@ public class DownloadService extends IntentService {
                 else{
                     getSharedPreferences().edit().putBoolean("pref_last_offline", true).apply();
                     loadOfflinePlan();
+                    OwnLog.add(getSharedPreferences(),
+                            "DownloadService.onHandleIntent: set pref_last_offline true");
                 }
                 updateLoadingInformation();
             }
