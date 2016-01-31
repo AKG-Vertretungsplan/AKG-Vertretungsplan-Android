@@ -197,6 +197,9 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
                 updateAll();
                 setInformationVisibilities();
                 return true;
+            case R.id.action_reload_web_view:
+                startDownloadService(true);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
