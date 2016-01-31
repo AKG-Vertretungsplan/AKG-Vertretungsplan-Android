@@ -35,7 +35,9 @@ import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -48,6 +50,7 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
     private int style;
     private String[] dayName;
     private String[] dayAdd;
+    private TextView textView;
     private LessonPlanFragment[] lessonPlanFragments;
     private ArrayList<String>[] relevantInformation, relevantRoomInformation, generalInformation;
     private ArrayList<Integer>[] relevantInformationLessons;
@@ -67,6 +70,9 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
         initDrawer();
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        textView = (TextView) findViewById(R.id.text_view);
+        textView.setText(sharedPreferences.getString("pref_text_view_text", getString(R.string.welcome)));
 
         dayName = getResources().getStringArray(R.array.lesson_plan_days);
         dayAdd = new String[LessonPlan.DAY_COUNT];
@@ -135,8 +141,9 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
             if (!sharedPreferences.contains("pref_class")) {
                 new EnterLessonClassDialog().setUpdateActivity(this).show(getFragmentManager(), "EnterLessonClassDialog");
             }
+            setActionBarTitle();
+            setTextViewVisibility();
         }
-        setActionBarTitle();
     }
 
     @Override
@@ -186,6 +193,7 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
                 sharedPreferences.edit().putBoolean("pref_lesson_plan_show_information", showInformation).apply();
                 fragmentPagerAdapter.notifyDataSetChanged();
                 updateAll();
+                setTextViewVisibility();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -390,6 +398,12 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
         }
     }
 
+    private void setTextViewVisibility() {
+        textView.setVisibility(!sharedPreferences.getBoolean("pref_hide_text_view", false) &&
+                sharedPreferences.getBoolean("pref_lesson_plan_show_information", false) ?
+                View.VISIBLE : View.GONE);
+    }
+
     private BroadcastReceiver downloadInfoReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -400,6 +414,9 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
                 String title2 = intent.getStringExtra("title2");
                 String plan2 = intent.getStringExtra("plan2");
                 getRelevantInformation(title1, plan1, title2, plan2);
+            } else if (action.equals("setTextViewText")) {
+                String text = intent.getStringExtra("text");
+                textView.setText(text);
             }
         }
     };
