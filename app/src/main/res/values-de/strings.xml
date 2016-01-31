@@ -205,7 +205,7 @@
     <string name="pref_show_filtered_plan_as_action">Vertretungsfilter als Aktion</string>
     <string name="pref_show_filtered_plan_as_action_summary">Zeige die Option \"Vertretungsfilter\" direkt in der Aktionsleiste (nur bei konfiguriertem Stundenplan)</string>
     <string name="pref_hide_action_reload">Verstecke Aktion \"Neu laden\"</string>
-    <string name="pref_hide_action_reload_summary">Der Vertretungsplan kann dann immer noch durch herunterwischen aktualisiert werden</string>
+    <string name="pref_hide_action_reload_summary">Der Vertretungsplan kann dann immer noch durch herunterwischen aktualisiert werden (Einstellung gilt nur für die Standard-Vertretungsplananzeige der App)</string>
 
     <string name="error_could_not_create_shortcut">Fehler: Kann Verknüpfung nicht erstellen</string>
     <string name="lesson_plan_shortcut">Stundenplan</string>

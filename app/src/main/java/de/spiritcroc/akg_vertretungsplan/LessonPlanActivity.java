@@ -57,7 +57,7 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
     private int shortcutDay = -1;//-1 if no shortcut
     private boolean discardSavedInstance = false;
 
-    private MenuItem showFullTimeMenuItem;
+    private MenuItem showFullTimeMenuItem, reloadItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,7 +142,7 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
                 new EnterLessonClassDialog().setUpdateActivity(this).show(getFragmentManager(), "EnterLessonClassDialog");
             }
             setActionBarTitle();
-            setTextViewVisibility();
+            setInformationVisibilities();
         }
     }
 
@@ -161,6 +161,8 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
         showFullTimeMenuItem = menu.findItem(R.id.action_show_full_time).setChecked(sharedPreferences.getBoolean("pref_lesson_plan_show_full_time", false));
         showFullTimeMenuItem.setVisible(showTime);
         menu.findItem(R.id.action_show_information).setChecked(sharedPreferences.getBoolean("pref_lesson_plan_show_information", false));
+        reloadItem = menu.findItem(R.id.action_reload_web_view);
+        setInformationVisibilities();
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -193,7 +195,7 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
                 sharedPreferences.edit().putBoolean("pref_lesson_plan_show_information", showInformation).apply();
                 fragmentPagerAdapter.notifyDataSetChanged();
                 updateAll();
-                setTextViewVisibility();
+                setInformationVisibilities();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -398,10 +400,14 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
         }
     }
 
-    private void setTextViewVisibility() {
+    private void setInformationVisibilities() {
+        boolean showInformation =
+                sharedPreferences.getBoolean("pref_lesson_plan_show_information", false);
         textView.setVisibility(!sharedPreferences.getBoolean("pref_hide_text_view", false) &&
-                sharedPreferences.getBoolean("pref_lesson_plan_show_information", false) ?
-                View.VISIBLE : View.GONE);
+                showInformation ? View.VISIBLE : View.GONE);
+        if (reloadItem != null) {
+            reloadItem.setVisible(showInformation);
+        }
     }
 
     private BroadcastReceiver downloadInfoReceiver = new BroadcastReceiver() {
