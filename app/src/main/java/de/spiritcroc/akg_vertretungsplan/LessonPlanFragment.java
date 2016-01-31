@@ -42,6 +42,8 @@ import java.util.ArrayList;
 public class LessonPlanFragment extends ListFragment {
     private static final String ARG_DAY = "day";
 
+    private static final String FREE_SUBSTITUTION = "→  entfällt";
+
     private int day;
     private Lesson[] lessons;
     private String[] startTimes;
@@ -124,6 +126,10 @@ public class LessonPlanFragment extends ListFragment {
                     if (lesson < 0 || lesson > lessonViewContent.length) {
                         Log.e("LessonPlanFragment", "createContent: cannot find lesson with index " + lesson);
                         continue;
+                    }
+                    if (relevantInformation.get(i).equals(FREE_SUBSTITUTION)) {
+                        textColors.remove(lesson);
+                        textColors.add(lesson, colorFreeTime);
                     }
                     lessonViewContent[lesson].extraInformation = relevantInformation.get(i);
                     lessonViewContent[lesson].roomExtraInformation = relevantRoomInformation.get(i);
@@ -223,7 +229,7 @@ public class LessonPlanFragment extends ListFragment {
                 if (((LessonViewContent) getItem(position)).extraInformation.equals("")) {
                     holder.informationView.setVisibility(View.GONE);
                 } else {
-                    if (((LessonViewContent) getItem(position)).extraInformation.equals("→  entfällt")) {
+                    if (((LessonViewContent) getItem(position)).extraInformation.equals(FREE_SUBSTITUTION)) {
                         // Strike through
                         Spannable subject = new SpannableString(holder.subjectView.getText());
                         subject.setSpan(new StrikethroughSpan(), 0, subject.length(), 0);
