@@ -110,12 +110,6 @@ public class WebActivity extends NavigationDrawerActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_web, menu);
-        if (menu != null){
-            if (style == R.style.Theme_AppCompat_Light) {
-                MenuItem item = menu.findItem(R.id.action_reload_web_view);
-                item.setIcon(R.drawable.ic_autorenew_black_36dp);
-            }
-        }
         return super.onCreateOptionsMenu(menu);
     }
 
