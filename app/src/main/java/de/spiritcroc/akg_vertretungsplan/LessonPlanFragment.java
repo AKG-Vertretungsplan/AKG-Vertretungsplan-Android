@@ -90,7 +90,6 @@ public class LessonPlanFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getListView().post(updateTimeViewWidth);
     }
 
     private LessonViewContent[] createContent(){
@@ -161,12 +160,6 @@ public class LessonPlanFragment extends ListFragment {
         showFullTime = sharedPreferences.getBoolean("pref_lesson_plan_show_full_time", false);
         timeViews.clear();
         setListAdapter(new CustomArrayAdapter(getActivity().getApplicationContext(), R.layout.lesson_plan_item, createContent()));
-        try {
-            getListView().post(updateTimeViewWidth);
-        } catch (Exception e) {
-            // I can't find a better way to check if listView is created
-            Log.v("LessonPlanFragment", "Cannot set time width: " + e);
-        }
     }
 
     private Runnable updateTimeViewWidth = new Runnable() {
@@ -259,6 +252,9 @@ public class LessonPlanFragment extends ListFragment {
             else
                 holder.subjectView.setTextColor(Color.GRAY);//default color for not crashing the app
             holder.roomView.setTextColor(Integer.parseInt(sharedPreferences.getString("pref_lesson_plan_color_room", "" + Color.DKGRAY)));
+
+            view.post(updateTimeViewWidth);
+
             return view;
         }
     }
