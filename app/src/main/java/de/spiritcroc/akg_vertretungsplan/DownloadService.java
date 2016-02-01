@@ -19,6 +19,7 @@
 package de.spiritcroc.akg_vertretungsplan;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ContentValues;
@@ -30,6 +31,8 @@ import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Parcel;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
@@ -40,6 +43,7 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -843,7 +847,12 @@ public class DownloadService extends IntentService {
         builder.setContentIntent(resultPendingIntent);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(id, builder.build());
+        Notification notification = builder.build();
+        if (Build.VERSION.SDK_INT >= 21) {
+            //Disable heads up
+            notification.headsUpContentView = new RemoteViews(Parcel.obtain());
+        }
+        notificationManager.notify(id, notification);
     }
 
     public static int getNewRelevantInformationCount(Context context, ArrayList<String> relevantInformation, ArrayList<String> generalInformation, ArrayList<String> irrelevantInformation) {
