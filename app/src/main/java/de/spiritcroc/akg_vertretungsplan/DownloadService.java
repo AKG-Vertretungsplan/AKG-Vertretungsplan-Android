@@ -116,9 +116,7 @@ public class DownloadService extends IntentService {
                 if (sharedPreferences.getBoolean("pref_background_service", true))
                     BReceiver.startDownloadService(getApplicationContext(), false);//Schedule next download
 
-                ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-                NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-                if (networkInfo != null && networkInfo.isConnected()) {
+                if (isConnected()) {
                     if (!loginFailed) {
                         downloading = true;
                         updateLoadingInformation();
@@ -987,6 +985,17 @@ public class DownloadService extends IntentService {
             }
         }
         return count;
+    }
+
+    private boolean isConnected() {
+        if (getSharedPreferences().getBoolean("pref_hidden_debug_enabled", false) &&
+                getSharedPreferences().getBoolean("pref_skip_network_check", false)) {
+            return true;
+        }
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
 
 

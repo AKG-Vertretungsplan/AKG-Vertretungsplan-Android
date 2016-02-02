@@ -595,5 +595,11 @@
             android:numeric="integer"
             android:defaultValue="0"
             android:dependency="pref_hidden_debug_enabled"/>
+        <CheckBoxPreference
+            android:key="pref_skip_network_check"
+            android:title="@string/pref_skip_network_check"
+            android:summary="@string/pref_skip_network_check_summary"
+            android:defaultValue="false"
+            android:dependency="pref_hidden_debug_enabled"/>
     </PreferenceCategory>
 </PreferenceScreen>

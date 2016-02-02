@@ -380,4 +380,6 @@
     <string name="pref_notification_heads_up_disabled">Deaktiviert</string>
     <string name="pref_notification_heads_up_default">Standard</string>
     <string name="pref_notification_heads_up_expanded">Mehr Informationen</string>
+    <string name="pref_skip_network_check">Überspringe Netzwerküberprüfung</string>
+    <string name="pref_skip_network_check_summary">Versuche das Herunterladen, auch wenn das Gerät offline ist</string>
 </resources>
