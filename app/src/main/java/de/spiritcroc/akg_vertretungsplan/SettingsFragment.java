@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.SystemClock;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
@@ -116,6 +117,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         setSummaryToValue("pref_notification_preview_irrelevant_style");
         setSummaryToValue("pref_notification_button_mark_seen");
         setSummaryToValue("pref_widget_opens_activity");
+        setSummaryToValue("pref_notification_heads_up");
 
         EditTextPreference tmpEditTextPreference = (EditTextPreference) findPreference("pref_auto_load_on_open");
         int tmpValue = correctInteger(getSharedPreferences(), "pref_auto_load_on_open", tmpEditTextPreference.getText(), 5);
@@ -136,6 +138,11 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         tmpEditTextPreference = (EditTextPreference) findPreference("pref_lesson_plan_auto_select_day_time");
         tmpValue = correctInteger(getSharedPreferences(), "pref_lesson_plan_auto_select_day_time", tmpEditTextPreference.getText(), 17);
         tmpEditTextPreference.setSummary(getString(R.string.pref_lesson_plan_auto_select_day_time_summary_pre) + tmpValue + getString(R.string.pref_lesson_plan_auto_select_day_time_summary_post));
+
+        if (Build.VERSION.SDK_INT < 21) {
+            ((PreferenceCategory) findPreference("pref_category_which_has_heads_up_in_it"))
+                    .removePreference(findPreference("pref_notification_heads_up"));
+        }
 
         setUserdataVisibility();
 
@@ -172,7 +179,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key){
         if (key.equals("pref_class_text_text_color") || key.equals("pref_class_text_background_color") || key.equals("pref_normal_text_text_color") || key.equals("pref_normal_text_background_color") || key.equals("pref_normal_text_text_color_highlight") || key.equals("pref_normal_text__background_color_highlight") || key.equals("pref_header_text_text_color") || key.equals("pref_header_text_background_color") || key.equals("pref_header_text_text_color_highlight") || key.equals("pref_header_text__background_color_highlight" ) || key.equals("pref_widget_text_color")  || key.equals("pref_widget_text_color_highlight") || key.equals("pref_widget_text_color_highlight_relevant") || key.equals("pref_widget_text_color_highlight_general") || key.equals("pref_auto_mark_read") || key.equals("pref_led_notification_color") || key.equals("pref_relevant_text_text_color") || key.equals("pref_relevant_text_background_color") || key.equals("pref_relevant_text_text_color_highlight") || key.equals("pref_relevant_text_background_color_highlight") || key.equals("pref_action_bar_normal_background_color") || key.equals("pref_action_bar_filtered_background_color") ||
-                key.equals("pref_lesson_plan_color_time") || key.equals("pref_lesson_plan_color_lesson") || key.equals("pref_lesson_plan_color_free_time") || key.equals("pref_lesson_plan_color_room") || key.equals("pref_notification_preview_relevant_color") || key.equals("pref_notification_preview_relevant_style") || key.equals("pref_notification_preview_general_color") || key.equals("pref_notification_preview_general_style") || key.equals("pref_notification_preview_irrelevant_color") || key.equals("pref_notification_preview_irrelevant_style") || key.equals("pref_notification_button_mark_seen") || key.equals("pref_lesson_plan_color_relevant_information") || key.equals("pref_lesson_plan_color_general_information") || key.equals("pref_widget_opens_activity"))
+                key.equals("pref_lesson_plan_color_time") || key.equals("pref_lesson_plan_color_lesson") || key.equals("pref_lesson_plan_color_free_time") || key.equals("pref_lesson_plan_color_room") || key.equals("pref_notification_preview_relevant_color") || key.equals("pref_notification_preview_relevant_style") || key.equals("pref_notification_preview_general_color") || key.equals("pref_notification_preview_general_style") || key.equals("pref_notification_preview_irrelevant_color") || key.equals("pref_notification_preview_irrelevant_style") || key.equals("pref_notification_button_mark_seen") || key.equals("pref_lesson_plan_color_relevant_information") || key.equals("pref_lesson_plan_color_general_information") || key.equals("pref_widget_opens_activity") || key.equals("pref_notification_heads_up"))
             setSummaryToValue(key);
         /*else if (key.equals("pref_plan")) {
             setSummaryToValue(key);

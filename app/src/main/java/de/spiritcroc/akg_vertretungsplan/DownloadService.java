@@ -746,6 +746,7 @@ public class DownloadService extends IntentService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this).setSmallIcon(smallIconResource).setContentTitle(title);
         if (text != null)
             builder.setContentText(text);
+        NotificationCompat.InboxStyle inboxStyle = null;
         if (!silent) {
             if (getSharedPreferences().getBoolean("pref_notification_sound_enabled", false)) {
                 String notificationSound = getSharedPreferences().getString("pref_notification_sound", "");
@@ -775,7 +776,7 @@ public class DownloadService extends IntentService {
                 }
                 builder.setVibrate(vibrationPattern);
             }
-            NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+            inboxStyle = new NotificationCompat.InboxStyle();
             int lineCount = 0;
             if (relevantInformation != null) {
                 int color = Integer.parseInt(sharedPreferences.getString("pref_notification_preview_relevant_color", "" + Color.RED));
@@ -849,8 +850,25 @@ public class DownloadService extends IntentService {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notification = builder.build();
         if (Build.VERSION.SDK_INT >= 21) {
-            //Disable heads up
-            notification.headsUpContentView = new RemoteViews(Parcel.obtain());
+            //Disable heads up / button
+            String pref = getSharedPreferences().getString("pref_notification_heads_up",
+                    getString(R.string.pref_notification_heads_up_default_value));
+            if (getString(R.string.pref_notification_heads_up_disabled_value).equals(pref)) {
+                notification.headsUpContentView = new RemoteViews(Parcel.obtain());
+            } else {
+                NotificationCompat.Builder headsUpBuilder = new NotificationCompat.Builder(this)
+                        .setSmallIcon(smallIconResource)
+                        .setContentTitle(title);
+                if (text != null)
+                    headsUpBuilder.setContentText(text);
+                if (inboxStyle != null)
+                    headsUpBuilder.setStyle(inboxStyle);
+                if (getString(R.string.pref_notification_heads_up_expanded_value).equals(pref)) {
+                    notification.headsUpContentView = headsUpBuilder.build().bigContentView.clone();
+                } else {
+                    notification.headsUpContentView = headsUpBuilder.build().contentView.clone();
+                }
+            }
         }
         notificationManager.notify(id, notification);
     }

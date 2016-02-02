@@ -77,7 +77,8 @@
                 android:summary="@string/pref_notification_enabled_summary"
                 android:defaultValue="true"/>
             <PreferenceCategory
-                android:title="@string/pref_notification_appearance">
+                android:title="@string/pref_notification_appearance"
+                android:key="pref_category_which_has_heads_up_in_it">
                 <CheckBoxPreference
                     android:key="pref_notification_sound_enabled"
                     android:title="@string/pref_notification_sound_enabled"
@@ -104,6 +105,13 @@
                     android:key="pref_vibrate_notification_enabled"
                     android:title="@string/pref_vibrate_notification_enabled"
                     android:defaultValue="true"
+                    android:dependency="pref_notification_enabled"/>
+                <ListPreference
+                    android:key="pref_notification_heads_up"
+                    android:title="@string/pref_notification_heads_up"
+                    android:entries="@array/pref_notification_heads_up_array"
+                    android:entryValues="@array/pref_notification_heads_up_array_values"
+                    android:defaultValue="@string/pref_notification_heads_up_default_value"
                     android:dependency="pref_notification_enabled"/>
             </PreferenceCategory>
             <PreferenceCategory
