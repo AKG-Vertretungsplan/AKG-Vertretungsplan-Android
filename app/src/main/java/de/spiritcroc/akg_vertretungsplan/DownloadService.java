@@ -748,6 +748,7 @@ public class DownloadService extends IntentService {
             builder.setContentText(text);
         NotificationCompat.InboxStyle inboxStyle = null;
         if (!silent) {
+            builder.setTicker(title);
             if (getSharedPreferences().getBoolean("pref_notification_sound_enabled", false)) {
                 String notificationSound = getSharedPreferences().getString("pref_notification_sound", "");
                 if (notificationSound.equals(""))
