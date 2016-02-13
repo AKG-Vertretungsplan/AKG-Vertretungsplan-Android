@@ -232,7 +232,7 @@
     <string name="version">Version</string>
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">Cancel</string>
-    <string name="dialog_about_0">\n<a href="https://github.com/SpiritCroc/AKG-Vertretungsplan">Source code</a>\n\n<a href="https://github.com/SpiritCroc/AKG-Vertretungsplan/issues">Report a bug</a>\n\nContact: <a href="mailto:spiritcroc@gmail.com?subject=AKG-Vertretungsplan">spiritcroc@gmail.com</a></string>
+    <string name="dialog_about_0">\n<a href="https://github.com/SpiritCroc/AKG-Vertretungsplan">Source code</a>\n\n<a href="https://github.com/SpiritCroc/AKG-Vertretungsplan/issues">Report issues/propose changes</a>\n\nContact: <a href="mailto:spiritcroc@gmail.com?subject=AKG-Vertretungsplan">spiritcroc@gmail.com</a></string>
     <string name="dialog_about_1_title">\n<u>Used 3rd party components</u></string>
     <string name="dialog_about_1_body">This app uses some of the "Material Design Icons" (licensed under CC BY 4.0) by Google.\nSource: https://design.google.com/icons/</string>
     <string name="pref_developing_enabled">Secret code</string>
