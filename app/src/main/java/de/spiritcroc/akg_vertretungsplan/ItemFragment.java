@@ -44,6 +44,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import de.spiritcroc.akg_vertretungsplan.settings.Keys;
+
 public class ItemFragment extends ListFragment{
     public static final int cellCount = 7;
 
@@ -146,7 +148,7 @@ public class ItemFragment extends ListFragment{
     @Override
     public void onPause(){
         super.onPause();
-        if (sharedPreferences.getString("pref_auto_mark_read", "").equals("onActivityPause"))
+        if (sharedPreferences.getString(Keys.AUTO_MARK_READ, "").equals("onActivityPause"))
             markChangesAsRead();
     }
 
@@ -232,10 +234,10 @@ public class ItemFragment extends ListFragment{
         }
 
         String oldPlan;
-        if (date.equals(sharedPreferences.getString("pref_latest_title_1", "")))    //check date for comparison
-            oldPlan = sharedPreferences.getString("pref_latest_plan_1", "");
-        else if (date.equals(sharedPreferences.getString("pref_latest_title_2", "")))
-            oldPlan = sharedPreferences.getString("pref_latest_plan_2", "");
+        if (date.equals(sharedPreferences.getString(Keys.LATEST_TITLE_1, "")))    //check date for comparison
+            oldPlan = sharedPreferences.getString(Keys.LATEST_PLAN_1, "");
+        else if (date.equals(sharedPreferences.getString(Keys.LATEST_TITLE_2, "")))
+            oldPlan = sharedPreferences.getString(Keys.LATEST_PLAN_2, "");
         else
             oldPlan = "";   //no plan available for this date
         boolean putHeaderAsClass = false;
@@ -250,22 +252,22 @@ public class ItemFragment extends ListFragment{
         backgroundColors.clear();
         String add;
         String tmp = "a";   //not empty
-        boolean filterResults = sharedPreferences.getBoolean("pref_filter_plan", false) && LessonPlan.getInstance(sharedPreferences).isConfigured(),
+        boolean filterResults = sharedPreferences.getBoolean(Keys.FILTER_PLAN, false) && LessonPlan.getInstance(sharedPreferences).isConfigured(),
                 lastAddedHeader = false;
         unreadContent = false;
         for (int i = 0; !tmp.equals(""); i++){
             tmp = Tools.getLine(unformattedContent, i + 1);
             if (getRow(tmp, "" + DownloadService.ContentType.TABLE_ROW)){
                 if (tmpCellCount==1) {
-                    if (!filterResults || !sharedPreferences.getBoolean("pref_filter_general", false)) {
+                    if (!filterResults || !sharedPreferences.getBoolean(Keys.FILTER_GENERAL, false)) {
                         result.add(tmpRowContent[0]);       //header text
                         fullFormattedContent.add(tmpRowContent.clone());
                         if (Tools.lineAvailable(oldPlan, tmp)) {
-                            textColors.add(Integer.parseInt(sharedPreferences.getString("pref_header_text_text_color", "" + Color.BLACK)));
-                            backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_header_text_background_color", "" + Color.TRANSPARENT)));
+                            textColors.add(Integer.parseInt(sharedPreferences.getString(Keys.HEADER_TEXT_TEXT_COLOR, "" + Color.BLACK)));
+                            backgroundColors.add(Integer.parseInt(sharedPreferences.getString(Keys.HEADER_TEXT_BG_COLOR, "" + Color.TRANSPARENT)));
                         } else {       //highlight changes
-                            textColors.add(Integer.parseInt(sharedPreferences.getString("pref_header_text_text_color_highlight", "" + Color.RED)));
-                            backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_header_text__background_color_highlight", "" + Color.TRANSPARENT)));
+                            textColors.add(Integer.parseInt(sharedPreferences.getString(Keys.HEADER_TEXT_TEXT_COLOR_HL, "" + Color.RED)));
+                            backgroundColors.add(Integer.parseInt(sharedPreferences.getString(Keys.HEADER_TEXT_BG_COLOR_HL, "" + Color.TRANSPARENT)));
                             unreadContent = true;
                         }
                         currentClass = "";
@@ -280,8 +282,8 @@ public class ItemFragment extends ListFragment{
                             lastAddedHeader = true;
                             result.add(currentClass);    //class text
                             fullFormattedContent.add(null);
-                            textColors.add(Integer.parseInt(sharedPreferences.getString("pref_class_text_text_color", "" + Color.BLUE)));
-                            backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_class_text_background_color", "" + Color.TRANSPARENT)));
+                            textColors.add(Integer.parseInt(sharedPreferences.getString(Keys.CLASS_TEXT_TEXT_COLOR, "" + Color.BLUE)));
+                            backgroundColors.add(Integer.parseInt(sharedPreferences.getString(Keys.CLASS_TEXT_BG_COLOR, "" + Color.TRANSPARENT)));
                             putHeaderAsClass = false;
                         }
                         //else: no header available
@@ -293,12 +295,12 @@ public class ItemFragment extends ListFragment{
                         currentClass = tmpRowContent[0];
                         result.add(headerRow[0] + " " + tmpRowContent[0]);    //class text
                         fullFormattedContent.add(null);
-                        textColors.add(Integer.parseInt(sharedPreferences.getString("pref_class_text_text_color", "" + Color.BLUE)));
-                        backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_class_text_background_color", "" + Color.TRANSPARENT)));
+                        textColors.add(Integer.parseInt(sharedPreferences.getString(Keys.CLASS_TEXT_TEXT_COLOR, "" + Color.BLUE)));
+                        backgroundColors.add(Integer.parseInt(sharedPreferences.getString(Keys.CLASS_TEXT_BG_COLOR, "" + Color.TRANSPARENT)));
                     }
                     if (headerRow[0]==null) { //e.g. when extra table "Gesamte Schule:"
                         add = createItem(getActivity(), tmpRowContent, true);
-                        relevant = lessonPlan.isConfigured() && !sharedPreferences.getBoolean("pref_filter_general", false);
+                        relevant = lessonPlan.isConfigured() && !sharedPreferences.getBoolean(Keys.FILTER_GENERAL, false);
                         if (relevant)
                             lastAddedHeader = false;
                     } else {
@@ -317,21 +319,21 @@ public class ItemFragment extends ListFragment{
                         fullFormattedContent.add(tmpRowContent.clone());
                         if (Tools.lineAvailable(oldPlan, tmp)) {
                             if (relevant && !filterResults){
-                                textColors.add(Integer.parseInt(sharedPreferences.getString("pref_relevant_text_text_color", "" + Color.BLACK)));
-                                backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_relevant_text_background_color", "" + Color.YELLOW)));
+                                textColors.add(Integer.parseInt(sharedPreferences.getString(Keys.RELEVANT_TEXT_TEXT_COLOR, "" + Color.BLACK)));
+                                backgroundColors.add(Integer.parseInt(sharedPreferences.getString(Keys.RELEVANT_TEXT_BG_COLOR, "" + Color.YELLOW)));
                             }
                             else {
-                                textColors.add(Integer.parseInt(sharedPreferences.getString("pref_normal_text_text_color", "" + Color.BLACK)));
-                                backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_normal_text_background_color", "" + Color.TRANSPARENT)));
+                                textColors.add(Integer.parseInt(sharedPreferences.getString(Keys.NORMAL_TEXT_TEXT_COLOR, "" + Color.BLACK)));
+                                backgroundColors.add(Integer.parseInt(sharedPreferences.getString(Keys.NORMAL_TEXT_BG_COLOR, "" + Color.TRANSPARENT)));
                             }
                         } else {       //highlight changes
                             if (relevant && !filterResults) {
-                                textColors.add(Integer.parseInt(sharedPreferences.getString("pref_relevant_text_text_color_highlight", "" + Color.RED)));
-                                backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_relevant_text_background_color_highlight", "" + Color.YELLOW)));
+                                textColors.add(Integer.parseInt(sharedPreferences.getString(Keys.RELEVANT_TEXT_TEXT_COLOR_HL, "" + Color.RED)));
+                                backgroundColors.add(Integer.parseInt(sharedPreferences.getString(Keys.RELEVANT_TEXT_BG_COLOR_HL, "" + Color.YELLOW)));
                             }
                             else{
-                                textColors.add(Integer.parseInt(sharedPreferences.getString("pref_normal_text_text_color_highlight", "" + Color.RED)));
-                                backgroundColors.add(Integer.parseInt(sharedPreferences.getString("pref_normal_text__background_color_highlight", "" + Color.TRANSPARENT)));
+                                textColors.add(Integer.parseInt(sharedPreferences.getString(Keys.NORMAL_TEXT_TEXT_COLOR_HL, "" + Color.RED)));
+                                backgroundColors.add(Integer.parseInt(sharedPreferences.getString(Keys.NORMAL_TEXT_BG_COLOR_HL, "" + Color.TRANSPARENT)));
                             }
                             unreadContent = true;
                         }
@@ -360,7 +362,7 @@ public class ItemFragment extends ListFragment{
         }
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         LessonPlan lessonPlan = LessonPlan.getInstance(sharedPreferences);
-        boolean useFullTeacherNames = sharedPreferences.getBoolean("pref_formatted_plan_replace_teacher_short_with_teacher_full", true);
+        boolean useFullTeacherNames = sharedPreferences.getBoolean(Keys.FORMATTED_PLAN_REPLACE_TEACHER_SHORT_WITH_TEACHER_FULL, true);
         String result = values[2] + " " + (useFullTeacherNames ? getTeacherCombinationString(sharedPreferences, lessonPlan, values[1]) : values[1]) + " →";
         if (!values[3].equals(""))
             result += " " + (useFullTeacherNames ? getTeacherCombinationString(sharedPreferences, lessonPlan, values[3]) : values[3]);
@@ -407,7 +409,7 @@ public class ItemFragment extends ListFragment{
         String result = lessonPlan.getTeacherFullForTeacherShort(teacherShort);
         if (result == null || result.equals(""))
             result = teacherShort;
-        else if (sharedPreferences.getBoolean("pref_formatted_plan_show_teacher_full_and_short", true))
+        else if (sharedPreferences.getBoolean(Keys.FORMATTED_PLAN_SHOW_TEACHER_FULL_AND_SHORT, true))
             result += " (" + teacherShort + ")";
         return result;
     }

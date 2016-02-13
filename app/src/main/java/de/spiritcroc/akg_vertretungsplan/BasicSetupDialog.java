@@ -29,6 +29,7 @@ import android.preference.PreferenceManager;
 
 import java.util.Arrays;
 
+@Deprecated
 public class BasicSetupDialog extends DialogFragment {
     private SharedPreferences sharedPreferences;
     private int selection;

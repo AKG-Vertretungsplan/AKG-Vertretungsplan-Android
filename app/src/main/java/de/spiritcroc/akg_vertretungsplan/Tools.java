@@ -36,6 +36,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import de.spiritcroc.akg_vertretungsplan.settings.Keys;
+
 public abstract class Tools {
     public static String getLine (String text, int number){
         return getLine (text, number, '\n');
@@ -93,7 +95,7 @@ public abstract class Tools {
     }
     public static void setUnseenFalse(Context context){
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
-        editor.putBoolean("pref_unseen_changes", false);
+        editor.putBoolean(Keys.UNSEEN_CHANGES, false);
         editor.apply();
         updateWidgets(context);
     }
@@ -113,7 +115,7 @@ public abstract class Tools {
     private static final int darkTheme = R.style.Theme_AppCompat;
     private static final int defaultTheme = R.style.AppTheme;
     public static int getStyle(Context context) {
-        return getStyle(PreferenceManager.getDefaultSharedPreferences(context).getString("pref_theme", ""));
+        return getStyle(PreferenceManager.getDefaultSharedPreferences(context).getString(Keys.THEME, ""));
     }
     public static int getStyle(String style){
         if (style.equals("light"))
@@ -259,7 +261,7 @@ public abstract class Tools {
     }*/
 
     public static boolean isWebActivityEnabled(SharedPreferences sharedPreferences) {
-        return sharedPreferences.getInt("last_plan_type", 1) == 1;
+        return sharedPreferences.getInt(Keys.LAST_PLAN_TYPE, 1) == 1;
     }
 
     public static StyleSpan getStyleSpanFromPref(Context context, String stylePrefValue) {

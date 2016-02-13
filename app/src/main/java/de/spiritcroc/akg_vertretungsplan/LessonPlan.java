@@ -24,6 +24,8 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import de.spiritcroc.akg_vertretungsplan.settings.Keys;
+
 public class LessonPlan {
     public static final int DAY_COUNT = 5;
     public static final int LESSON_COUNT = 11;
@@ -41,7 +43,7 @@ public class LessonPlan {
         this.sharedPreferences = sharedPreferences;
         lessons = new Lesson[DAY_COUNT][LESSON_COUNT];
 
-        String recreationKey = sharedPreferences.getString("pref_lesson_plan", ""), dayKey;
+        String recreationKey = sharedPreferences.getString(Keys.LESSON_PLAN, ""), dayKey;
 
         retrieveLessonClass();
 
@@ -53,7 +55,7 @@ public class LessonPlan {
     }
 
     public void retrieveLessonClass() {
-        lessonClass = sharedPreferences.getString("pref_class", "");
+        lessonClass = sharedPreferences.getString(Keys.CLASS, "");
     }
     public String getLessonClass() {
         return lessonClass;
@@ -77,7 +79,7 @@ public class LessonPlan {
             }
             recreationKey += DAY_SEPARATOR;
         }
-        sharedPreferences.edit().putString("pref_lesson_plan", recreationKey).apply();
+        sharedPreferences.edit().putString(Keys.LESSON_PLAN, recreationKey).apply();
     }
 
     public String[] getSubjects(){
@@ -147,7 +149,7 @@ public class LessonPlan {
     }
 
     public void resetLessons(){
-        sharedPreferences.edit().remove("pref_class").apply();
+        sharedPreferences.edit().remove(Keys.CLASS).apply();
         lessonClass = "";
         for (int j = 0; j < lessons.length; j++) {
             for (int i = 0; i < lessons[j].length; i++)
@@ -156,7 +158,7 @@ public class LessonPlan {
     }
 
     public boolean isConfigured(){
-        if (sharedPreferences.contains("pref_class")) {
+        if (sharedPreferences.contains(Keys.CLASS)) {
             return true;
         }
         for (int j = 0; j < lessons.length; j++)
@@ -197,7 +199,7 @@ public class LessonPlan {
         if (!lessons[dayPosition][lesson-1].isFreeTime()) {
             if (teacherShort.equals(lessons[dayPosition][lesson-1].getTeacherShort())) {
                 return true;
-            } else if (sharedPreferences.getBoolean("pref_teacher_short_relevancy_ignore_case", true) && teacherShort.equalsIgnoreCase(lessons[dayPosition][lesson-1].getTeacherShort())) {
+            } else if (sharedPreferences.getBoolean(Keys.TEACHER_SHORT_RELEVANCY_IGNORE_CASE, true) && teacherShort.equalsIgnoreCase(lessons[dayPosition][lesson-1].getTeacherShort())) {
                 return true;
             }
         }

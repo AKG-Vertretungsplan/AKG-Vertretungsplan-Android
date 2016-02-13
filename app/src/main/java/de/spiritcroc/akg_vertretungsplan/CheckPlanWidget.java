@@ -30,7 +30,8 @@ import android.support.annotation.NonNull;
 import android.widget.RemoteViews;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+
+import de.spiritcroc.akg_vertretungsplan.settings.Keys;
 
 public class CheckPlanWidget extends AppWidgetProvider {
     private static final String WIDGET_BUTTON_CLICKED = "widget_button_clicked";
@@ -68,7 +69,7 @@ public class CheckPlanWidget extends AppWidgetProvider {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         if (intent.getAction().equals(WIDGET_BUTTON_CLICKED)){        //open App
-            switch (Integer.parseInt(sharedPreferences.getString("pref_widget_opens_activity", "0"))) {
+            switch (Integer.parseInt(sharedPreferences.getString(Keys.WIDGET_OPENS_ACTIVITY, "0"))) {
                 case 1:
                     context.startActivity(new Intent(context, WebActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                     break;
@@ -89,14 +90,13 @@ public class CheckPlanWidget extends AppWidgetProvider {
     static void updateViews(RemoteViews views, Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-        if (sharedPreferences.getString("pref_text_view_text", "").equals(context.getString(R.string.loading))){
+        if (sharedPreferences.getString(Keys.TEXT_VIEW_TEXT, "").equals(context.getString(R.string.loading))){
             views.setTextViewText(R.id.appwidget_button, context.getString(R.string.loading));
-            //views.setTextColor(R.id.appwidget_button, Integer.parseInt(sharedPreferences.getString("pref_widget_text_color", "" + Color.WHITE))); //keep loading red if new version
         }
-        else if (sharedPreferences.getBoolean("pref_illegal_plan", false)){
+        else if (sharedPreferences.getBoolean(Keys.ILLEGAL_PLAN, false)){
             views.setTextViewText(R.id.appwidget_button, context.getString(R.string.error_illegal_plan));
         }
-        else if (sharedPreferences.getBoolean("pref_unseen_changes", false)){
+        else if (sharedPreferences.getBoolean(Keys.UNSEEN_CHANGES, false)){
             ArrayList<String> relevantInformation = new ArrayList<>(),
                     generalInformation = new ArrayList<>(),
                     irrelevantInformation = new ArrayList<>();
@@ -106,20 +106,20 @@ public class CheckPlanWidget extends AppWidgetProvider {
             boolean amendUpdateTime;
             if (newRelevantNotificationCount > 0) {
                 text = context.getResources().getQuantityString(R.plurals.new_relevant_information, newRelevantNotificationCount, newRelevantNotificationCount);
-                color = Integer.parseInt(sharedPreferences.getString("pref_widget_text_color_highlight_relevant", "" + Color.RED));
-                amendUpdateTime = sharedPreferences.getBoolean("pref_widget_last_update_relevant", false);
+                color = Integer.parseInt(sharedPreferences.getString(Keys.WIDGET_TEXT_COLOR_HL_RELEVANT, "" + Color.RED));
+                amendUpdateTime = sharedPreferences.getBoolean(Keys.WIDGET_LAST_UPDATE_RELEVANT, false);
             } else if (generalInformation.size() > 0) {
                 text = context.getResources().getQuantityString(R.plurals.new_general_information, generalInformation.size(), generalInformation.size());
-                color = Integer.parseInt(sharedPreferences.getString("pref_widget_text_color_highlight_general", "" + Color.RED));
-                amendUpdateTime = sharedPreferences.getBoolean("pref_widget_last_update_general", false);
+                color = Integer.parseInt(sharedPreferences.getString(Keys.WIDGET_TEXT_COLOR_HL_GENERAL, "" + Color.RED));
+                amendUpdateTime = sharedPreferences.getBoolean(Keys.WIDGET_LAST_UPDATE_GENERAL, false);
             } else if (irrelevantInformation.size() > 0) {
                 text = context.getResources().getQuantityString(R.plurals.new_irrelevant_information, irrelevantInformation.size(), irrelevantInformation.size());
-                color = Integer.parseInt(sharedPreferences.getString("pref_widget_text_color_highlight", "" + Color.RED));
-                amendUpdateTime = sharedPreferences.getBoolean("pref_widget_last_update_irrelevant", false);
+                color = Integer.parseInt(sharedPreferences.getString(Keys.WIDGET_TEXT_COLOR_HL, "" + Color.RED));
+                amendUpdateTime = sharedPreferences.getBoolean(Keys.WIDGET_LAST_UPDATE_IRRELEVANT, false);
             } else {
                 text = context.getString(R.string.new_version);
-                color = Integer.parseInt(sharedPreferences.getString("pref_widget_text_color", "" + Color.WHITE));
-                amendUpdateTime = sharedPreferences.getBoolean("pref_widget_last_update_none", true);
+                color = Integer.parseInt(sharedPreferences.getString(Keys.WIDGET_TEXT_COLOR, "" + Color.WHITE));
+                amendUpdateTime = sharedPreferences.getBoolean(Keys.WIDGET_LAST_UPDATE_NONE, true);
             }
             if (amendUpdateTime) {
                 text += " (" + getLastUpdateTime(context, sharedPreferences) + ")";
@@ -128,18 +128,18 @@ public class CheckPlanWidget extends AppWidgetProvider {
             views.setTextColor(R.id.appwidget_button, color);
         }
         else{
-            if (sharedPreferences.getBoolean("pref_widget_last_update_none", true)) {
+            if (sharedPreferences.getBoolean(Keys.WIDGET_LAST_UPDATE_NONE, true)) {
                 views.setTextViewText(R.id.appwidget_button, context.getString(R.string.last_checked) + " " + getLastUpdateTime(context, sharedPreferences));
             } else {
                 views.setTextViewText(R.id.appwidget_button, context.getString(R.string.no_change));
             }
-            views.setTextColor(R.id.appwidget_button, Integer.parseInt(sharedPreferences.getString("pref_widget_text_color", "" + Color.WHITE)));
+            views.setTextColor(R.id.appwidget_button, Integer.parseInt(sharedPreferences.getString(Keys.WIDGET_TEXT_COLOR, "" + Color.WHITE)));
         }
     }
 
     private static String getLastUpdateTime(Context context, SharedPreferences sharedPreferences) {
-        String time = sharedPreferences.getString("pref_last_checked", context.getString(R.string.error_could_not_load));
-        if (!sharedPreferences.getBoolean("pref_widget_last_update_show_seconds", false)) {
+        String time = sharedPreferences.getString(Keys.LAST_CHECKED, context.getString(R.string.error_could_not_load));
+        if (!sharedPreferences.getBoolean(Keys.WIDGET_LAST_UPDATE_SHOW_SECONDS, false)) {
             int separatorIndex = time.lastIndexOf(":");
             if (separatorIndex > 0) {
                 time = time.substring(0, separatorIndex);

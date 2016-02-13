@@ -43,6 +43,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import de.spiritcroc.akg_vertretungsplan.settings.Keys;
+import de.spiritcroc.akg_vertretungsplan.settings.SettingsActivity;
+
 public abstract class NavigationDrawerActivity extends AppCompatActivity {
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
@@ -166,7 +169,7 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        debugButton.setVisibility(sharedPreferences.getBoolean("pref_hidden_debug_enabled", false) && sharedPreferences.getBoolean("pref_enable_option_send_debug_email", false) ?
+        debugButton.setVisibility(sharedPreferences.getBoolean(Keys.HIDDEN_DEBUG_ENABLED, false) && sharedPreferences.getBoolean(Keys.DEBUG_OPTION_SEND_DEBUG_MAIL, false) ?
                 View.VISIBLE : View.GONE);
     }
 
@@ -242,30 +245,30 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
                         getString(R.string.debug_email_automatically_added_information) + "\n\n" +
 
                         "-------pref_last_checked-------\n" +
-                        sharedPreferences.getString("pref_last_checked", "") + "\n\n\n" +
+                        sharedPreferences.getString(Keys.LAST_CHECKED, "") + "\n\n\n" +
                         "-------pref_last_update-------\n" +
-                        sharedPreferences.getString("pref_last_update", "") + "\n\n\n" +
+                        sharedPreferences.getString(Keys.LAST_UPDATE, "") + "\n\n\n" +
 
                         "-------pref_latest_title_1-------\n" +
-                        sharedPreferences.getString("pref_latest_title_1", "") + "\n\n\n" +
+                        sharedPreferences.getString(Keys.LATEST_TITLE_1, "") + "\n\n\n" +
                         "-------pref_latest_plan_1-------\n" +
-                        sharedPreferences.getString("pref_latest_plan_1", "") + "\n\n\n" +
+                        sharedPreferences.getString(Keys.LATEST_PLAN_1, "") + "\n\n\n" +
                         "-------pref_latest_title_2-------\n" +
-                        sharedPreferences.getString("pref_latest_title_2", "") + "\n\n\n" +
+                        sharedPreferences.getString(Keys.LATEST_TITLE_2, "") + "\n\n\n" +
                         "-------pref_latest_plan_2-------\n" +
-                        sharedPreferences.getString("pref_latest_plan_2", "") + "\n\n\n" +
+                        sharedPreferences.getString(Keys.LATEST_PLAN_2, "") + "\n\n\n" +
 
                         "-------pref_current_title_1-------\n" +
-                        sharedPreferences.getString("pref_current_title_1", "") + "\n\n\n" +
+                        sharedPreferences.getString(Keys.CURRENT_TITLE_1, "") + "\n\n\n" +
                         "-------pref_current_plan_1-------\n" +
-                        sharedPreferences.getString("pref_current_plan_1", "") + "\n\n\n" +
+                        sharedPreferences.getString(Keys.CURRENT_PLAN_1, "") + "\n\n\n" +
                         "-------pref_current_title_2-------\n" +
-                        sharedPreferences.getString("pref_current_title_2", "") + "\n\n\n" +
+                        sharedPreferences.getString(Keys.CURRENT_TITLE_2, "") + "\n\n\n" +
                         "-------pref_current_plan_2-------\n" +
-                        sharedPreferences.getString("pref_current_plan_2", "") + "\n\n\n" +
+                        sharedPreferences.getString(Keys.CURRENT_PLAN_2, "") + "\n\n\n" +
 
                         "-------pref_html_latest-------\n" +
-                        sharedPreferences.getString("pref_html_latest", "") + "\n\n\n" +
+                        sharedPreferences.getString(Keys.HTML_LATEST, "") + "\n\n\n" +
 
                         "-------Log-------\n" +
                         OwnLog.getFull(sharedPreferences);
@@ -329,7 +332,7 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
         if (DownloadService.isDownloading()) {
             message = getString(R.string.loading) + "\n" + message;
         }
-        if (sharedPreferences.getBoolean("pref_last_offline", false)) {
+        if (sharedPreferences.getBoolean(Keys.LAST_OFFLINE, false)) {
             message = getString(R.string.offline) + "\n" + message;
         }
 
@@ -341,7 +344,7 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
      * Whether to start download service if there are unseen changes
      */
     public void startDownloadService(boolean force){
-        if (!DownloadService.isDownloading() && (force || !sharedPreferences.getBoolean("pref_unseen_changes", false)))
+        if (!DownloadService.isDownloading() && (force || !sharedPreferences.getBoolean(Keys.UNSEEN_CHANGES, false)))
             startService(new Intent(this, DownloadService.class).setAction(DownloadService.ACTION_DOWNLOAD_PLAN));
     }
 

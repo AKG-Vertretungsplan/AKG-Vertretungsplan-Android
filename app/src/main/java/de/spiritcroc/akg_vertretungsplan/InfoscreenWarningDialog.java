@@ -26,6 +26,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
+import de.spiritcroc.akg_vertretungsplan.settings.Keys;
+
 public class InfoscreenWarningDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -43,7 +45,7 @@ public class InfoscreenWarningDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         PreferenceManager.getDefaultSharedPreferences(getActivity()).edit()
-                                .putString("pref_plan", "1")
+                                .putString(Keys.PLAN, "1")
                                 .remove("seen_infoscreen_warning")// Does not exist anymore
                                 .apply();
                     }

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (C) 2015-2016 SpiritCroc
+    Email: spiritcroc@gmail.com
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/pref_lesson_plan">
+    <CheckBoxPreference
+        android:key="pref_lesson_plan_auto_select_day"
+        android:title="@string/pref_lesson_plan_auto_select_day"
+        android:summary="@string/pref_lesson_plan_auto_select_day_summary"
+        android:defaultValue="true"/>
+    <EditTextPreference
+        android:key="pref_lesson_plan_auto_select_day_time"
+        android:title="@string/pref_lesson_plan_auto_select_day_time"
+        android:numeric="integer"
+        android:defaultValue="17"
+        android:dependency="pref_lesson_plan_auto_select_day"/>
+    <CheckBoxPreference
+        android:key="pref_teacher_short_relevancy_ignore_case"
+        android:title="@string/pref_teacher_short_relevancy_ignore_case"
+        android:summary="@string/pref_teacher_short_relevancy_ignore_case_summary"
+        android:defaultValue="true"/>
+    <Preference
+        android:key="pref_lesson_plan_add_launcher_shortcut"
+        android:title="@string/pref_lesson_plan_add_launcher_shortcut"
+        android:summary="@string/pref_lesson_plan_add_launcher_shortcut_summary"/>
+    <PreferenceCategory
+        android:title="@string/pref_colors">
+        <ListPreference
+            android:key="pref_lesson_plan_color_time"
+            android:title="@string/pref_lesson_plan_color_time"
+            android:entries="@array/pref_color_array"
+            android:entryValues="@array/pref_color_array_values"
+            android:defaultValue="@string/pref_color_blue_value"/>
+        <ListPreference
+            android:key="pref_lesson_plan_color_lesson"
+            android:title="@string/pref_lesson_plan_color_lesson"
+            android:entries="@array/pref_color_array"
+            android:entryValues="@array/pref_color_array_values"
+            android:defaultValue="@string/pref_color_black_value"/>
+        <ListPreference
+            android:key="pref_lesson_plan_color_free_time"
+            android:title="@string/pref_lesson_plan_color_free_time"
+            android:entries="@array/pref_color_array"
+            android:entryValues="@array/pref_color_array_values"
+            android:defaultValue="@string/pref_color_gray_value"/>
+        <ListPreference
+            android:key="pref_lesson_plan_color_room"
+            android:title="@string/pref_lesson_plan_color_room"
+            android:entries="@array/pref_color_array"
+            android:entryValues="@array/pref_color_array_values"
+            android:defaultValue="@string/pref_color_dkgray_value"/>
+        <ListPreference
+            android:key="pref_lesson_plan_color_relevant_information"
+            android:title="@string/pref_lesson_plan_color_relevant_information"
+            android:entries="@array/pref_color_array"
+            android:entryValues="@array/pref_color_array_values"
+            android:defaultValue="@string/pref_color_dkgray_value"/>
+        <ListPreference
+            android:key="pref_lesson_plan_color_general_information"
+            android:title="@string/pref_lesson_plan_color_general_information"
+            android:entries="@array/pref_color_array"
+            android:entryValues="@array/pref_color_array_values"
+            android:defaultValue="@string/pref_color_dkgray_value"/>
+    </PreferenceCategory>
+</PreferenceScreen>

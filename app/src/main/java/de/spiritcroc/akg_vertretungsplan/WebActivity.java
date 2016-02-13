@@ -35,6 +35,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
 
+import de.spiritcroc.akg_vertretungsplan.settings.Keys;
+
 public class WebActivity extends NavigationDrawerActivity {
     private final static String cssHeader = "<style media=\"screen\" type=\"text/css\">";
     private final static String cssFoot = "</style>";
@@ -59,9 +61,9 @@ public class WebActivity extends NavigationDrawerActivity {
         customWebViewClient = new CustomWebViewClient();
         webView.setWebViewClient(customWebViewClient);
         updateCss();
-        loadWebView(sharedPreferences.getString("pref_html_latest", ""));
+        loadWebView(sharedPreferences.getString(Keys.HTML_LATEST, ""));
         textView = (TextView) findViewById(R.id.text_view);
-        textView.setText(sharedPreferences.getString("pref_text_view_text", getString(R.string.welcome)));
+        textView.setText(sharedPreferences.getString(Keys.TEXT_VIEW_TEXT, getString(R.string.welcome)));
 
         LocalBroadcastManager.getInstance(this).registerReceiver(downloadInfoReceiver, new IntentFilter("PlanDownloadServiceUpdate"));
 
@@ -89,10 +91,10 @@ public class WebActivity extends NavigationDrawerActivity {
             overridePendingTransition(0, 0);
         }
 
-        textView.setVisibility(sharedPreferences.getBoolean("pref_hide_text_view", false) ? View.GONE : View.VISIBLE);
+        textView.setVisibility(sharedPreferences.getBoolean(Keys.HIDE_TEXT_VIEW, false) ? View.GONE : View.VISIBLE);
 
         if (updateCss()) {
-            loadWebView(sharedPreferences.getString("pref_html_latest", ""));
+            loadWebView(sharedPreferences.getString(Keys.HTML_LATEST, ""));
         }
     }
     @Override
@@ -129,12 +131,12 @@ public class WebActivity extends NavigationDrawerActivity {
 
     private void openInBrowser() {
         String link;
-        if (sharedPreferences.getInt("last_plan_type", 1) == 2) {
+        if (sharedPreferences.getInt(Keys.LAST_PLAN_TYPE, 1) == 2) {
             link = DownloadService.PLAN_2_ADDRESS;
         } else {
             link = DownloadService.PLAN_1_ADDRESS;
-            String username = sharedPreferences.getString("pref_username", ""),
-                    password = sharedPreferences.getString("pref_password", "");
+            String username = sharedPreferences.getString(Keys.USERNAME, ""),
+                    password = sharedPreferences.getString(Keys.PASSWORD, "");
             String prefix = "http://";
             int index = link.indexOf(prefix);
             if (!username.equals("") && !password.equals("") && index >= 0) {
@@ -176,10 +178,10 @@ public class WebActivity extends NavigationDrawerActivity {
      */
     private boolean updateCss() {
         String oldCss = css;
-        if (sharedPreferences.getBoolean("pref_web_plan_use_custom_style", false)) {
-            css = sharedPreferences.getString("pref_web_plan_custom_style", getString(R.string.web_plan_default_custom_style));
+        if (sharedPreferences.getBoolean(Keys.WEB_PLAN_USE_CUSTOM_STYLE, false)) {
+            css = sharedPreferences.getString(Keys.WEB_PLAN_CUSTOM_STYLE, getString(R.string.web_plan_default_custom_style));
         } else {
-            css = sharedPreferences.getString("pref_css", getString(R.string.web_plan_custom_style_akg_default));
+            css = sharedPreferences.getString(Keys.CSS, getString(R.string.web_plan_custom_style_akg_default));
         }
         return oldCss == null || !oldCss.equals(css);
     }

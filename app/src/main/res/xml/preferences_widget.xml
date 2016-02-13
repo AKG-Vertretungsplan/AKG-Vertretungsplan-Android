@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (C) 2015-2016 SpiritCroc
+    Email: spiritcroc@gmail.com
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/pref_widget">
+    <ListPreference
+        android:key="pref_widget_opens_activity"
+        android:title="@string/pref_widget_opens_activity"
+        android:entries="@array/pref_widget_opens_activity_array"
+        android:entryValues="@array/pref_widget_opens_activity_array_values"
+        android:defaultValue="0"/>
+    <PreferenceCategory
+        android:title="@string/pref_colors">
+        <ListPreference
+            android:key="pref_widget_text_color"
+            android:title="@string/pref_text_color"
+            android:entries="@array/pref_color_array"
+            android:entryValues="@array/pref_color_array_values"
+            android:defaultValue="@string/pref_color_white_value"/>
+        <ListPreference
+            android:key="pref_widget_text_color_highlight_relevant"
+            android:title="@string/pref_widget_text_color_highlight_new_relevant"
+            android:entries="@array/pref_color_array"
+            android:entryValues="@array/pref_color_array_values"
+            android:defaultValue="@string/pref_color_red_value"/>
+        <ListPreference
+            android:key="pref_widget_text_color_highlight_general"
+            android:title="@string/pref_widget_text_color_highlight_new_general"
+            android:entries="@array/pref_color_array"
+            android:entryValues="@array/pref_color_array_values"
+            android:defaultValue="@string/pref_color_red_value"/>
+        <ListPreference
+            android:key="pref_widget_text_color_highlight"
+            android:title="@string/pref_widget_text_color_highlight_new"
+            android:entries="@array/pref_color_array"
+            android:entryValues="@array/pref_color_array_values"
+            android:defaultValue="@string/pref_color_red_value"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/pref_widget_last_update">
+        <CheckBoxPreference
+            android:key="pref_widget_last_update_show_seconds"
+            android:title="@string/pref_widget_last_update_show_seconds"
+            android:defaultValue="false"/>
+        <CheckBoxPreference
+            android:key="pref_widget_last_update_relevant"
+            android:title="@string/pref_widget_last_update_relevant"
+            android:summary="@string/pref_widget_last_update_relevant_summary"
+            android:defaultValue="false"/>
+        <CheckBoxPreference
+            android:key="pref_widget_last_update_general"
+            android:title="@string/pref_widget_last_update_general"
+            android:summary="@string/pref_widget_last_update_general_summary"
+            android:defaultValue="false"/>
+        <CheckBoxPreference
+            android:key="pref_widget_last_update_irrelevant"
+            android:title="@string/pref_widget_last_update_irrelevant"
+            android:summary="@string/pref_widget_last_update_irrelevant_summary"
+            android:defaultValue="false"/>
+        <CheckBoxPreference
+            android:key="pref_widget_last_update_none"
+            android:title="@string/pref_widget_last_update_none"
+            android:summary="@string/pref_widget_last_update_none_summary"
+            android:defaultValue="true"/>
+    </PreferenceCategory>
+</PreferenceScreen>

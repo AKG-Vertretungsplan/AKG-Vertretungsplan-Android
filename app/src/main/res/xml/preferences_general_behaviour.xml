@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (C) 2015-2016 SpiritCroc
+    Email: spiritcroc@gmail.com
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/pref_general_behaviour">
+    <ListPreference
+        android:key="pref_auto_mark_read"
+        android:title="@string/pref_auto_mark_read"
+        android:entries="@array/pref_auto_mark_read_array"
+        android:entryValues="@array/pref_auto_mark_read_array_values"
+        android:defaultValue="@string/pref_auto_mark_read_on_plan_reloaded_value"/>
+    <EditTextPreference
+        android:key="pref_auto_load_on_open"
+        android:title="@string/pref_auto_load_on_open"
+        android:numeric="integer"
+        android:defaultValue="5"/>
+    <CheckBoxPreference
+        android:key="pref_background_service"
+        android:title="@string/pref_background_service"
+        android:summary="@string/pref_background_service_summary"
+        android:defaultValue="true"/>
+    <EditTextPreference
+        android:key="pref_background_update_interval"
+        android:title="@string/pref_background_update_interval"
+        android:numeric="integer"
+        android:defaultValue="60"
+        android:dependency="pref_background_service"/>
+</PreferenceScreen>

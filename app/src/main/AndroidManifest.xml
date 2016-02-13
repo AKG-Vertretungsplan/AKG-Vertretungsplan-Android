@@ -38,7 +38,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".settings.SettingsActivity"
             android:label="@string/settings"/>
         <activity
             android:name=".FormattedActivity"

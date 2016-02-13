@@ -55,6 +55,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import de.spiritcroc.akg_vertretungsplan.settings.Keys;
+
 public class FormattedActivity extends NavigationDrawerActivity implements ItemFragment.OnFragmentInteractionListener{
     private CustomFragmentPagerAdapter fragmentPagerAdapter;
     private static ViewPager viewPager;
@@ -83,11 +85,11 @@ public class FormattedActivity extends NavigationDrawerActivity implements ItemF
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         textView = (TextView) findViewById(R.id.text_view);
-        textView.setText(sharedPreferences.getString("pref_text_view_text", getString(R.string.welcome)));
-        title1 = sharedPreferences.getString("pref_current_title_1", getString(R.string.today));
-        plan1 = sharedPreferences.getString("pref_current_plan_1", "");
-        title2 = sharedPreferences.getString("pref_current_title_2", getString(R.string.tomorrow));
-        plan2 = sharedPreferences.getString("pref_current_plan_2", "");
+        textView.setText(sharedPreferences.getString(Keys.TEXT_VIEW_TEXT, getString(R.string.welcome)));
+        title1 = sharedPreferences.getString(Keys.CURRENT_TITLE_1, getString(R.string.today));
+        plan1 = sharedPreferences.getString(Keys.CURRENT_PLAN_1, "");
+        title2 = sharedPreferences.getString(Keys.CURRENT_TITLE_2, getString(R.string.tomorrow));
+        plan2 = sharedPreferences.getString(Keys.CURRENT_PLAN_2, "");
         try {
             date1 = Tools.getDateFromPlanTitle(title1);
         }
@@ -127,43 +129,43 @@ public class FormattedActivity extends NavigationDrawerActivity implements ItemF
 
         LocalBroadcastManager.getInstance(this).registerReceiver(downloadInfoReceiver, new IntentFilter("PlanDownloadServiceUpdate"));
 
-        if (sharedPreferences.getBoolean("pref_seen_disclaimer", false))
+        if (sharedPreferences.getBoolean(Keys.SEEN_DISCLAIMER, false))
             onCreateAfterDisclaimer();
 
     }
     public void onCreateAfterDisclaimer(){
         if (created)//only run once
             return;
-        /*if (!sharedPreferences.contains("pref_plan")) {
+        /*if (!sharedPreferences.contains(Keys.PLAN)) {
             new BasicSetupDialog().show(getFragmentManager(), "BasicSetupDialog");
             // BasicSetupDialog will call this method again
             return;
         }*/
-        if (sharedPreferences.getString("pref_plan", "1").equals("2")) {
+        if (sharedPreferences.getString(Keys.PLAN, "1").equals("2")) {
             new InfoscreenWarningDialog().show(getFragmentManager(), "InfoscreenWarningDialog");
         }
         //Download plan stuff  start
-        Calendar calendar = DownloadService.stringToCalendar(sharedPreferences.getString("pref_last_checked", "???"));
+        Calendar calendar = DownloadService.stringToCalendar(sharedPreferences.getString(Keys.LAST_CHECKED, "???"));
         boolean startedDownloadService = false;
-        if (calendar == null || Calendar.getInstance().getTime().getTime() - calendar.getTime().getTime() > Integer.parseInt(sharedPreferences.getString("pref_auto_load_on_open", "5"))*60000) {
+        if (calendar == null || Calendar.getInstance().getTime().getTime() - calendar.getTime().getTime() > Integer.parseInt(sharedPreferences.getString(Keys.AUTO_LOAD_ON_OPEN, "5"))*60000) {
             startDownloadService(false);
             startedDownloadService = true;
         }
         else {
-            String text = sharedPreferences.getBoolean("pref_illegal_plan", false) ? getString(R.string.error_illegal_plan) : getString(R.string.last_checked) + " " + sharedPreferences.getString("pref_last_checked", getString(R.string.error_unknown));
+            String text = sharedPreferences.getBoolean(Keys.ILLEGAL_PLAN, false) ? getString(R.string.error_illegal_plan) : getString(R.string.last_checked) + " " + sharedPreferences.getString(Keys.LAST_CHECKED, getString(R.string.error_unknown));
             textView.setText(text);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("pref_text_view_text", text);
+            editor.putString(Keys.TEXT_VIEW_TEXT, text);
             editor.apply();
         }
         //Download plan stuff end
         created = true;
 
-        if (sharedPreferences.getBoolean("pref_illegal_plan", false) && !startedDownloadService) {
+        if (sharedPreferences.getBoolean(Keys.ILLEGAL_PLAN, false) && !startedDownloadService) {
             illegalPlan();
         }
 
-        if (date1 != null && sharedPreferences.getBoolean("pref_formatted_plan_auto_select_day", true)) {//Try to show most relevant day
+        if (date1 != null && sharedPreferences.getBoolean(Keys.FORMATTED_PLAN_AUTO_SELECT_DAY, true)) {//Try to show most relevant day
             Calendar currentDate = Calendar.getInstance();
             if (currentDate.after(date1)){
                 if (currentDate.get(Calendar.DAY_OF_MONTH) != date1.get(Calendar.DAY_OF_MONTH)
@@ -172,7 +174,7 @@ public class FormattedActivity extends NavigationDrawerActivity implements ItemF
                     shortCutToPageTwo = true;
                 else{
                     try{
-                        if (currentDate.get(Calendar.HOUR_OF_DAY) >= Integer.parseInt(sharedPreferences.getString("pref_formatted_plan_auto_select_day_time", "")))
+                        if (currentDate.get(Calendar.HOUR_OF_DAY) >= Integer.parseInt(sharedPreferences.getString(Keys.FORMATTED_PLAN_AUTO_SELECT_DAY_TIME, "")))
                             shortCutToPageTwo = true;
                     }
                     catch (Exception e){
@@ -206,15 +208,15 @@ public class FormattedActivity extends NavigationDrawerActivity implements ItemF
 
         IsRunningSingleton.getInstance().registerActivity(this);
 
-        if (!sharedPreferences.getBoolean("pref_seen_disclaimer", false))
+        if (!sharedPreferences.getBoolean(Keys.SEEN_DISCLAIMER, false))
             new DisclaimerDialog().show(getFragmentManager(), "DisclaimerDialog");
 
         if (filterItem != null)
-            filterItem.setShowAsAction(sharedPreferences.getBoolean("pref_show_filtered_plan_as_action", false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
+            filterItem.setShowAsAction(sharedPreferences.getBoolean(Keys.SHOW_FILTERED_PLAN_AS_ACTION, false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
         if (reloadItem != null)
-            reloadItem.setVisible(!sharedPreferences.getBoolean("pref_hide_action_reload", false));
+            reloadItem.setVisible(!sharedPreferences.getBoolean(Keys.HIDE_ACTION_RELOAD, false));
         if (markReadItem != null)
-            markReadItem.setShowAsAction(sharedPreferences.getBoolean("pref_show_mark_read_as_action", false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
+            markReadItem.setShowAsAction(sharedPreferences.getBoolean(Keys.SHOW_MARK_READ_AS_ACTION, false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
 
         //Apply color settings:
         setActionBarColor();
@@ -231,9 +233,9 @@ public class FormattedActivity extends NavigationDrawerActivity implements ItemF
             overridePendingTransition(0, 0);
         }
 
-        textView.setVisibility(sharedPreferences.getBoolean("pref_hide_text_view", false) ? View.GONE : View.VISIBLE);
+        textView.setVisibility(sharedPreferences.getBoolean(Keys.HIDE_TEXT_VIEW, false) ? View.GONE : View.VISIBLE);
 
-        if (sharedPreferences.getBoolean("pref_reload_on_resume", false))
+        if (sharedPreferences.getBoolean(Keys.RELOAD_ON_RESUME, false))
             startDownloadService(false);
         BReceiver.setWidgetUpdateAlarm(this);
     }
@@ -281,11 +283,11 @@ public class FormattedActivity extends NavigationDrawerActivity implements ItemF
 
         if (menu != null) {
             reloadItem = menu.findItem(R.id.action_reload_web_view);
-            reloadItem.setVisible(!sharedPreferences.getBoolean("pref_hide_action_reload", false));
+            reloadItem.setVisible(!sharedPreferences.getBoolean(Keys.HIDE_ACTION_RELOAD, false));
             filterItem = menu.findItem(R.id.action_filter_plan);
-            filterItem.setShowAsAction(sharedPreferences.getBoolean("pref_show_filtered_plan_as_action", false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
+            filterItem.setShowAsAction(sharedPreferences.getBoolean(Keys.SHOW_FILTERED_PLAN_AS_ACTION, false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
             markReadItem = menu.findItem(R.id.action_mark_read);
-            markReadItem.setShowAsAction(sharedPreferences.getBoolean("pref_show_mark_read_as_action", false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
+            markReadItem.setShowAsAction(sharedPreferences.getBoolean(Keys.SHOW_MARK_READ_AS_ACTION, false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
             requestRecheckUnreadChanges();
 
             //http://stackoverflow.com/questions/22046903/changing-the-android-overflow-menu-icon-programmatically/22106474#22106474
@@ -309,10 +311,10 @@ public class FormattedActivity extends NavigationDrawerActivity implements ItemF
             });
 
             MenuItem filterPlanMenuItem = menu.findItem(R.id.action_filter_plan);
-            filteredMode = sharedPreferences.getBoolean("pref_filter_plan", false);
+            filteredMode = sharedPreferences.getBoolean(Keys.FILTER_PLAN, false);
             if (!LessonPlan.getInstance(sharedPreferences).isConfigured()) {
                 filteredMode = false;
-                sharedPreferences.edit().putBoolean("pref_filter_plan", filteredMode).apply();
+                sharedPreferences.edit().putBoolean(Keys.FILTER_PLAN, filteredMode).apply();
             }
             filterPlanMenuItem.setChecked(filteredMode);
             setActionBarColor();
@@ -321,7 +323,7 @@ public class FormattedActivity extends NavigationDrawerActivity implements ItemF
                 public boolean onMenuItemClick(MenuItem item) {
                     filteredMode = !item.isChecked();
                     item.setChecked(filteredMode);
-                    sharedPreferences.edit().putBoolean("pref_filter_plan", filteredMode).apply();
+                    sharedPreferences.edit().putBoolean(Keys.FILTER_PLAN, filteredMode).apply();
                     setActionBarColor();
                     if (fragment1 != null)
                         fragment1.reloadContent();
@@ -338,11 +340,11 @@ public class FormattedActivity extends NavigationDrawerActivity implements ItemF
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             int backgroundColor = filteredMode ?
-                    Integer.parseInt(sharedPreferences.getString("pref_action_bar_filtered_background_color", "-33024")) :
-                    Integer.parseInt(sharedPreferences.getString("pref_action_bar_normal_background_color", "" + getResources().getColor(R.color.primary_material_dark)));
+                    Integer.parseInt(sharedPreferences.getString(Keys.ACTION_BAR_FILTERED_BG_COLOR, "-33024")) :
+                    Integer.parseInt(sharedPreferences.getString(Keys.ACTION_BAR_NORMAL_BG_COLOR, "" + getResources().getColor(R.color.primary_material_dark)));
             boolean darkText = filteredMode ?
-                    sharedPreferences.getBoolean("pref_action_bar_filtered_dark_text", true) :
-                    sharedPreferences.getBoolean("pref_action_bar_normal_dark_text", false);
+                    sharedPreferences.getBoolean(Keys.ACTION_BAR_FILTERED_DARK_TEXT, true) :
+                    sharedPreferences.getBoolean(Keys.ACTION_BAR_NORMAL_DARK_TEXT, false);
 
             updateActionHomeAsUp(darkText);
 
@@ -508,7 +510,7 @@ public class FormattedActivity extends NavigationDrawerActivity implements ItemF
                     if (fragment2!=null)
                         fragment2.setRefreshing(false);
 
-                    if (sharedPreferences.getBoolean("pref_illegal_plan", false)) {
+                    if (sharedPreferences.getBoolean(Keys.ILLEGAL_PLAN, false)) {
                         illegalPlan();
                     }
                 }

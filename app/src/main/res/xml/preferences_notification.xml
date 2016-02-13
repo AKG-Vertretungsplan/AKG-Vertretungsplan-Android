@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (C) 2015-2016 SpiritCroc
+    Email: spiritcroc@gmail.com
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/pref_notification">
+    <CheckBoxPreference
+        android:key="pref_notification_enabled"
+        android:title="@string/pref_notification_enabled"
+        android:summary="@string/pref_notification_enabled_summary"
+        android:defaultValue="true"/>
+    <PreferenceCategory
+        android:title="@string/pref_notification_appearance"
+        android:key="pref_category_which_has_heads_up_in_it">
+        <CheckBoxPreference
+            android:key="pref_notification_sound_enabled"
+            android:title="@string/pref_notification_sound_enabled"
+            android:defaultValue="true"
+            android:dependency="pref_notification_enabled"/>
+        <RingtonePreference
+            android:key="pref_notification_sound"
+            android:title="@string/pref_notification_sound"
+            android:defaultValue=""
+            android:dependency="pref_notification_sound_enabled"/>
+        <CheckBoxPreference
+            android:key="pref_led_notification_enabled"
+            android:title="@string/pref_led_notification_enabled"
+            android:defaultValue="true"
+            android:dependency="pref_notification_enabled"/>
+        <ListPreference
+            android:key="pref_led_notification_color"
+            android:title="@string/pref_led_notification_color"
+            android:entries="@array/pref_led_color_array"
+            android:entryValues="@array/pref_led_color_array_values"
+            android:dependency="pref_led_notification_enabled"
+            android:defaultValue="@string/pref_color_white_value"/>
+        <CheckBoxPreference
+            android:key="pref_vibrate_notification_enabled"
+            android:title="@string/pref_vibrate_notification_enabled"
+            android:defaultValue="true"
+            android:dependency="pref_notification_enabled"/>
+        <ListPreference
+            android:key="pref_notification_heads_up"
+            android:title="@string/pref_notification_heads_up"
+            android:entries="@array/pref_notification_heads_up_array"
+            android:entryValues="@array/pref_notification_heads_up_array_values"
+            android:defaultValue="@string/pref_notification_heads_up_default_value"
+            android:dependency="pref_notification_enabled"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/pref_notification_rules">
+        <CheckBoxPreference
+            android:key="pref_notification_only_if_relevant"
+            android:title="@string/pref_notification_only_if_relevant"
+            android:summary="@string/pref_notification_only_if_relevant_summary"
+            android:defaultValue="false"
+            android:dependency="pref_notification_enabled"/>
+        <CheckBoxPreference
+            android:key="pref_notification_general_not_relevant"
+            android:title="@string/pref_notification_general_not_relevant"
+            android:summary="@string/pref_notification_general_not_relevant_summary"
+            android:defaultValue="false"
+            android:dependency="pref_notification_only_if_relevant"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/pref_content">
+        <ListPreference
+            android:key="pref_notification_preview_relevant_color"
+            android:title="@string/pref_notification_preview_relevant_color"
+            android:entries="@array/pref_color_array"
+            android:entryValues="@array/pref_color_array_values"
+            android:defaultValue="@string/pref_color_gray_value"
+            android:dependency="pref_notification_enabled"/>
+        <ListPreference
+            android:key="pref_notification_preview_relevant_style"
+            android:title="@string/pref_notification_preview_relevant_style"
+            android:entries="@array/pref_text_style"
+            android:entryValues="@array/pref_text_style_values"
+            android:defaultValue="@string/pref_text_style_bold_value"
+            android:dependency="pref_notification_enabled"/>
+        <ListPreference
+            android:key="pref_notification_preview_general_color"
+            android:title="@string/pref_notification_preview_general_color"
+            android:entries="@array/pref_color_array"
+            android:entryValues="@array/pref_color_array_values"
+            android:defaultValue="@string/pref_color_gray_value"/>
+        <ListPreference
+            android:key="pref_notification_preview_general_style"
+            android:title="@string/pref_notification_preview_general_style"
+            android:entries="@array/pref_text_style"
+            android:entryValues="@array/pref_text_style_values"
+            android:defaultValue="@string/pref_text_style_italic_value"/>
+        <ListPreference
+            android:key="pref_notification_preview_irrelevant_color"
+            android:title="@string/pref_notification_preview_irrelevant_color"
+            android:entries="@array/pref_color_array"
+            android:entryValues="@array/pref_color_array_values"
+            android:defaultValue="@string/pref_color_gray_value"/>
+        <ListPreference
+            android:key="pref_notification_preview_irrelevant_style"
+            android:title="@string/pref_notification_preview_irrelevant_style"
+            android:entries="@array/pref_text_style"
+            android:entryValues="@array/pref_text_style_values"
+            android:defaultValue="@string/pref_text_style_normal_value"/>
+        <ListPreference
+            android:key="pref_notification_button_mark_seen"
+            android:title="@string/pref_notification_button_mark_seen"
+            android:entries="@array/pref_notification_button_mark_seen_array"
+            android:entryValues="@array/pref_notification_button_mark_seen_array_values"
+            android:defaultValue="@string/pref_notification_button_mark_seen_if_max_5_value"
+            android:dependency="pref_notification_enabled"/>
+    </PreferenceCategory>
+</PreferenceScreen>

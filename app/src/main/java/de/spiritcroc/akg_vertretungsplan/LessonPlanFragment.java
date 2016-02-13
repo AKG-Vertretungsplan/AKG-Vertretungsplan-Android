@@ -39,6 +39,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import de.spiritcroc.akg_vertretungsplan.settings.Keys;
+
 public class LessonPlanFragment extends ListFragment {
     private static final String ARG_DAY = "day";
 
@@ -97,12 +99,12 @@ public class LessonPlanFragment extends ListFragment {
     private LessonViewContent[] createContent(){
         textColors.clear();
 
-        boolean addInformation = sharedPreferences.getBoolean("pref_lesson_plan_show_information", false);
+        boolean addInformation = sharedPreferences.getBoolean(Keys.LESSON_PLAN_SHOW_INFORMATION, false);
 
-        int color = Integer.parseInt(sharedPreferences.getString("pref_lesson_plan_color_lesson", "" + Color.BLACK)),
-                colorFreeTime = Integer.parseInt(sharedPreferences.getString("pref_lesson_plan_color_free_time", "" + Color.GRAY));
+        int color = Integer.parseInt(sharedPreferences.getString(Keys.LESSON_PLAN_COLOR_LESSON, "" + Color.BLACK)),
+                colorFreeTime = Integer.parseInt(sharedPreferences.getString(Keys.LESSON_PLAN_COLOR_FREE_TIME, "" + Color.GRAY));
 
-        lessons = LessonPlan.getInstance(PreferenceManager.getDefaultSharedPreferences(getActivity())).getLessonsForDay(day);
+        lessons = LessonPlan.getInstance(sharedPreferences).getLessonsForDay(day);
         LessonViewContent[] lessonViewContent = new LessonViewContent[addInformation ? (lessons.length + (generalInformation == null ? 0 : generalInformation.size())) : lessons.length];
         for (int i = 0; i < lessons.length; i++){
             lessonViewContent[i] = new LessonViewContent();
@@ -162,8 +164,8 @@ public class LessonPlanFragment extends ListFragment {
         if (sharedPreferences == null) {
             return;
         }
-        showTime = sharedPreferences.getBoolean("pref_lesson_plan_show_time", false);
-        showFullTime = sharedPreferences.getBoolean("pref_lesson_plan_show_full_time", false);
+        showTime = sharedPreferences.getBoolean(Keys.LESSON_PLAN_SHOW_TIME, false);
+        showFullTime = sharedPreferences.getBoolean(Keys.LESSON_PLAN_SHOW_FULL_TIME, false);
         timeViews.clear();
         setListAdapter(new CustomArrayAdapter(getActivity().getApplicationContext(), R.layout.lesson_plan_item, createContent()));
     }
@@ -218,14 +220,14 @@ public class LessonPlanFragment extends ListFragment {
                 holder.timeView.setVisibility(View.GONE);
                 holder.informationView.setText(((LessonViewContent) getItem(position)).extraInformation);
                 holder.informationView.setVisibility(View.VISIBLE);
-                holder.informationView.setTextColor(Integer.parseInt(sharedPreferences.getString("pref_lesson_plan_color_general_information", "" + Color.DKGRAY)));
+                holder.informationView.setTextColor(Integer.parseInt(sharedPreferences.getString(Keys.LESSON_PLAN_COLOR_GENERAL_INFORMATION, "" + Color.DKGRAY)));
             } else {
                 holder.timeView.setText(((LessonViewContent) getItem(position)).time);
                 holder.timeView.setVisibility(View.VISIBLE);
                 holder.subjectView.setText(((LessonViewContent) getItem(position)).content);
                 holder.roomView.setText(((LessonViewContent) getItem(position)).room);
                 holder.lessonLayout.setVisibility(View.VISIBLE);
-                holder.informationView.setTextColor(Integer.parseInt(sharedPreferences.getString("pref_lesson_plan_color_relevant_information", "" + Color.DKGRAY)));
+                holder.informationView.setTextColor(Integer.parseInt(sharedPreferences.getString(Keys.LESSON_PLAN_COLOR_RELEVANT_INFORMATION, "" + Color.DKGRAY)));
                 if (((LessonViewContent) getItem(position)).extraInformation.equals("")) {
                     holder.informationView.setVisibility(View.GONE);
                 } else {
@@ -239,7 +241,7 @@ public class LessonPlanFragment extends ListFragment {
                     holder.informationView.setVisibility(View.VISIBLE);
                     informationViewTopPadding = getResources().getDimensionPixelSize(R.dimen.list_content_padding);
                 }
-                holder.roomInformationView.setTextColor(Integer.parseInt(sharedPreferences.getString("pref_lesson_plan_color_relevant_information", "" + Color.DKGRAY)));
+                holder.roomInformationView.setTextColor(Integer.parseInt(sharedPreferences.getString(Keys.LESSON_PLAN_COLOR_RELEVANT_INFORMATION, "" + Color.DKGRAY)));
                 holder.roomInformationView.setText(((LessonViewContent) getItem(position)).roomExtraInformation);
             }
 
@@ -252,12 +254,12 @@ public class LessonPlanFragment extends ListFragment {
 
             holder.timeView.setGravity(showTime && showFullTime ? Gravity.CENTER_HORIZONTAL : Gravity.RIGHT);
 
-            holder.timeView.setTextColor(Integer.parseInt(sharedPreferences.getString("pref_lesson_plan_color_time", "" + Color.BLUE)));
+            holder.timeView.setTextColor(Integer.parseInt(sharedPreferences.getString(Keys.LESSON_PLAN_COLOR_TIME, "" + Color.BLUE)));
             if (textColors.size()>position)
                 holder.subjectView.setTextColor(textColors.get(position));
             else
                 holder.subjectView.setTextColor(Color.GRAY);//default color for not crashing the app
-            holder.roomView.setTextColor(Integer.parseInt(sharedPreferences.getString("pref_lesson_plan_color_room", "" + Color.DKGRAY)));
+            holder.roomView.setTextColor(Integer.parseInt(sharedPreferences.getString(Keys.LESSON_PLAN_COLOR_ROOM, "" + Color.DKGRAY)));
 
             view.post(updateTimeViewWidth);
 

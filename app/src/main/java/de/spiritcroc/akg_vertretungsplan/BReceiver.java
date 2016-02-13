@@ -28,9 +28,10 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import java.util.Calendar;
+
+import de.spiritcroc.akg_vertretungsplan.settings.Keys;
 
 public class BReceiver extends BroadcastReceiver {
     public static final String ACTION_START_DOWNLOAD_SERVICE = "action_start_download_service";
@@ -41,19 +42,19 @@ public class BReceiver extends BroadcastReceiver {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         OwnLog.add(context, "BReceiver.onReceive: action: " + intent.getAction());
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-            if (sharedPreferences.getBoolean("pref_background_service", true)) {
+            if (sharedPreferences.getBoolean(Keys.BACKGROUND_SERVICE, true)) {
                 startDownloadService(context, true);
             }
             setWidgetUpdateAlarm(context);
         }
         else if (ACTION_START_DOWNLOAD_SERVICE.equals(intent.getAction()) ||
-                ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction()) && sharedPreferences.getBoolean("pref_last_offline", false)){
+                ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction()) && sharedPreferences.getBoolean(Keys.LAST_OFFLINE, false)){
             if (!DownloadService.isDownloading() && !IsRunningSingleton.getInstance().isRunning())
                 context.startService(new Intent(context, DownloadService.class).setAction(DownloadService.ACTION_DOWNLOAD_PLAN));
             else
                 startDownloadService(context.getApplicationContext(), false);//Schedule next download nevertheless
         } else if (ACTION_MARK_SEEN.equals(intent.getAction())) {
-            sharedPreferences.edit().putBoolean("pref_unseen_changes", false).apply();
+            sharedPreferences.edit().putBoolean(Keys.UNSEEN_CHANGES, false).apply();
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.cancel(1);
             Tools.updateWidgets(context);
@@ -68,7 +69,7 @@ public class BReceiver extends BroadcastReceiver {
         return PendingIntent.getBroadcast(context.getApplicationContext(), 0, resultIntent, flag);
     }
     public static void startDownloadService(Context context, boolean now){
-        int period = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString("pref_background_update_interval", "60"))*60000;
+        int period = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString(Keys.BACKGROUND_UPDATE_INTERVAL, "60"))*60000;
         OwnLog.add(context, "BReceiver.startDownloadService: " + (now ? "now" : "period: " + period));
         ((AlarmManager) context.getSystemService(Context.ALARM_SERVICE)).setRepeating(AlarmManager.ELAPSED_REALTIME, now ? 0 : SystemClock.elapsedRealtime() + period, period, getAlarmPendingIntent(context, PendingIntent.FLAG_CANCEL_CURRENT));
     }

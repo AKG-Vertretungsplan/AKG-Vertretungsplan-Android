@@ -71,6 +71,9 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import de.spiritcroc.akg_vertretungsplan.settings.Keys;
+import de.spiritcroc.akg_vertretungsplan.settings.SettingsActivity;
+
 public class DownloadService extends IntentService {
     public static final String ACTION_DOWNLOAD_PLAN = "de.spiritcroc.akg_vertretungsplan.action.downloadPlan";
     public static final String ACTION_RETRY = "de.spiritcroc.akg_vertretungsplan.action.retry";
@@ -106,14 +109,14 @@ public class DownloadService extends IntentService {
             OwnLog.add(getSharedPreferences(),
                     "DownloadService.onHandleIntent: got action: " + action);
             if (ACTION_DOWNLOAD_PLAN.equals(action)){
-                if (getSharedPreferences().getBoolean("pref_reload_on_resume", false))
+                if (getSharedPreferences().getBoolean(Keys.RELOAD_ON_RESUME, false))
                     skipLoginActivity = true;// Don't prompt to login activity if coming from there
-                getSharedPreferences().edit().putBoolean("pref_reload_on_resume", false)
-                        .putBoolean("pref_last_offline", false).apply();
+                getSharedPreferences().edit().putBoolean(Keys.RELOAD_ON_RESUME, false)
+                        .putBoolean(Keys.LAST_OFFLINE, false).apply();
                 OwnLog.add(getSharedPreferences(),
                         "DownloadService.onHandleIntent: set pref_last_offline false");
 
-                if (sharedPreferences.getBoolean("pref_background_service", true))
+                if (sharedPreferences.getBoolean(Keys.BACKGROUND_SERVICE, true))
                     BReceiver.startDownloadService(getApplicationContext(), false);//Schedule next download
 
                 if (isConnected()) {
@@ -123,7 +126,7 @@ public class DownloadService extends IntentService {
                         //hidden debug stuff start
                         int tmp = 0;
                         try {
-                            tmp = Integer.parseInt(getSharedPreferences().getString("pref_debugging_enabled", "0"));
+                            tmp = Integer.parseInt(getSharedPreferences().getString(Keys.DEBUG_SECRET_CODE, "0"));
                         } catch (Exception e) {
                         }
 
@@ -135,7 +138,7 @@ public class DownloadService extends IntentService {
                     }
                 }
                 else{
-                    getSharedPreferences().edit().putBoolean("pref_last_offline", true).apply();
+                    getSharedPreferences().edit().putBoolean(Keys.LAST_OFFLINE, true).apply();
                     loadOfflinePlan();
                     OwnLog.add(getSharedPreferences(),
                             "DownloadService.onHandleIntent: set pref_last_offline true");
@@ -168,8 +171,8 @@ public class DownloadService extends IntentService {
             //switch (plan) {
             //    case 1:
             //    {
-                    username = getSharedPreferences().getString("pref_username", "");
-                    password = getSharedPreferences().getString("pref_password", "");
+                    username = getSharedPreferences().getString(Keys.USERNAME, "");
+                    password = getSharedPreferences().getString(Keys.PASSWORD, "");
                     String base64EncodedCredentials = Base64.encodeToString((username + ":" + password).getBytes("US-ASCII"), Base64.URL_SAFE | Base64.NO_WRAP);
                     DefaultHttpClient httpClient = new DefaultHttpClient();//On purpose use deprecated stuff because it works better (I have problems with HttpURLConnection: it does not read the credentials each time they are needed, and if they are wrong, there is no appropriate message (just an java.io.FileNotFoundException))
                     HttpGet httpGet = new HttpGet(PLAN_1_ADDRESS);
@@ -177,7 +180,7 @@ public class DownloadService extends IntentService {
                     String result = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
                     httpGet = new HttpGet(CSS_ADDRESS);
                     httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
-                    //sharedPreferences.edit().remove("pref_web_plan_custom_style").apply();// test default
+                    //sharedPreferences.edit().remove(Keys.WEB_PLAN_CUSTOM_STYLE).apply();// test default
                     String css = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
                     processPlan(result, css);
             //      break;
@@ -189,7 +192,7 @@ public class DownloadService extends IntentService {
             //        break;
             //    }
             //}
-            getSharedPreferences().edit().putInt("last_plan_type", 1).apply();
+            getSharedPreferences().edit().putInt(Keys.LAST_PLAN_TYPE, 1).apply();
         }
         catch (UnknownHostException e){
             loadOfflinePlan();
@@ -256,7 +259,7 @@ public class DownloadService extends IntentService {
     }
 
     private void maybeSaveFormattedPlan(){
-        if (!getSharedPreferences().getBoolean("pref_unseen_changes", false) && getSharedPreferences().getString("pref_auto_mark_read", "").equals("onPlanReloaded")){
+        if (!getSharedPreferences().getBoolean(Keys.UNSEEN_CHANGES, false) && getSharedPreferences().getString(Keys.AUTO_MARK_READ, "").equals("onPlanReloaded")){
             markPlanRead(this);
         }
     }
@@ -264,16 +267,16 @@ public class DownloadService extends IntentService {
     public static void markPlanRead(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("pref_latest_title_1", sharedPreferences.getString("pref_current_title_1", ""));
-        editor.putString("pref_latest_plan_1", sharedPreferences.getString("pref_current_plan_1", ""));
-        editor.putString("pref_latest_title_2", sharedPreferences.getString("pref_current_title_2", ""));
-        editor.putString("pref_latest_plan_2", sharedPreferences.getString("pref_current_plan_2", ""));
+        editor.putString(Keys.LATEST_TITLE_1, sharedPreferences.getString(Keys.CURRENT_TITLE_1, ""));
+        editor.putString(Keys.LATEST_PLAN_1, sharedPreferences.getString(Keys.CURRENT_PLAN_1, ""));
+        editor.putString(Keys.LATEST_TITLE_2, sharedPreferences.getString(Keys.CURRENT_TITLE_2, ""));
+        editor.putString(Keys.LATEST_PLAN_2, sharedPreferences.getString(Keys.CURRENT_PLAN_2, ""));
         editor.apply();
         updateNavigationDrawerInformation(context);
     }
 
     private void processPlan(String result, String css){
-        String latestHtml = getSharedPreferences().getString("pref_html_latest", "");
+        String latestHtml = getSharedPreferences().getString(Keys.HTML_LATEST, "");
         boolean newVersion = false;
         if (result.contains("401 Authorization Required")) {
             showText((username.equals("") ? getString(R.string.enter_userdata) : getString(R.string.correct_userdata)));
@@ -286,32 +289,32 @@ public class DownloadService extends IntentService {
         } else {
             String time = timeAndDateToString(Calendar.getInstance());
             SharedPreferences.Editor editor = getSharedPreferences().edit();
-            editor.putBoolean("pref_illegal_plan", false).apply();//there are some textView updates below, and we don't know yet whether plan is illegal, so just pretend it is not for now and handle stuff later
-            editor.putString("pref_last_checked", time);
+            editor.putBoolean(Keys.ILLEGAL_PLAN, false).apply();//there are some textView updates below, and we don't know yet whether plan is illegal, so just pretend it is not for now and handle stuff later
+            editor.putString(Keys.LAST_CHECKED, time);
             String latestContent = getContentFromHtml(latestHtml),
                     currentContent = getContentFromHtml(result);
             if (latestHtml.equals("") || !currentContent.equals(latestContent)) {    //site has changed or nothing saved yet
                 if (newVersionNotify(latestContent, currentContent)){   //are new entries available?
                     newVersion = true;
                     setTextViewText(getString(R.string.new_version));
-                    editor.putString("pref_last_update", time);
-                    editor.putBoolean("pref_unseen_changes", true);
+                    editor.putString(Keys.LAST_UPDATE, time);
+                    editor.putBoolean(Keys.UNSEEN_CHANGES, true);
                 }
                 else{
-                    if (Integer.parseInt(getSharedPreferences().getString("pref_no_change_since_max_precision", "2")) > 0)
-                        setTextViewText(getString(R.string.no_change_for) + " " + compareTime(stringToCalendar(getSharedPreferences().getString("pref_last_update", "???")), Calendar.getInstance()));
+                    if (Integer.parseInt(getSharedPreferences().getString(Keys.NO_CHANGE_SINCE_MAX_PRECISION, "2")) > 0)
+                        setTextViewText(getString(R.string.no_change_for) + " " + compareTime(stringToCalendar(getSharedPreferences().getString(Keys.LAST_UPDATE, "???")), Calendar.getInstance()));
                     else
                         setTextViewText(getString(R.string.no_change));
                 }
             }
             else {
-                if (Integer.parseInt(getSharedPreferences().getString("pref_no_change_since_max_precision", "2")) > 0)
-                    setTextViewText(getString(R.string.no_change_for) + " " + compareTime(stringToCalendar(getSharedPreferences().getString("pref_last_update", "???")), Calendar.getInstance()));
+                if (Integer.parseInt(getSharedPreferences().getString(Keys.NO_CHANGE_SINCE_MAX_PRECISION, "2")) > 0)
+                    setTextViewText(getString(R.string.no_change_for) + " " + compareTime(stringToCalendar(getSharedPreferences().getString(Keys.LAST_UPDATE, "???")), Calendar.getInstance()));
                 else
                     setTextViewText(getString(R.string.no_change));
             }
-            editor.putString("pref_html_latest", result);
-            editor.putString("pref_css", css);
+            editor.putString(Keys.HTML_LATEST, result);
+            editor.putString(Keys.CSS, css);
             editor.apply();
             loadWebViewData(result);
             if (!loadFormattedPlans(result))
@@ -330,8 +333,8 @@ public class DownloadService extends IntentService {
                     importance = NOTIFICATION_IMPORTANCE_RELEVANT;
                     count += newRelevantNotificationCount;
                 }
-                boolean relevantOnly = sharedPreferences.getBoolean("pref_notification_only_if_relevant", false);
-                if (!generalInformation.isEmpty() && (!relevantOnly || !sharedPreferences.getBoolean("pref_notification_general_not_relevant", false))) {
+                boolean relevantOnly = sharedPreferences.getBoolean(Keys.NOTIFICATION_ONLY_IF_RELEVANT, false);
+                if (!generalInformation.isEmpty() && (!relevantOnly || !sharedPreferences.getBoolean(Keys.NOTIFICATION_GENERAL_NOT_RELEVANT, false))) {
                     if (message == null) {
                         importance = NOTIFICATION_IMPORTANCE_GENERAL;
                         message = "";
@@ -362,11 +365,11 @@ public class DownloadService extends IntentService {
                 if (newRelevantNotificationCount > 0 || generalInformation.size() > 0 || irrelevantInformation.size() > 0)
                     setTextViewText(message);
 
-                if (sharedPreferences.getBoolean("pref_tesla_unread_enable", true)){
+                if (sharedPreferences.getBoolean(Keys.TESLA_UNREAD_ENABLE, true)){
                     int fullCount = newRelevantNotificationCount;
-                    if (sharedPreferences.getBoolean("pref_tesla_unread_use_complete_count", false))
+                    if (sharedPreferences.getBoolean(Keys.TESLA_UNREAD_USE_COMPLETE_COUNT, false))
                         fullCount += generalInformation.size() + irrelevantInformation.size();
-                    else if (sharedPreferences.getBoolean("pref_tesla_unread_include_general_information_count", true))
+                    else if (sharedPreferences.getBoolean(Keys.TESLA_UNREAD_INCLUDE_GENERAL_INFORMATION_COUNT, true))
                         fullCount += generalInformation.size();
                     if (!IsRunningSingleton.getInstance().isRunning()){
                         try{
@@ -389,11 +392,11 @@ public class DownloadService extends IntentService {
         updateNavigationDrawerInformation(this);
     }
     private void loadOfflinePlan(){
-        String latestHtml = getSharedPreferences().getString("pref_html_latest", "");
+        String latestHtml = getSharedPreferences().getString(Keys.HTML_LATEST, "");
         if (latestHtml.equals(""))  //first download
             setTextViewText(getString(R.string.error_could_not_load));
         else {
-            setTextViewText(getString(R.string.showing_offline) + " (" + getSharedPreferences().getString("pref_last_checked", "???") + ")");
+            setTextViewText(getString(R.string.showing_offline) + " (" + getSharedPreferences().getString(Keys.LAST_CHECKED, "???") + ")");
             //loadWebViewData(latestHtml);  //no need for loading again, as already used on creation of activities
             //getPlans(latestHtml);
             Tools.updateWidgets(this);
@@ -416,7 +419,7 @@ public class DownloadService extends IntentService {
     }
     private void setTextViewText(String text){
         SharedPreferences.Editor editor = getSharedPreferences().edit();
-        editor.putString("pref_text_view_text", text);
+        editor.putString(Keys.TEXT_VIEW_TEXT, text);
         editor.apply();
         Intent intent = new Intent("PlanDownloadServiceUpdate");
         intent.putExtra("action", "setTextViewText");
@@ -448,7 +451,7 @@ public class DownloadService extends IntentService {
             skipLoginActivity = false;
         } else {
             startActivity(new Intent(this, SettingsActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-            getSharedPreferences().edit().putBoolean("pref_reload_on_resume", true).apply();//reload on resume of FormattedActivity
+            getSharedPreferences().edit().putBoolean(Keys.RELOAD_ON_RESUME, true).apply();//reload on resume of FormattedActivity
         }
     }
     private void postLoginNotification() {
@@ -533,7 +536,7 @@ public class DownloadService extends IntentService {
         }
 
         //shorten due to maxPrecision
-        for (int i = 0; precision > Integer.parseInt(getSharedPreferences().getString("pref_no_change_since_max_precision", "2")) && i < everythingIn.length; i++){
+        for (int i = 0; precision > Integer.parseInt(getSharedPreferences().getString(Keys.NO_CHANGE_SINCE_MAX_PRECISION, "2")) && i < everythingIn.length; i++){
             precision--;
             everythingIn[i] = "";
         }
@@ -606,7 +609,7 @@ public class DownloadService extends IntentService {
         int index = plan1.indexOf(searchingFor);
         if (index == -1){
             Log.e("getHeadsAndDivide", "Could not find " + searchingFor);
-            editor.putBoolean("pref_illegal_plan", true).apply();
+            editor.putBoolean(Keys.ILLEGAL_PLAN, true).apply();
             return false;
         }
         else
@@ -624,11 +627,11 @@ public class DownloadService extends IntentService {
             plan2 = plan1.substring(index);
             plan1 = plan1.substring(0, index);
         }
-        editor.putString("pref_current_title_1", title1);
-        editor.putString("pref_current_plan_1", plan1);
-        editor.putString("pref_current_title_2", title2);
-        editor.putString("pref_current_plan_2", plan2);
-        editor.putBoolean("pref_illegal_plan", false);
+        editor.putString(Keys.CURRENT_TITLE_1, title1);
+        editor.putString(Keys.CURRENT_PLAN_1, plan1);
+        editor.putString(Keys.CURRENT_TITLE_2, title2);
+        editor.putString(Keys.CURRENT_PLAN_2, plan2);
+        editor.putBoolean(Keys.ILLEGAL_PLAN, false);
         editor.apply();
         loadFragmentData(title1, plan1, title2, plan2);
         return true;
@@ -737,7 +740,7 @@ public class DownloadService extends IntentService {
     }
 
     private void maybePostNotification(String title, String text, int importance, ArrayList<String> relevantInformation, ArrayList<String> generalInformation, @Nullable ArrayList<String> irrelevantInformation) {
-        if (!IsRunningSingleton.getInstance().isRunning() && getSharedPreferences().getBoolean("pref_notification_enabled", false))
+        if (!IsRunningSingleton.getInstance().isRunning() && getSharedPreferences().getBoolean(Keys.NOTIFICATION_ENABLED, false))
             postNotification(title, text, 1, R.drawable.ic_stat_notify_plan_update, FormattedActivity.class, false, importance, relevantInformation, generalInformation, irrelevantInformation);
     }
     private void postNotification(String title, @Nullable String text, int id, int smallIconResource, Class touchActivity, boolean silent, int importance, @Nullable ArrayList<String> relevantInformation, @Nullable ArrayList<String> generalInformation, @Nullable ArrayList<String> irrelevantInformation) {
@@ -747,16 +750,16 @@ public class DownloadService extends IntentService {
         NotificationCompat.InboxStyle inboxStyle = null;
         if (!silent) {
             builder.setTicker(title);
-            if (getSharedPreferences().getBoolean("pref_notification_sound_enabled", false)) {
-                String notificationSound = getSharedPreferences().getString("pref_notification_sound", "");
+            if (getSharedPreferences().getBoolean(Keys.NOTIFICATION_SOUND_ENABLED, false)) {
+                String notificationSound = getSharedPreferences().getString(Keys.NOTIFICATION_SOUND, "");
                 if (notificationSound.equals(""))
                     builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
                 else
                     builder.setSound(Uri.parse(notificationSound));
             }
-            if (getSharedPreferences().getBoolean("pref_led_notification_enabled", false))
-                builder.setLights(Integer.parseInt(getSharedPreferences().getString("pref_led_notification_color", "-1")), 500, 500);
-            if (getSharedPreferences().getBoolean("pref_vibrate_notification_enabled", false)) {
+            if (getSharedPreferences().getBoolean(Keys.LED_NOTIFICATION_ENABLED, false))
+                builder.setLights(Integer.parseInt(getSharedPreferences().getString(Keys.LED_NOTIFICATION_COLOR, "-1")), 500, 500);
+            if (getSharedPreferences().getBoolean(Keys.VIBRATE_NOTIFICATION_ENABLED, false)) {
                 long[] vibrationPattern;
                 switch (importance) {
                     case NOTIFICATION_IMPORTANCE_RELEVANT:
@@ -778,11 +781,11 @@ public class DownloadService extends IntentService {
             inboxStyle = new NotificationCompat.InboxStyle();
             int lineCount = 0;
             if (relevantInformation != null) {
-                int color = Integer.parseInt(sharedPreferences.getString("pref_notification_preview_relevant_color", "" + Color.RED));
+                int color = Integer.parseInt(sharedPreferences.getString(Keys.NOTIFICATION_PREVIEW_RELEVANT_COLOR, "" + Color.RED));
                 for (int i = 0; i < relevantInformation.size(); i++) {
                     Spannable s = new SpannableString(relevantInformation.get(i));
                     s.setSpan(new ForegroundColorSpan(color), 0, s.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-                    StyleSpan styleSpan = Tools.getStyleSpanFromPref(this, sharedPreferences.getString("pref_notification_preview_relevant_style", getString(R.string.pref_text_style_normal_value)));
+                    StyleSpan styleSpan = Tools.getStyleSpanFromPref(this, sharedPreferences.getString(Keys.NOTIFICATION_PREVIEW_RELEVANT_STYLE, getString(R.string.pref_text_style_normal_value)));
                     if (styleSpan != null) {
                         s.setSpan(styleSpan, 0, s.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
                     }
@@ -790,13 +793,13 @@ public class DownloadService extends IntentService {
                     lineCount++;
                 }
             }
-            boolean relevantOnly = sharedPreferences.getBoolean("pref_notification_only_if_relevant", false);
-            if ((!relevantOnly || !sharedPreferences.getBoolean("pref_notification_general_not_relevant", false)) && generalInformation != null) {
-                int color = Integer.parseInt(sharedPreferences.getString("pref_notification_preview_general_color", "" + getString(R.string.pref_color_orange)));
+            boolean relevantOnly = sharedPreferences.getBoolean(Keys.NOTIFICATION_ONLY_IF_RELEVANT, false);
+            if ((!relevantOnly || !sharedPreferences.getBoolean(Keys.NOTIFICATION_GENERAL_NOT_RELEVANT, false)) && generalInformation != null) {
+                int color = Integer.parseInt(sharedPreferences.getString(Keys.NOTIFICATION_PREVIEW_GENERAL_COLOR, "" + getString(R.string.pref_color_orange)));
                 for (int i = 0; i < generalInformation.size(); i++) {
                     Spannable s = new SpannableString(generalInformation.get(i));
                     s.setSpan(new ForegroundColorSpan(color), 0, s.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-                    StyleSpan styleSpan = Tools.getStyleSpanFromPref(this, sharedPreferences.getString("pref_notification_preview_general_style", getString(R.string.pref_text_style_normal_value)));
+                    StyleSpan styleSpan = Tools.getStyleSpanFromPref(this, sharedPreferences.getString(Keys.NOTIFICATION_PREVIEW_GENERAL_STYLE, getString(R.string.pref_text_style_normal_value)));
                     if (styleSpan != null) {
                         s.setSpan(styleSpan, 0, s.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
                     }
@@ -805,11 +808,11 @@ public class DownloadService extends IntentService {
                 }
             }
             if (!relevantOnly && irrelevantInformation != null) {
-                int color = Integer.parseInt(sharedPreferences.getString("pref_notification_preview_irrelevant_color", "" + Color.DKGRAY));
+                int color = Integer.parseInt(sharedPreferences.getString(Keys.NOTIFICATION_PREVIEW_IRRELEVANT_COLOR, "" + Color.DKGRAY));
                 for (int i = 0; i < irrelevantInformation.size(); i++) {
                     Spannable s = new SpannableString(irrelevantInformation.get(i));
                     s.setSpan(new ForegroundColorSpan(color), 0, s.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-                    StyleSpan styleSpan = Tools.getStyleSpanFromPref(this, sharedPreferences.getString("pref_notification_preview_irrelevant_style", getString(R.string.pref_text_style_normal_value)));
+                    StyleSpan styleSpan = Tools.getStyleSpanFromPref(this, sharedPreferences.getString(Keys.NOTIFICATION_PREVIEW_IRRELEVANT_STYLE, getString(R.string.pref_text_style_normal_value)));
                     if (styleSpan != null) {
                         s.setSpan(styleSpan, 0, s.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
                     }
@@ -819,7 +822,7 @@ public class DownloadService extends IntentService {
             }
 
             boolean showMarkSeen = false;
-            String markSeenPref = sharedPreferences.getString("pref_notification_button_mark_seen", getString(R.string.pref_notification_button_mark_seen_if_max_5_value));
+            String markSeenPref = sharedPreferences.getString(Keys.NOTIFICATION_BUTTON_MARK_SEEN, getString(R.string.pref_notification_button_mark_seen_if_max_5_value));
             if (getString(R.string.pref_notification_button_mark_seen_always_value).equals(markSeenPref)) {
                 showMarkSeen = true;
             } else if (getString(R.string.pref_notification_button_mark_seen_if_max_5_value).equals(markSeenPref)) {
@@ -850,7 +853,7 @@ public class DownloadService extends IntentService {
         Notification notification = builder.build();
         if (Build.VERSION.SDK_INT >= 21) {
             //Disable heads up / button
-            String pref = getSharedPreferences().getString("pref_notification_heads_up",
+            String pref = getSharedPreferences().getString(Keys.NOTIFICATION_HEADS_UP,
                     getString(R.string.pref_notification_heads_up_default_value));
             if (getString(R.string.pref_notification_heads_up_disabled_value).equals(pref)) {
                 notification.headsUpContentView = new RemoteViews(Parcel.obtain());
@@ -886,8 +889,8 @@ public class DownloadService extends IntentService {
         allGeneral.clear();
         allIrrelevant.clear();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        int count = getNewRelevantInformationCount(context, sharedPreferences.getString("pref_current_plan_1", ""), sharedPreferences.getString("pref_current_title_1", ""), relevantInformation, generalInformation, irrelevantInformation, allRelevant, allGeneral, allIrrelevant) +
-                getNewRelevantInformationCount(context, sharedPreferences.getString("pref_current_plan_2", ""), sharedPreferences.getString("pref_current_title_2", ""), relevantInformation, generalInformation, irrelevantInformation, allRelevant, allGeneral, allIrrelevant);
+        int count = getNewRelevantInformationCount(context, sharedPreferences.getString(Keys.CURRENT_PLAN_1, ""), sharedPreferences.getString(Keys.CURRENT_TITLE_1, ""), relevantInformation, generalInformation, irrelevantInformation, allRelevant, allGeneral, allIrrelevant) +
+                getNewRelevantInformationCount(context, sharedPreferences.getString(Keys.CURRENT_PLAN_2, ""), sharedPreferences.getString(Keys.CURRENT_TITLE_2, ""), relevantInformation, generalInformation, irrelevantInformation, allRelevant, allGeneral, allIrrelevant);
         if (!LessonPlan.getInstance(sharedPreferences).isConfigured()){
             ArrayList<String> irrelevantCopy = (ArrayList<String>) irrelevantInformation.clone();
             irrelevantInformation.clear();
@@ -911,10 +914,10 @@ public class DownloadService extends IntentService {
         }
         String latestContent;
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        if (title.equals(sharedPreferences.getString("pref_latest_title_1", "")))    //check date for comparison
-            latestContent = sharedPreferences.getString("pref_latest_plan_1", "");
-        else if (title.equals(sharedPreferences.getString("pref_latest_title_2", "")))
-            latestContent = sharedPreferences.getString("pref_latest_plan_2", "");
+        if (title.equals(sharedPreferences.getString(Keys.LATEST_TITLE_1, "")))    //check date for comparison
+            latestContent = sharedPreferences.getString(Keys.LATEST_PLAN_1, "");
+        else if (title.equals(sharedPreferences.getString(Keys.LATEST_TITLE_2, "")))
+            latestContent = sharedPreferences.getString(Keys.LATEST_PLAN_2, "");
         else
             latestContent = "";
 
@@ -988,8 +991,8 @@ public class DownloadService extends IntentService {
     }
 
     private boolean isConnected() {
-        if (getSharedPreferences().getBoolean("pref_hidden_debug_enabled", false) &&
-                getSharedPreferences().getBoolean("pref_skip_network_check", false)) {
+        if (getSharedPreferences().getBoolean(Keys.HIDDEN_DEBUG_ENABLED, false) &&
+                getSharedPreferences().getBoolean(Keys.DEBUG_SKIP_NETWORK_CHECK, false)) {
             return true;
         }
         ConnectivityManager connectivityManager =

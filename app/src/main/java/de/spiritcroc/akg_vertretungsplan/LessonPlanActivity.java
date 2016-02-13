@@ -43,6 +43,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import de.spiritcroc.akg_vertretungsplan.settings.Keys;
+
 public class LessonPlanActivity extends NavigationDrawerActivity {
     private CustomFragmentPagerAdapter fragmentPagerAdapter;
     private ViewPager viewPager;
@@ -72,7 +74,7 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         textView = (TextView) findViewById(R.id.text_view);
-        textView.setText(sharedPreferences.getString("pref_text_view_text", getString(R.string.welcome)));
+        textView.setText(sharedPreferences.getString(Keys.TEXT_VIEW_TEXT, getString(R.string.welcome)));
 
         dayName = getResources().getStringArray(R.array.lesson_plan_days);
         dayAdd = new String[LessonPlan.DAY_COUNT];
@@ -94,11 +96,11 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
         fragmentPagerAdapter = new CustomFragmentPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(fragmentPagerAdapter);
 
-        if (sharedPreferences.getBoolean("pref_lesson_plan_auto_select_day", true)) {//Try to show current day
+        if (sharedPreferences.getBoolean(Keys.LESSON_PLAN_AUT0_SELECT_DAY, true)) {//Try to show current day
             Calendar calendar = Calendar.getInstance();
 
             try{
-                if (calendar.get(Calendar.HOUR_OF_DAY) >= Integer.parseInt(sharedPreferences.getString("pref_lesson_plan_auto_select_day_time", "")))
+                if (calendar.get(Calendar.HOUR_OF_DAY) >= Integer.parseInt(sharedPreferences.getString(Keys.LESSON_PLAN_AUTO_SELECT_DAY_TIME, "")))
                     calendar.add(Calendar.DAY_OF_WEEK, 1);
             }
             catch (Exception e){
@@ -138,7 +140,7 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
         } else {
             getRelevantInformation();
             updateAll();// Colors could have changed
-            if (!sharedPreferences.contains("pref_class")) {
+            if (!sharedPreferences.contains(Keys.CLASS)) {
                 new EnterLessonClassDialog().setUpdateActivity(this).show(getFragmentManager(), "EnterLessonClassDialog");
             }
             setActionBarTitle();
@@ -156,11 +158,11 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_lesson_plan, menu);
 
-        boolean showTime = sharedPreferences.getBoolean("pref_lesson_plan_show_time", false);
+        boolean showTime = sharedPreferences.getBoolean(Keys.LESSON_PLAN_SHOW_TIME, false);
         menu.findItem(R.id.action_show_time).setChecked(showTime);
-        showFullTimeMenuItem = menu.findItem(R.id.action_show_full_time).setChecked(sharedPreferences.getBoolean("pref_lesson_plan_show_full_time", false));
+        showFullTimeMenuItem = menu.findItem(R.id.action_show_full_time).setChecked(sharedPreferences.getBoolean(Keys.LESSON_PLAN_SHOW_FULL_TIME, false));
         showFullTimeMenuItem.setVisible(showTime);
-        menu.findItem(R.id.action_show_information).setChecked(sharedPreferences.getBoolean("pref_lesson_plan_show_information", false));
+        menu.findItem(R.id.action_show_information).setChecked(sharedPreferences.getBoolean(Keys.LESSON_PLAN_SHOW_INFORMATION, false));
         reloadItem = menu.findItem(R.id.action_reload_web_view);
         setInformationVisibilities();
 
@@ -179,20 +181,20 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
             case R.id.action_show_time:
                 boolean showTime = !item.isChecked();
                 item.setChecked(showTime);
-                sharedPreferences.edit().putBoolean("pref_lesson_plan_show_time", showTime).apply();
+                sharedPreferences.edit().putBoolean(Keys.LESSON_PLAN_SHOW_TIME, showTime).apply();
                 showFullTimeMenuItem.setVisible(showTime);
                 updateAll();
                 return true;
             case R.id.action_show_full_time:
                 boolean showFullTime = !item.isChecked();
                 item.setChecked(showFullTime);
-                sharedPreferences.edit().putBoolean("pref_lesson_plan_show_full_time", showFullTime).apply();
+                sharedPreferences.edit().putBoolean(Keys.LESSON_PLAN_SHOW_FULL_TIME, showFullTime).apply();
                 updateAll();
                 return true;
             case R.id.action_show_information:
                 boolean showInformation = !item.isChecked();
                 item.setChecked(showInformation);
-                sharedPreferences.edit().putBoolean("pref_lesson_plan_show_information", showInformation).apply();
+                sharedPreferences.edit().putBoolean(Keys.LESSON_PLAN_SHOW_INFORMATION, showInformation).apply();
                 fragmentPagerAdapter.notifyDataSetChanged();
                 updateAll();
                 setInformationVisibilities();
@@ -253,7 +255,7 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
         @Override
         public CharSequence getPageTitle (int position){
             return position < dayName.length ?
-                    dayName[position] + (sharedPreferences.getBoolean("pref_lesson_plan_show_information", false) ? dayAdd[position] : "") :
+                    dayName[position] + (sharedPreferences.getBoolean(Keys.LESSON_PLAN_SHOW_INFORMATION, false) ? dayAdd[position] : "") :
                     "???";
         }
         @Override
@@ -268,10 +270,10 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
     }
 
     private void getRelevantInformation() {
-        getRelevantInformation(sharedPreferences.getString("pref_current_title_1", ""),
-                sharedPreferences.getString("pref_current_plan_1", ""),
-                sharedPreferences.getString("pref_current_title_2", ""),
-                sharedPreferences.getString("pref_current_plan_2", ""));
+        getRelevantInformation(sharedPreferences.getString(Keys.CURRENT_TITLE_1, ""),
+                sharedPreferences.getString(Keys.CURRENT_PLAN_1, ""),
+                sharedPreferences.getString(Keys.CURRENT_TITLE_2, ""),
+                sharedPreferences.getString(Keys.CURRENT_PLAN_2, ""));
     }
     private void getRelevantInformation(String title1, String plan1, String title2, String plan2) {
         for (int i = 0; i < LessonPlan.DAY_COUNT; i++) {
@@ -381,7 +383,7 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
             generalInformation[day].add(values[0] + (values[1].equals("") ? "" : " → " + values[1]));
         } else {
             LessonPlan lessonPlan = LessonPlan.getInstance(sharedPreferences);
-            boolean useFullTeacherNames = sharedPreferences.getBoolean("pref_formatted_plan_replace_teacher_short_with_teacher_full", true);
+            boolean useFullTeacherNames = sharedPreferences.getBoolean(Keys.FORMATTED_PLAN_REPLACE_TEACHER_SHORT_WITH_TEACHER_FULL, true);
             String result = "", roomResult = "";
             if (!values[3].equals("") && !values[3].equals(values[1]))//Ignore if same teacher
                 result += " " + (useFullTeacherNames ? ItemFragment.getTeacherCombinationString(sharedPreferences, lessonPlan, values[3]) : values[3]);
@@ -405,8 +407,8 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
 
     private void setInformationVisibilities() {
         boolean showInformation =
-                sharedPreferences.getBoolean("pref_lesson_plan_show_information", false);
-        textView.setVisibility(!sharedPreferences.getBoolean("pref_hide_text_view", false) &&
+                sharedPreferences.getBoolean(Keys.LESSON_PLAN_SHOW_INFORMATION, false);
+        textView.setVisibility(!sharedPreferences.getBoolean(Keys.HIDE_TEXT_VIEW, false) &&
                 showInformation ? View.VISIBLE : View.GONE);
         if (reloadItem != null) {
             reloadItem.setVisible(showInformation);

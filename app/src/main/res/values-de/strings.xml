@@ -183,11 +183,9 @@
     <string name="pref_formatted_plan_auto_select_day">Springe zu Heute</string>
     <string name="pref_formatted_plan_auto_select_day_summary">Zeige automatisch den aktuellen Tag an, wenn der Vertretungsplan geöffnet wird</string>
     <string name="pref_formatted_plan_auto_select_day_time">Zeit zur Auswahl des nächsten Vertretungsplans</string>
-    <string name="pref_formatted_plan_auto_select_day_time_summary_pre">Der Plan für morgen wird automatisch ab" "</string>
-    <string name="pref_formatted_plan_auto_select_day_time_summary_post">" "Uhr angezeigt</string>
+    <string name="pref_formatted_plan_auto_select_day_time_summary">Der Plan für morgen wird automatisch ab %d Uhr angezeigt</string>
     <string name="pref_lesson_plan_auto_select_day_time">Zeit zur Auswahl des nächsten Stundenplans</string>
-    <string name="pref_lesson_plan_auto_select_day_time_summary_pre">Der Stundenplan für morgen wird automatisch ab" "</string>
-    <string name="pref_lesson_plan_auto_select_day_time_summary_post">" "Uhr angezeigt</string>
+    <string name="pref_lesson_plan_auto_select_day_time_summary">Der Stundenplan für morgen wird automatisch ab %d Uhr angezeigt</string>
     <string name="pref_formatted_plan_replace_teacher_short_with_teacher_full">Zeige Lehrernamen</string>
     <string name="pref_formatted_plan_replace_teacher_short_with_teacher_full_summary">Zeige Lehrernamen statt Lehrerkürzel, falls diese im Stundenplan vorkommen</string>
 

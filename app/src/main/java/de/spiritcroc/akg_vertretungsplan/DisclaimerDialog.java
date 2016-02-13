@@ -27,6 +27,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
+import de.spiritcroc.akg_vertretungsplan.settings.Keys;
+
 public class DisclaimerDialog extends DialogFragment{
     private SharedPreferences sharedPreferences;
     private boolean buttonPressed = false;
@@ -46,7 +48,7 @@ public class DisclaimerDialog extends DialogFragment{
                     public void onClick(DialogInterface dialog, int which) {
                         buttonPressed = true;
                         SharedPreferences.Editor editor = getSharedPreferences().edit();
-                        editor.putBoolean("pref_seen_disclaimer", true);
+                        editor.putBoolean(Keys.SEEN_DISCLAIMER, true);
                         editor.apply();
                         Activity currentActivity = getActivity();
                         if (currentActivity instanceof FormattedActivity)
@@ -58,7 +60,7 @@ public class DisclaimerDialog extends DialogFragment{
                     public void onClick(DialogInterface dialog, int which) {
                         buttonPressed = true;
                         SharedPreferences.Editor editor = getSharedPreferences().edit();
-                        editor.putBoolean("pref_seen_disclaimer", false);
+                        editor.putBoolean(Keys.SEEN_DISCLAIMER, false);
                         editor.apply();
                         getActivity().finish();
                     }
@@ -68,7 +70,7 @@ public class DisclaimerDialog extends DialogFragment{
     @Override
     public void onDismiss (DialogInterface dialog){
         super.onDismiss(dialog);
-        if (!buttonPressed && !getSharedPreferences().getBoolean("pref_seen_disclaimer", false))
+        if (!buttonPressed && !getSharedPreferences().getBoolean(Keys.SEEN_DISCLAIMER, false))
             new DisclaimerDialog().show(getFragmentManager(), "DisclaimerDialog");
     }
 }

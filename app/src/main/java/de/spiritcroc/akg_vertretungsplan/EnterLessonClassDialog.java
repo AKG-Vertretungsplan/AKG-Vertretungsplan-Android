@@ -29,6 +29,8 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.EditText;
 
+import de.spiritcroc.akg_vertretungsplan.settings.Keys;
+
 public class EnterLessonClassDialog extends DialogFragment {
     private SharedPreferences sharedPreferences;
     private LessonPlanActivity updateActivity;
@@ -42,14 +44,14 @@ public class EnterLessonClassDialog extends DialogFragment {
 
         final EditText editLessonClass = (EditText) view.findViewById(R.id.edit_teacher_full);
 
-        editLessonClass.setText(sharedPreferences.getString("pref_class", ""));
+        editLessonClass.setText(sharedPreferences.getString(Keys.CLASS, ""));
 
         return builder.setTitle(R.string.dialog_enter_lesson_class)
                 .setView(view)
                 .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        sharedPreferences.edit().putString("pref_class", editLessonClass.getText().toString()).apply();
+                        sharedPreferences.edit().putString(Keys.CLASS, editLessonClass.getText().toString()).apply();
                         LessonPlan.getInstance(sharedPreferences).retrieveLessonClass();
                         if (updateActivity != null) {
                             updateActivity.setActionBarTitle();
