@@ -17,11 +17,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<resources>
-    <color name="title_color_light">#000</color>
-    <color name="title_color_dark">#FFF</color>
-    <color name="navigation_drawer_background">@android:color/background_dark</color>
-    <color name="navigation_drawer_divider">#88bebebe</color>
-    <color name="navigation_drawer_item_active_background">#88bebebe</color>
-    <color name="navigation_drawer_item_ripple">#88bebebe</color>
-</resources>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="#ffffffff"/>
+</selector>

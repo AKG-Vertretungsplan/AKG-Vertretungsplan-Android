@@ -34,11 +34,12 @@
         <item name="android:paddingRight">@dimen/navigation_drawer_item_horizontal_padding</item>
         <item name="android:paddingBottom">@dimen/navigation_drawer_item_vertical_padding</item>
         <item name="android:textSize">@dimen/navigation_drawer_text_size</item>
-        <item name="android:textColor">@color/primary_text_dark</item>
+        <item name="android:textColor">@color/drawer_primary_text_dark</item>
         <item name="android:lines">1</item>
         <item name="android:maxLines">1</item>
         <item name="android:singleLine">true</item>
         <item name="android:gravity">start|center_vertical</item>
+        <item name="android:drawSelectorOnTop">true</item>
     </style>
     <style name="DividerTheme">
         <item name="android:layout_width">match_parent</item>

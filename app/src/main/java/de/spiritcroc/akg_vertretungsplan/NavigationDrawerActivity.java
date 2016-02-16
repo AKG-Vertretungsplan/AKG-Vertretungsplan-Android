@@ -25,6 +25,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.DrawableRes;
@@ -58,6 +59,7 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
     private TextView debugButton;
 
     private SharedPreferences sharedPreferences;
+    private DrawerClickListener clickListener;
 
     private boolean darkActionBarText, themeDefaultDarkActionBarText;
 
@@ -91,7 +93,7 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
         };
         drawerLayout.setDrawerListener(drawerToggle);
 
-        DrawerClickListener clickListener = new DrawerClickListener();
+        clickListener = new DrawerClickListener();
 
         informationView = (TextView) findViewById(R.id.information_view);
         formattedPlanButton = (TextView) findViewById(R.id.formatted_activity_button);
@@ -101,12 +103,12 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
         aboutButton = (TextView) findViewById(R.id.about_button);
         debugButton = (TextView) findViewById(R.id.debug_mail_button);
 
-        formattedPlanButton.setOnClickListener(clickListener);
-        webPlanButton.setOnClickListener(clickListener);
-        lessonPlanButton.setOnClickListener(clickListener);
-        settingsButton.setOnClickListener(clickListener);
-        aboutButton.setOnClickListener(clickListener);
-        debugButton.setOnClickListener(clickListener);
+        useDrawerButton(formattedPlanButton, this instanceof FormattedActivity);
+        useDrawerButton(webPlanButton, this instanceof WebActivity);
+        useDrawerButton(lessonPlanButton, this instanceof LessonPlanActivity);
+        useDrawerButton(settingsButton, false);
+        useDrawerButton(aboutButton, false);
+        useDrawerButton(debugButton, false);
 
         informationView.setOnTouchListener(new View.OnTouchListener() {
             private GestureDetector gestureDetector = new GestureDetector(NavigationDrawerActivity.this, new GestureDetector.SimpleOnGestureListener() {
@@ -135,15 +137,6 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
                 return gestureDetector.onTouchEvent(event);
             }
         });
-
-        // Indicate current activity
-        if (this instanceof FormattedActivity) {
-            formattedPlanButton.setBackgroundColor(getResources().getColor(R.color.navigation_drawer_item_active_background));
-        } else if (this instanceof WebActivity) {
-            webPlanButton.setBackgroundColor(getResources().getColor(R.color.navigation_drawer_item_active_background));
-        } else if (this instanceof LessonPlanActivity) {
-            lessonPlanButton.setBackgroundColor(getResources().getColor(R.color.navigation_drawer_item_active_background));
-        }
 
         setCompoundDrawable(formattedPlanButton, R.drawable.ic_format_list_bulleted_white_24dp);
         setCompoundDrawable(webPlanButton, R.drawable.ic_web_white_24dp);
@@ -211,6 +204,22 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
     private void setCompoundDrawable(TextView textView, @DrawableRes int res) {
         textView.setCompoundDrawablesWithIntrinsicBounds(res, 0, 0, 0);
         textView.setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.navigation_drawer_item_compound_drawable_padding));
+    }
+
+    private void useDrawerButton(View v, boolean active) {
+        v.setOnClickListener(clickListener);
+        if (active) {
+            // Indicate current activity
+            if (Build.VERSION.SDK_INT >= 21) {
+                v.setBackgroundResource(R.drawable.drawer_ripple_active);
+            } else {
+                v.setBackgroundColor(getResources().getColor(R.color.navigation_drawer_item_active_background));
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= 21) {
+                v.setBackgroundResource(R.drawable.drawer_ripple);
+            }
+        }
     }
 
     private class DrawerClickListener implements View.OnClickListener {

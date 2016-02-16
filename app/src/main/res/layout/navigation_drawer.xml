@@ -67,7 +67,7 @@
             android:paddingRight="@dimen/navigation_drawer_item_horizontal_padding"
             android:paddingBottom="@dimen/navigation_drawer_item_vertical_padding"
             android:textSize="@dimen/navigation_drawer_text_size"
-            android:textColor="@color/secondary_text_dark"
+            android:textColor="@color/drawer_secondary_text_dark"
             android:gravity="start|center_vertical"/>
     </LinearLayout>
 </ScrollView>
