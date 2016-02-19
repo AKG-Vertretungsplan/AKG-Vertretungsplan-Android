@@ -24,6 +24,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -62,12 +64,15 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
     private DrawerClickListener clickListener;
 
     private boolean darkActionBarText, themeDefaultDarkActionBarText;
+    private int drawerActiveItemColor;
 
     /**
      * Call after inflating layout
      */
     protected void initDrawer() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        drawerActiveItemColor = Integer.parseInt(sharedPreferences.getString(Keys.DRAWER_ACTIVE_ITEM_TEXT_COLOR, "" + Color.YELLOW));
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (getSupportActionBar() != null) {
@@ -102,6 +107,13 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
         settingsButton = (TextView) findViewById(R.id.settings_button);
         aboutButton = (TextView) findViewById(R.id.about_button);
         debugButton = (TextView) findViewById(R.id.debug_mail_button);
+
+        setCompoundDrawable(formattedPlanButton, R.drawable.ic_format_list_bulleted_white_24dp);
+        setCompoundDrawable(webPlanButton, R.drawable.ic_web_white_24dp);
+        setCompoundDrawable(lessonPlanButton, R.drawable.ic_format_list_numbered_white_24dp);
+        setCompoundDrawable(settingsButton, R.drawable.ic_settings_white_24dp);
+        setCompoundDrawable(aboutButton, R.drawable.ic_help_white_24dp);
+        setCompoundDrawable(debugButton, R.drawable.ic_bug_report_white_24dp);
 
         useDrawerButton(formattedPlanButton, this instanceof FormattedActivity);
         useDrawerButton(webPlanButton, this instanceof WebActivity);
@@ -138,13 +150,6 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
             }
         });
 
-        setCompoundDrawable(formattedPlanButton, R.drawable.ic_format_list_bulleted_white_24dp);
-        setCompoundDrawable(webPlanButton, R.drawable.ic_web_white_24dp);
-        setCompoundDrawable(lessonPlanButton, R.drawable.ic_format_list_numbered_white_24dp);
-        setCompoundDrawable(settingsButton, R.drawable.ic_settings_white_24dp);
-        setCompoundDrawable(aboutButton, R.drawable.ic_help_white_24dp);
-        setCompoundDrawable(debugButton, R.drawable.ic_bug_report_white_24dp);
-
         updateInformationViewText();
         LocalBroadcastManager.getInstance(this).registerReceiver(downloadInfoReceiver, new IntentFilter("PlanDownloadServiceUpdate"));
 
@@ -162,8 +167,18 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        debugButton.setVisibility(sharedPreferences.getBoolean(Keys.HIDDEN_DEBUG_ENABLED, false) && sharedPreferences.getBoolean(Keys.DEBUG_OPTION_SEND_DEBUG_MAIL, false) ?
-                View.VISIBLE : View.GONE);
+        if (Integer.parseInt(sharedPreferences.getString(Keys.DRAWER_ACTIVE_ITEM_TEXT_COLOR, "" + Color.YELLOW)) !=
+                drawerActiveItemColor) {
+            // Restart, too lazy to update everything that changed again
+            overridePendingTransition(0, 0);
+            finish();
+            startActivity(getIntent());
+            overridePendingTransition(0, 0);
+        } else {
+
+            debugButton.setVisibility(sharedPreferences.getBoolean(Keys.HIDDEN_DEBUG_ENABLED, false) && sharedPreferences.getBoolean(Keys.DEBUG_OPTION_SEND_DEBUG_MAIL, false) ?
+                    View.VISIBLE : View.GONE);
+        }
     }
 
     @Override
@@ -206,18 +221,17 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
         textView.setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.navigation_drawer_item_compound_drawable_padding));
     }
 
-    private void useDrawerButton(View v, boolean active) {
+    private void useDrawerButton(TextView v, boolean active) {
         v.setOnClickListener(clickListener);
         if (active) {
             // Indicate current activity
-            if (Build.VERSION.SDK_INT >= 21) {
-                v.setBackgroundResource(R.drawable.drawer_ripple_active);
-            } else {
-                v.setBackgroundColor(getResources().getColor(R.color.navigation_drawer_item_active_background));
-            }
-        } else {
-            if (Build.VERSION.SDK_INT >= 21) {
-                v.setBackgroundResource(R.drawable.drawer_ripple);
+            v.setTextColor(drawerActiveItemColor);
+        }
+        if (Build.VERSION.SDK_INT >= 21) {
+            v.setBackgroundResource(R.drawable.drawer_ripple);
+            Drawable[] compounds = v.getCompoundDrawables();
+            if (compounds.length > 0 && compounds[0] != null) {
+                compounds[0].setTint(v.getCurrentTextColor());
             }
         }
     }

@@ -70,6 +70,7 @@ public class SettingsUserInterfaceFragment extends CustomPreferenceFragment {
         setNoChangeSinceMaxPrecisionSummary();
         setAutoSelectDayTimeSummary();
         setListPreferenceSummary(themePref);
+        setListPreferenceSummary(Keys.DRAWER_ACTIVE_ITEM_TEXT_COLOR);
     }
 
     @Override
@@ -87,6 +88,9 @@ public class SettingsUserInterfaceFragment extends CustomPreferenceFragment {
                 break;
             case KEY_WEB_PLAN_CUSTOM_STYLE_PRESET:
                 applyWebPlanCustomStylePreset();
+                break;
+            case Keys.DRAWER_ACTIVE_ITEM_TEXT_COLOR:
+                setListPreferenceSummary(key);
                 break;
         }
     }

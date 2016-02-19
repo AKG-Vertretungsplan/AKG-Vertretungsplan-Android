@@ -25,9 +25,11 @@
     <dimen name="list_content_padding">8dp</dimen>
 
     <dimen name="navigation_drawer_text_size">14sp</dimen>
-    <dimen name="navigation_drawer_item_top_margin">@dimen/list_content_margin</dimen>
-    <dimen name="navigation_drawer_item_bottom_margin">@dimen/list_content_margin</dimen>
-    <dimen name="navigation_drawer_item_vertical_padding">8dp</dimen>
+    <dimen name="navigation_drawer_item_top_margin">0dp</dimen>
+    <dimen name="navigation_drawer_item_bottom_margin">0dp</dimen>
+    <dimen name="navigation_drawer_divider_top_margin">8dp</dimen>
+    <dimen name="navigation_drawer_divider_bottom_margin">8dp</dimen>
+    <dimen name="navigation_drawer_item_vertical_padding">12dp</dimen>
     <dimen name="navigation_drawer_item_horizontal_padding">16dp</dimen>
     <dimen name="navigation_drawer_item_compound_drawable_padding">32dp</dimen>
 

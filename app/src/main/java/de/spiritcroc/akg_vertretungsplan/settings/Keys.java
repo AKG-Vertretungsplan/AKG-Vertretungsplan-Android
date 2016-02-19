@@ -129,6 +129,8 @@ public class Keys {
 
     public static final String THEME = "pref_theme";
 
+    public static final String DRAWER_ACTIVE_ITEM_TEXT_COLOR = "pref_drawer_active_item_text_color";
+
     public static final String WEB_PLAN_USE_CUSTOM_STYLE = "pref_web_plan_use_custom_style";
 
     public static final String WEB_PLAN_CUSTOM_STYLE = "pref_web_plan_custom_style";

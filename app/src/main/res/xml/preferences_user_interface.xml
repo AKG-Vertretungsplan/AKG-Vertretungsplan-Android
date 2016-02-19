@@ -95,6 +95,12 @@
             android:title="@string/pref_action_bar"
             android:summary="@string/pref_action_bar_summary"
             android:fragment="de.spiritcroc.akg_vertretungsplan.settings.SettingsActionBarFragment"/>
+        <ListPreference
+            android:key="pref_drawer_active_item_text_color"
+            android:title="@string/pref_drawer_active_item_text_color"
+            android:entries="@array/pref_color_array"
+            android:entryValues="@array/pref_color_array_values"
+            android:defaultValue="@string/pref_color_yellow_value"/>
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/original_activity">

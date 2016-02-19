@@ -44,6 +44,8 @@
     <style name="DividerTheme">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginTop">@dimen/navigation_drawer_divider_top_margin</item>
+        <item name="android:layout_marginBottom">@dimen/navigation_drawer_divider_bottom_margin</item>
         <item name="android:background">@color/navigation_drawer_divider</item>
     </style>
 </resources>

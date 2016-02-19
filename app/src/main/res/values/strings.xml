@@ -619,4 +619,5 @@
     </string-array>
     <string name="pref_skip_network_check">Skip network check</string>
     <string name="pref_skip_network_check_summary">Attempt downloads while offline</string>
+    <string name="pref_drawer_active_item_text_color">Current drawer item</string>
 </resources>
