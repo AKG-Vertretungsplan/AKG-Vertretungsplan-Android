@@ -30,6 +30,7 @@ public class OwnLog {
     private static final String KEY = "own_log";
     private static final String PREF_LOG_ENABLED = "pref_own_log";
     private static final String LOG_TAG = "OwnLog";
+    private static final int MAX_LINES = 3000;
 
     // Don't instantiate
     private OwnLog(){}
@@ -60,10 +61,18 @@ public class OwnLog {
     }
 
     public static void forceAdd(SharedPreferences sharedPreferences, String msg) {
-        Log.d(LOG_TAG, msg);
+        forceAdd(sharedPreferences, msg, true);
+    }
+
+    public static void forceAdd(SharedPreferences sharedPreferences, String msg, boolean log) {
+        if (log) Log.d(LOG_TAG, msg);
         msg = sharedPreferences.getString(KEY, "Log start") + "\n" +
                 new SimpleDateFormat("yyyyMMdd HH:mm:ss.SSS").format(new Date()) +
                 ": " + msg;
+        int lineCount = msg.length() - msg.replaceAll("\n", "").length();
+        while (lineCount-- > MAX_LINES) {
+            msg = msg.substring(msg.indexOf("\n") + 1);
+        }
         sharedPreferences.edit().putString(KEY, msg).apply();
     }
 
@@ -73,9 +82,18 @@ public class OwnLog {
     }
 
     public static String getFull(SharedPreferences sharedPreferences) {
-        return sharedPreferences.getString(KEY, "[empty]");
+        String msg = sharedPreferences.getString(KEY, "[empty]");
+        int lineCount = msg.length() - msg.replaceAll("\n", "").length();
+        Log.d(KEY, "Log currently has " + lineCount + " lines");
+        return msg;
     }
 
+    public static void spam(Context context, int count) {
+        SharedPreferences sp = getSharedPreferences(context);
+        for (int i = 0; i < count; i++) {
+            forceAdd(sp, "spam", false);
+        }
+    }
 
 
     private static SharedPreferences getSharedPreferences(Context context) {
