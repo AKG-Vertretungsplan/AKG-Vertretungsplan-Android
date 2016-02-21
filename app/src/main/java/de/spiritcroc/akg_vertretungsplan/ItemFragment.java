@@ -115,6 +115,8 @@ public class ItemFragment extends ListFragment{
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
+        getListView().setDrawSelectorOnTop(true);
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
