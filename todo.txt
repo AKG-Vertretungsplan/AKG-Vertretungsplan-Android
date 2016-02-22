@@ -1,8 +1,8 @@
 Possible improvements for a future release:
-- on list item click: focus animation colors? →  fix no click animation for non transparent backgrounds
 - List for teacher abbreviations → also show full names of teachers entered there (in addition to lesson plan's teachers)
 - instead of checking if already downloading before starting DownloadService, do in DownloadService itself by extending Service instead of IntentService
 - add reset colors settings setting
 - widget background button color settings
 - add save current vplan feature?
 - time picker for auto select day time?
+- custom current lesson background
