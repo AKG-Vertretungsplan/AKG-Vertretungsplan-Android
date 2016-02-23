@@ -22,17 +22,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="de.spiritcroc.akg_vertretungsplan.FormattedActivity">
     <item android:id="@+id/action_reload_web_view"
-        android:icon="@drawable/ic_autorenew_white_36dp"
+        android:icon="@drawable/ic_autorenew_white_24dp"
         android:title="@string/action_reload_web_view"
         app:showAsAction="ifRoom"/>
     <item android:id="@+id/action_filter_plan"
         android:title="@string/action_filter_plan"
         android:checkable="true"
-        android:icon="@drawable/ic_filter_list_white_36dp"
+        android:icon="@drawable/ic_filter_list_white_24dp"
         app:showAsAction="never"/>
     <item android:id="@+id/action_mark_read"
         android:title="@string/action_mark_read"
         android:orderInCategory="50"
-        android:icon="@drawable/ic_done_white_36dp"
+        android:icon="@drawable/ic_done_white_24dp"
         app:showAsAction="never"/>
 </menu>

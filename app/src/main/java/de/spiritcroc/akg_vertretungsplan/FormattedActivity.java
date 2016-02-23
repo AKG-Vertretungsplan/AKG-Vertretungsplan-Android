@@ -353,13 +353,13 @@ public class FormattedActivity extends NavigationDrawerActivity implements ItemF
             title.setSpan(new ForegroundColorSpan(darkText ? Color.BLACK : Color.WHITE), 0, title.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             actionBar.setTitle(title);
             if (reloadItem != null)
-                reloadItem.setIcon(darkText ? R.drawable.ic_autorenew_black_36dp : R.drawable.ic_autorenew_white_36dp);
+                reloadItem.setIcon(darkText ? R.drawable.ic_autorenew_black_24dp : R.drawable.ic_autorenew_white_24dp);
             if (overflow != null)
                 overflow.setColorFilter(darkText ? Color.BLACK : Color.WHITE);
             if (filterItem != null)
-                filterItem.setIcon(darkText ? R.drawable.ic_filter_list_black_36dp : R.drawable.ic_filter_list_white_36dp);
+                filterItem.setIcon(darkText ? R.drawable.ic_filter_list_black_24dp : R.drawable.ic_filter_list_white_24dp);
             if (markReadItem != null)
-                markReadItem.setIcon(darkText ? R.drawable.ic_done_black_36dp : R.drawable.ic_done_white_36dp);
+                markReadItem.setIcon(darkText ? R.drawable.ic_done_black_24dp : R.drawable.ic_done_white_24dp);
         }
     }
 

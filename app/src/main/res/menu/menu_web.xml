@@ -22,7 +22,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity" >
     <item android:id="@+id/action_reload_web_view"
-        android:icon="@drawable/ic_autorenew_white_36dp"
+        android:icon="@drawable/ic_autorenew_white_24dp"
         android:title="@string/action_reload_web_view"
         app:showAsAction="ifRoom"/>
     <item android:id="@+id/action_open_in_browser"
