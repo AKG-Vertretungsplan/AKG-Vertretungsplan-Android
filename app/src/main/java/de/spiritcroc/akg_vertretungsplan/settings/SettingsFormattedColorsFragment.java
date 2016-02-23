@@ -18,8 +18,13 @@
 
 package de.spiritcroc.akg_vertretungsplan.settings;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import de.spiritcroc.akg_vertretungsplan.R;
 
@@ -29,12 +34,31 @@ public class SettingsFormattedColorsFragment extends CustomPreferenceFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences_formatted_colors);
+
+        setHasOptionsMenu(true);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         init();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_preferences_formatted_colors, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_reset:
+                promptReset();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void init() {
@@ -74,6 +98,46 @@ public class SettingsFormattedColorsFragment extends CustomPreferenceFragment {
                 setListPreferenceSummary(key);
                 break;
         }
+    }
+
+    private void promptReset() {
+        new AlertDialog.Builder(getActivity())
+                .setMessage(R.string.pref_restore_default_values)
+                .setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        reset();
+                    }
+                })
+                .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Only close dialog
+                    }
+                })
+                .show();
+    }
+
+    private void reset() {
+        getPreferenceManager().getSharedPreferences().edit()
+                .remove(Keys.HEADER_TEXT_TEXT_COLOR)
+                .remove(Keys.HEADER_TEXT_BG_COLOR)
+                .remove(Keys.HEADER_TEXT_TEXT_COLOR_HL)
+                .remove(Keys.HEADER_TEXT_BG_COLOR_HL)
+                .remove(Keys.CLASS_TEXT_TEXT_COLOR)
+                .remove(Keys.CLASS_TEXT_BG_COLOR)
+                .remove(Keys.NORMAL_TEXT_TEXT_COLOR)
+                .remove(Keys.NORMAL_TEXT_BG_COLOR)
+                .remove(Keys.NORMAL_TEXT_TEXT_COLOR_HL)
+                .remove(Keys.NORMAL_TEXT_BG_COLOR_HL)
+                .remove(Keys.RELEVANT_TEXT_TEXT_COLOR)
+                .remove(Keys.RELEVANT_TEXT_BG_COLOR)
+                .remove(Keys.RELEVANT_TEXT_TEXT_COLOR_HL)
+                .remove(Keys.RELEVANT_TEXT_BG_COLOR_HL)
+                .apply();
+        SettingsUserInterfaceFragment.applyThemeToCustomColors(getActivity(), true, true);
+        // Restart to immediately show changes
+        getActivity().recreate();
     }
 
 }
