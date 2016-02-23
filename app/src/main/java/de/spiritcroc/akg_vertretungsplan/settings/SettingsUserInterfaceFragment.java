@@ -128,6 +128,8 @@ public class SettingsUserInterfaceFragment extends CustomPreferenceFragment {
     private void toggleTheme() {
         // Change default values to fit to new theme
         applyThemeToCustomColors(getActivity(), false, false);
+
+        getActivity().recreate();
     }
 
     /**

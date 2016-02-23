@@ -32,6 +32,8 @@ import de.spiritcroc.akg_vertretungsplan.Tools;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    private int theme;
+
     private CustomPreferenceFragment preferenceFragment;
 
     private static final String EXTRA_PREFERENCE_FRAGMENT =
@@ -39,7 +41,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(Tools.getStyle(this));
+        theme = Tools.getStyle(this);
+        setTheme(theme);
         super.onCreate(savedInstanceState);
         String preferenceKey = getIntent().getStringExtra(EXTRA_PREFERENCE_FRAGMENT);
         preferenceFragment = getNewPreferenceFragment(preferenceKey);
@@ -54,11 +57,17 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        IsRunningSingleton.getInstance().registerActivity(this);
 
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(preferenceFragment.getPreferenceScreen().getTitle());
+        if (theme != Tools.getStyle(this)) {
+            recreate();
+        } else {
+
+            IsRunningSingleton.getInstance().registerActivity(this);
+
+            ActionBar actionBar = getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setTitle(preferenceFragment.getPreferenceScreen().getTitle());
+            }
         }
     }
     @Override
