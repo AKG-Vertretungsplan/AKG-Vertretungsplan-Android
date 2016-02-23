@@ -49,7 +49,6 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
     private CustomFragmentPagerAdapter fragmentPagerAdapter;
     private ViewPager viewPager;
     private SharedPreferences sharedPreferences;
-    private int style;
     private String[] dayName;
     private String[] dayAdd;
     private TextView textView;
@@ -63,9 +62,6 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        style = Tools.getStyle(this);
-        setTheme(style);
-
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_lesson_plan);
@@ -131,21 +127,13 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        if (style != Tools.getStyle(this)) {//Theme has to be set before activity is created, so restart activity
-            Intent intent = getIntent();
-            finish();
-            overridePendingTransition(0, 0);
-            startActivity(intent);
-            overridePendingTransition(0, 0);
-        } else {
-            getRelevantInformation();
-            updateAll();// Colors could have changed
-            if (!sharedPreferences.contains(Keys.CLASS)) {
-                new EnterLessonClassDialog().setUpdateActivity(this).show(getFragmentManager(), "EnterLessonClassDialog");
-            }
-            setActionBarTitle();
-            setInformationVisibilities();
+        getRelevantInformation();
+        updateAll();// Colors could have changed
+        if (!sharedPreferences.contains(Keys.CLASS)) {
+            new EnterLessonClassDialog().setUpdateActivity(this).show(getFragmentManager(), "EnterLessonClassDialog");
         }
+        setActionBarTitle();
+        setInformationVisibilities();
     }
 
     @Override

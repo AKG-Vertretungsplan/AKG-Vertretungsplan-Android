@@ -45,13 +45,10 @@ public class WebActivity extends NavigationDrawerActivity {
     private WebView webView;
     private CustomWebViewClient customWebViewClient;
     private TextView textView;
-    private int style;
     private String css;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        style = Tools.getStyle(this);
-        setTheme(style);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initDrawer();
@@ -82,14 +79,6 @@ public class WebActivity extends NavigationDrawerActivity {
         notificationManager.cancel(1);
 
         IsRunningSingleton.getInstance().registerActivity(this);
-
-        if (style != Tools.getStyle(this)) {//Theme has to be set before activity is created, so restart activity
-            Intent intent = getIntent();
-            finish();
-            overridePendingTransition(0, 0);
-            startActivity(intent);
-            overridePendingTransition(0, 0);
-        }
 
         textView.setVisibility(sharedPreferences.getBoolean(Keys.HIDE_TEXT_VIEW, false) ? View.GONE : View.VISIBLE);
 

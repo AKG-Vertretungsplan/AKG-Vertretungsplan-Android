@@ -65,7 +65,6 @@ public class FormattedActivity extends NavigationDrawerActivity implements ItemF
     private SharedPreferences sharedPreferences;
     private static ItemFragment fragment1, fragment2;
     private static Calendar date1;
-    private int style;
     private boolean created = false;
     private static boolean shortCutToPageTwo = false, filteredMode;
     private MenuItem reloadItem, filterItem, markReadItem;
@@ -74,9 +73,6 @@ public class FormattedActivity extends NavigationDrawerActivity implements ItemF
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        style = Tools.getStyle(this);
-        setTheme(style);
-
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_formatted);
@@ -103,10 +99,10 @@ public class FormattedActivity extends NavigationDrawerActivity implements ItemF
         if (landscape) {
             title1View = (TextView) findViewById(R.id.title_1);
             title2View = (TextView) findViewById(R.id.title_2);
-            if (Tools.isLightStyle(style)) {
+            if (Tools.isLightStyle(getStyle())) {
                 title1View.setTextColor(getResources().getColor(R.color.title_color_light));
                 title2View.setTextColor(getResources().getColor(R.color.title_color_light));
-            } else if (Tools.isDarkStyle(style)) {
+            } else if (Tools.isDarkStyle(getStyle())) {
                 title1View.setTextColor(getResources().getColor(R.color.title_color_dark));
                 title2View.setTextColor(getResources().getColor(R.color.title_color_dark));
             }
@@ -225,13 +221,6 @@ public class FormattedActivity extends NavigationDrawerActivity implements ItemF
             fragment1.reloadContent(plan1, title1);
         if (fragment2 != null)
             fragment2.reloadContent(plan2, title2);
-        if (style != Tools.getStyle(this)) {//Theme has to be set before activity is created, so restart activity
-            Intent intent = getIntent();
-            finish();
-            overridePendingTransition(0, 0);
-            startActivity(intent);
-            overridePendingTransition(0, 0);
-        }
 
         textView.setVisibility(sharedPreferences.getBoolean(Keys.HIDE_TEXT_VIEW, false) ? View.GONE : View.VISIBLE);
 

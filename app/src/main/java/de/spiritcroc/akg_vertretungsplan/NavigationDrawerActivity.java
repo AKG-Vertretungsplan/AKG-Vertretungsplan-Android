@@ -63,6 +63,7 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private DrawerClickListener clickListener;
 
+    private int style;
     private boolean darkActionBarText, themeDefaultDarkActionBarText;
     private int drawerActiveItemColor;
 
@@ -158,6 +159,14 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        style = Tools.getStyle(this);
+        setTheme(style);
+
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         drawerToggle.syncState();
@@ -167,11 +176,11 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if (Integer.parseInt(sharedPreferences.getString(Keys.DRAWER_ACTIVE_ITEM_TEXT_COLOR, "" + Color.YELLOW)) !=
-                drawerActiveItemColor) {
-            // Restart, too lazy to update everything that changed again
-            overridePendingTransition(0, 0);
+        if (style != Tools.getStyle(this) ||
+                Integer.parseInt(sharedPreferences.getString(Keys.DRAWER_ACTIVE_ITEM_TEXT_COLOR, "" + Color.YELLOW)) !=
+                        drawerActiveItemColor) {
             finish();
+            overridePendingTransition(0, 0);
             startActivity(getIntent());
             overridePendingTransition(0, 0);
         } else {
@@ -309,6 +318,10 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
         finish();
         startActivity(new Intent(this, newActivity));
         overridePendingTransition(0, 0);
+    }
+
+    protected int getStyle() {
+        return style;
     }
 
     private void updateActionHomeAsUp() {
