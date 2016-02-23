@@ -153,6 +153,13 @@ public class SettingsUserInterfaceFragment extends CustomPreferenceFragment {
             if (force || sp.getString(Keys.RELEVANT_TEXT_TEXT_COLOR, "").equals(context.getString(R.string.pref_color_white_value)))
                 editor.putString(Keys.RELEVANT_TEXT_TEXT_COLOR, context.getString(R.string.pref_color_black_value));
 
+            if (force || sp.getString(Keys.HEADER_TEXT_TEXT_COLOR_HL, "").equals(context.getString(R.string.pref_color_green_value)))
+                editor.putString(Keys.HEADER_TEXT_TEXT_COLOR_HL, context.getString(R.string.pref_color_red_value));
+            if (force || sp.getString(Keys.NORMAL_TEXT_TEXT_COLOR_HL, "").equals(context.getString(R.string.pref_color_green_value)))
+                editor.putString(Keys.NORMAL_TEXT_TEXT_COLOR_HL, context.getString(R.string.pref_color_red_value));
+            if (force || sp.getString(Keys.RELEVANT_TEXT_TEXT_COLOR_HL, "").equals(context.getString(R.string.pref_color_green_value)))
+                editor.putString(Keys.RELEVANT_TEXT_TEXT_COLOR_HL, context.getString(R.string.pref_color_red_value));
+
             if (force || sp.getString(Keys.RELEVANT_TEXT_BG_COLOR, "").equals(context.getString(R.string.pref_color_blue_value)))
                 editor.putString(Keys.RELEVANT_TEXT_BG_COLOR, context.getString(R.string.pref_color_yellow_value));
             if (force || sp.getString(Keys.RELEVANT_TEXT_BG_COLOR_HL, "").equals(context.getString(R.string.pref_color_blue_value)))
@@ -179,6 +186,13 @@ public class SettingsUserInterfaceFragment extends CustomPreferenceFragment {
                 editor.putString(Keys.NORMAL_TEXT_TEXT_COLOR, context.getString(R.string.pref_color_white_value));
             if (force || sp.getString(Keys.RELEVANT_TEXT_TEXT_COLOR, "").equals(context.getString(R.string.pref_color_black_value)))
                 editor.putString(Keys.RELEVANT_TEXT_TEXT_COLOR, context.getString(R.string.pref_color_white_value));
+
+            if (force || sp.getString(Keys.HEADER_TEXT_TEXT_COLOR_HL, "").equals(context.getString(R.string.pref_color_red_value)))
+                editor.putString(Keys.HEADER_TEXT_TEXT_COLOR_HL, context.getString(R.string.pref_color_green_value));
+            if (force || sp.getString(Keys.NORMAL_TEXT_TEXT_COLOR_HL, "").equals(context.getString(R.string.pref_color_red_value)))
+                editor.putString(Keys.NORMAL_TEXT_TEXT_COLOR_HL, context.getString(R.string.pref_color_green_value));
+            if (force || sp.getString(Keys.RELEVANT_TEXT_TEXT_COLOR_HL, "").equals(context.getString(R.string.pref_color_red_value)))
+                editor.putString(Keys.RELEVANT_TEXT_TEXT_COLOR_HL, context.getString(R.string.pref_color_green_value));
 
             if (force || sp.getString(Keys.RELEVANT_TEXT_BG_COLOR, "").equals(context.getString(R.string.pref_color_yellow_value)))
                 editor.putString(Keys.RELEVANT_TEXT_BG_COLOR, context.getString(R.string.pref_color_blue_value));
