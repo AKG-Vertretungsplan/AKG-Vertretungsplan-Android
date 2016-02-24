@@ -61,7 +61,7 @@ public class BasicSetupDialog extends DialogFragment {
     public void onDismiss (DialogInterface dialog){
         super.onDismiss(dialog);
         Activity currentActivity = getActivity();
-        if (currentActivity instanceof FormattedActivity)
-            ((FormattedActivity) currentActivity).onCreateAfterDisclaimer();
+        if (currentActivity instanceof NavigationDrawerActivity)
+            ((NavigationDrawerActivity) currentActivity).afterDisclaimer(new Bool());
     }
 }

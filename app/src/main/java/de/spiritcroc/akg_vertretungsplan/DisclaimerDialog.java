@@ -51,8 +51,8 @@ public class DisclaimerDialog extends DialogFragment{
                         editor.putBoolean(Keys.SEEN_DISCLAIMER, true);
                         editor.apply();
                         Activity currentActivity = getActivity();
-                        if (currentActivity instanceof FormattedActivity)
-                            ((FormattedActivity) currentActivity).onCreateAfterDisclaimer();
+                        if (currentActivity instanceof NavigationDrawerActivity)
+                            ((NavigationDrawerActivity) currentActivity).afterDisclaimer(new Bool());
                     }
                 })
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {

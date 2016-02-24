@@ -45,6 +45,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import de.spiritcroc.akg_vertretungsplan.settings.Keys;
 import de.spiritcroc.akg_vertretungsplan.settings.SettingsActivity;
@@ -66,6 +67,7 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
     private int style;
     private boolean darkActionBarText, themeDefaultDarkActionBarText;
     private int drawerActiveItemColor;
+    private boolean ranAfterDisclaimer = false;
 
     /**
      * Call after inflating layout
@@ -156,6 +158,12 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
 
         themeDefaultDarkActionBarText = !Tools.isStyleWithDarkActionBar(Tools.getStyle(this));
         darkActionBarText = themeDefaultDarkActionBarText;
+
+        if (sharedPreferences.getBoolean(Keys.SEEN_DISCLAIMER, false)) {
+            afterDisclaimer(new Bool());
+        } else {
+            new DisclaimerDialog().show(getFragmentManager(), "DisclaimerDialog");
+        }
     }
 
     @Override
@@ -194,6 +202,40 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
     protected void onDestroy(){
         LocalBroadcastManager.getInstance(this).unregisterReceiver(downloadInfoReceiver);
         super.onDestroy();
+    }
+
+    /**
+     * @param startedDownloadService
+     * new Bool()
+     * @return
+     * true if already called once and should not run any code again
+     */
+    public boolean afterDisclaimer(Bool startedDownloadService){
+        if (ranAfterDisclaimer)//only run once
+            return true;
+        ranAfterDisclaimer = true;
+        /*if (!sharedPreferences.contains(Keys.PLAN)) {
+            new BasicSetupDialog().show(getFragmentManager(), "BasicSetupDialog");
+            // BasicSetupDialog will call this method again
+            return;
+        }*/
+        if (sharedPreferences.getString(Keys.PLAN, "1").equals("2")) {
+            new InfoscreenWarningDialog().show(getFragmentManager(), "InfoscreenWarningDialog");
+        }
+        //Download plan stuff  start
+        Calendar calendar = DownloadService.stringToCalendar(sharedPreferences.getString(Keys.LAST_CHECKED, "???"));
+        startedDownloadService.value = false;
+        if (calendar == null || Calendar.getInstance().getTime().getTime() - calendar.getTime().getTime() > Integer.parseInt(sharedPreferences.getString(Keys.AUTO_LOAD_ON_OPEN, "5"))*60000) {
+            startDownloadService(false);
+            startedDownloadService.value = true;
+        }
+        //Download plan stuff end
+
+        if (sharedPreferences.getBoolean(Keys.ILLEGAL_PLAN, false) && !startedDownloadService.value) {
+            illegalPlan();
+        }
+
+        return false;
     }
 
     @Override
@@ -383,6 +425,8 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
         if (!DownloadService.isDownloading() && (force || !sharedPreferences.getBoolean(Keys.UNSEEN_CHANGES, false)))
             startService(new Intent(this, DownloadService.class).setAction(DownloadService.ACTION_DOWNLOAD_PLAN));
     }
+
+    protected void illegalPlan() {}
 
     private BroadcastReceiver downloadInfoReceiver = new BroadcastReceiver() {
         @Override

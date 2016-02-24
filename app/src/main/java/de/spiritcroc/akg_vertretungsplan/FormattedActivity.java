@@ -65,7 +65,6 @@ public class FormattedActivity extends NavigationDrawerActivity implements ItemF
     private SharedPreferences sharedPreferences;
     private static ItemFragment fragment1, fragment2;
     private static Calendar date1;
-    private boolean created = false;
     private static boolean shortCutToPageTwo = false, filteredMode;
     private MenuItem reloadItem, filterItem, markReadItem;
     private ImageView overflow;
@@ -76,7 +75,6 @@ public class FormattedActivity extends NavigationDrawerActivity implements ItemF
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_formatted);
-        initDrawer();
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -125,29 +123,13 @@ public class FormattedActivity extends NavigationDrawerActivity implements ItemF
 
         LocalBroadcastManager.getInstance(this).registerReceiver(downloadInfoReceiver, new IntentFilter("PlanDownloadServiceUpdate"));
 
-        if (sharedPreferences.getBoolean(Keys.SEEN_DISCLAIMER, false))
-            onCreateAfterDisclaimer();
-
+        initDrawer();
     }
-    public void onCreateAfterDisclaimer(){
-        if (created)//only run once
-            return;
-        /*if (!sharedPreferences.contains(Keys.PLAN)) {
-            new BasicSetupDialog().show(getFragmentManager(), "BasicSetupDialog");
-            // BasicSetupDialog will call this method again
-            return;
-        }*/
-        if (sharedPreferences.getString(Keys.PLAN, "1").equals("2")) {
-            new InfoscreenWarningDialog().show(getFragmentManager(), "InfoscreenWarningDialog");
-        }
-        //Download plan stuff  start
-        Calendar calendar = DownloadService.stringToCalendar(sharedPreferences.getString(Keys.LAST_CHECKED, "???"));
-        boolean startedDownloadService = false;
-        if (calendar == null || Calendar.getInstance().getTime().getTime() - calendar.getTime().getTime() > Integer.parseInt(sharedPreferences.getString(Keys.AUTO_LOAD_ON_OPEN, "5"))*60000) {
-            startDownloadService(false);
-            startedDownloadService = true;
-        }
-        else {
+    @Override
+    public boolean afterDisclaimer(Bool startedDownloadService){
+        if (super.afterDisclaimer(startedDownloadService))//only run once
+            return true;
+        if (!startedDownloadService.value) {
             String text = sharedPreferences.getBoolean(Keys.ILLEGAL_PLAN, false) ? getString(R.string.error_illegal_plan) : getString(R.string.last_checked) + " " + sharedPreferences.getString(Keys.LAST_CHECKED, getString(R.string.error_unknown));
             textView.setText(text);
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -155,11 +137,6 @@ public class FormattedActivity extends NavigationDrawerActivity implements ItemF
             editor.apply();
         }
         //Download plan stuff end
-        created = true;
-
-        if (sharedPreferences.getBoolean(Keys.ILLEGAL_PLAN, false) && !startedDownloadService) {
-            illegalPlan();
-        }
 
         if (date1 != null && sharedPreferences.getBoolean(Keys.FORMATTED_PLAN_AUTO_SELECT_DAY, true)) {//Try to show most relevant day
             Calendar currentDate = Calendar.getInstance();
@@ -179,6 +156,8 @@ public class FormattedActivity extends NavigationDrawerActivity implements ItemF
                 }
             }
         }
+
+        return false;
     }
     @Override
     public void onResume() {
@@ -203,9 +182,6 @@ public class FormattedActivity extends NavigationDrawerActivity implements ItemF
         }
 
         IsRunningSingleton.getInstance().registerActivity(this);
-
-        if (!sharedPreferences.getBoolean(Keys.SEEN_DISCLAIMER, false))
-            new DisclaimerDialog().show(getFragmentManager(), "DisclaimerDialog");
 
         if (filterItem != null)
             filterItem.setShowAsAction(sharedPreferences.getBoolean(Keys.SHOW_FILTERED_PLAN_AS_ACTION, false) ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
@@ -507,7 +483,8 @@ public class FormattedActivity extends NavigationDrawerActivity implements ItemF
         }
     };
 
-    private void illegalPlan() {
+    @Override
+    protected void illegalPlan() {
         Toast.makeText(getApplicationContext(), getString(R.string.error_illegal_plan), Toast.LENGTH_LONG).show();
         if (Tools.isWebActivityEnabled(sharedPreferences)) {
             swapActivity(WebActivity.class);
