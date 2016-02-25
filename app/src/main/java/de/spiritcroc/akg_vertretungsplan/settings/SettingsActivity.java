@@ -57,7 +57,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(shouldEnableHomeAsUp());
         }
     }
     @Override
@@ -122,7 +122,7 @@ public class SettingsActivity extends AppCompatActivity {
         return false;
     }
 
-    private CustomPreferenceFragment getNewPreferenceFragment(String preferenceFragment) {
+    protected CustomPreferenceFragment getNewPreferenceFragment(String preferenceFragment) {
         if (preferenceFragment != null) {
             try {
                 return (CustomPreferenceFragment) Class.forName(preferenceFragment).newInstance();
@@ -145,5 +145,9 @@ public class SettingsActivity extends AppCompatActivity {
                             ((ListView) v).getFirstVisiblePosition());
         }
         super.recreate();
+    }
+
+    protected boolean shouldEnableHomeAsUp() {
+        return true;
     }
 }

@@ -41,6 +41,14 @@
             android:name=".settings.SettingsActivity"
             android:label="@string/settings"/>
         <activity
+            android:name=".settings.SettingsNotificationActivity"
+            android:label="@string/pref_notification">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.NOTIFICATION_PREFERENCES"/>
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".FormattedActivity"
             android:label="@string/title_activity_formatted"
             android:configChanges="orientation|screenSize">
