@@ -176,6 +176,9 @@ public class SettingsUserInterfaceFragment extends CustomPreferenceFragment {
                     editor.putString(Keys.LESSON_PLAN_COLOR_RELEVANT_INFORMATION, context.getString(R.string.pref_color_dkgray_value));
                 if (force || sp.getString(Keys.LESSON_PLAN_COLOR_GENERAL_INFORMATION, "").equals(context.getString(R.string.pref_color_ltgray_value)))
                     editor.putString(Keys.LESSON_PLAN_COLOR_GENERAL_INFORMATION, context.getString(R.string.pref_color_dkgray_value));
+
+                if (force || sp.getString(Keys.LESSON_PLAN_BG_COLOR_CURRENT_LESSON, "").equals(context.getString(R.string.pref_color_dkgray_value)))
+                    editor.putString(Keys.LESSON_PLAN_BG_COLOR_CURRENT_LESSON, context.getString(R.string.pref_color_ltgray_value));
             }
         } else if (Tools.isDarkStyle(style)) {
             if (force || sp.getString(Keys.HEADER_TEXT_TEXT_COLOR, "").equals(context.getString(R.string.pref_color_black_value)))
@@ -210,6 +213,9 @@ public class SettingsUserInterfaceFragment extends CustomPreferenceFragment {
                     editor.putString(Keys.LESSON_PLAN_COLOR_RELEVANT_INFORMATION, context.getString(R.string.pref_color_ltgray_value));
                 if (force || sp.getString(Keys.LESSON_PLAN_COLOR_GENERAL_INFORMATION, "").equals(context.getString(R.string.pref_color_dkgray_value)))
                     editor.putString(Keys.LESSON_PLAN_COLOR_GENERAL_INFORMATION, context.getString(R.string.pref_color_ltgray_value));
+
+                if (force || sp.getString(Keys.LESSON_PLAN_BG_COLOR_CURRENT_LESSON, "").equals(context.getString(R.string.pref_color_ltgray_value)))
+                    editor.putString(Keys.LESSON_PLAN_BG_COLOR_CURRENT_LESSON, context.getString(R.string.pref_color_dkgray_value));
             }
         }
 

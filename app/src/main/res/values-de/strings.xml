@@ -382,4 +382,5 @@
     <string name="pref_skip_network_check_summary">Versuche das Herunterladen, auch wenn das Gerät offline ist</string>
     <string name="pref_drawer_active_item_text_color">Aktueller Drawer-Eintrag</string>
     <string name="pref_restore_default_values">Standardeinstellungen wiederherstellen?</string>
+    <string name="pref_lesson_plan_bg_color_current_lesson">Hintergrund für aktuelle Stunde</string>
 </resources>

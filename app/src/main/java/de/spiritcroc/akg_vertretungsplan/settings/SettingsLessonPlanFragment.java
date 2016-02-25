@@ -60,6 +60,7 @@ public class SettingsLessonPlanFragment extends CustomPreferenceFragment {
         setListPreferenceSummary(Keys.LESSON_PLAN_COLOR_ROOM);
         setListPreferenceSummary(Keys.LESSON_PLAN_COLOR_RELEVANT_INFORMATION);
         setListPreferenceSummary(Keys.LESSON_PLAN_COLOR_GENERAL_INFORMATION);
+        setListPreferenceSummary(Keys.LESSON_PLAN_BG_COLOR_CURRENT_LESSON);
     }
 
     @Override
@@ -74,6 +75,7 @@ public class SettingsLessonPlanFragment extends CustomPreferenceFragment {
             case Keys.LESSON_PLAN_COLOR_ROOM:
             case Keys.LESSON_PLAN_COLOR_RELEVANT_INFORMATION:
             case Keys.LESSON_PLAN_COLOR_GENERAL_INFORMATION:
+            case Keys.LESSON_PLAN_BG_COLOR_CURRENT_LESSON:
                 setListPreferenceSummary(key);
                 break;
         }

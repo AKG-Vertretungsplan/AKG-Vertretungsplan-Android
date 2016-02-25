@@ -77,5 +77,10 @@
             android:entries="@array/pref_color_array"
             android:entryValues="@array/pref_color_array_values"
             android:defaultValue="@string/pref_color_dkgray_value"/>
+        <ListPreference
+            android:key="pref_lesson_plan_bg_color_current_lesson"
+            android:title="@string/pref_lesson_plan_bg_color_current_lesson"
+            android:entries="@array/pref_color_array"
+            android:entryValues="@array/pref_color_array_values"/>
     </PreferenceCategory>
 </PreferenceScreen>

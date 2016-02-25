@@ -25,6 +25,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -39,9 +40,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import de.spiritcroc.akg_vertretungsplan.settings.Keys;
 
@@ -62,6 +66,8 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
     private boolean discardSavedInstance = false;
 
     private MenuItem showFullTimeMenuItem, reloadItem;
+
+    private Handler updateHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,6 +149,7 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
         }
         setActionBarTitle();
         setInformationVisibilities();
+        updateCurrentLesson.run();
     }
 
     @Override
@@ -243,11 +250,15 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
         }
         @Override
         public Fragment getItem(int position){
-            return LessonPlanFragment.newInstance(position).setRelevantInformation(relevantInformation[position], relevantRoomInformation[position], relevantInformationLessons[position], generalInformation[position], dates[position], headerRow[position], informationCells[position]);
+            LessonPlanFragment f = LessonPlanFragment.newInstance(position).setRelevantInformation(relevantInformation[position], relevantRoomInformation[position], relevantInformationLessons[position], generalInformation[position], dates[position], headerRow[position], informationCells[position]);
+            if (position == getDayShortcut(Calendar.getInstance())) {
+                f.markCurrentLesson(getCurrentLesson());
+            }
+            return f;
         }
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            return lessonPlanFragments[position] =  (LessonPlanFragment) super.instantiateItem(container, position);
+            return lessonPlanFragments[position] = (LessonPlanFragment) super.instantiateItem(container, position);
         }
         @Override
         public CharSequence getPageTitle (int position){
@@ -420,6 +431,55 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
             reloadItem.setVisible(showInformation);
         }
     }
+
+    private int getCurrentLesson() {
+        Calendar now = Calendar.getInstance();
+        int day = getDayShortcut(now);
+        if (day < 0) {
+            return -1;
+        }
+        String[] stringTimes = getResources().getStringArray(R.array.lesson_plan_times);
+        int markLesson = -1;
+        for (int i = 0; i < stringTimes.length && markLesson == -1; i++) {
+            String rmSearch = " – ";
+            int rmIndex = stringTimes[i].indexOf(rmSearch);
+            if (rmIndex >= 0) {
+                stringTimes[i] = stringTimes[i].substring(rmIndex + rmSearch.length());
+            }
+            try {
+                Calendar c = new GregorianCalendar();
+                Date d = new SimpleDateFormat("HH:mm").parse(stringTimes[i]);
+                c.setTime(d);
+
+                if (Tools.firstTimeFirstNoDate(now, c)) {
+                    markLesson = i;
+                    int diff = Tools.timeDiffMillisNoDate(now, c);
+                    Log.d("LessonPlanActivity", "Update current lesson in " + diff + "ms");
+                    updateHandler.postDelayed(updateCurrentLesson, diff);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return markLesson;
+    }
+
+    private Runnable updateCurrentLesson = new Runnable() {
+        @Override
+        public void run() {
+            updateHandler.removeCallbacks(this);
+            for (int i = 0; i < lessonPlanFragments.length; i++) {
+                Calendar c = Calendar.getInstance();
+                if (lessonPlanFragments[i] != null) {
+                    lessonPlanFragments[i].markCurrentLesson(
+                            i == getDayShortcut(c) ?
+                                    getCurrentLesson() :
+                                    -1
+                    );
+                }
+            }
+        }
+    };
 
     private BroadcastReceiver downloadInfoReceiver = new BroadcastReceiver() {
         @Override

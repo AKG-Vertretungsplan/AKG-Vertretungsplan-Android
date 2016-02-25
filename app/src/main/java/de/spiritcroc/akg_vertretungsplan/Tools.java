@@ -23,6 +23,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
@@ -37,6 +38,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import de.spiritcroc.akg_vertretungsplan.settings.Keys;
+import de.spiritcroc.akg_vertretungsplan.settings.SettingsUserInterfaceFragment;
 
 public abstract class Tools {
     public static String getLine (String text, int number){
@@ -300,5 +302,59 @@ public abstract class Tools {
             }
         }
         return time;
+    }
+
+    public static boolean firstTimeFirstNoDate(Calendar first, Calendar second) {
+        if (first.get(Calendar.HOUR_OF_DAY) < second.get(Calendar.HOUR_OF_DAY)) {
+            return true;
+        } else if (first.get(Calendar.HOUR_OF_DAY) > second.get(Calendar.HOUR_OF_DAY)) {
+            return false;
+        }
+        if (first.get(Calendar.MINUTE) < second.get(Calendar.MINUTE)) {
+            return true;
+        } else if (first.get(Calendar.MINUTE) > second.get(Calendar.MINUTE)) {
+            return false;
+        }
+        if (first.get(Calendar.SECOND) < second.get(Calendar.SECOND)) {
+            return true;
+        } else if (first.get(Calendar.SECOND) > second.get(Calendar.SECOND)) {
+            return false;
+        }
+        if (first.get(Calendar.MILLISECOND) < second.get(Calendar.MILLISECOND)) {
+            return true;
+        } else if (first.get(Calendar.MILLISECOND) > second.get(Calendar.MILLISECOND)) {
+            return false;
+        }
+
+        return false;
+    }
+
+    public static int timeDiffMillisNoDate(Calendar first, Calendar second) {
+        int diff = second.get(Calendar.HOUR_OF_DAY) - first.get(Calendar.HOUR_OF_DAY);
+        diff *= 60;
+        diff += second.get(Calendar.MINUTE) - first.get(Calendar.MINUTE);
+        diff *= 60;
+        diff += second.get(Calendar.SECOND) - first.get(Calendar.SECOND);
+        diff *= 1000;
+        diff += second.get(Calendar.MILLISECOND) - first.get(Calendar.MILLISECOND);
+        return diff;
+    }
+
+    /**
+     * When upgrading the app, some new preferences might need an update as well
+     * For example, set up default values here that depend on other settings, e.g. theme setting
+     */
+    public static void setupUpdate(Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sp.edit();
+        boolean applyThemeToCustomColors = false;
+        if (!sp.contains(Keys.LESSON_PLAN_BG_COLOR_CURRENT_LESSON)) {
+            editor.putString(Keys.LESSON_PLAN_BG_COLOR_CURRENT_LESSON, "" + Color.LTGRAY);
+            applyThemeToCustomColors = true;
+        }
+        editor.apply();
+        if (applyThemeToCustomColors) {
+            SettingsUserInterfaceFragment.applyThemeToCustomColors(context, false, false);
+        }
     }
 }

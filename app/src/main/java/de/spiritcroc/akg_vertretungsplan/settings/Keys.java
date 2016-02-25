@@ -212,6 +212,9 @@ public class Keys {
     public static final String LESSON_PLAN_COLOR_GENERAL_INFORMATION =
             "pref_lesson_plan_color_general_information";
 
+    public static final String LESSON_PLAN_BG_COLOR_CURRENT_LESSON =
+            "pref_lesson_plan_bg_color_current_lesson";
+
 
     /**
      * Settings - widget

@@ -65,6 +65,7 @@ public class LessonPlanFragment extends ListFragment
     private boolean showTime;
     private boolean showFullTime;
     private boolean showInformation;
+    private int currentLesson = -1;
 
     public static LessonPlanFragment newInstance(int day) {
         LessonPlanFragment fragment = new LessonPlanFragment();
@@ -100,6 +101,7 @@ public class LessonPlanFragment extends ListFragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        getListView().setDrawSelectorOnTop(true);
         getListView().setOnItemLongClickListener(this);
     }
 
@@ -200,6 +202,11 @@ public class LessonPlanFragment extends ListFragment
         }
     }
 
+    public LessonPlanFragment markCurrentLesson(int lesson) {
+        currentLesson = lesson;
+        update();
+        return this;
+    }
 
     public void update(){
         if (sharedPreferences == null) {
@@ -241,6 +248,7 @@ public class LessonPlanFragment extends ListFragment
                 view = inflater.inflate(R.layout.lesson_plan_item, parent, false);
 
                 holder = new LessonViewHolder();
+                holder.itemLayout = (LinearLayout) view.findViewById(R.id.item_layout);
                 holder.lessonLayout = (LinearLayout) view.findViewById(R.id.lesson_layout);
                 holder.timeView = (TextView) view.findViewById(R.id.time_view);
                 holder.subjectView = (TextView) view.findViewById(R.id.subject_view);
@@ -254,6 +262,8 @@ public class LessonPlanFragment extends ListFragment
                 holder = (LessonViewHolder) convertView.getTag();
                 view = convertView;
             }
+
+            holder.itemLayout.setBackgroundColor(position == currentLesson ? Integer.parseInt(sharedPreferences.getString(Keys.LESSON_PLAN_BG_COLOR_CURRENT_LESSON, "" + Color.LTGRAY)): Color.TRANSPARENT);
 
             int informationViewTopPadding = 0;
             if (((LessonViewContent) getItem(position)).generalInformation) {
@@ -309,7 +319,7 @@ public class LessonPlanFragment extends ListFragment
     }
 
     static class LessonViewHolder{
-        LinearLayout lessonLayout;
+        LinearLayout itemLayout, lessonLayout;
         TextView timeView, subjectView, roomView, informationView, roomInformationView;
     }
 

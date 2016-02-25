@@ -176,6 +176,8 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
         setTheme(style);
 
         super.onCreate(savedInstanceState);
+
+        Tools.setupUpdate(this);
     }
 
     @Override
