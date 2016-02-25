@@ -51,6 +51,10 @@ import de.spiritcroc.akg_vertretungsplan.settings.Keys;
 import de.spiritcroc.akg_vertretungsplan.settings.SettingsActivity;
 
 public abstract class NavigationDrawerActivity extends AppCompatActivity {
+
+    private static final String EXTRA_SWAPPED_ACTIVITY =
+            "de.spiritcroc.akg_vertretungsplan.extra.swapped_activity";
+
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
     private TextView informationView;
@@ -225,7 +229,8 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
         //Download plan stuff  start
         Calendar calendar = DownloadService.stringToCalendar(sharedPreferences.getString(Keys.LAST_CHECKED, "???"));
         startedDownloadService.value = false;
-        if (calendar == null || Calendar.getInstance().getTime().getTime() - calendar.getTime().getTime() > Integer.parseInt(sharedPreferences.getString(Keys.AUTO_LOAD_ON_OPEN, "5"))*60000) {
+        if (!getIntent().getBooleanExtra(EXTRA_SWAPPED_ACTIVITY, false) &&
+                (calendar == null || Calendar.getInstance().getTime().getTime() - calendar.getTime().getTime() > Integer.parseInt(sharedPreferences.getString(Keys.AUTO_LOAD_ON_OPEN, "5"))*60000)) {
             startDownloadService(false);
             startedDownloadService.value = true;
         }
@@ -365,9 +370,9 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
     }
 
     protected void swapActivity(Class<?> newActivity) {
-        overridePendingTransition(0, 0);
         finish();
-        startActivity(new Intent(this, newActivity));
+        overridePendingTransition(0, 0);
+        startActivity(new Intent(this, newActivity).putExtra(EXTRA_SWAPPED_ACTIVITY, true));
         overridePendingTransition(0, 0);
     }
 
