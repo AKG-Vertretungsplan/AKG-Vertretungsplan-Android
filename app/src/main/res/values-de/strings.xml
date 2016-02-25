@@ -367,7 +367,7 @@
     <string name="never">nie</string>
     <string name="information_view_information">Vertretungen: %1$d/%2$d</string>
     <string name="information_view_information_relevancy">Relevante Vertretungen: %1$d/%2$d\nAllgemeine Vertretungen: %3$d/%4$d\nAndere Vertretungen: %5$d/%6$d</string>
-    <string name="information_view_update_check">Letzte Aktualisierung: %1$s\nZuletzt geprüft: %2$s</string>
+    <string name="information_view_update_check">Zuletzt geprüft: %2$s\nLetzte Aktualisierung: %1$s</string>
     <string name="offline">Offline</string>
     <string name="swipe_down_to_refresh">Zum Aktualisieren herunterwischen</string>
 

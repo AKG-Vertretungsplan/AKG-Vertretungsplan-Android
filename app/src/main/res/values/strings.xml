@@ -593,7 +593,7 @@
     <string name="never">never</string>
     <string name="information_view_information">Information: %1$d/%2$d</string>
     <string name="information_view_information_relevancy">Relevant information: %1$d/%2$d\nGeneral information: %3$d/%4$d\nOther information: %5$d/%6$d</string>
-    <string name="information_view_update_check">Last update: %1$s\nLast checked: %2$s</string>
+    <string name="information_view_update_check">Last checked: %2$s\nLast update: %1$s</string>
     <string name="offline">Offline</string>
     <string name="swipe_down_to_refresh">Swipe down to refresh</string>
 
