@@ -287,6 +287,15 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(getDrawer())) {
+            drawerLayout.closeDrawer(getDrawer());
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     private class DrawerClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
