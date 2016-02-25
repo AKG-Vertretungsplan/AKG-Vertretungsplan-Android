@@ -51,10 +51,13 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
     private SharedPreferences sharedPreferences;
     private String[] dayName;
     private String[] dayAdd;
+    private String[] dates;
     private TextView textView;
     private LessonPlanFragment[] lessonPlanFragments;
     private ArrayList<String>[] relevantInformation, relevantRoomInformation, generalInformation;
     private ArrayList<Integer>[] relevantInformationLessons;
+    private String[][] headerRow;
+    private ArrayList<String[]>[] informationCells;
     private int shortcutDay = -1;//-1 if no shortcut
     private boolean discardSavedInstance = false;
 
@@ -74,17 +77,23 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
 
         dayName = getResources().getStringArray(R.array.lesson_plan_days);
         dayAdd = new String[LessonPlan.DAY_COUNT];
+        dates = new String[LessonPlan.DAY_COUNT];
         lessonPlanFragments = new LessonPlanFragment[LessonPlan.DAY_COUNT];
         relevantInformation = new ArrayList[LessonPlan.DAY_COUNT];
         relevantRoomInformation = new ArrayList[LessonPlan.DAY_COUNT];
         relevantInformationLessons = new ArrayList[LessonPlan.DAY_COUNT];
         generalInformation = new ArrayList[LessonPlan.DAY_COUNT];
+        headerRow = new String[LessonPlan.DAY_COUNT][];
+        informationCells = new ArrayList[LessonPlan.DAY_COUNT];
         for (int i = 0; i < LessonPlan.DAY_COUNT; i++) {
             dayAdd[i] = "";
+            dates[i] = "";
             relevantInformation[i] = new ArrayList<>();
             relevantRoomInformation[i] = new ArrayList<>();
             relevantInformationLessons[i] = new ArrayList<>();
             generalInformation[i] = new ArrayList<>();
+            headerRow[i] = new String[ItemFragment.CELL_COUNT];
+            informationCells[i] = new ArrayList<>();
         }
 
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -234,7 +243,7 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
         }
         @Override
         public Fragment getItem(int position){
-            return LessonPlanFragment.newInstance(position).setRelevantInformation(relevantInformation[position], relevantRoomInformation[position], relevantInformationLessons[position], generalInformation[position]);
+            return LessonPlanFragment.newInstance(position).setRelevantInformation(relevantInformation[position], relevantRoomInformation[position], relevantInformationLessons[position], generalInformation[position], dates[position], headerRow[position], informationCells[position]);
         }
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
@@ -265,13 +274,16 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
     }
     private void getRelevantInformation(String title1, String plan1, String title2, String plan2) {
         for (int i = 0; i < LessonPlan.DAY_COUNT; i++) {
+            dates[i] = "";
             dayAdd[i] = "";
+            headerRow[i] = new String[ItemFragment.CELL_COUNT];
             relevantInformation[i].clear();
             relevantRoomInformation[i].clear();
             relevantInformationLessons[i].clear();
             generalInformation[i].clear();
+            informationCells[i].clear();
             if (lessonPlanFragments[i] != null) {
-                lessonPlanFragments[i].setRelevantInformation(relevantInformation[i], relevantRoomInformation[i], relevantInformationLessons[i], generalInformation[i]);
+                lessonPlanFragments[i].setRelevantInformation(relevantInformation[i], relevantRoomInformation[i], relevantInformationLessons[i], generalInformation[i], dates[i], headerRow[i], informationCells[i]);
             }
         }
         getRelevantInformation(title1, plan1);
@@ -281,7 +293,7 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
     private void getRelevantInformation(String title, String plan) {
         int tmpCellCount;
         String tmp = "a";   //not empty
-        String[] tmpRowContent = new String[ItemFragment.cellCount];
+        String[] tmpRowContent = new String[ItemFragment.CELL_COUNT];
         LessonPlan lessonPlan = LessonPlan.getInstance(sharedPreferences);
 
         Calendar calendar = Tools.getDateFromPlanTitle(title);
@@ -297,6 +309,7 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
         }
 
         dayAdd[day] = " (" + new SimpleDateFormat("d.M.").format(calendar.getTime()) + ")";
+        dates[day] = title;
         fragmentPagerAdapter.notifyDataSetChanged();
 
         if (!relevantInformation[day].isEmpty() || !generalInformation[day].isEmpty()) {
@@ -312,7 +325,7 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
             if (tmp.length() > searchingFor.length()+1 && tmp.substring(0, searchingFor.length()).equals(searchingFor)) { //ignore empty rows
                 tmpCellCount = 0;
                 tmp = tmp.substring(searchingFor.length());
-                if (Tools.countHeaderCells(tmp)<=1) {//ignore headerRows
+                if (Tools.countHeaderCells(tmp)<=1) {
                     for (int j = 0; j < tmpRowContent.length; j++) {
                         tmpRowContent[j] = Tools.getCellContent(tmp, j+1);
                         if (!tmpRowContent[j].equals(""))
@@ -337,12 +350,16 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
                             Log.w("LessonPlanActivity", "getRelevantInformation: Got exception while checking for relevancy: " + e);
                         }
                     }
+                } else {//headerRow
+                    for (int j = 0; j < tmpRowContent.length; j++) {
+                        headerRow[day][j] = Tools.getCellContent(tmp, j+1);
+                    }
                 }
             }
         }
 
         if (lessonPlanFragments[day] != null) {
-            lessonPlanFragments[day].setRelevantInformation(relevantInformation[day], relevantRoomInformation[day], relevantInformationLessons[day], generalInformation[day]);
+            lessonPlanFragments[day].setRelevantInformation(relevantInformation[day], relevantRoomInformation[day], relevantInformationLessons[day], generalInformation[day], dates[day], headerRow[day], informationCells[day]);
         }
     }
 
@@ -391,6 +408,7 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
             relevantRoomInformation[day].add(roomResult);
             relevantInformationLessons[day].add(Integer.parseInt(values[2]));
         }
+        informationCells[day].add(values.clone());
     }
 
     private void setInformationVisibilities() {

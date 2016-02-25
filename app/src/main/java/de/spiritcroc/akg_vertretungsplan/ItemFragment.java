@@ -47,11 +47,11 @@ import java.util.Calendar;
 import de.spiritcroc.akg_vertretungsplan.settings.Keys;
 
 public class ItemFragment extends ListFragment{
-    public static final int cellCount = 7;
+    public static final int CELL_COUNT = 7;
 
     private SharedPreferences sharedPreferences;
-    private String[] tmpRowContent = new String[cellCount];
-    private String[] headerRow = new String[cellCount];
+    private String[] tmpRowContent = new String[CELL_COUNT];
+    private String[] headerRow = new String[CELL_COUNT];
     private ArrayList<Integer> textColors = new ArrayList<>(), backgroundColors = new ArrayList<>();
     private ArrayList<String[]> fullFormattedContent = new ArrayList<>();   //Save List content so it can be shown in a Dialog
     private String currentClass = "";
@@ -157,7 +157,14 @@ public class ItemFragment extends ListFragment{
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id){
         String[] dividedText = fullFormattedContent.get(position);
-        String shareMessage = getString(R.string.share_header) + "\n" + date;
+        String text = makeDialogMessage(getActivity(), dividedText, headerRow);
+        if (text != null) {
+            String shareMessage = makeDialogShareMessage(getActivity(), date, text);
+            mListener.showDialog(date, text, shareMessage);
+        }
+    }
+
+    public static String makeDialogMessage(Context context, String[] dividedText, String[] headerRow) {
         if (dividedText != null) {
             int emptyCount = 0;
             for (String divided: dividedText) {
@@ -165,22 +172,27 @@ public class ItemFragment extends ListFragment{
                     emptyCount++;
                 }
             }
-            if (emptyCount == cellCount - 1 && dividedText[0]!=null && dividedText[0].length()!=0)
-                mListener.showDialog(date, dividedText[0], shareMessage + "\n" + dividedText[0]);
-            else if (emptyCount == cellCount - 2 && dividedText[0]!=null && dividedText[0].length()!=0 && dividedText[1]!=null && dividedText[1].length()!=0)//→ two row table
-                mListener.showDialog(date, getLessonTimeCombinationString(dividedText[0]) + "\n" + dividedText[1], shareMessage + "\n" + dividedText[0] + "\n" + dividedText[1]);
-            else {
+            if (emptyCount == CELL_COUNT - 1 && dividedText[0]!=null && dividedText[0].length()!=0) {
+                return dividedText[0];
+            } else if (emptyCount == CELL_COUNT - 2 && dividedText[0]!=null && dividedText[0].length()!=0 && dividedText[1]!=null && dividedText[1].length()!=0) {//→ two row table
+                return getLessonTimeCombinationString(context, dividedText[0]) + "\n" + dividedText[1];
+            } else {
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
                 String text = "";
                 LessonPlan lessonPlan = LessonPlan.getInstance(sharedPreferences);
                 for (int i = 0; i < dividedText.length; i++) {
                     if (dividedText[i] != null && dividedText[i].length() > 0) {
-                        text += (text.length() == 0 ? "" : "\n") + (headerRow[i] == null || headerRow[i].length() == 0 ? "" : headerRow[i] + "\n\t") + (i == 2 ? getLessonTimeCombinationString(dividedText[i]) : getTeacherCombinationString(sharedPreferences, lessonPlan, dividedText[i]));
-                        shareMessage += "\n" + (headerRow[i] == null || headerRow[i].length() == 0 ? "" : headerRow[i] + ": ") + getTeacherCombinationString(sharedPreferences, lessonPlan, dividedText[i]);
+                        text += (text.length() == 0 ? "" : "\n") + (headerRow[i] == null || headerRow[i].length() == 0 ? "" : headerRow[i] + "\n\t") + (i == 2 ? getLessonTimeCombinationString(context, dividedText[i]) : getTeacherCombinationString(sharedPreferences, lessonPlan, dividedText[i]));
                     }
                 }
-                mListener.showDialog(date, text, shareMessage);
+                return text;
             }
         }
+        return null;
+    }
+
+    public static String makeDialogShareMessage(Context context, String date, String dialogMessage) {
+        return context.getString(R.string.share_header) + "\n" + date + "\n" + dialogMessage;
     }
 
     public boolean hasUnreadContent(){
@@ -415,9 +427,9 @@ public class ItemFragment extends ListFragment{
             result += " (" + teacherShort + ")";
         return result;
     }
-    private String getLessonTimeCombinationString(String time){
+    private static String getLessonTimeCombinationString(Context context, String time){
         try{
-            return time + " (" + getResources().getStringArray(R.array.lesson_plan_times)[Integer.parseInt(time)-1] + ")";
+            return time + " (" + context.getResources().getStringArray(R.array.lesson_plan_times)[Integer.parseInt(time)-1] + ")";
         }
         catch (Exception e){
             Log.e("ItemFragment", "getLessonTimeCombinationString: Got exception: " + e);

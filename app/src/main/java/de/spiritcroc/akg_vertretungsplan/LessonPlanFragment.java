@@ -32,6 +32,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -41,24 +42,29 @@ import java.util.ArrayList;
 
 import de.spiritcroc.akg_vertretungsplan.settings.Keys;
 
-public class LessonPlanFragment extends ListFragment {
+public class LessonPlanFragment extends ListFragment
+        implements AdapterView.OnItemLongClickListener {
     private static final String ARG_DAY = "day";
 
     private static final String FREE_SUBSTITUTION = "→  entfällt";
 
     private int day;
+    private String date;
     private Lesson[] lessons;
     private String[] startTimes;
     private String[] fullTimes;
+    private String[] headerRow;
     private ArrayList<Integer> textColors = new ArrayList<>();
     private ArrayList<String> relevantInformation, relevantRoomInformation, generalInformation;
     private ArrayList<Integer> relevantInformationLessons;
+    private ArrayList<String[]> fullAddedInformation;
 
     private ArrayList<TextView> timeViews = new ArrayList<>();
 
     private SharedPreferences sharedPreferences;
     private boolean showTime;
     private boolean showFullTime;
+    private boolean showInformation;
 
     public static LessonPlanFragment newInstance(int day) {
         LessonPlanFragment fragment = new LessonPlanFragment();
@@ -94,18 +100,19 @@ public class LessonPlanFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        getListView().setOnItemLongClickListener(this);
     }
 
     private LessonViewContent[] createContent(){
         textColors.clear();
 
-        boolean addInformation = sharedPreferences.getBoolean(Keys.LESSON_PLAN_SHOW_INFORMATION, false);
+        showInformation = sharedPreferences.getBoolean(Keys.LESSON_PLAN_SHOW_INFORMATION, false);
 
         int color = Integer.parseInt(sharedPreferences.getString(Keys.LESSON_PLAN_COLOR_LESSON, "" + Color.BLACK)),
                 colorFreeTime = Integer.parseInt(sharedPreferences.getString(Keys.LESSON_PLAN_COLOR_FREE_TIME, "" + Color.GRAY));
 
         lessons = LessonPlan.getInstance(sharedPreferences).getLessonsForDay(day);
-        LessonViewContent[] lessonViewContent = new LessonViewContent[addInformation ? (lessons.length + (generalInformation == null ? 0 : generalInformation.size())) : lessons.length];
+        LessonViewContent[] lessonViewContent = new LessonViewContent[showInformation ? (lessons.length + (generalInformation == null ? 0 : generalInformation.size())) : lessons.length];
         for (int i = 0; i < lessons.length; i++){
             lessonViewContent[i] = new LessonViewContent();
             lessonViewContent[i].time = (showTime ? (showFullTime ? fullTimes[i] : startTimes[i]) : (i+1)) + ": ";
@@ -121,7 +128,7 @@ public class LessonPlanFragment extends ListFragment {
                 lessonViewContent[i].room = lessons[i].getRoom();
             }
         }
-        if (addInformation) {
+        if (showInformation) {
             if (relevantInformationLessons != null) {
                 for (int i = 0; i < relevantInformationLessons.size(); i++) {
                     int lesson = relevantInformationLessons.get(i) - 1;
@@ -152,10 +159,44 @@ public class LessonPlanFragment extends ListFragment {
     public void onListItemClick(ListView listView, View view, int position, long id){
         if (getActivity() instanceof LessonPlanActivity) {
             if (position < lessons.length) {
-                ((LessonPlanActivity) getActivity()).showEditLessonDialog(lessons[position], this, position);
+                if (showInformation) {
+                    for (int i = 0; i < fullAddedInformation.size(); i++) {
+                        if (fullAddedInformation.get(i)[2].equals("" + (position + 1))) {
+                            String text = ItemFragment.makeDialogMessage(getActivity(),
+                                    fullAddedInformation.get(i), headerRow);
+                            if (text != null) {
+                                String shareText = ItemFragment.makeDialogShareMessage(getActivity(),
+                                        date, text);
+                                ElementDialog.newInstance(date, text, shareText)
+                                        .show(getActivity().getFragmentManager(), "ElementDialog");
+                            }
+                        }
+                    }
+                } else {
+                    ((LessonPlanActivity) getActivity()).showEditLessonDialog(lessons[position], this, position);
+                }
+            } else {
+                // General information
+                String text = ItemFragment.makeDialogMessage(getActivity(), fullAddedInformation.get(position-lessons.length), headerRow);
+                if (text != null) {
+                    String shareText = ItemFragment.makeDialogShareMessage(getActivity(),
+                            date, text);
+                    ElementDialog.newInstance(date, text, shareText)
+                            .show(getActivity().getFragmentManager(), "ElementDialog");
+                }
             }
         } else {
             Log.e("LessonPlanFragment", "getActivity is not a LessonPlanActivity");
+        }
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        if (position < lessons.length) {
+            ((LessonPlanActivity) getActivity()).showEditLessonDialog(lessons[position], this, position);
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -278,7 +319,13 @@ public class LessonPlanFragment extends ListFragment {
         boolean generalInformation = false;
     }
 
-    public LessonPlanFragment setRelevantInformation(ArrayList<String> relevantInformation, ArrayList<String> relevantRoomInformation, ArrayList<Integer> relevantInformationLessons, ArrayList<String> generalInformation) {
+    public LessonPlanFragment setRelevantInformation(ArrayList<String> relevantInformation,
+                                                     ArrayList<String> relevantRoomInformation,
+                                                     ArrayList<Integer> relevantInformationLessons,
+                                                     ArrayList<String> generalInformation,
+                                                     String date,
+                                                     String[] headerRow,
+                                                     ArrayList<String[]> informationCells) {
         if (relevantInformation.size() != relevantInformationLessons.size() || relevantRoomInformation.size() != relevantInformationLessons.size()) {
             Log.e("LessonPlanFragment", "Relevant information arrays don\' match size: " +
                     relevantInformation.size() + "/" +
@@ -290,6 +337,9 @@ public class LessonPlanFragment extends ListFragment {
         this.relevantRoomInformation = relevantRoomInformation;
         this.relevantInformationLessons = relevantInformationLessons;
         this.generalInformation = generalInformation;
+        this.date = date;
+        this.headerRow = headerRow;
+        fullAddedInformation = informationCells;
         update();
         return this;
     }

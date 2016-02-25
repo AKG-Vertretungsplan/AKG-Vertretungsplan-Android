@@ -929,7 +929,7 @@ public class DownloadService extends IntentService {
 
         int count = 0, tmpCellCount;
         String tmp = "a";   //not empty
-        String[] tmpRowContent = new String[ItemFragment.cellCount];
+        String[] tmpRowContent = new String[ItemFragment.CELL_COUNT];
         LessonPlan lessonPlan = LessonPlan.getInstance(sharedPreferences);
         for (int i = 1; !tmp.equals(""); i++) {
             tmp = Tools.getLine(currentContent, i);
