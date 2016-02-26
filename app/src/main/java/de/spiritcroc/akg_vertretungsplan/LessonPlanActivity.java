@@ -451,9 +451,9 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
                 Date d = new SimpleDateFormat("HH:mm").parse(stringTimes[i]);
                 c.setTime(d);
 
-                if (Tools.firstTimeFirstNoDate(now, c)) {
+                int diff = Tools.timeDiffMillisNoDate(now, c);
+                if (diff > 0 && diff < 3600000) {// 'current' lesson: always when within 1 hour before end
                     markLesson = i;
-                    int diff = Tools.timeDiffMillisNoDate(now, c);
                     Log.d("LessonPlanActivity", "Update current lesson in " + diff + "ms");
                     updateHandler.postDelayed(updateCurrentLesson, diff);
                 }

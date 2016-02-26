@@ -304,6 +304,7 @@ public abstract class Tools {
         return time;
     }
 
+    /*
     public static boolean firstTimeFirstNoDate(Calendar first, Calendar second) {
         if (first.get(Calendar.HOUR_OF_DAY) < second.get(Calendar.HOUR_OF_DAY)) {
             return true;
@@ -328,6 +329,7 @@ public abstract class Tools {
 
         return false;
     }
+    */
 
     public static int timeDiffMillisNoDate(Calendar first, Calendar second) {
         int diff = second.get(Calendar.HOUR_OF_DAY) - first.get(Calendar.HOUR_OF_DAY);
