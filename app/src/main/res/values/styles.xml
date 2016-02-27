@@ -48,4 +48,7 @@
         <item name="android:layout_marginBottom">@dimen/navigation_drawer_divider_bottom_margin</item>
         <item name="android:background">@color/navigation_drawer_divider</item>
     </style>
+    <style name="InformationTextViewTheme">
+        <item name="android:layout_margin">@dimen/information_text_view_margin</item>
+    </style>
 </resources>

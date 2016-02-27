@@ -24,6 +24,8 @@
     <dimen name="list_content_margin">8dp</dimen>
     <dimen name="list_content_padding">8dp</dimen>
 
+    <dimen name="information_text_view_margin">4dp</dimen>
+
     <dimen name="navigation_drawer_text_size">14sp</dimen>
     <dimen name="navigation_drawer_item_top_margin">0dp</dimen>
     <dimen name="navigation_drawer_item_bottom_margin">0dp</dimen>
