@@ -127,45 +127,55 @@ public class SettingsUserInterfaceFragment extends CustomPreferenceFragment {
 
     private void toggleTheme() {
         // Change default values to fit to new theme
-        applyThemeToCustomColors(getActivity(), false, false);
+        applyThemeToCustomColors(getActivity(), APPLY_THEME_ALL, false);
 
         getActivity().recreate();
     }
 
+    public static int APPLY_THEME_ALL = 0;
+    public static int APPLY_THEME_FORMATTED = 1;
+    public static int APPLY_THEME_LESSONS = 2;
     /**
-     * @param formattedOnly
-     * Whether to only update the colors of the formatted plan
+     * @param which
+     * One of the following:
+     * APPLY_THEME_ALL, APPLY_THEME_FORMATTED, APPLY_THEME_LESSONS
      * @param force
-     * Whether also values should be overriden that the user has changed
+     * Whether also values should be overridden that the user has changed
      */
-    public static void applyThemeToCustomColors(Context context, boolean formattedOnly, boolean force) {
+    public static void applyThemeToCustomColors(Context context, int which, boolean force) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         int style = Tools.getStyle(context);
         SharedPreferences.Editor editor = sp.edit();
 
+        boolean formatted = which == APPLY_THEME_ALL ||
+                (APPLY_THEME_FORMATTED & which) == APPLY_THEME_FORMATTED;
+        boolean lessons = which == APPLY_THEME_ALL ||
+                (APPLY_THEME_LESSONS & which) == APPLY_THEME_LESSONS;
+
         if (Tools.isLightStyle(style)) {
-            if (force || sp.getString(Keys.HEADER_TEXT_TEXT_COLOR, "").equals(context.getString(R.string.pref_color_white_value)))
-                editor.putString(Keys.HEADER_TEXT_TEXT_COLOR, context.getString(R.string.pref_color_black_value));
-            if (force || sp.getString(Keys.CLASS_TEXT_TEXT_COLOR, "").equals(context.getString(R.string.pref_color_cyan_value)))
-                editor.putString(Keys.CLASS_TEXT_TEXT_COLOR, context.getString(R.string.pref_color_blue_value));
-            if (force || sp.getString(Keys.NORMAL_TEXT_TEXT_COLOR, "").equals(context.getString(R.string.pref_color_white_value)))
-                editor.putString(Keys.NORMAL_TEXT_TEXT_COLOR, context.getString(R.string.pref_color_black_value));
-            if (force || sp.getString(Keys.RELEVANT_TEXT_TEXT_COLOR, "").equals(context.getString(R.string.pref_color_white_value)))
-                editor.putString(Keys.RELEVANT_TEXT_TEXT_COLOR, context.getString(R.string.pref_color_black_value));
+            if (formatted) {
+                if (force || sp.getString(Keys.HEADER_TEXT_TEXT_COLOR, "").equals(context.getString(R.string.pref_color_white_value)))
+                    editor.putString(Keys.HEADER_TEXT_TEXT_COLOR, context.getString(R.string.pref_color_black_value));
+                if (force || sp.getString(Keys.CLASS_TEXT_TEXT_COLOR, "").equals(context.getString(R.string.pref_color_cyan_value)))
+                    editor.putString(Keys.CLASS_TEXT_TEXT_COLOR, context.getString(R.string.pref_color_blue_value));
+                if (force || sp.getString(Keys.NORMAL_TEXT_TEXT_COLOR, "").equals(context.getString(R.string.pref_color_white_value)))
+                    editor.putString(Keys.NORMAL_TEXT_TEXT_COLOR, context.getString(R.string.pref_color_black_value));
+                if (force || sp.getString(Keys.RELEVANT_TEXT_TEXT_COLOR, "").equals(context.getString(R.string.pref_color_white_value)))
+                    editor.putString(Keys.RELEVANT_TEXT_TEXT_COLOR, context.getString(R.string.pref_color_black_value));
 
-            if (force || sp.getString(Keys.HEADER_TEXT_TEXT_COLOR_HL, "").equals(context.getString(R.string.pref_color_green_value)))
-                editor.putString(Keys.HEADER_TEXT_TEXT_COLOR_HL, context.getString(R.string.pref_color_red_value));
-            if (force || sp.getString(Keys.NORMAL_TEXT_TEXT_COLOR_HL, "").equals(context.getString(R.string.pref_color_green_value)))
-                editor.putString(Keys.NORMAL_TEXT_TEXT_COLOR_HL, context.getString(R.string.pref_color_red_value));
-            if (force || sp.getString(Keys.RELEVANT_TEXT_TEXT_COLOR_HL, "").equals(context.getString(R.string.pref_color_green_value)))
-                editor.putString(Keys.RELEVANT_TEXT_TEXT_COLOR_HL, context.getString(R.string.pref_color_red_value));
+                if (force || sp.getString(Keys.HEADER_TEXT_TEXT_COLOR_HL, "").equals(context.getString(R.string.pref_color_green_value)))
+                    editor.putString(Keys.HEADER_TEXT_TEXT_COLOR_HL, context.getString(R.string.pref_color_red_value));
+                if (force || sp.getString(Keys.NORMAL_TEXT_TEXT_COLOR_HL, "").equals(context.getString(R.string.pref_color_green_value)))
+                    editor.putString(Keys.NORMAL_TEXT_TEXT_COLOR_HL, context.getString(R.string.pref_color_red_value));
+                if (force || sp.getString(Keys.RELEVANT_TEXT_TEXT_COLOR_HL, "").equals(context.getString(R.string.pref_color_green_value)))
+                    editor.putString(Keys.RELEVANT_TEXT_TEXT_COLOR_HL, context.getString(R.string.pref_color_red_value));
 
-            if (force || sp.getString(Keys.RELEVANT_TEXT_BG_COLOR, "").equals(context.getString(R.string.pref_color_blue_value)))
-                editor.putString(Keys.RELEVANT_TEXT_BG_COLOR, context.getString(R.string.pref_color_yellow_value));
-            if (force || sp.getString(Keys.RELEVANT_TEXT_BG_COLOR_HL, "").equals(context.getString(R.string.pref_color_blue_value)))
-                editor.putString(Keys.RELEVANT_TEXT_BG_COLOR_HL, context.getString(R.string.pref_color_yellow_value));
-
-            if (!formattedOnly) {
+                if (force || sp.getString(Keys.RELEVANT_TEXT_BG_COLOR, "").equals(context.getString(R.string.pref_color_blue_value)))
+                    editor.putString(Keys.RELEVANT_TEXT_BG_COLOR, context.getString(R.string.pref_color_yellow_value));
+                if (force || sp.getString(Keys.RELEVANT_TEXT_BG_COLOR_HL, "").equals(context.getString(R.string.pref_color_blue_value)))
+                    editor.putString(Keys.RELEVANT_TEXT_BG_COLOR_HL, context.getString(R.string.pref_color_yellow_value));
+            }
+            if (lessons) {
                 if (force || sp.getString(Keys.LESSON_PLAN_COLOR_TIME, "").equals(context.getString(R.string.pref_color_cyan_value)))
                     editor.putString(Keys.LESSON_PLAN_COLOR_TIME, context.getString(R.string.pref_color_blue_value));
                 if (force || sp.getString(Keys.LESSON_PLAN_COLOR_LESSON, "").equals(context.getString(R.string.pref_color_white_value)))
@@ -181,28 +191,29 @@ public class SettingsUserInterfaceFragment extends CustomPreferenceFragment {
                     editor.putString(Keys.LESSON_PLAN_BG_COLOR_CURRENT_LESSON, context.getString(R.string.pref_color_ltgray_value));
             }
         } else if (Tools.isDarkStyle(style)) {
-            if (force || sp.getString(Keys.HEADER_TEXT_TEXT_COLOR, "").equals(context.getString(R.string.pref_color_black_value)))
-                editor.putString(Keys.HEADER_TEXT_TEXT_COLOR, context.getString(R.string.pref_color_white_value));
-            if (force || sp.getString(Keys.CLASS_TEXT_TEXT_COLOR, "").equals(context.getString(R.string.pref_color_blue_value)))
-                editor.putString(Keys.CLASS_TEXT_TEXT_COLOR, context.getString(R.string.pref_color_cyan_value));
-            if (force || sp.getString(Keys.NORMAL_TEXT_TEXT_COLOR, "").equals(context.getString(R.string.pref_color_black_value)))
-                editor.putString(Keys.NORMAL_TEXT_TEXT_COLOR, context.getString(R.string.pref_color_white_value));
-            if (force || sp.getString(Keys.RELEVANT_TEXT_TEXT_COLOR, "").equals(context.getString(R.string.pref_color_black_value)))
-                editor.putString(Keys.RELEVANT_TEXT_TEXT_COLOR, context.getString(R.string.pref_color_white_value));
+            if (formatted) {
+                if (force || sp.getString(Keys.HEADER_TEXT_TEXT_COLOR, "").equals(context.getString(R.string.pref_color_black_value)))
+                    editor.putString(Keys.HEADER_TEXT_TEXT_COLOR, context.getString(R.string.pref_color_white_value));
+                if (force || sp.getString(Keys.CLASS_TEXT_TEXT_COLOR, "").equals(context.getString(R.string.pref_color_blue_value)))
+                    editor.putString(Keys.CLASS_TEXT_TEXT_COLOR, context.getString(R.string.pref_color_cyan_value));
+                if (force || sp.getString(Keys.NORMAL_TEXT_TEXT_COLOR, "").equals(context.getString(R.string.pref_color_black_value)))
+                    editor.putString(Keys.NORMAL_TEXT_TEXT_COLOR, context.getString(R.string.pref_color_white_value));
+                if (force || sp.getString(Keys.RELEVANT_TEXT_TEXT_COLOR, "").equals(context.getString(R.string.pref_color_black_value)))
+                    editor.putString(Keys.RELEVANT_TEXT_TEXT_COLOR, context.getString(R.string.pref_color_white_value));
 
-            if (force || sp.getString(Keys.HEADER_TEXT_TEXT_COLOR_HL, "").equals(context.getString(R.string.pref_color_red_value)))
-                editor.putString(Keys.HEADER_TEXT_TEXT_COLOR_HL, context.getString(R.string.pref_color_green_value));
-            if (force || sp.getString(Keys.NORMAL_TEXT_TEXT_COLOR_HL, "").equals(context.getString(R.string.pref_color_red_value)))
-                editor.putString(Keys.NORMAL_TEXT_TEXT_COLOR_HL, context.getString(R.string.pref_color_green_value));
-            if (force || sp.getString(Keys.RELEVANT_TEXT_TEXT_COLOR_HL, "").equals(context.getString(R.string.pref_color_red_value)))
-                editor.putString(Keys.RELEVANT_TEXT_TEXT_COLOR_HL, context.getString(R.string.pref_color_green_value));
+                if (force || sp.getString(Keys.HEADER_TEXT_TEXT_COLOR_HL, "").equals(context.getString(R.string.pref_color_red_value)))
+                    editor.putString(Keys.HEADER_TEXT_TEXT_COLOR_HL, context.getString(R.string.pref_color_green_value));
+                if (force || sp.getString(Keys.NORMAL_TEXT_TEXT_COLOR_HL, "").equals(context.getString(R.string.pref_color_red_value)))
+                    editor.putString(Keys.NORMAL_TEXT_TEXT_COLOR_HL, context.getString(R.string.pref_color_green_value));
+                if (force || sp.getString(Keys.RELEVANT_TEXT_TEXT_COLOR_HL, "").equals(context.getString(R.string.pref_color_red_value)))
+                    editor.putString(Keys.RELEVANT_TEXT_TEXT_COLOR_HL, context.getString(R.string.pref_color_green_value));
 
-            if (force || sp.getString(Keys.RELEVANT_TEXT_BG_COLOR, "").equals(context.getString(R.string.pref_color_yellow_value)))
-                editor.putString(Keys.RELEVANT_TEXT_BG_COLOR, context.getString(R.string.pref_color_blue_value));
-            if (force || sp.getString(Keys.RELEVANT_TEXT_BG_COLOR_HL, "").equals(context.getString(R.string.pref_color_yellow_value)))
-                editor.putString(Keys.RELEVANT_TEXT_BG_COLOR_HL, context.getString(R.string.pref_color_blue_value));
-
-            if (!formattedOnly) {
+                if (force || sp.getString(Keys.RELEVANT_TEXT_BG_COLOR, "").equals(context.getString(R.string.pref_color_yellow_value)))
+                    editor.putString(Keys.RELEVANT_TEXT_BG_COLOR, context.getString(R.string.pref_color_blue_value));
+                if (force || sp.getString(Keys.RELEVANT_TEXT_BG_COLOR_HL, "").equals(context.getString(R.string.pref_color_yellow_value)))
+                    editor.putString(Keys.RELEVANT_TEXT_BG_COLOR_HL, context.getString(R.string.pref_color_blue_value));
+            }
+            if (lessons) {
                 if (force || sp.getString(Keys.LESSON_PLAN_COLOR_TIME, "").equals(context.getString(R.string.pref_color_blue_value)))
                     editor.putString(Keys.LESSON_PLAN_COLOR_TIME, context.getString(R.string.pref_color_cyan_value));
                 if (force || sp.getString(Keys.LESSON_PLAN_COLOR_LESSON, "").equals(context.getString(R.string.pref_color_black_value)))

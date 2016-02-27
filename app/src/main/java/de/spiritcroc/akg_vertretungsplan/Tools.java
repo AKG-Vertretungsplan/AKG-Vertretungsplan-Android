@@ -348,15 +348,11 @@ public abstract class Tools {
      */
     public static void setupUpdate(Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = sp.edit();
-        boolean applyThemeToCustomColors = false;
         if (!sp.contains(Keys.LESSON_PLAN_BG_COLOR_CURRENT_LESSON)) {
-            editor.putString(Keys.LESSON_PLAN_BG_COLOR_CURRENT_LESSON, "" + Color.LTGRAY);
-            applyThemeToCustomColors = true;
-        }
-        editor.apply();
-        if (applyThemeToCustomColors) {
-            SettingsUserInterfaceFragment.applyThemeToCustomColors(context, false, false);
+            sp.edit().putString(Keys.LESSON_PLAN_BG_COLOR_CURRENT_LESSON, "" + Color.LTGRAY)
+                    .apply();
+            SettingsUserInterfaceFragment.applyThemeToCustomColors(context,
+                    SettingsUserInterfaceFragment.APPLY_THEME_LESSONS, false);
         }
     }
 }

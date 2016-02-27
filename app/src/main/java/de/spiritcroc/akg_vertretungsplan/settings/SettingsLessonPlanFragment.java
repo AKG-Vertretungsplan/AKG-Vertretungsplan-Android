@@ -18,6 +18,8 @@
 
 package de.spiritcroc.akg_vertretungsplan.settings;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -25,6 +27,9 @@ import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import de.spiritcroc.akg_vertretungsplan.LessonPlanShortcutActivity;
@@ -44,12 +49,31 @@ public class SettingsLessonPlanFragment extends CustomPreferenceFragment {
 
         autoSelectDayTimePref =
                 (EditTextPreference) findPreference(Keys.LESSON_PLAN_AUTO_SELECT_DAY_TIME);
+
+        setHasOptionsMenu(true);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         init();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_preferences_lesson_plan, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_reset:
+                promptResetColors();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void init() {
@@ -105,6 +129,40 @@ public class SettingsLessonPlanFragment extends CustomPreferenceFragment {
         getActivity().sendBroadcast(intent);
         Toast.makeText(getActivity(), R.string.launcher_added_successfully, Toast.LENGTH_SHORT)
                 .show();
+    }
+
+    private void promptResetColors() {
+        new AlertDialog.Builder(getActivity())
+                .setMessage(R.string.pref_restore_default_colors)
+                .setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        resetColors();
+                    }
+                })
+                .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Only close dialog
+                    }
+                })
+                .show();
+    }
+
+    private void resetColors() {
+        getPreferenceManager().getSharedPreferences().edit()
+                .remove(Keys.LESSON_PLAN_COLOR_TIME)
+                .remove(Keys.LESSON_PLAN_COLOR_LESSON)
+                .remove(Keys.LESSON_PLAN_COLOR_FREE_TIME)
+                .remove(Keys.LESSON_PLAN_COLOR_ROOM)
+                .remove(Keys.LESSON_PLAN_COLOR_RELEVANT_INFORMATION)
+                .remove(Keys.LESSON_PLAN_COLOR_GENERAL_INFORMATION)
+                .remove(Keys.LESSON_PLAN_BG_COLOR_CURRENT_LESSON)
+                .apply();
+        SettingsUserInterfaceFragment.applyThemeToCustomColors(getActivity(),
+                SettingsUserInterfaceFragment.APPLY_THEME_LESSONS, true);
+        // Restart to immediately show changes
+        getActivity().recreate();
     }
 
 }

@@ -135,7 +135,8 @@ public class SettingsFormattedColorsFragment extends CustomPreferenceFragment {
                 .remove(Keys.RELEVANT_TEXT_TEXT_COLOR_HL)
                 .remove(Keys.RELEVANT_TEXT_BG_COLOR_HL)
                 .apply();
-        SettingsUserInterfaceFragment.applyThemeToCustomColors(getActivity(), true, true);
+        SettingsUserInterfaceFragment.applyThemeToCustomColors(getActivity(),
+                SettingsUserInterfaceFragment.APPLY_THEME_FORMATTED, true);
         // Restart to immediately show changes
         getActivity().recreate();
     }
