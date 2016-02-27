@@ -164,13 +164,13 @@ public class LessonPlanFragment extends ListFragment
                 if (showInformation) {
                     for (int i = 0; i < fullAddedInformation.size(); i++) {
                         if (fullAddedInformation.get(i)[2].equals("" + (position + 1))) {
-                            String text = ItemFragment.makeDialogMessage(getActivity(),
+                            String text = FormattedFragment.makeDialogMessage(getActivity(),
                                     fullAddedInformation.get(i), headerRow);
                             if (text != null) {
-                                String shareText = ItemFragment.makeDialogShareMessage(getActivity(),
+                                String shareText = FormattedFragment.makeDialogShareMessage(getActivity(),
                                         date, text);
-                                ElementDialog.newInstance(date, text, shareText)
-                                        .show(getActivity().getFragmentManager(), "ElementDialog");
+                                InformationDialog.newInstance(date, text, shareText)
+                                        .show(getActivity().getFragmentManager(), "InformationDialog");
                             }
                         }
                     }
@@ -179,12 +179,12 @@ public class LessonPlanFragment extends ListFragment
                 }
             } else {
                 // General information
-                String text = ItemFragment.makeDialogMessage(getActivity(), fullAddedInformation.get(position-lessons.length), headerRow);
+                String text = FormattedFragment.makeDialogMessage(getActivity(), fullAddedInformation.get(position-lessons.length), headerRow);
                 if (text != null) {
-                    String shareText = ItemFragment.makeDialogShareMessage(getActivity(),
+                    String shareText = FormattedFragment.makeDialogShareMessage(getActivity(),
                             date, text);
-                    ElementDialog.newInstance(date, text, shareText)
-                            .show(getActivity().getFragmentManager(), "ElementDialog");
+                    InformationDialog.newInstance(date, text, shareText)
+                            .show(getActivity().getFragmentManager(), "InformationDialog");
                 }
             }
         } else {

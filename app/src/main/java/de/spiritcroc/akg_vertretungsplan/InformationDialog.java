@@ -26,7 +26,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-public class ElementDialog extends DialogFragment{
+public class InformationDialog extends DialogFragment{
     private String title, message, shareMessage;
     private static final String ARG_TITLE = "title";
     private static final String ARG_MESSAGE = "message";
@@ -55,8 +55,8 @@ public class ElementDialog extends DialogFragment{
         return builder.create();
     }
 
-    public static ElementDialog newInstance(String title, String message, String shareMessage) {
-        ElementDialog fragment = new ElementDialog();
+    public static InformationDialog newInstance(String title, String message, String shareMessage) {
+        InformationDialog fragment = new InformationDialog();
         Bundle args = new Bundle();
         args.putString(ARG_TITLE, title);
         args.putString(ARG_MESSAGE, message);
@@ -74,7 +74,7 @@ public class ElementDialog extends DialogFragment{
             shareMessage = getArguments().getString(ARG_SHARE_MESSAGE);
         }
         else {
-            Log.e("ElementDialog.onCreate", "getArguments()==null");
+            Log.e("InformationDialog", "onCreate: getArguments()==null");
             title = message = shareMessage = getString(R.string.error_unknown);
             dismiss();
         }

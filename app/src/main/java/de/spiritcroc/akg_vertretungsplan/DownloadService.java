@@ -929,7 +929,7 @@ public class DownloadService extends IntentService {
 
         int count = 0, tmpCellCount;
         String tmp = "a";   //not empty
-        String[] tmpRowContent = new String[ItemFragment.CELL_COUNT];
+        String[] tmpRowContent = new String[FormattedFragment.CELL_COUNT];
         LessonPlan lessonPlan = LessonPlan.getInstance(sharedPreferences);
         for (int i = 1; !tmp.equals(""); i++) {
             tmp = Tools.getLine(currentContent, i);
@@ -950,14 +950,14 @@ public class DownloadService extends IntentService {
                     if (tmpCellCount <= 2) {//general info for whole school
                         if (tmpCellCount == 1) {
                             if (!Tools.ignoreSubstitution(tmpRowContent[0])) {
-                                String item = ItemFragment.createItem(context, tmpRowContent, true);
+                                String item = FormattedFragment.createItem(context, tmpRowContent, true);
                                 allGeneral.add(item);
                                 if (!Tools.lineAvailable(latestContent, comparison)) {
                                     generalInformation.add(item);
                                 }
                             }
                         } else {
-                            String item = ItemFragment.createItem(context, tmpRowContent, true);
+                            String item = FormattedFragment.createItem(context, tmpRowContent, true);
                             allGeneral.add(item);
                             if (!Tools.lineAvailable(latestContent, comparison)) {
                                 generalInformation.add(item);
@@ -967,14 +967,14 @@ public class DownloadService extends IntentService {
                     else {
                         try {
                             if (lessonPlan.isRelevant(tmpRowContent[0], calendar.get(Calendar.DAY_OF_WEEK), Integer.parseInt(tmpRowContent[2]), tmpRowContent[1])) {
-                                String item = ItemFragment.createItem(context, tmpRowContent, false);
+                                String item = FormattedFragment.createItem(context, tmpRowContent, false);
                                 allRelevant.add(item);
                                 if (!Tools.lineAvailable(latestContent, comparison)) {
                                     count++;
                                     relevantInformation.add(item);
                                 }
                             } else {
-                                String item = ItemFragment.createItem(context, tmpRowContent, false);
+                                String item = FormattedFragment.createItem(context, tmpRowContent, false);
                                 allIrrelevant.add(item);
                                 if (!Tools.lineAvailable(latestContent, comparison)) {
                                     irrelevantInformation.add(item);

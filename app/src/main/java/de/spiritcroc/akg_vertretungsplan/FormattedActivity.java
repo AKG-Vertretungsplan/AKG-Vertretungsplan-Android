@@ -57,13 +57,13 @@ import java.util.Calendar;
 
 import de.spiritcroc.akg_vertretungsplan.settings.Keys;
 
-public class FormattedActivity extends NavigationDrawerActivity implements ItemFragment.OnFragmentInteractionListener{
+public class FormattedActivity extends NavigationDrawerActivity implements FormattedFragment.OnFragmentInteractionListener{
     private CustomFragmentPagerAdapter fragmentPagerAdapter;
     private static ViewPager viewPager;
     private static String plan1, plan2, title1, title2;
     private TextView textView, title1View, title2View;
     private SharedPreferences sharedPreferences;
-    private static ItemFragment fragment1, fragment2;
+    private static FormattedFragment fragment1, fragment2;
     private static Calendar date1;
     private static boolean shortCutToPageTwo = false, filteredMode;
     private MenuItem reloadItem, filterItem, markReadItem;
@@ -109,8 +109,8 @@ public class FormattedActivity extends NavigationDrawerActivity implements ItemF
             LinearLayout plan1Layout = (LinearLayout) findViewById(R.id.plan_1_layout);
             LinearLayout plan2Layout = (LinearLayout) findViewById(R.id.plan_2_layout);
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragment1 = ItemFragment.newInstance(1);
-            fragment2 = ItemFragment.newInstance(2);
+            fragment1 = FormattedFragment.newInstance(1);
+            fragment2 = FormattedFragment.newInstance(2);
             fragmentManager.beginTransaction().add(plan1Layout.getId(), fragment1)
                     .add(plan2Layout.getId(), fragment2)
                     .commit();
@@ -356,7 +356,7 @@ public class FormattedActivity extends NavigationDrawerActivity implements ItemF
 
     @Override
     public void showDialog(String title, String text, String shareText){
-        ElementDialog.newInstance(title, text, shareText).show(getFragmentManager(), "ElementDialog");
+        InformationDialog.newInstance(title, text, shareText).show(getFragmentManager(), "InformationDialog");
     }
 
     public static class CustomFragmentPagerAdapter extends FragmentPagerAdapter{
@@ -374,13 +374,13 @@ public class FormattedActivity extends NavigationDrawerActivity implements ItemF
         @Override
         public Fragment getItem(int position){
             if (position == 0)
-                return ItemFragment.newInstance(1);
+                return FormattedFragment.newInstance(1);
             else
-                return ItemFragment.newInstance(2);
+                return FormattedFragment.newInstance(2);
         }
         @Override
         public Object instantiateItem(ViewGroup container, int position){
-            ItemFragment fragment = (ItemFragment) super.instantiateItem(container, position);
+            FormattedFragment fragment = (FormattedFragment) super.instantiateItem(container, position);
             if (position == 0) {
                 fragment1 = fragment;
                 fragment.reloadContent(plan1, title1);

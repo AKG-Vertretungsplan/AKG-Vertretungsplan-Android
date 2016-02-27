@@ -98,7 +98,7 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
             relevantRoomInformation[i] = new ArrayList<>();
             relevantInformationLessons[i] = new ArrayList<>();
             generalInformation[i] = new ArrayList<>();
-            headerRow[i] = new String[ItemFragment.CELL_COUNT];
+            headerRow[i] = new String[FormattedFragment.CELL_COUNT];
             informationCells[i] = new ArrayList<>();
         }
 
@@ -287,7 +287,7 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
         for (int i = 0; i < LessonPlan.DAY_COUNT; i++) {
             dates[i] = "";
             dayAdd[i] = "";
-            headerRow[i] = new String[ItemFragment.CELL_COUNT];
+            headerRow[i] = new String[FormattedFragment.CELL_COUNT];
             relevantInformation[i].clear();
             relevantRoomInformation[i].clear();
             relevantInformationLessons[i].clear();
@@ -304,7 +304,7 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
     private void getRelevantInformation(String title, String plan) {
         int tmpCellCount;
         String tmp = "a";   //not empty
-        String[] tmpRowContent = new String[ItemFragment.CELL_COUNT];
+        String[] tmpRowContent = new String[FormattedFragment.CELL_COUNT];
         LessonPlan lessonPlan = LessonPlan.getInstance(sharedPreferences);
 
         Calendar calendar = Tools.getDateFromPlanTitle(title);
@@ -402,7 +402,7 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
             boolean useFullTeacherNames = sharedPreferences.getBoolean(Keys.FORMATTED_PLAN_REPLACE_TEACHER_SHORT_WITH_TEACHER_FULL, true);
             String result = "", roomResult = "";
             if (!values[3].equals("") && !values[3].equals(values[1]))//Ignore if same teacher
-                result += " " + (useFullTeacherNames ? ItemFragment.getTeacherCombinationString(sharedPreferences, lessonPlan, values[3]) : values[3]);
+                result += " " + (useFullTeacherNames ? FormattedFragment.getTeacherCombinationString(sharedPreferences, lessonPlan, values[3]) : values[3]);
             if (!values[4].equals(""))
                 result += " (" + values[4] + ")";
             if (!values[5].equals(""))

@@ -189,7 +189,7 @@ public abstract class Tools {
         }
     }
 
-    //VPlan helper methods, former methods of ItemFragment
+    //VPlan helper methods, former methods of FormattedFragment
     public static int countHeaderCells(String row){
         int count = 0;
         for (int i=0; i<row.length(); i++){

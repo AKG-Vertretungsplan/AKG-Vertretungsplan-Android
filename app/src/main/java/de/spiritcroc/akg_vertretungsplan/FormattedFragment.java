@@ -46,7 +46,7 @@ import java.util.Calendar;
 
 import de.spiritcroc.akg_vertretungsplan.settings.Keys;
 
-public class ItemFragment extends ListFragment{
+public class FormattedFragment extends ListFragment{
     public static final int CELL_COUNT = 7;
 
     private SharedPreferences sharedPreferences;
@@ -67,8 +67,8 @@ public class ItemFragment extends ListFragment{
 
     private OnFragmentInteractionListener mListener;
 
-    public static ItemFragment newInstance(int number) {
-        ItemFragment fragment = new ItemFragment();
+    public static FormattedFragment newInstance(int number) {
+        FormattedFragment fragment = new FormattedFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_NUMBER, number);
         fragment.setArguments(args);
@@ -79,7 +79,7 @@ public class ItemFragment extends ListFragment{
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ItemFragment() {
+    public FormattedFragment() {
     }
 
     @Override
@@ -90,7 +90,7 @@ public class ItemFragment extends ListFragment{
             number = getArguments().getInt(ARG_NUMBER);
         }
         else {
-            Log.e("ItemFragment.onCreate", "getArguments()==null");
+            Log.e("FormattedFragment", "onCreate: getArguments()==null");
         }
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
 
@@ -124,7 +124,7 @@ public class ItemFragment extends ListFragment{
                 if (activity instanceof FormattedActivity)
                     ((FormattedActivity) activity).startDownloadService(true);
                 else {
-                    Log.e("ItemFragment", "cannot download plan: activity is not instance of FormattedActivity");
+                    Log.e("FormattedFragment", "cannot download plan: activity is not instance of FormattedActivity");
                     setRefreshing(false);
                 }
             }
@@ -219,7 +219,7 @@ public class ItemFragment extends ListFragment{
     private void setListAdapterRememberPos(ListAdapter listAdapter) {
         Activity activity = getActivity();
         if (activity == null)
-            Log.e("ItemFragment", "setListAdapter: getActivity()==null");
+            Log.e("FormattedFragment", "setListAdapter: getActivity()==null");
         else {
             ListView listView = getListView();
             View view = listView.getChildAt(0);
@@ -324,7 +324,7 @@ public class ItemFragment extends ListFragment{
                             if (relevant)
                                 lastAddedHeader = false;
                         } catch (Exception e) {
-                            Log.e("ItemFragment", "Check for relevancy threw exception: " + e);
+                            Log.e("FormattedFragment", "Check for relevancy threw exception: " + e);
                             relevant = false;
                         }
                     }
@@ -432,7 +432,7 @@ public class ItemFragment extends ListFragment{
             return time + " (" + context.getResources().getStringArray(R.array.lesson_plan_times)[Integer.parseInt(time)-1] + ")";
         }
         catch (Exception e){
-            Log.e("ItemFragment", "getLessonTimeCombinationString: Got exception: " + e);
+            Log.e("FormattedFragment", "getLessonTimeCombinationString: Got exception: " + e);
             return time;
         }
     }
