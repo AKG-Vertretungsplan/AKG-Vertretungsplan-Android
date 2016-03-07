@@ -62,7 +62,7 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
     private ArrayList<Integer>[] relevantInformationLessons;
     private String[][] headerRow;
     private ArrayList<String[]>[] informationCells;
-    private int shortcutDay = -1;//-1 if no shortcut
+    private int shortcutDay = 0;//-1 if no shortcut, default: monday (0)
     private boolean discardSavedInstance = false;
 
     private MenuItem showFullTimeMenuItem, reloadItem;
@@ -106,6 +106,17 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
 
         fragmentPagerAdapter = new CustomFragmentPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(fragmentPagerAdapter);
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                // Allow "infinite" scrolling
+                if (position == 0) {
+                    viewPager.setCurrentItem(LessonPlan.DAY_COUNT);
+                } else if (position == LessonPlan.DAY_COUNT + 1) {
+                    viewPager.setCurrentItem(1);
+                }
+            }
+        });
 
         if (sharedPreferences.getBoolean(Keys.LESSON_PLAN_AUT0_SELECT_DAY, true)) {//Try to show current day
             Calendar calendar = Calendar.getInstance();
@@ -119,6 +130,9 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
             }
 
             shortcutDay = getDayShortcut(calendar);
+            if (shortcutDay == -1) {
+                shortcutDay = 0;// Monday as default
+            }
         }
 
         LocalBroadcastManager.getInstance(this).registerReceiver(downloadInfoReceiver, new IntentFilter("PlanDownloadServiceUpdate"));
@@ -246,32 +260,45 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
         }
         @Override
         public int getCount(){
-            return LessonPlan.DAY_COUNT;
+            return LessonPlan.DAY_COUNT + 2;
         }
         @Override
         public Fragment getItem(int position){
-            LessonPlanFragment f = LessonPlanFragment.newInstance(position).setRelevantInformation(relevantInformation[position], relevantRoomInformation[position], relevantInformationLessons[position], generalInformation[position], dates[position], headerRow[position], informationCells[position]);
-            if (position == getDayShortcut(Calendar.getInstance())) {
-                f.markCurrentLesson(getCurrentLesson());
+            Fragment f;
+            int pos = position - 1;// Real day position considering the shortcut pages
+            if (position == 0 || position == LessonPlan.DAY_COUNT + 1) {
+                f = new Fragment();
+            } else {
+                f = LessonPlanFragment.newInstance(pos).setRelevantInformation(relevantInformation[pos], relevantRoomInformation[pos], relevantInformationLessons[pos], generalInformation[pos], dates[pos], headerRow[pos], informationCells[pos]);
+                if (pos == getDayShortcut(Calendar.getInstance())) {
+                    ((LessonPlanFragment) f).markCurrentLesson(getCurrentLesson());
+                }
             }
             return f;
         }
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            return lessonPlanFragments[position] = (LessonPlanFragment) super.instantiateItem(container, position);
+            Fragment f = (Fragment) super.instantiateItem(container, position);
+            if (position > 0 && position < getCount() - 1) {
+                lessonPlanFragments[position-1] = (LessonPlanFragment) f;
+            }
+            return f;
         }
         @Override
         public CharSequence getPageTitle (int position){
-            return position < dayName.length ?
-                    dayName[position] + (sharedPreferences.getBoolean(Keys.LESSON_PLAN_SHOW_INFORMATION, false) ? dayAdd[position] : "") :
-                    "???";
+            int pos = position - 1;// Real day position considering the shortcut pages
+            if (pos >= 0 && pos < dayName.length) {
+                return dayName[pos] + (sharedPreferences.getBoolean(Keys.LESSON_PLAN_SHOW_INFORMATION, false) ? dayAdd[pos] : "");
+            } else {
+                return "";
+            }
         }
         @Override
         public void finishUpdate(ViewGroup container){
             super.finishUpdate(container);
 
-            if (shortcutDay >= 0 && shortcutDay < getCount()) {
-                viewPager.setCurrentItem(shortcutDay);
+            if (shortcutDay >= 0 && shortcutDay < LessonPlan.DAY_COUNT) {
+                viewPager.setCurrentItem(shortcutDay + 1);
                 shortcutDay = -1;//use shortcut only once
             }
         }
