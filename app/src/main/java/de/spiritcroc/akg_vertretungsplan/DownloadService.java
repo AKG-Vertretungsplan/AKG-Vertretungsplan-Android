@@ -834,7 +834,7 @@ public class DownloadService extends IntentService {
                 // All information is shown
                 Intent clickIntent = new Intent(this, BReceiver.class).setAction(BReceiver.ACTION_MARK_SEEN);
                 PendingIntent clickPendingIntent = PendingIntent.getBroadcast(this, 1, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                builder.addAction(R.drawable.ic_done_black_24dp, getString(R.string.mark_seen), clickPendingIntent);
+                builder.addAction(R.drawable.ic_seen_black_24dp, getString(R.string.mark_seen), clickPendingIntent);
             }
             if (text != null) {
                 inboxStyle.setSummaryText(text);
