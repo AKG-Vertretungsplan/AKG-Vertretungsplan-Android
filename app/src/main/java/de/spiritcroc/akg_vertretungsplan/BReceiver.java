@@ -36,6 +36,7 @@ import de.spiritcroc.akg_vertretungsplan.settings.Keys;
 public class BReceiver extends BroadcastReceiver {
     public static final String ACTION_START_DOWNLOAD_SERVICE = "action_start_download_service";
     public static final String ACTION_MARK_SEEN = "de.spiritcroc.akg_vertretungsplan.action.markSeen";
+    public static final String ACTION_MARK_READ = "de.spiritcroc.akg_vertretungsplan.action.markRead";
     public static final String ACTION_UPDATE_WIDGETS = "de.spiritcroc.akg_vertretungsplan.action.UPDATE_WIDGETS";
     @Override
     public void onReceive(Context context, Intent intent){
@@ -54,10 +55,10 @@ public class BReceiver extends BroadcastReceiver {
             else
                 startDownloadService(context.getApplicationContext(), false);//Schedule next download nevertheless
         } else if (ACTION_MARK_SEEN.equals(intent.getAction())) {
-            sharedPreferences.edit().putBoolean(Keys.UNSEEN_CHANGES, false).apply();
-            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.cancel(1);
-            Tools.updateWidgets(context);
+            markSeen(sharedPreferences, context);
+        } else if (ACTION_MARK_READ.equals(intent.getAction())) {
+            markSeen(sharedPreferences, context);
+            DownloadService.markPlanRead(context);
         } else if (ACTION_UPDATE_WIDGETS.equals(intent.getAction())) {
             Tools.updateWidgets(context);
             setWidgetUpdateAlarm(context);
@@ -86,5 +87,11 @@ public class BReceiver extends BroadcastReceiver {
         c.add(Calendar.DAY_OF_MONTH, 1);
         Intent resultIntent = new Intent(context, BReceiver.class).setAction(ACTION_UPDATE_WIDGETS);
         ((AlarmManager) context.getSystemService(Context.ALARM_SERVICE)).set(AlarmManager.RTC, c.getTimeInMillis(), PendingIntent.getBroadcast(context.getApplicationContext(), 0, resultIntent, 0));
+    }
+    private static void markSeen(SharedPreferences sharedPreferences, Context context) {
+        sharedPreferences.edit().putBoolean(Keys.UNSEEN_CHANGES, false).apply();
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(1);
+        Tools.updateWidgets(context);
     }
 }

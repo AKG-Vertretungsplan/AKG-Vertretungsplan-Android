@@ -623,4 +623,6 @@
     <string name="pref_restore_default_values">Restore default values?</string>
     <string name="pref_restore_default_colors">Restore default colors?</string>
     <string name="pref_lesson_plan_bg_color_current_lesson">Current lesson background</string>
+    <string name="mark_read">Mark read</string>
+    <string name="pref_notification_button_mark_read">Action \"mark read\"</string>
 </resources>

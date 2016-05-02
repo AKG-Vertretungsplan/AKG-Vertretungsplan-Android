@@ -86,6 +86,7 @@ public class SettingsNotificationFragment extends CustomPreferenceFragment {
         setListPreferenceSummary(notificationTextColorIrrelevantPref);
         setListPreferenceSummary(notificationTextStyleIrrelevantPref);
         setListPreferenceSummary(Keys.NOTIFICATION_BUTTON_MARK_SEEN);
+        setListPreferenceSummary(Keys.NOTIFICATION_BUTTON_MARK_READ);
     }
 
     @Override
@@ -105,6 +106,7 @@ public class SettingsNotificationFragment extends CustomPreferenceFragment {
             case Keys.NOTIFICATION_PREVIEW_IRRELEVANT_COLOR:
             case Keys.NOTIFICATION_PREVIEW_IRRELEVANT_STYLE:
             case Keys.NOTIFICATION_BUTTON_MARK_SEEN:
+            case Keys.NOTIFICATION_BUTTON_MARK_READ:
                 setListPreferenceSummary(key);
                 break;
         }

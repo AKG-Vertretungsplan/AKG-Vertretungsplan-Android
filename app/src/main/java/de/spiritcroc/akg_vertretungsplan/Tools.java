@@ -354,5 +354,12 @@ public abstract class Tools {
             SettingsUserInterfaceFragment.applyThemeToCustomColors(context,
                     SettingsUserInterfaceFragment.APPLY_THEME_LESSONS, false);
         }
+        if (!sp.contains(Keys.NOTIFICATION_BUTTON_MARK_READ)) {
+            sp.edit().putString(Keys.NOTIFICATION_BUTTON_MARK_READ,
+                    sp.getString(Keys.NOTIFICATION_BUTTON_MARK_SEEN,
+                            context.getString(R.string.pref_notification_button_mark_seen_if_max_5_value)))
+                    .apply();
+
+        }
     }
 }

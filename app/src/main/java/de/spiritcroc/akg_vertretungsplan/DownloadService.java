@@ -836,6 +836,21 @@ public class DownloadService extends IntentService {
                 PendingIntent clickPendingIntent = PendingIntent.getBroadcast(this, 1, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 builder.addAction(R.drawable.ic_seen_black_24dp, getString(R.string.mark_seen), clickPendingIntent);
             }
+            boolean showMarkRead = false;
+            String markReadPref = sharedPreferences.getString(Keys.NOTIFICATION_BUTTON_MARK_READ, getString(R.string.pref_notification_button_mark_seen_if_max_5_value));
+            if (getString(R.string.pref_notification_button_mark_seen_always_value).equals(markReadPref)) {
+                showMarkRead = true;
+            } else if (getString(R.string.pref_notification_button_mark_seen_if_max_5_value).equals(markReadPref)) {
+                showMarkRead = lineCount <= 5;
+            } else if (getString(R.string.pref_notification_button_mark_seen_if_max_7_value).equals(markReadPref)) {
+                showMarkRead = lineCount <= 7;
+            }
+            if (showMarkRead) {
+                // All information is shown
+                Intent clickIntent = new Intent(this, BReceiver.class).setAction(BReceiver.ACTION_MARK_READ);
+                PendingIntent clickPendingIntent = PendingIntent.getBroadcast(this, 1, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                builder.addAction(R.drawable.ic_done_black_24dp, getString(R.string.mark_read), clickPendingIntent);
+            }
             if (text != null) {
                 inboxStyle.setSummaryText(text);
             }

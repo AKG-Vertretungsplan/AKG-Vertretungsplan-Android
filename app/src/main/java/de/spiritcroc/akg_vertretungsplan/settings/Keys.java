@@ -85,6 +85,8 @@ public class Keys {
 
     public static final String NOTIFICATION_BUTTON_MARK_SEEN = "pref_notification_button_mark_seen";
 
+    public static final String NOTIFICATION_BUTTON_MARK_READ = "pref_notification_button_mark_read";
+
 
     /**
      * Settings - tesla unread

@@ -333,7 +333,7 @@
         <item quantity="other">" "Vertretungen neu</item>
     </plurals>
     <string name="new_information_chain_separator">", "</string>
-    <string name="mark_seen">Als gesehen markieren</string>
+    <string name="mark_seen">Gesehen</string>
     <string name="pref_notification_button_mark_seen">Aktion \"Als gesehen markieren\"</string>
     <string name="pref_notification_button_mark_seen_always">Immer</string>
     <string name="pref_notification_button_mark_seen_if_max_5">Falls bis zu 5 neue Vertretungen</string>
@@ -384,4 +384,6 @@
     <string name="pref_restore_default_values">Standardeinstellungen wiederherstellen?</string>
     <string name="pref_restore_default_colors">Voreingestellte Farben wiederherstellen?</string>
     <string name="pref_lesson_plan_bg_color_current_lesson">Hintergrund für aktuelle Stunde</string>
+    <string name="mark_read">Gelesen</string>
+    <string name="pref_notification_button_mark_read">Aktion \"Als gelesen markieren\"</string>
 </resources>
