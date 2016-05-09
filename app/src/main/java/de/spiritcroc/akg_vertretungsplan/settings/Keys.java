@@ -127,6 +127,9 @@ public class Keys {
     public static final String FORMATTED_PLAN_AUTO_SELECT_DAY_TIME =
             "pref_formatted_plan_auto_select_day_time";
 
+    public static final String FORMATTED_PLAN_AUTO_SELECT_DAY_TIME_MINUTES =
+            "pref_formatted_plan_auto_select_day_time_minutes";
+
     public static final String FILTER_GENERAL = "pref_filter_general";
 
     public static final String THEME = "pref_theme";
@@ -196,6 +199,9 @@ public class Keys {
 
     public static final String LESSON_PLAN_AUTO_SELECT_DAY_TIME =
             "pref_lesson_plan_auto_select_day_time";
+
+    public static final String LESSON_PLAN_AUTO_SELECT_DAY_TIME_MINUTES =
+            "pref_lesson_plan_auto_select_day_time_minutes";
 
     public static final String TEACHER_SHORT_RELEVANCY_IGNORE_CASE =
             "pref_teacher_short_relevancy_ignore_case";

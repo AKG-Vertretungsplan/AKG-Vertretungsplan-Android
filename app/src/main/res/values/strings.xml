@@ -359,9 +359,9 @@
     <string name="pref_formatted_plan_auto_select_day">Auto-select day</string>
     <string name="pref_formatted_plan_auto_select_day_summary">Automatically show current day when opening the formatted plan</string>
     <string name="pref_formatted_plan_auto_select_day_time">Time for selecting tomorrow</string>
-    <string name="pref_formatted_plan_auto_select_day_time_summary">The plan for tomorrow will be selected automatically after %d o\'clock (24-hour clock)</string>
+    <string name="pref_formatted_plan_auto_select_day_time_summary">The plan for tomorrow will be selected automatically after %1$d:%2$s (24-hour clock)</string>
     <string name="pref_lesson_plan_auto_select_day_time">Time for selecting tomorrow</string>
-    <string name="pref_lesson_plan_auto_select_day_time_summary">The lesson plan for tomorrow will be selected automatically after %d o\'clock (24-hour clock)</string>
+    <string name="pref_lesson_plan_auto_select_day_time_summary">The lesson plan for tomorrow will be selected automatically after %1$d:%2$s (24-hour clock)</string>
     <string name="pref_formatted_plan_replace_teacher_short_with_teacher_full">Show teacher names</string>
     <string name="pref_formatted_plan_replace_teacher_short_with_teacher_full_summary">Show the full teacher name instead of the teacher abbr. if it\'s available from the lesson plan</string>
 

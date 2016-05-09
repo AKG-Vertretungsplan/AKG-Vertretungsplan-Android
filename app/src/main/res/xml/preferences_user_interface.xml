@@ -67,11 +67,9 @@
             android:title="@string/pref_formatted_plan_auto_select_day"
             android:summary="@string/pref_formatted_plan_auto_select_day_summary"
             android:defaultValue="true"/>
-        <EditTextPreference
+        <Preference
             android:key="pref_formatted_plan_auto_select_day_time"
             android:title="@string/pref_formatted_plan_auto_select_day_time"
-            android:numeric="integer"
-            android:defaultValue="17"
             android:dependency="pref_formatted_plan_auto_select_day"/>
         <CheckBoxPreference
             android:key="pref_filter_general"

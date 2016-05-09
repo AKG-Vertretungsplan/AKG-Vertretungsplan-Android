@@ -18,6 +18,7 @@
 
 package de.spiritcroc.akg_vertretungsplan.settings;
 
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,6 +29,7 @@ import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import de.spiritcroc.akg_vertretungsplan.R;
@@ -42,7 +44,7 @@ public class SettingsUserInterfaceFragment extends CustomPreferenceFragment {
             "pref_web_plan_add_launcher_shortcut";
 
     private EditTextPreference noChangeSinceMaxPrecisionPref;
-    private EditTextPreference autoSelectDayTimePref;
+    private Preference autoSelectDayTimePref;
     private ListPreference themePref;
     private ListPreference webPlanCustomStylePresetPref;
     private EditTextPreference webPlanCustomStylePref;
@@ -54,8 +56,7 @@ public class SettingsUserInterfaceFragment extends CustomPreferenceFragment {
 
         noChangeSinceMaxPrecisionPref =
                 (EditTextPreference) findPreference(Keys.NO_CHANGE_SINCE_MAX_PRECISION);
-        autoSelectDayTimePref =
-                (EditTextPreference) findPreference(Keys.FORMATTED_PLAN_AUTO_SELECT_DAY_TIME);
+        autoSelectDayTimePref = findPreference(Keys.FORMATTED_PLAN_AUTO_SELECT_DAY_TIME);
         themePref = (ListPreference) findPreference(Keys.THEME);
         webPlanCustomStylePresetPref =
                 (ListPreference) findPreference(KEY_WEB_PLAN_CUSTOM_STYLE_PRESET);
@@ -103,6 +104,8 @@ public class SettingsUserInterfaceFragment extends CustomPreferenceFragment {
         String key = preference.getKey();
         if (KEY_WEB_PLAN_ADD_LAUNCHER_SHORTCUT.equals(key)) {
             addWebPlanLauncherShortcut();
+        } else if (Keys.FORMATTED_PLAN_AUTO_SELECT_DAY_TIME.equals(key)) {
+            editAutoSelectDayTime();
         } else {
             return super.onPreferenceTreeClick(preferenceScreen, preference);
         }
@@ -118,12 +121,38 @@ public class SettingsUserInterfaceFragment extends CustomPreferenceFragment {
     }
 
     private void setAutoSelectDayTimeSummary() {
-        int value = correctInteger(Keys.FORMATTED_PLAN_AUTO_SELECT_DAY_TIME,
-                autoSelectDayTimePref.getText(), 17);
-        String summary = getString(R.string.pref_formatted_plan_auto_select_day_time_summary,
-                value);
+        SharedPreferences sp = getPreferenceManager().getSharedPreferences();
+        int hour = correctInteger(Keys.FORMATTED_PLAN_AUTO_SELECT_DAY_TIME,
+                sp.getString(Keys.FORMATTED_PLAN_AUTO_SELECT_DAY_TIME, ""), 17);
+        int minute = sp.getInt(Keys.FORMATTED_PLAN_AUTO_SELECT_DAY_TIME_MINUTES, 0);
+        String m = minute > 9 ? ("" + minute) : ("0" + minute);
+        String summary = getString(R.string.pref_formatted_plan_auto_select_day_time_summary, hour, m);
         autoSelectDayTimePref.setSummary(summary);
     }
+
+    private void editAutoSelectDayTime() {
+        SharedPreferences sp = getPreferenceManager().getSharedPreferences();
+        int hour = Integer.parseInt(sp.getString(Keys.FORMATTED_PLAN_AUTO_SELECT_DAY_TIME, "17"));
+        int minute = sp.getInt(Keys.FORMATTED_PLAN_AUTO_SELECT_DAY_TIME_MINUTES, 0);
+        new TimePickerDialog(getActivity(), autoSelectDayTimeSetListener, hour, minute, true)
+                .show();
+    }
+
+    private void saveAutoSelectDayTime(int hourOfDay, int minute) {
+        SharedPreferences sp = getPreferenceManager().getSharedPreferences();
+        sp.edit().putString(Keys.FORMATTED_PLAN_AUTO_SELECT_DAY_TIME, "" + hourOfDay)
+                .putInt(Keys.FORMATTED_PLAN_AUTO_SELECT_DAY_TIME_MINUTES, minute)
+                .apply();
+        setAutoSelectDayTimeSummary();
+    }
+
+    private TimePickerDialog.OnTimeSetListener autoSelectDayTimeSetListener =
+            new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                    saveAutoSelectDayTime(hourOfDay, minute);
+                }
+            };
 
     private void toggleTheme() {
         // Change default values to fit to new theme

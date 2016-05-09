@@ -121,12 +121,16 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
         if (sharedPreferences.getBoolean(Keys.LESSON_PLAN_AUT0_SELECT_DAY, true)) {//Try to show current day
             Calendar calendar = Calendar.getInstance();
 
-            try{
-                if (calendar.get(Calendar.HOUR_OF_DAY) >= Integer.parseInt(sharedPreferences.getString(Keys.LESSON_PLAN_AUTO_SELECT_DAY_TIME, "")))
+            try {
+                int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+                int currentMinute = calendar.get(Calendar.MINUTE);
+                int settingHour = Integer.parseInt(sharedPreferences.getString(Keys.LESSON_PLAN_AUTO_SELECT_DAY_TIME, "17"));
+                int settingMinute = sharedPreferences.getInt(Keys.LESSON_PLAN_AUTO_SELECT_DAY_TIME_MINUTES, 0);
+                if (currentHour > settingHour || (currentHour == settingHour && currentMinute >= settingMinute)) {
                     calendar.add(Calendar.DAY_OF_WEEK, 1);
-            }
-            catch (Exception e){
-                Log.e("LessonPlanActivity", "Got exception while trying to compare current HOUR_OF_DAY with pref_lesson_plan_auto_select_day_time: " + e);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
             shortcutDay = getDayShortcut(calendar);

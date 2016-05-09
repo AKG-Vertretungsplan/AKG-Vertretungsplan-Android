@@ -19,6 +19,7 @@
 package de.spiritcroc.akg_vertretungsplan.settings;
 
 import android.app.AlertDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,6 +31,7 @@ import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import de.spiritcroc.akg_vertretungsplan.LessonPlanShortcutActivity;
@@ -40,15 +42,14 @@ public class SettingsLessonPlanFragment extends CustomPreferenceFragment {
     private static final String KEY_ADD_LAUNCHER_SHORTCUT =
             "pref_lesson_plan_add_launcher_shortcut";
 
-    private EditTextPreference autoSelectDayTimePref;
+    private Preference autoSelectDayTimePref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences_lesson_plan);
 
-        autoSelectDayTimePref =
-                (EditTextPreference) findPreference(Keys.LESSON_PLAN_AUTO_SELECT_DAY_TIME);
+        autoSelectDayTimePref = findPreference(Keys.LESSON_PLAN_AUTO_SELECT_DAY_TIME);
 
         setHasOptionsMenu(true);
     }
@@ -111,6 +112,8 @@ public class SettingsLessonPlanFragment extends CustomPreferenceFragment {
         String key = preference.getKey();
         if (KEY_ADD_LAUNCHER_SHORTCUT.equals(key)) {
             addLauncherShortcut();
+        } else if (Keys.LESSON_PLAN_AUTO_SELECT_DAY_TIME.equals(key)) {
+            editAutoSelectDayTime();
         } else {
             return super.onPreferenceTreeClick(preferenceScreen, preference);
         }
@@ -118,11 +121,38 @@ public class SettingsLessonPlanFragment extends CustomPreferenceFragment {
     }
 
     private void setAutoSelectDayTimeSummary() {
-        int value = correctInteger(Keys.LESSON_PLAN_AUTO_SELECT_DAY_TIME,
-                autoSelectDayTimePref.getText(), 17);
-        String summary = getString(R.string.pref_lesson_plan_auto_select_day_time_summary, value);
+        SharedPreferences sp = getPreferenceManager().getSharedPreferences();
+        int hour = correctInteger(Keys.LESSON_PLAN_AUTO_SELECT_DAY_TIME,
+                sp.getString(Keys.LESSON_PLAN_AUTO_SELECT_DAY_TIME, ""), 17);
+        int minute = sp.getInt(Keys.LESSON_PLAN_AUTO_SELECT_DAY_TIME_MINUTES, 0);
+        String m = minute > 9 ? ("" + minute) : ("0" + minute);
+        String summary = getString(R.string.pref_lesson_plan_auto_select_day_time_summary, hour, m);
         autoSelectDayTimePref.setSummary(summary);
     }
+
+    private void editAutoSelectDayTime() {
+        SharedPreferences sp = getPreferenceManager().getSharedPreferences();
+        int hour = Integer.parseInt(sp.getString(Keys.LESSON_PLAN_AUTO_SELECT_DAY_TIME, "17"));
+        int minute = sp.getInt(Keys.LESSON_PLAN_AUTO_SELECT_DAY_TIME_MINUTES, 0);
+        new TimePickerDialog(getActivity(), autoSelectDayTimeSetListener, hour, minute, true)
+                .show();
+    }
+
+    private void saveAutoSelectDayTime(int hourOfDay, int minute) {
+        SharedPreferences sp = getPreferenceManager().getSharedPreferences();
+        sp.edit().putString(Keys.LESSON_PLAN_AUTO_SELECT_DAY_TIME, "" + hourOfDay)
+                .putInt(Keys.LESSON_PLAN_AUTO_SELECT_DAY_TIME_MINUTES, minute)
+                .apply();
+        setAutoSelectDayTimeSummary();
+    }
+
+    private TimePickerDialog.OnTimeSetListener autoSelectDayTimeSetListener =
+            new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                    saveAutoSelectDayTime(hourOfDay, minute);
+                }
+            };
 
     private void addLauncherShortcut() {
         Intent intent = LessonPlanShortcutActivity.getShortcut(getActivity());

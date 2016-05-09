@@ -140,18 +140,22 @@ public class FormattedActivity extends NavigationDrawerActivity implements Forma
 
         if (date1 != null && sharedPreferences.getBoolean(Keys.FORMATTED_PLAN_AUTO_SELECT_DAY, true)) {//Try to show most relevant day
             Calendar currentDate = Calendar.getInstance();
-            if (currentDate.after(date1)){
+            if (currentDate.after(date1)) {
                 if (currentDate.get(Calendar.DAY_OF_MONTH) != date1.get(Calendar.DAY_OF_MONTH)
                         || currentDate.get(Calendar.MONTH) != date1.get(Calendar.MONTH)
                         || currentDate.get(Calendar.YEAR) != date1.get(Calendar.YEAR))
                     shortCutToPageTwo = true;
-                else{
-                    try{
-                        if (currentDate.get(Calendar.HOUR_OF_DAY) >= Integer.parseInt(sharedPreferences.getString(Keys.FORMATTED_PLAN_AUTO_SELECT_DAY_TIME, "")))
+                else {
+                    try {
+                        int currentHour = currentDate.get(Calendar.HOUR_OF_DAY);
+                        int currentMinute = currentDate.get(Calendar.MINUTE);
+                        int settingHour = Integer.parseInt(sharedPreferences.getString(Keys.FORMATTED_PLAN_AUTO_SELECT_DAY_TIME, "17"));
+                        int settingMinute = sharedPreferences.getInt(Keys.FORMATTED_PLAN_AUTO_SELECT_DAY_TIME_MINUTES, 0);
+                        if (currentHour > settingHour || (currentHour == settingHour && currentMinute >= settingMinute)) {
                             shortCutToPageTwo = true;
-                    }
-                    catch (Exception e){
-                        Log.e("FormattedActivity", "Got exception while trying to compare current HOUR_OF_DAY with pref_formatted_plan_auto_select_day_time: " + e);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
