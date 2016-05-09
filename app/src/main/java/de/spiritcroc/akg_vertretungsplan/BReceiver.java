@@ -50,10 +50,12 @@ public class BReceiver extends BroadcastReceiver {
         }
         else if (ACTION_START_DOWNLOAD_SERVICE.equals(intent.getAction()) ||
                 ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction()) && sharedPreferences.getBoolean(Keys.LAST_OFFLINE, false)){
-            if (!DownloadService.isDownloading() && !IsRunningSingleton.getInstance().isRunning())
-                context.startService(new Intent(context, DownloadService.class).setAction(DownloadService.ACTION_DOWNLOAD_PLAN));
-            else
-                startDownloadService(context.getApplicationContext(), false);//Schedule next download nevertheless
+            if (sharedPreferences.getBoolean(Keys.BACKGROUND_SERVICE, true)) {
+                if (!DownloadService.isDownloading() && !IsRunningSingleton.getInstance().isRunning())
+                    context.startService(new Intent(context, DownloadService.class).setAction(DownloadService.ACTION_DOWNLOAD_PLAN));
+                else
+                    startDownloadService(context.getApplicationContext(), false);//Schedule next download nevertheless
+            }
         } else if (ACTION_MARK_SEEN.equals(intent.getAction())) {
             markSeen(sharedPreferences, context);
         } else if (ACTION_MARK_READ.equals(intent.getAction())) {
