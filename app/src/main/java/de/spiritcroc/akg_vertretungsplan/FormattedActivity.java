@@ -117,6 +117,9 @@ public class FormattedActivity extends NavigationDrawerActivity implements Forma
         } else {
             viewPager = (ViewPager) findViewById(R.id.pager);
 
+            // Fix pager tab strip not showing using support libraries 24.0.0 (https://code.google.com/p/android/issues/detail?id=213359)
+            ((ViewPager.LayoutParams) findViewById(R.id.pager_tab_strip).getLayoutParams()).isDecor = true;
+
             fragmentPagerAdapter = new CustomFragmentPagerAdapter(getSupportFragmentManager());
             viewPager.setAdapter(fragmentPagerAdapter);
         }
