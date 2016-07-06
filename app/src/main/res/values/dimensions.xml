@@ -36,4 +36,9 @@
     <dimen name="navigation_drawer_item_compound_drawable_padding">32dp</dimen>
 
     <dimen name="dialog_padding">4dp</dimen>
+
+    <dimen name="text_size_dialog_title">20sp</dimen>
+    <dimen name="text_size_dialog_sub_title">15sp</dimen>
+    <dimen name="text_size_dialog_header">17sp</dimen>
+    <dimen name="text_size_dialog">14sp</dimen>
 </resources>

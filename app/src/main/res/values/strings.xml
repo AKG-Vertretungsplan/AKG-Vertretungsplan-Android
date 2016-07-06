@@ -625,4 +625,8 @@
     <string name="pref_lesson_plan_bg_color_current_lesson">Current lesson background</string>
     <string name="mark_read">Mark read</string>
     <string name="pref_notification_button_mark_read">Action \"mark read\"</string>
+
+    <string name="dialog_greeter">Greeter</string>
+    <string name="dialog_greeter_title">Contributions required for further development</string>
+    <string name="dialog_greeter_message">Source code can be found <a href="https://github.com/SpiritCroc/AKG-Vertretungsplan">here</a>. For a more sophisticated message, switch your system language to German.</string>
 </resources>

@@ -227,6 +227,8 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
         }*/
         if (sharedPreferences.getString(Keys.PLAN, "1").equals("2")) {
             new InfoscreenWarningDialog().show(getFragmentManager(), "InfoscreenWarningDialog");
+        } else if (!sharedPreferences.getBoolean(Keys.SEEN_GREETER, false)) {
+            new GreeterDialog().show(getFragmentManager(), "GreeterDialog");
         }
         //Download plan stuff  start
         Calendar calendar = DownloadService.stringToCalendar(sharedPreferences.getString(Keys.LAST_CHECKED, "???"));

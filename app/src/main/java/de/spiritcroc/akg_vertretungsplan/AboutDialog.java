@@ -57,6 +57,12 @@ public class AboutDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         new DisclaimerDialog().show(getFragmentManager(), "DisclaimerDialog");
                     }
+                })
+                .setNeutralButton(R.string.dialog_greeter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        new GreeterDialog().show(getFragmentManager(), "GreeterDialog");
+                    }
                 });
 
         return builder.create();

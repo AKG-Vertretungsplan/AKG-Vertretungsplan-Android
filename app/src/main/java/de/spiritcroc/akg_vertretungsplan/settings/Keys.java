@@ -275,6 +275,8 @@ public class Keys {
 
     public static final String SEEN_DISCLAIMER = "pref_seen_disclaimer";
 
+    public static final String SEEN_GREETER = "pref_seen_greeter";
+
     public static final String LAST_CHECKED = "pref_last_checked";
 
     public static final String LAST_UPDATE = "pref_last_update";
