@@ -8,7 +8,7 @@ Für den Aufruf des Oberstufen-Vertretungsplans werden die entsprechenden Zugang
 - Sehr viele Einstellungsmöglichkeiten (z.B. Farben der Vertretungsplans)
 
 Diese App ist open source! Beteiligung am Projekt ist gerne möglich!
-Projekt auf GitHub: https://github.com/SpiritCroc/AKG-Vertretungsplan
+Projekt auf GitHub: https://github.com/AKG-Vertretungsplan/AKG-Vertretungsplan-Android
 
 Berechtigungen:
 Voller Netzwerkzugriff:

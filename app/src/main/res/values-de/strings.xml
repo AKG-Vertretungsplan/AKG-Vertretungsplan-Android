@@ -107,7 +107,7 @@
     <string name="version">Version</string>
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">Abbrechen</string>
-    <string name="dialog_about_0">\n<a href="https://github.com/SpiritCroc/AKG-Vertretungsplan">Quellcode</a>\n\n<a href="https://github.com/SpiritCroc/AKG-Vertretungsplan/issues">Probleme melden/Änderungen vorschlagen</a>\n\n<a href="https://github.com/SpiritCroc/AKG-Vertretungsplan/commits/master">Entwicklung verfolgen</a>\n\nKontakt: <a href="mailto:spiritcroc@gmail.com?subject=AKG-Vertretungsplan">spiritcroc@gmail.com</a></string>
+    <string name="dialog_about_0">\n<a href="https://github.com/AKG-Vertretungsplan/AKG-Vertretungsplan-Android">Quellcode</a>\n\n<a href="https://github.com/AKG-Vertretungsplan/AKG-Vertretungsplan-Android/issues">Probleme melden/Änderungen vorschlagen</a>\n\n<a href="https://github.com/AKG-Vertretungsplan/AKG-Vertretungsplan-Android/commits/master">Entwicklung verfolgen</a></string>
     <string name="dialog_about_1_title">\n<u>Verwendete Komponenten von Drittanbietern</u></string>
     <string name="dialog_about_1_body">Diese App verwendet einige von Googles Material Design Icons (lizenziert unter CC BY 4.0).\nQuelle: https://design.google.com/icons/</string>
     <string name="pref_developing_enabled">Geheimcode</string>
@@ -389,5 +389,5 @@
 
     <string name="dialog_greeter">Hallo</string>
     <string name="dialog_greeter_title">Von Schülern für Schüler</string>
-    <string name="dialog_greeter_message">Das war der Plan.\nDa ich nun aber kein Schüler mehr bin, wäre es toll, wenn sich neue Freiwillige finden würden, um die App weiter zu entwickeln.\n\nHilfreich wären Java/Android-Kenntnisse und Erfahrungen mit git/github bzw. die Bereitschaft, sich diese anzueignen.\n\nDer Quellcode befindet sich <a href="https://github.com/SpiritCroc/AKG-Vertretungsplan">hier</a>.\nHilfreiche Beiträge werden gerne angenommen und den anderen Nutzern durch Updates zugänglich gemacht!</string>
+    <string name="dialog_greeter_message">Das war der Plan.\nDa ich nun aber kein Schüler mehr bin, wäre es toll, wenn sich neue Freiwillige finden würden, um die App weiter zu entwickeln.\n\nHilfreich wären Java/Android-Kenntnisse und Erfahrungen mit git/github bzw. die Bereitschaft, sich diese anzueignen.\n\nDer Quellcode befindet sich <a href="https://github.com/AKG-Vertretungsplan/AKG-Vertretungsplan-Android">hier</a>.\nHilfreiche Beiträge werden gerne angenommen und den anderen Nutzern durch Updates zugänglich gemacht!</string>
 </resources>
