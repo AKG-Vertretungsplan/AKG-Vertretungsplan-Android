@@ -78,11 +78,11 @@ public class DownloadService extends IntentService {
     public static final String ACTION_DOWNLOAD_PLAN = "de.spiritcroc.akg_vertretungsplan.action.downloadPlan";
     public static final String ACTION_RETRY = "de.spiritcroc.akg_vertretungsplan.action.retry";
 
-    public static final String PLAN_1_ADDRESS = "http://www.sc.shuttle.de/sc/akg/Ver/";
-    public static final String PLAN_2_ADDRESS = "https://akg-sc.selfip.org/INFOSCREEN/";
-    public static final String PLAN_2_ADDRESS_1 = "https://akg-sc.selfip.org/INFOSCREEN/links.html?";
-    public static final String PLAN_2_ADDRESS_2 = "https://akg-sc.selfip.org/INFOSCREEN/rechts.html?";
-    public static final String CSS_ADDRESS = "http://www.sc.shuttle.de/sc/akg/Ver/willi.css";
+    public static final String PLAN_1_ADDRESS = "http://www.akg-schwabach.de/Ver/";
+    public static final String PLAN_2_ADDRESS = "";
+    public static final String PLAN_2_ADDRESS_1 = "";
+    public static final String PLAN_2_ADDRESS_2 = "";
+    public static final String CSS_ADDRESS = "http://www.akg-schwabach.de/Ver/willi.css";
 
     public static final String NO_PLAN = "**null**";
 
