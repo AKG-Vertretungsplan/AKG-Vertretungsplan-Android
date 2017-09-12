@@ -19,6 +19,7 @@
 package de.spiritcroc.akg_vertretungsplan;
 
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -168,7 +169,8 @@ public class LessonPlan {
         return false;
     }
     public boolean isRelevant(String lessonClass, int day, int lesson, String teacherShort){
-        if (lessonClass.equals(this.lessonClass)) {
+        if (!TextUtils.isEmpty(lessonClass) && !TextUtils.isEmpty(this.lessonClass) &&
+                lessonClass.contains(this.lessonClass)) {
             return true;
         }
         int dayPosition;
