@@ -389,5 +389,5 @@
 
     <string name="dialog_greeter">Hallo</string>
     <string name="dialog_greeter_title">Von Schülern für Schüler</string>
-    <string name="dialog_greeter_message">Das war der Plan.\nDa ich nun aber kein Schüler mehr bin, wäre es toll, wenn sich neue Freiwillige finden würden, um die App weiter zu entwickeln.\n\nHilfreich wären Java/Android-Kenntnisse und Erfahrungen mit git/github bzw. die Bereitschaft, sich diese anzueignen.\n\nDer Quellcode befindet sich <a href="https://github.com/AKG-Vertretungsplan/AKG-Vertretungsplan-Android">hier</a>.\nHilfreiche Beiträge werden gerne angenommen und den anderen Nutzern durch Updates zugänglich gemacht!</string>
+    <string name="dialog_greeter_message">Da jeder Schüler auch mal mit der Schule fertig ist, wäre es toll, wenn sich neue Freiwillige finden würden, um die App weiter zu entwickeln.\n\nHilfreich wären Java/Android-Kenntnisse und Erfahrungen mit git/github bzw. die Bereitschaft, sich diese anzueignen.\n\nDer Quellcode befindet sich <a href="https://github.com/AKG-Vertretungsplan/AKG-Vertretungsplan-Android">hier</a>.\nHilfreiche Beiträge werden gerne angenommen und den anderen Nutzern durch Updates zugänglich gemacht!</string>
 </resources>
