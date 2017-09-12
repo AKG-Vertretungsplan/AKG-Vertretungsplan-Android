@@ -278,7 +278,7 @@ public class DownloadService extends IntentService {
     private void processPlan(String result, String css){
         String latestHtml = getSharedPreferences().getString(Keys.HTML_LATEST, "");
         boolean newVersion = false;
-        if (result.contains("401 Authorization Required")) {
+        if (result.contains("401 Authorization Required") || result.contains("401 Unauthorized")) {
             showText((username.equals("") ? getString(R.string.enter_userdata) : getString(R.string.correct_userdata)));
             loginFailed = true;
             if (IsRunningSingleton.getInstance().isRunning()) {
