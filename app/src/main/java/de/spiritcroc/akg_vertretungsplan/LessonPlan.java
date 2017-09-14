@@ -18,6 +18,7 @@
 
 package de.spiritcroc.akg_vertretungsplan;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
@@ -39,19 +40,36 @@ public class LessonPlan {
     private Lesson[][] lessons;
     private String lessonClass;
     private SharedPreferences sharedPreferences;
+    private boolean savePlan = true;
 
     private LessonPlan(SharedPreferences sharedPreferences){
         this.sharedPreferences = sharedPreferences;
         lessons = new Lesson[DAY_COUNT][LESSON_COUNT];
 
-        String recreationKey = sharedPreferences.getString(Keys.LESSON_PLAN, ""), dayKey;
-
         retrieveLessonClass();
 
+        recreate();
+    }
+
+    private void recreate() {
+        savePlan = true;
+        recreate(sharedPreferences.getString(Keys.LESSON_PLAN, ""), false);
+    }
+
+    private void recreate(String recreationKey, boolean throwException) {
+        String dayKey;
         for (int j = 0; j < lessons.length; j++) {
             dayKey = Tools.getLine(recreationKey, j+1, DAY_SEPARATOR);
-            for (int i = 0; i < lessons[j].length; i++)
-                lessons[j][i] = Lesson.recoverFromRecreationKey(Tools.getLine(dayKey, i+1, LESSON_SEPARATOR));
+            if (throwException && TextUtils.isEmpty(dayKey)) {
+                throw new RuntimeException("Missing daykey");
+            }
+            for (int i = 0; i < lessons[j].length; i++) {
+                String lessonKey = Tools.getLine(dayKey, i + 1, LESSON_SEPARATOR);
+                if (throwException && TextUtils.isEmpty(lessonKey)) {
+                    throw new RuntimeException("Missing lessonkey");
+                }
+                lessons[j][i] = Lesson.recoverFromRecreationKey(lessonKey, throwException);
+            }
         }
     }
 
@@ -72,7 +90,7 @@ public class LessonPlan {
         return lessons[day];
     }
 
-    public void saveLessons(){
+    public String saveLessons(){
         String recreationKey = "";
         for (int j = 0; j < lessons.length; j++) {
             for (int i = 0; i < lessons[j].length; i++) {
@@ -80,7 +98,10 @@ public class LessonPlan {
             }
             recreationKey += DAY_SEPARATOR;
         }
-        sharedPreferences.edit().putString(Keys.LESSON_PLAN, recreationKey).apply();
+        if (savePlan) {
+            sharedPreferences.edit().putString(Keys.LESSON_PLAN, recreationKey).apply();
+        }
+        return recreationKey;
     }
 
     public String[] getSubjects(){
@@ -150,8 +171,10 @@ public class LessonPlan {
     }
 
     public void resetLessons(){
-        sharedPreferences.edit().remove(Keys.CLASS).apply();
-        lessonClass = "";
+        if (savePlan) {
+            sharedPreferences.edit().remove(Keys.CLASS).apply();
+            lessonClass = "";
+        }
         for (int j = 0; j < lessons.length; j++) {
             for (int i = 0; i < lessons[j].length; i++)
                 lessons[j][i] = new Lesson();
@@ -206,5 +229,26 @@ public class LessonPlan {
             }
         }
         return false;
+    }
+
+    public String getExportContent() {
+        return saveLessons();
+    }
+
+    public boolean importContent(Context context, String content, boolean persist) {
+        savePlan = persist;
+        try {
+            recreate(content, true);
+            if (savePlan) {
+                saveLessons();
+            } else {
+                lessonClass = context.getString(R.string.import_lesson_plan_tmp_class);
+            }
+            return true;
+        } catch (Exception e) {
+            // Back to previous
+            recreate();
+            return false;
+        }
     }
 }

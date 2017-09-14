@@ -629,4 +629,21 @@
     <string name="dialog_greeter">Greeter</string>
     <string name="dialog_greeter_title">Contributions required for further development</string>
     <string name="dialog_greeter_message">Source code can be found <a href="https://github.com/AKG-Vertretungsplan/AKG-Vertretungsplan-Android">here</a>. For a more sophisticated message, switch your system language to German.</string>
+
+    <string name="action_export_share_lesson_plan">Share lesson plan</string>
+    <!-- TODO implement, also don't forget translation -->
+    <!--
+    <string name="action_export_lesson_plan">Export</string>
+    <string name="action_import_lesson_plan">Import</string>
+    -->
+    <string name="action_export_lesson_plan_share_via">Share via</string>
+    <string name="export_lesson_plan_failure">Unexpected failure</string>
+    <string name="import_lesson_plan">Import lesson plan</string>
+    <string name="import_lesson_plan_summary">Save the lesson plan as your own, or use it only until app exit?</string>
+    <string name="import_lesson_plan_action_import">Import</string>
+    <string name="import_lesson_plan_action_view">View</string>
+    <string name="import_lesson_plan_success">Lesson plan successfully imported</string>
+    <string name="import_lesson_plan_failure">Lesson plan import failed</string>
+    <string name="import_lesson_plan_invalid">Invalid lesson plan file</string>
+    <string name="import_lesson_plan_tmp_class">view foreign</string>
 </resources>

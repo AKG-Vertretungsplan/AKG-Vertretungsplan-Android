@@ -17,3 +17,5 @@ Netzwerkverbindungen abrufen:
 Verhindern des unnötigen Download-Versuchs, wenn das Gerät offline ist; stattdessen erneuter Versuch, sobald erneut verbunden wird
 Beim Start ausführen:
 Regelmäßige Überprüfung auf Aktualisierungen nach einem Gerät-Neustart starten
+Speicher:
+Import/export des Stundenplans

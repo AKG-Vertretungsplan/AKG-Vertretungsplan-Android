@@ -30,6 +30,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.FileProvider;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -39,7 +40,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -68,6 +76,10 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
     private MenuItem showFullTimeMenuItem, reloadItem;
 
     private Handler updateHandler = new Handler();
+
+    private static final String EXPORT_ENDING = ".akvlp";
+    private static final String EXPORT_DIR = "export";
+    private static final String EXPORT_FILE = "stundenplan" + EXPORT_ENDING;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -226,6 +238,9 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
                 return true;
             case R.id.action_reload_web_view:
                 startDownloadService(true);
+                return true;
+            case R.id.action_export_share_lesson_plan:
+                exportPlan();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -531,4 +546,38 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
             }
         }
     };
+
+
+    private void exportPlan() {
+        boolean success = false;
+        FileWriter writer = null;
+        File dir = new File(getCacheDir(), EXPORT_DIR);
+        dir.mkdirs();
+        File file = new File(dir, EXPORT_FILE);
+        try {
+            writer = new FileWriter(file);
+            writer.write(LessonPlan.getInstance(sharedPreferences).getExportContent());
+            writer.flush();
+            success = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, R.string.export_lesson_plan_failure, Toast.LENGTH_LONG).show();
+        } finally {
+            if (writer != null) {
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (success) {
+            Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+            shareIntent.setType("text/*");
+            shareIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(this,
+                    "de.spiritcroc.akg_vertretungsplan.fileprovider", file));
+            startActivity(Intent.createChooser(shareIntent,
+                    getString(R.string.action_export_lesson_plan_share_via)));
+        }
+    }
 }

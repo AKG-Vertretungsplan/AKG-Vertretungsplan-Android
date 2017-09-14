@@ -76,7 +76,7 @@ public class Lesson {
         teacherShort = teacherFull = subject = room = null;
     }
 
-    public static Lesson recoverFromRecreationKey(String key){
+    public static Lesson recoverFromRecreationKey(String key, boolean throwException) {
         if (key.equals(""))
             return new Lesson();//Std if no key
         try {
@@ -88,10 +88,10 @@ public class Lesson {
             String subject = Tools.getLine(key, 4, VALUE_SEPARATOR);
             String room = Tools.getLine(key, 5, VALUE_SEPARATOR);
             return new Lesson(teacherShort, teacherFull, subject, room);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             Log.e("Lesson", "recoverFromRecreationKey: illegal key: " + key);
             Log.e("Lesson", "Got exception: " + e);
+            if (throwException) throw e;
             return null;
         }
     }

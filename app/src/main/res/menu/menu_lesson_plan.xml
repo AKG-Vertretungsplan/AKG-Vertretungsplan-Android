@@ -45,6 +45,22 @@
         android:title="@string/action_lesson_class"
         android:orderInCategory="50"
         app:showAsAction="never"/>
+    <!-- TODO
+    <item android:id="@+id/action_export_lesson_plan"
+        android:title="@string/action_export_lesson_plan"
+        android:orderInCategory="60"
+        app:showAsAction="never" />
+    -->
+    <item android:id="@+id/action_export_share_lesson_plan"
+        android:title="@string/action_export_share_lesson_plan"
+        android:orderInCategory="60"
+        app:showAsAction="never" />
+    <!-- TODO
+    <item android:id="@+id/action_import_lesson_plan"
+        android:title="@string/action_import_lesson_plan"
+        android:orderInCategory="60"
+        app:showAsAction="never" />
+    -->
     <item android:id="@+id/action_reset"
         android:title="@string/action_reset"
         android:orderInCategory="99"
