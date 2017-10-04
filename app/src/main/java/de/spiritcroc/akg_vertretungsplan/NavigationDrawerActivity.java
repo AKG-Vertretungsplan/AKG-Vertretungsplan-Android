@@ -18,6 +18,7 @@
 
 package de.spiritcroc.akg_vertretungsplan;
 
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -368,7 +369,12 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
                 intent.putExtra(Intent.EXTRA_TEXT, text);
                 intent.setData(Uri.parse("mailto:"));
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    Toast.makeText(NavigationDrawerActivity.this,
+                            R.string.debug_email_no_activity_found, Toast.LENGTH_LONG).show();
+                }
             }
         }
     }

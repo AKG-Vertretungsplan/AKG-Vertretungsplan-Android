@@ -1034,27 +1034,6 @@ public class DownloadService extends IntentService {
             case 2:
                 result += DummyPlans.dummy2;
                 break;
-            case 3:
-                result += DummyPlans.dummy3;
-                break;
-            case 4:
-                result += DummyPlans.dummy4;
-                break;
-            case 5:
-                result += DummyPlans.dummy5;
-                break;
-            case 6:
-                result += DummyPlans.dummy6;
-                break;
-            case 7:
-                result += DummyPlans.dummy7;
-                break;
-            case 8:
-                result += DummyPlans.dummy8;
-                break;
-            case 9:
-                result += DummyPlans.dummy9;
-                break;
         }
 
         processPlan(result, getString(R.string.web_plan_custom_style_akg_default));

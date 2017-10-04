@@ -302,6 +302,7 @@
     <string name="debug_email_subject">AKG-Vertretungsplan debug information</string>
     <string name="debug_email_issue_description">Issue description:\n[insert your issue description here]</string>
     <string name="debug_email_automatically_added_information">Automatically added information:</string>
+    <string name="debug_email_no_activity_found">Please install and set up an email application first</string>
 
     <string name="day_monday">Monday</string>
     <string name="day_tuesday">Tuesday</string>
