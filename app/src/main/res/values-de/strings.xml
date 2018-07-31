@@ -407,4 +407,6 @@
     <string name="import_lesson_plan_failure">Importieren fehlgeschlagen</string>
     <string name="import_lesson_plan_invalid">Ungültige Stundenplan-Datei</string>
     <string name="import_lesson_plan_tmp_class">fremden anzeigen</string>
+
+    <string name="notification_channel_name">Aktualisierungen</string>
 </resources>

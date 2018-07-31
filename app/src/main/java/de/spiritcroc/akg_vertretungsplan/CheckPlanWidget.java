@@ -84,7 +84,7 @@ public class CheckPlanWidget extends AppWidgetProvider {
         }
         else if (intent.getAction().equals(WIDGET_RELOAD_BUTTON_CLICKED)){
             if (!DownloadService.isDownloading())
-                context.startService(new Intent(context, DownloadService.class).setAction(DownloadService.ACTION_DOWNLOAD_PLAN));
+                DownloadService.enqueueWork(context, new Intent(context, DownloadService.class).setAction(DownloadService.ACTION_DOWNLOAD_PLAN));
         }
     }
     static void updateViews(RemoteViews views, Context context){

@@ -647,4 +647,6 @@
     <string name="import_lesson_plan_failure">Lesson plan import failed</string>
     <string name="import_lesson_plan_invalid">Invalid lesson plan file</string>
     <string name="import_lesson_plan_tmp_class">view foreign</string>
+
+    <string name="notification_channel_name">Updates</string>
 </resources>

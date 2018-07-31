@@ -141,7 +141,7 @@ public class SettingsFragment extends CustomPreferenceFragment {
 
     private void onCredentialsUpdated() {
         Activity activity = getActivity();
-        activity.startService(new Intent(activity, DownloadService.class)
+        DownloadService.enqueueWork(activity, new Intent(activity, DownloadService.class)
                 .setAction(DownloadService.ACTION_RETRY));
     }
 }

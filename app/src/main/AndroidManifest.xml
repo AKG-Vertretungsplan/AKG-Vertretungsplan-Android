@@ -26,6 +26,7 @@
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -132,7 +133,8 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".DownloadService" />
+        <service android:name=".DownloadService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

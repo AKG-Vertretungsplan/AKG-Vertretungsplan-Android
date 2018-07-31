@@ -447,7 +447,7 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
      */
     public void startDownloadService(boolean force){
         if (!DownloadService.isDownloading() && (force || !sharedPreferences.getBoolean(Keys.UNSEEN_CHANGES, false)))
-            startService(new Intent(this, DownloadService.class).setAction(DownloadService.ACTION_DOWNLOAD_PLAN));
+            DownloadService.enqueueWork(this, new Intent(this, DownloadService.class).setAction(DownloadService.ACTION_DOWNLOAD_PLAN));
     }
 
     protected void illegalPlan() {}

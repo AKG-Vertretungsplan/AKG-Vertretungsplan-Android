@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 SpiritCroc
+ * Copyright (C) 2015-2018 SpiritCroc
  * Email: spiritcroc@gmail.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,8 +18,8 @@
 
 package de.spiritcroc.akg_vertretungsplan;
 
-import android.app.IntentService;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ContentValues;
@@ -34,7 +34,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Parcel;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.JobIntentService;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Spannable;
@@ -74,7 +76,7 @@ import javax.net.ssl.X509TrustManager;
 import de.spiritcroc.akg_vertretungsplan.settings.Keys;
 import de.spiritcroc.akg_vertretungsplan.settings.SettingsActivity;
 
-public class DownloadService extends IntentService {
+public class DownloadService extends JobIntentService {
     public static final String ACTION_DOWNLOAD_PLAN = "de.spiritcroc.akg_vertretungsplan.action.downloadPlan";
     public static final String ACTION_RETRY = "de.spiritcroc.akg_vertretungsplan.action.retry";
 
@@ -91,6 +93,9 @@ public class DownloadService extends IntentService {
     public static final int NOTIFICATION_IMPORTANCE_IRRELEVANT = 1;
     public static final int NOTIFICATION_IMPORTANCE_NONE = 0;
 
+    private static final int JOB_ID = 1000;
+    private static final String NOTIFICATION_CHANNEL_ID = "de.spiritcroc.akg_vertretungsplan.update_notifications";
+
     public enum ContentType {AWAIT, IGNORE, HEADER, TABLE_START_FLAG, TABLE_END_FLAG, TABLE_ROW, TABLE_CONTENT}
     private String username, password;
     private SharedPreferences sharedPreferences;
@@ -99,55 +104,57 @@ public class DownloadService extends IntentService {
     private boolean skipLoginActivity = false;
 
     public DownloadService() {
-        super("DownloadService");
+        super();
+    }
+
+    public static void enqueueWork(Context context, Intent work) {
+        enqueueWork(context, DownloadService.class, JOB_ID, work);
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
-        if (intent != null) {
-            final String action = intent.getAction();
+    protected void onHandleWork(@NonNull  Intent intent) {
+        final String action = intent.getAction();
+        OwnLog.add(getSharedPreferences(),
+                "DownloadService.onHandleIntent: got action: " + action);
+        if (ACTION_DOWNLOAD_PLAN.equals(action)){
+            if (getSharedPreferences().getBoolean(Keys.RELOAD_ON_RESUME, false))
+                skipLoginActivity = true;// Don't prompt to login activity if coming from there
+            getSharedPreferences().edit().putBoolean(Keys.RELOAD_ON_RESUME, false)
+                    .putBoolean(Keys.LAST_OFFLINE, false).apply();
             OwnLog.add(getSharedPreferences(),
-                    "DownloadService.onHandleIntent: got action: " + action);
-            if (ACTION_DOWNLOAD_PLAN.equals(action)){
-                if (getSharedPreferences().getBoolean(Keys.RELOAD_ON_RESUME, false))
-                    skipLoginActivity = true;// Don't prompt to login activity if coming from there
-                getSharedPreferences().edit().putBoolean(Keys.RELOAD_ON_RESUME, false)
-                        .putBoolean(Keys.LAST_OFFLINE, false).apply();
-                OwnLog.add(getSharedPreferences(),
-                        "DownloadService.onHandleIntent: set pref_last_offline false");
+                    "DownloadService.onHandleIntent: set pref_last_offline false");
 
-                if (sharedPreferences.getBoolean(Keys.BACKGROUND_SERVICE, true))
-                    BReceiver.startDownloadService(getApplicationContext(), false);//Schedule next download
+            if (sharedPreferences.getBoolean(Keys.BACKGROUND_SERVICE, true))
+                BReceiver.startDownloadService(getApplicationContext(), false);//Schedule next download
 
-                if (isConnected()) {
-                    if (!loginFailed) {
-                        downloading = true;
-                        updateLoadingInformation();
-                        //hidden debug stuff start
-                        int tmp = 0;
-                        try {
-                            tmp = Integer.parseInt(getSharedPreferences().getString(Keys.DEBUG_SECRET_CODE, "0"));
-                        } catch (Exception e) {
-                        }
-
-                        if (tmp != 0)
-                            dummyHandleActionDownloadPlan(tmp);
-                        else//hidden debug stuff end
-                            handleActionDownloadPlan();
-                        downloading = false;
+            if (isConnected()) {
+                if (!loginFailed) {
+                    downloading = true;
+                    updateLoadingInformation();
+                    //hidden debug stuff start
+                    int tmp = 0;
+                    try {
+                        tmp = Integer.parseInt(getSharedPreferences().getString(Keys.DEBUG_SECRET_CODE, "0"));
+                    } catch (Exception e) {
                     }
+
+                    if (tmp != 0)
+                        dummyHandleActionDownloadPlan(tmp);
+                    else//hidden debug stuff end
+                        handleActionDownloadPlan();
+                    downloading = false;
                 }
-                else{
-                    getSharedPreferences().edit().putBoolean(Keys.LAST_OFFLINE, true).apply();
-                    loadOfflinePlan();
-                    OwnLog.add(getSharedPreferences(),
-                            "DownloadService.onHandleIntent: set pref_last_offline true");
-                }
-                updateLoadingInformation();
             }
-            else if (ACTION_RETRY.equals(action)){
-                loginFailed = false;
+            else{
+                getSharedPreferences().edit().putBoolean(Keys.LAST_OFFLINE, true).apply();
+                loadOfflinePlan();
+                OwnLog.add(getSharedPreferences(),
+                        "DownloadService.onHandleIntent: set pref_last_offline true");
             }
+            updateLoadingInformation();
+        }
+        else if (ACTION_RETRY.equals(action)){
+            loginFailed = false;
         }
     }
     private SharedPreferences getSharedPreferences(){
@@ -744,7 +751,12 @@ public class DownloadService extends IntentService {
             postNotification(title, text, 1, R.drawable.ic_stat_notify_plan_update, FormattedActivity.class, false, importance, relevantInformation, generalInformation, irrelevantInformation);
     }
     private void postNotification(String title, @Nullable String text, int id, int smallIconResource, Class touchActivity, boolean silent, int importance, @Nullable ArrayList<String> relevantInformation, @Nullable ArrayList<String> generalInformation, @Nullable ArrayList<String> irrelevantInformation) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this).setSmallIcon(smallIconResource).setContentTitle(title);
+        NotificationChannel notificationChannel = null;
+        if (Build.VERSION.SDK_INT >= 26) {
+            notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID,
+                    getString(R.string.notification_channel_name), importance);
+        }
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID).setSmallIcon(smallIconResource).setContentTitle(title);
         if (text != null)
             builder.setContentText(text);
         NotificationCompat.InboxStyle inboxStyle = null;
@@ -757,8 +769,13 @@ public class DownloadService extends IntentService {
                 else
                     builder.setSound(Uri.parse(notificationSound));
             }
-            if (getSharedPreferences().getBoolean(Keys.LED_NOTIFICATION_ENABLED, false))
-                builder.setLights(Integer.parseInt(getSharedPreferences().getString(Keys.LED_NOTIFICATION_COLOR, "-1")), 500, 500);
+            if (getSharedPreferences().getBoolean(Keys.LED_NOTIFICATION_ENABLED, false)) {
+                int color = Integer.parseInt(getSharedPreferences().getString(Keys.LED_NOTIFICATION_COLOR, "-1"));
+                builder.setLights(color, 500, 500);
+                if (Build.VERSION.SDK_INT >= 26) {
+                    notificationChannel.setLightColor(color);
+                }
+            }
             if (getSharedPreferences().getBoolean(Keys.VIBRATE_NOTIFICATION_ENABLED, false)) {
                 long[] vibrationPattern;
                 switch (importance) {
@@ -777,6 +794,13 @@ public class DownloadService extends IntentService {
                         break;
                 }
                 builder.setVibrate(vibrationPattern);
+                if (Build.VERSION.SDK_INT >= 26) {
+                    notificationChannel.enableVibration(true);
+                }
+            } else {
+                if (Build.VERSION.SDK_INT >= 26) {
+                    notificationChannel.enableVibration(true);
+                }
             }
             inboxStyle = new NotificationCompat.InboxStyle();
             int lineCount = 0;
@@ -873,18 +897,22 @@ public class DownloadService extends IntentService {
             if (getString(R.string.pref_notification_heads_up_disabled_value).equals(pref)) {
                 notification.headsUpContentView = new RemoteViews(Parcel.obtain());
             } else {
-                NotificationCompat.Builder headsUpBuilder = new NotificationCompat.Builder(this)
+                NotificationCompat.Builder headsUpBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
                         .setSmallIcon(smallIconResource)
                         .setContentTitle(title);
                 if (text != null)
                     headsUpBuilder.setContentText(text);
                 if (inboxStyle != null)
                     headsUpBuilder.setStyle(inboxStyle);
-                if (getString(R.string.pref_notification_heads_up_expanded_value).equals(pref)) {
-                    notification.headsUpContentView = headsUpBuilder.build().bigContentView.clone();
-                } else {
-                    notification.headsUpContentView = headsUpBuilder.build().contentView.clone();
+                Notification headsUpNotif = headsUpBuilder.build();
+                if (getString(R.string.pref_notification_heads_up_expanded_value).equals(pref) && headsUpNotif.bigContentView != null) {
+                    notification.headsUpContentView = headsUpNotif.bigContentView.clone();
+                } else if (headsUpNotif.contentView != null) {
+                    notification.headsUpContentView = headsUpNotif.contentView.clone();
                 }
+            }
+            if (Build.VERSION.SDK_INT >= 26) {
+                notificationManager.createNotificationChannel(notificationChannel);
             }
         }
         notificationManager.notify(id, notification);

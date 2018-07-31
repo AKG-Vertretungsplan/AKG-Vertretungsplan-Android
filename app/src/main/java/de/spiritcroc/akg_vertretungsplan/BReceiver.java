@@ -52,7 +52,7 @@ public class BReceiver extends BroadcastReceiver {
                 ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction()) && sharedPreferences.getBoolean(Keys.LAST_OFFLINE, false)){
             if (sharedPreferences.getBoolean(Keys.BACKGROUND_SERVICE, true)) {
                 if (!DownloadService.isDownloading() && !IsRunningSingleton.getInstance().isRunning())
-                    context.startService(new Intent(context, DownloadService.class).setAction(DownloadService.ACTION_DOWNLOAD_PLAN));
+                    DownloadService.enqueueWork(context, new Intent(context, DownloadService.class).setAction(DownloadService.ACTION_DOWNLOAD_PLAN));
                 else
                     startDownloadService(context.getApplicationContext(), false);//Schedule next download nevertheless
             }
@@ -67,7 +67,7 @@ public class BReceiver extends BroadcastReceiver {
         }
     }
 
-    public static PendingIntent getAlarmPendingIntent(Context context, int flag){
+    private static PendingIntent getAlarmPendingIntent(Context context, int flag){
         Intent resultIntent = new Intent(context, BReceiver.class).setAction(ACTION_START_DOWNLOAD_SERVICE);
         return PendingIntent.getBroadcast(context.getApplicationContext(), 0, resultIntent, flag);
     }
