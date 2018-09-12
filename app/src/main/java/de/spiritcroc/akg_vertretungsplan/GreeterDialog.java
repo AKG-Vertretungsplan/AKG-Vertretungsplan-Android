@@ -59,4 +59,11 @@ public class GreeterDialog extends DialogFragment {
 
         return builder.create();
     }
+    @Override
+    public void onDismiss (DialogInterface dialog){
+        super.onDismiss(dialog);
+        Activity currentActivity = getActivity();
+        if (currentActivity instanceof NavigationDrawerActivity)
+            ((NavigationDrawerActivity) currentActivity).afterDisclaimer(new Bool());
+    }
 }

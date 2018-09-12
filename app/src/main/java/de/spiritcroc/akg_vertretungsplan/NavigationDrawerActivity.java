@@ -220,17 +220,19 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
     public boolean afterDisclaimer(Bool startedDownloadService){
         if (ranAfterDisclaimer)//only run once
             return true;
-        ranAfterDisclaimer = true;
-        /*if (!sharedPreferences.contains(Keys.PLAN)) {
+        if (!sharedPreferences.contains(Keys.PLAN)) {
             new BasicSetupDialog().show(getFragmentManager(), "BasicSetupDialog");
             // BasicSetupDialog will call this method again
-            return;
-        }*/
-        if (sharedPreferences.getString(Keys.PLAN, "1").equals("2")) {
-            new InfoscreenWarningDialog().show(getFragmentManager(), "InfoscreenWarningDialog");
-        } else if (!sharedPreferences.getBoolean(Keys.SEEN_GREETER, false)) {
-            new GreeterDialog().show(getFragmentManager(), "GreeterDialog");
+            return true;
         }
+        /*if (sharedPreferences.getString(Keys.PLAN, "1").equals("2")) {
+            new InfoscreenWarningDialog().show(getFragmentManager(), "InfoscreenWarningDialog");
+        } else*/
+        if (!sharedPreferences.getBoolean(Keys.SEEN_GREETER, false)) {
+            new GreeterDialog().show(getFragmentManager(), "GreeterDialog");
+            return true;
+        }
+        ranAfterDisclaimer = true;
         //Download plan stuff  start
         Calendar calendar = DownloadService.stringToCalendar(sharedPreferences.getString(Keys.LAST_CHECKED, "???"));
         startedDownloadService.value = false;

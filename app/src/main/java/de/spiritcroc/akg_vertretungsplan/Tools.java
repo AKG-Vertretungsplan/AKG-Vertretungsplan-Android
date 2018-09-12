@@ -263,7 +263,7 @@ public abstract class Tools {
     }*/
 
     public static boolean isWebActivityEnabled(SharedPreferences sharedPreferences) {
-        return sharedPreferences.getInt(Keys.LAST_PLAN_TYPE, 1) == 1;
+        return true;// sharedPreferences.getInt(Keys.LAST_PLAN_TYPE, 2) == 1;
     }
 
     public static StyleSpan getStyleSpanFromPref(Context context, String stylePrefValue) {

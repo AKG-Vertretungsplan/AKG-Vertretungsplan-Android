@@ -78,6 +78,7 @@ public class SettingsFragment extends CustomPreferenceFragment {
     private void init() {
         setTeslaUnreadPrefHidden();
         setHiddenDebugHidden();
+        setListPreferenceSummary(Keys.PLAN);
     }
 
     @Override
@@ -90,6 +91,9 @@ public class SettingsFragment extends CustomPreferenceFragment {
             case Keys.OWN_LOG:
                 toggleOwnLog();
                 break;
+            case Keys.PLAN:
+                setListPreferenceSummary(key);
+                break;
         }
     }
 
@@ -97,7 +101,7 @@ public class SettingsFragment extends CustomPreferenceFragment {
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen,
                                          @NonNull Preference preference) {
         if (preference == hiddenDebugPref) {
-            // Inspiration from AICP's hidden shit
+            // Inspiration from AOSP easteregg
             System.arraycopy(hiddenPrefHits, 1, hiddenPrefHits, 0, hiddenPrefHits.length-1);
             hiddenPrefHits[hiddenPrefHits.length-1] = SystemClock.uptimeMillis();
             SharedPreferences sharedPreferences = getPreferenceManager().getSharedPreferences();

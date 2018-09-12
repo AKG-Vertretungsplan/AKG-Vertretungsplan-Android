@@ -81,9 +81,7 @@ public class DownloadService extends JobIntentService {
     public static final String ACTION_RETRY = "de.spiritcroc.akg_vertretungsplan.action.retry";
 
     public static final String PLAN_1_ADDRESS = "http://www.akg-schwabach.de/Ver/";
-    public static final String PLAN_2_ADDRESS = "";
-    public static final String PLAN_2_ADDRESS_1 = "";
-    public static final String PLAN_2_ADDRESS_2 = "";
+    public static final String PLAN_2_ADDRESS = "http://www.akg-schwabach.de/Ver/HP.html";
     public static final String CSS_ADDRESS = "http://www.akg-schwabach.de/Ver/willi.css";
 
     public static final String NO_PLAN = "**null**";
@@ -174,32 +172,43 @@ public class DownloadService extends JobIntentService {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(2);
         try {
-            //int plan = Integer.parseInt(getSharedPreferences().getString("pref_plan", "1"));
-            //switch (plan) {
-            //    case 1:
-            //    {
+            int plan = Integer.parseInt(getSharedPreferences().getString("pref_plan", "2"));
+            String result, css;
+            switch (plan) {
+                case 1:
+                {
                     username = getSharedPreferences().getString(Keys.USERNAME, "");
                     password = getSharedPreferences().getString(Keys.PASSWORD, "");
                     String base64EncodedCredentials = Base64.encodeToString((username + ":" + password).getBytes("US-ASCII"), Base64.URL_SAFE | Base64.NO_WRAP);
                     DefaultHttpClient httpClient = new DefaultHttpClient();//On purpose use deprecated stuff because it works better (I have problems with HttpURLConnection: it does not read the credentials each time they are needed, and if they are wrong, there is no appropriate message (just an java.io.FileNotFoundException))
                     HttpGet httpGet = new HttpGet(PLAN_1_ADDRESS);
                     httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
-                    String result = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
+                    result = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
                     httpGet = new HttpGet(CSS_ADDRESS);
                     httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
                     //sharedPreferences.edit().remove(Keys.WEB_PLAN_CUSTOM_STYLE).apply();// test default
-                    String css = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
-                    processPlan(result, css);
-            //      break;
-            //    }
-            //    case 2:
-            //    {
-            //        String result = getPlanInsecure(PLAN_2_ADDRESS_1) + getPlanInsecure(PLAN_2_ADDRESS_2);
-            //        processPlan(result);
-            //        break;
-            //    }
-            //}
-            getSharedPreferences().edit().putInt(Keys.LAST_PLAN_TYPE, 1).apply();
+                    css = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
+                  break;
+                }
+                default:
+                case 2:
+                {
+                    username = getSharedPreferences().getString(Keys.USERNAME, "");
+                    password = getSharedPreferences().getString(Keys.PASSWORD, "");
+                    String base64EncodedCredentials = Base64.encodeToString((username + ":" + password).getBytes("US-ASCII"), Base64.URL_SAFE | Base64.NO_WRAP);
+                    DefaultHttpClient httpClient = new DefaultHttpClient();//On purpose use deprecated stuff because it works better (I have problems with HttpURLConnection: it does not read the credentials each time they are needed, and if they are wrong, there is no appropriate message (just an java.io.FileNotFoundException))
+                    HttpGet httpGet = new HttpGet(PLAN_2_ADDRESS);
+                    httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
+                    result = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
+                    httpGet = new HttpGet(CSS_ADDRESS);
+                    httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
+                    //sharedPreferences.edit().remove(Keys.WEB_PLAN_CUSTOM_STYLE).apply();// test default
+                    css = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
+                    break;
+                }
+            }
+            processPlan(result, css);
+            getSharedPreferences().edit().putInt(Keys.LAST_PLAN_TYPE, plan).apply();
         }
         catch (UnknownHostException e){
             loadOfflinePlan();
@@ -1052,10 +1061,6 @@ public class DownloadService extends JobIntentService {
         maybeSaveFormattedPlan();
         String result = "";
         switch (no){
-            case -1:
-                // Not actually dummy, but infoscreen
-                result = getPlanInsecure(PLAN_2_ADDRESS_1) + getPlanInsecure(PLAN_2_ADDRESS_2);
-                break;
             case 1:
                 result += DummyPlans.dummy1;
                 break;

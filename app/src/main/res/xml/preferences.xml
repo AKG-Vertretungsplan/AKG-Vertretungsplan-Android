@@ -20,12 +20,12 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/settings">
 
-    <!--ListPreference
+    <ListPreference
         android:key="pref_plan"
         android:title="@string/pref_plan"
         android:entries="@array/pref_plan_array"
         android:entryValues="@array/pref_plan_value_array"
-        android:defaultValue="1"/-->
+        android:defaultValue="2"/>
 
     <PreferenceCategory
         android:title="@string/userdata"

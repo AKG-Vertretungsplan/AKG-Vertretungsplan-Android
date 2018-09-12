@@ -29,7 +29,6 @@ import android.preference.PreferenceManager;
 
 import java.util.Arrays;
 
-@Deprecated
 public class BasicSetupDialog extends DialogFragment {
     private SharedPreferences sharedPreferences;
     private int selection;
@@ -39,7 +38,7 @@ public class BasicSetupDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final String[] planValues = getResources().getStringArray(R.array.pref_plan_value_array);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        selection = Arrays.asList(planValues).indexOf(sharedPreferences.getString("pref_plan", "1"));
+        selection = Arrays.asList(planValues).indexOf(sharedPreferences.getString("pref_plan", "2"));
         if (selection < 0) {
             selection = 0;
         }

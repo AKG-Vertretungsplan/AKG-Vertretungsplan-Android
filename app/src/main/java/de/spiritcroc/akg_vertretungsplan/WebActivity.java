@@ -120,8 +120,15 @@ public class WebActivity extends NavigationDrawerActivity {
 
     private void openInBrowser() {
         String link;
-        if (sharedPreferences.getInt(Keys.LAST_PLAN_TYPE, 1) == 2) {
+        if (sharedPreferences.getInt(Keys.LAST_PLAN_TYPE, 2) == 2) {
             link = DownloadService.PLAN_2_ADDRESS;
+            String username = sharedPreferences.getString(Keys.USERNAME, ""),
+                    password = sharedPreferences.getString(Keys.PASSWORD, "");
+            String prefix = "http://";
+            int index = link.indexOf(prefix);
+            if (!username.equals("") && !password.equals("") && index >= 0) {
+                link = link.replaceFirst(prefix, prefix + username + ":" + password + "@");
+            }
         } else {
             link = DownloadService.PLAN_1_ADDRESS;
             String username = sharedPreferences.getString(Keys.USERNAME, ""),
