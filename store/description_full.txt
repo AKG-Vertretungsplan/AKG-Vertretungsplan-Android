@@ -1,4 +1,4 @@
-Für den Aufruf des Oberstufen-Vertretungsplans werden die entsprechenden Zugangsdaten benötigt!
+Für den Aufruf des Vertretungsplans werden die entsprechenden Zugangsdaten benötigt!
 
 - Überprüfe regelmäßig, ob der Vertretungsplan geändert wurde; Benachrichtigung bei Änderungen (optional nur bei relevanten)
 - Hebe Änderungen seit dem letzten Aufruf farbig hervor
