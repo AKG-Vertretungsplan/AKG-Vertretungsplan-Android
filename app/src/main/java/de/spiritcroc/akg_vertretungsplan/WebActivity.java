@@ -58,7 +58,7 @@ public class WebActivity extends NavigationDrawerActivity {
         customWebViewClient = new CustomWebViewClient();
         webView.setWebViewClient(customWebViewClient);
         updateCss();
-        loadWebView(sharedPreferences.getString(Keys.HTML_LATEST, ""));
+        loadWebViewLatest();
         textView = (TextView) findViewById(R.id.text_view);
         textView.setText(sharedPreferences.getString(Keys.TEXT_VIEW_TEXT, getString(R.string.welcome)));
 
@@ -83,7 +83,7 @@ public class WebActivity extends NavigationDrawerActivity {
         textView.setVisibility(sharedPreferences.getBoolean(Keys.HIDE_TEXT_VIEW, false) ? View.GONE : View.VISIBLE);
 
         if (updateCss()) {
-            loadWebView(sharedPreferences.getString(Keys.HTML_LATEST, ""));
+            loadWebViewLatest();
         }
     }
     @Override
@@ -158,8 +158,9 @@ public class WebActivity extends NavigationDrawerActivity {
             if (action.equals("loadWebViewData")){
                 Tools.setUnseenFalse(getApplicationContext());
                 String data = intent.getStringExtra("data");
+                String url = intent.getStringExtra("url");
                 updateCss();
-                loadWebView(data);
+                loadWebView(data, url);
             }
             else if (action.equals("setTextViewText")){
                 String text = intent.getStringExtra("text");
@@ -182,10 +183,21 @@ public class WebActivity extends NavigationDrawerActivity {
         return oldCss == null || !oldCss.equals(css);
     }
 
-    private void loadWebView(String data) {
+    private void loadWebViewLatest() {
+        int plan = sharedPreferences.getInt(Keys.LAST_PLAN_TYPE, 2);
+        String url;
+        if (plan == 1) {
+            url = DownloadService.PLAN_1_ADDRESS;
+        } else {
+            url = DownloadService.PLAN_2_ADDRESS;
+        }
+        loadWebView(sharedPreferences.getString(Keys.HTML_LATEST, ""), url);
+    }
+
+    private void loadWebView(String data, String url) {
         if (css != null) {
             data = cssHeader + css + cssFoot + data;
         }
-        webView.loadData(data, "text/html", "utf-8");
+        webView.loadDataWithBaseURL(url, data, "text/html", "utf-8", null);
     }
 }

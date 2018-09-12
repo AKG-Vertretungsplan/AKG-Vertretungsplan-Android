@@ -173,7 +173,7 @@ public class DownloadService extends JobIntentService {
         notificationManager.cancel(2);
         try {
             int plan = Integer.parseInt(getSharedPreferences().getString("pref_plan", "2"));
-            String result, css;
+            String result, css, url;
             switch (plan) {
                 case 1:
                 {
@@ -181,7 +181,7 @@ public class DownloadService extends JobIntentService {
                     password = getSharedPreferences().getString(Keys.PASSWORD, "");
                     String base64EncodedCredentials = Base64.encodeToString((username + ":" + password).getBytes("US-ASCII"), Base64.URL_SAFE | Base64.NO_WRAP);
                     DefaultHttpClient httpClient = new DefaultHttpClient();//On purpose use deprecated stuff because it works better (I have problems with HttpURLConnection: it does not read the credentials each time they are needed, and if they are wrong, there is no appropriate message (just an java.io.FileNotFoundException))
-                    HttpGet httpGet = new HttpGet(PLAN_1_ADDRESS);
+                    HttpGet httpGet = new HttpGet(url = PLAN_1_ADDRESS);
                     httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
                     result = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
                     httpGet = new HttpGet(CSS_ADDRESS);
@@ -197,7 +197,7 @@ public class DownloadService extends JobIntentService {
                     password = getSharedPreferences().getString(Keys.PASSWORD, "");
                     String base64EncodedCredentials = Base64.encodeToString((username + ":" + password).getBytes("US-ASCII"), Base64.URL_SAFE | Base64.NO_WRAP);
                     DefaultHttpClient httpClient = new DefaultHttpClient();//On purpose use deprecated stuff because it works better (I have problems with HttpURLConnection: it does not read the credentials each time they are needed, and if they are wrong, there is no appropriate message (just an java.io.FileNotFoundException))
-                    HttpGet httpGet = new HttpGet(PLAN_2_ADDRESS);
+                    HttpGet httpGet = new HttpGet(url = PLAN_2_ADDRESS);
                     httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
                     result = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
                     httpGet = new HttpGet(CSS_ADDRESS);
@@ -207,7 +207,7 @@ public class DownloadService extends JobIntentService {
                     break;
                 }
             }
-            processPlan(result, css);
+            processPlan(result, css, url);
             getSharedPreferences().edit().putInt(Keys.LAST_PLAN_TYPE, plan).apply();
         }
         catch (UnknownHostException e){
@@ -291,7 +291,7 @@ public class DownloadService extends JobIntentService {
         updateNavigationDrawerInformation(context);
     }
 
-    private void processPlan(String result, String css){
+    private void processPlan(String result, String css, String url){
         String latestHtml = getSharedPreferences().getString(Keys.HTML_LATEST, "");
         boolean newVersion = false;
         if (result.contains("401 Authorization Required") || result.contains("401 Unauthorized")) {
@@ -332,7 +332,7 @@ public class DownloadService extends JobIntentService {
             editor.putString(Keys.HTML_LATEST, result);
             editor.putString(Keys.CSS, css);
             editor.apply();
-            loadWebViewData(result);
+            loadWebViewData(result, url);
             if (!loadFormattedPlans(result))
                 setTextViewText(getString(R.string.error_illegal_plan));
             if (newVersion) {//Notification after loadFormattedPlans, because getNewRelevantInformationCount depends on it
@@ -418,10 +418,11 @@ public class DownloadService extends JobIntentService {
             Tools.updateWidgets(this);
         }
     }
-    private void loadWebViewData(String data){
+    private void loadWebViewData(String data, String url){
         Intent intent = new Intent("PlanDownloadServiceUpdate");
         intent.putExtra("action", "loadWebViewData");
         intent.putExtra("data", data);
+        intent.putExtra("url", url);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
     private void loadFragmentData(String title1, String plan1, String title2, String plan2){
@@ -1069,6 +1070,6 @@ public class DownloadService extends JobIntentService {
                 break;
         }
 
-        processPlan(result, getString(R.string.web_plan_custom_style_akg_default));
+        processPlan(result, getString(R.string.web_plan_custom_style_akg_default), PLAN_1_ADDRESS);
     }
 }
