@@ -54,6 +54,7 @@
             android:title="@string/pref_vibrate_notification_enabled"
             android:defaultValue="true"
             android:dependency="pref_notification_enabled"/>
+        <!--
         <ListPreference
             android:key="pref_notification_heads_up"
             android:title="@string/pref_notification_heads_up"
@@ -61,6 +62,7 @@
             android:entryValues="@array/pref_notification_heads_up_array_values"
             android:defaultValue="@string/pref_notification_heads_up_default_value"
             android:dependency="pref_notification_enabled"/>
+            -->
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/pref_notification_rules">

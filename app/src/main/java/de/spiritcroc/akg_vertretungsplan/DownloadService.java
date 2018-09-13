@@ -900,6 +900,7 @@ public class DownloadService extends JobIntentService {
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notification = builder.build();
+        /*
         if (Build.VERSION.SDK_INT >= 21) {
             //Disable heads up / button
             String pref = getSharedPreferences().getString(Keys.NOTIFICATION_HEADS_UP,
@@ -921,9 +922,9 @@ public class DownloadService extends JobIntentService {
                     notification.headsUpContentView = headsUpNotif.contentView.clone();
                 }
             }
-            if (Build.VERSION.SDK_INT >= 26) {
-                notificationManager.createNotificationChannel(notificationChannel);
-            }
+        }*/
+        if (Build.VERSION.SDK_INT >= 26) {
+            notificationManager.createNotificationChannel(notificationChannel);
         }
         notificationManager.notify(id, notification);
     }

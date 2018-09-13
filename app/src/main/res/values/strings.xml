@@ -598,6 +598,7 @@
     <string name="pref_own_log">Log</string>
     <string name="pref_own_log_summary">Create a log to amend in debug mail</string>
     <string name="pref_clear_own_log">Clear log</string>
+    <!--
     <string name="pref_notification_heads_up">Heads up</string>
     <string name="pref_notification_heads_up_disabled">Disabled</string>
     <string name="pref_notification_heads_up_default">Default</string>
@@ -615,6 +616,7 @@
         <item>@string/pref_notification_heads_up_default_value</item>
         <item>@string/pref_notification_heads_up_expanded_value</item>
     </string-array>
+    -->
     <string name="pref_skip_network_check">Skip network check</string>
     <string name="pref_skip_network_check_summary">Attempt downloads while offline</string>
     <string name="pref_drawer_active_item_text_color">Current drawer item</string>

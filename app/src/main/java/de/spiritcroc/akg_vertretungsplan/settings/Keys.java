@@ -58,6 +58,7 @@ public class Keys {
 
     public static final String VIBRATE_NOTIFICATION_ENABLED = "pref_vibrate_notification_enabled";
 
+    @Deprecated
     public static final String NOTIFICATION_HEADS_UP = "pref_notification_heads_up";
 
     public static final String NOTIFICATION_ONLY_IF_RELEVANT = "pref_notification_only_if_relevant";

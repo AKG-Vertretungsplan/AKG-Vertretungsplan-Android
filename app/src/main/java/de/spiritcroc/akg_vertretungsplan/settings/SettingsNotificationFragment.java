@@ -34,7 +34,7 @@ public class SettingsNotificationFragment extends CustomPreferenceFragment {
 
     private CheckBoxPreference notificationEnabledPref;
     private PreferenceCategory notificationHeadsUpPrefCategory;
-    private ListPreference notificationHeadsUpPref;
+    //private ListPreference notificationHeadsUpPref;
     private CheckBoxPreference notificationRelevantOnlyPref;
     private CheckBoxPreference notificationGeneralIrrelevantPref;
     private ListPreference notificationTextColorGeneralPref;
@@ -50,7 +50,7 @@ public class SettingsNotificationFragment extends CustomPreferenceFragment {
         notificationEnabledPref = (CheckBoxPreference) findPreference(Keys.NOTIFICATION_ENABLED);
         notificationHeadsUpPrefCategory =
                 (PreferenceCategory) findPreference(KEY_NOTIFICATION_HEADS_UP_CATEGORY);
-        notificationHeadsUpPref = (ListPreference) findPreference(Keys.NOTIFICATION_HEADS_UP);
+        //notificationHeadsUpPref = (ListPreference) findPreference(Keys.NOTIFICATION_HEADS_UP);
         notificationRelevantOnlyPref =
                 (CheckBoxPreference) findPreference(Keys.NOTIFICATION_ONLY_IF_RELEVANT);
         notificationGeneralIrrelevantPref =
@@ -72,13 +72,15 @@ public class SettingsNotificationFragment extends CustomPreferenceFragment {
     }
 
     private void init() {
+        /*
         if (Build.VERSION.SDK_INT < 21) {
             notificationHeadsUpPrefCategory.removePreference(notificationHeadsUpPref);
         }
+        */
 
         setNotificationDependencies();
         setListPreferenceSummary(Keys.LED_NOTIFICATION_COLOR);
-        setListPreferenceSummary(notificationHeadsUpPref);
+        //setListPreferenceSummary(notificationHeadsUpPref);
         setListPreferenceSummary(Keys.NOTIFICATION_PREVIEW_RELEVANT_COLOR);
         setListPreferenceSummary(Keys.NOTIFICATION_PREVIEW_RELEVANT_STYLE);
         setListPreferenceSummary(notificationTextColorGeneralPref);
@@ -100,7 +102,7 @@ public class SettingsNotificationFragment extends CustomPreferenceFragment {
             case Keys.LED_NOTIFICATION_COLOR:
             case Keys.NOTIFICATION_PREVIEW_RELEVANT_COLOR:
             case Keys.NOTIFICATION_PREVIEW_RELEVANT_STYLE:
-            case Keys.NOTIFICATION_HEADS_UP:
+            //case Keys.NOTIFICATION_HEADS_UP:
             case Keys.NOTIFICATION_PREVIEW_GENERAL_COLOR:
             case Keys.NOTIFICATION_PREVIEW_GENERAL_STYLE:
             case Keys.NOTIFICATION_PREVIEW_IRRELEVANT_COLOR:
