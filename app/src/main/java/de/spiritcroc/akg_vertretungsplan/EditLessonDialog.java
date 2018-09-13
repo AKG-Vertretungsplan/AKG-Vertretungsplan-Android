@@ -54,7 +54,8 @@ public class EditLessonDialog extends DialogFragment {
         final AutoCompleteTextView editSubject = (AutoCompleteTextView) view.findViewById(R.id.edit_subject),
                 editTeacherShort = (AutoCompleteTextView) view.findViewById(R.id.edit_teacher_short),
                 editRoom = (AutoCompleteTextView) view.findViewById(R.id.edit_room);
-        final EditText editTeacherFull = (EditText) view.findViewById(R.id.edit_teacher_full);
+        final EditText editTeacherFull = (EditText) view.findViewById(R.id.edit_teacher_full),
+                editSubjectShort = (EditText) view.findViewById(R.id.edit_subject_short);
 
         final LessonPlan lessonPlan = LessonPlan.getInstance(PreferenceManager.getDefaultSharedPreferences(activity));
         editSubject.setAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, lessonPlan.getSubjects()));
@@ -66,6 +67,7 @@ public class EditLessonDialog extends DialogFragment {
                 editTeacherShort.setText(lessonPlan.getTeacherShortForSubject(editSubject.getText().toString()));
                 editTeacherFull.setText(lessonPlan.getTeacherFullForSubject(editSubject.getText().toString()));
                 editRoom.setText(lessonPlan.getRoomForSubject(editSubject.getText().toString()));
+                editSubjectShort.setText(lessonPlan.getSubjectShortForSubject(editSubject.getText().toString()));
             }
         });
         editTeacherShort.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -81,6 +83,7 @@ public class EditLessonDialog extends DialogFragment {
         }
         else{
             editSubject.setText(lesson.getSubject());
+            editSubjectShort.setText(lesson.getSubjectShort());
             editTeacherShort.setText(lesson.getTeacherShort());
             editTeacherFull.setText(lesson.getTeacherFull());
             editRoom.setText(lesson.getRoom());
@@ -122,11 +125,14 @@ public class EditLessonDialog extends DialogFragment {
                         if (subject.equals(""))
                             Toast.makeText(getActivity(), R.string.toast_please_enter_subject, Toast.LENGTH_LONG).show();
                         else {
-                            String teacherShort = editTeacherShort.getText().toString(),
+                            String subjectShort = editSubjectShort.getText().toString(),
+                                    teacherShort = editTeacherShort.getText().toString(),
                                     teacherFull = editTeacherFull.getText().toString(),
                                     room = editRoom.getText().toString();
                             if (containsIllegalCharacter(subject))
                                 Toast.makeText(getActivity(), R.string.toast_subject_illegal_character, Toast.LENGTH_SHORT).show();
+                            else if (containsIllegalCharacter(subjectShort))
+                                Toast.makeText(getActivity(), R.string.toast_subject_short_illegal_character, Toast.LENGTH_SHORT).show();
                             else if (containsIllegalCharacter(teacherShort))
                                 Toast.makeText(getActivity(), R.string.toast_teacher_short_illegal_character, Toast.LENGTH_SHORT).show();
                             else if (containsIllegalCharacter(teacherFull))
@@ -134,7 +140,7 @@ public class EditLessonDialog extends DialogFragment {
                             else if (containsIllegalCharacter(room))
                                 Toast.makeText(getActivity(), R.string.toast_room_illegal_character, Toast.LENGTH_SHORT).show();
                             else {
-                                lesson.setValues(teacherShort, teacherFull, subject, room);
+                                lesson.setValues(teacherShort, teacherFull, subject, subjectShort, room);
                                 fragment.update();
                                 if (getActivity() instanceof LessonPlanActivity) {
                                     ((LessonPlanActivity) getActivity()).updateLessonPlan();

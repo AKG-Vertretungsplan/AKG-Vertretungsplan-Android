@@ -320,7 +320,8 @@ public class FormattedFragment extends ListFragment{
                     } else {
                         add = createItem(getActivity(), tmpRowContent, false);
                         try {
-                            relevant = lessonPlan.isRelevant( tmpRowContent[0], Tools.getDateFromPlanTitle(this.date).get(Calendar.DAY_OF_WEEK), Integer.parseInt(tmpRowContent[2]), tmpRowContent[1]);
+                            //relevant = lessonPlan.isRelevant( tmpRowContent[0], Tools.getDateFromPlanTitle(this.date).get(Calendar.DAY_OF_WEEK), Integer.parseInt(tmpRowContent[2]), tmpRowContent[1]);
+                            relevant = lessonPlan.isRelevant(headerRow, tmpRowContent, Tools.getDateFromPlanTitle(this.date).get(Calendar.DAY_OF_WEEK));
                             if (relevant)
                                 lastAddedHeader = false;
                         } catch (Exception e) {

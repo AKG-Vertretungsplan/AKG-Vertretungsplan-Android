@@ -169,6 +169,17 @@ public class LessonPlan {
         }
         return "";
     }
+    public String getSubjectShortForSubject(String subject){
+        for (int j = 0; j < lessons.length; j++) {
+            for (int i = 0; i < lessons[j].length; i++)
+                if (subject.equals(lessons[j][i].getSubject())){
+                    String subjectShort = lessons[j][i].getSubjectShort();
+                    if (subjectShort != null && !"".equals(subjectShort))
+                        return subjectShort;
+                }
+        }
+        return "";
+    }
 
     public void resetLessons(){
         if (savePlan) {
@@ -191,7 +202,42 @@ public class LessonPlan {
                     return true;
         return false;
     }
-    public boolean isRelevant(String lessonClass, int day, int lesson, String teacherShort){
+    public boolean isRelevant(String[] header, String[] tableEntries, int day) {
+        String lessonClass = null, teacherShort = null, subjectShort = null;
+        int lesson = -1;
+        // subject only valid on second occurrence, since we either have to "Fach"s, first one being the default one, or only the substitution
+        boolean subjectShortValid = false;
+        for (int i = 0; i < header.length; i++) {
+            // Remove spaces someone might have left in *cough cough*
+            String head = header[i].replace(" ", "");
+            if (i >= tableEntries.length) {
+                Log.e("LessonPlan", "isRelevant: more headerEntries than tableEntries (" + header.length + "/" + tableEntries.length + ")");
+                break;
+            }
+            if (lessonClass == null && "Klasse".equalsIgnoreCase(head)) {
+                lessonClass = tableEntries[i];
+            } else if (teacherShort == null && "Lkr.".equalsIgnoreCase(head)) {
+                teacherShort = tableEntries[i];
+            } else if ("Fach".equalsIgnoreCase(head)) {
+                if (subjectShort == null) {
+                    subjectShort = tableEntries[i];
+                } else {
+                    subjectShortValid = true;
+                }
+            } else if (lesson == -1 && "Std.".equalsIgnoreCase(head)) {
+                try {
+                    lesson = Integer.parseInt(tableEntries[i]);
+                } catch (Exception e) {
+                    Log.e("LessonPlan", "isRelevant: error getting lesson", e);
+                }
+            }
+        }
+        if (!subjectShortValid) {
+            subjectShort = null;
+        }
+        return isRelevant(lessonClass, day, lesson, teacherShort, subjectShort);
+    }
+    private boolean isRelevant(String lessonClass, int day, int lesson, String teacherShort, String subjectShort){
         if (!TextUtils.isEmpty(lessonClass) && !TextUtils.isEmpty(this.lessonClass) &&
                 lessonClass.contains(this.lessonClass)) {
             return true;
@@ -222,10 +268,19 @@ public class LessonPlan {
             return false;
         }
         if (!lessons[dayPosition][lesson-1].isFreeTime()) {
-            if (teacherShort.equals(lessons[dayPosition][lesson-1].getTeacherShort())) {
-                return true;
-            } else if (sharedPreferences.getBoolean(Keys.TEACHER_SHORT_RELEVANCY_IGNORE_CASE, true) && teacherShort.equalsIgnoreCase(lessons[dayPosition][lesson-1].getTeacherShort())) {
-                return true;
+            if (teacherShort != null && !"".equals(teacherShort)) {
+                // Vertretungsplan with teacher abbr.
+                if (teacherShort.equals(lessons[dayPosition][lesson - 1].getTeacherShort())) {
+                    return true;
+                } else if (sharedPreferences.getBoolean(Keys.TEACHER_SHORT_RELEVANCY_IGNORE_CASE, true) && teacherShort.equalsIgnoreCase(lessons[dayPosition][lesson - 1].getTeacherShort())) {
+                    return true;
+                }
+            }
+            if (subjectShort != null && !"".equals(subjectShort)) {
+                // Vertretungsplan with subject abbr.
+                if (subjectShort.equalsIgnoreCase(lessons[dayPosition][lesson - 1].getSubjectShort())) {
+                    return true;
+                }
             }
         }
         return false;

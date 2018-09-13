@@ -39,6 +39,17 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@string/dialog_subject_short"/>
+        <EditText
+            android:id="@+id/edit_subject_short"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/dialog_subject_short_summary"
+            android:completionThreshold="1"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/dialog_teacher_short"/>
         <AutoCompleteTextView
             android:id="@+id/edit_teacher_short"

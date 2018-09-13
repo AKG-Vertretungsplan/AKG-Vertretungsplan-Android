@@ -403,7 +403,8 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
                     }
                     else {
                         try {
-                            if (lessonPlan.isRelevant(tmpRowContent[0], calendar.get(Calendar.DAY_OF_WEEK), Integer.parseInt(tmpRowContent[2]), tmpRowContent[1])) {
+                            if (/*lessonPlan.isRelevant(tmpRowContent[0], calendar.get(Calendar.DAY_OF_WEEK), Integer.parseInt(tmpRowContent[2]), tmpRowContent[1])*/
+                                    lessonPlan.isRelevant(headerRow[day], tmpRowContent, calendar.get(Calendar.DAY_OF_WEEK))) {
                                 createItem(day, tmpRowContent, false);
                             }
                         } catch (Exception e) {

@@ -325,6 +325,8 @@
 
     <string name="dialog_subject">Subject:</string>
     <string name="dialog_subject_summary">Required</string>
+    <string name="dialog_subject_short">Subject abbr.:</string>
+    <string name="dialog_subject_short_summary">Required for individualized plan</string>
     <string name="dialog_teacher_short">Teacher abbr.:</string>
     <string name="dialog_teacher_short_summary">Required for individualized plan</string>
     <string name="dialog_teacher_full">Teacher name:</string>
@@ -334,6 +336,7 @@
 
     <string name="toast_please_enter_subject">Please enter a subject first or select free time!</string>
     <string name="toast_subject_illegal_character">Your subject contains an illegal character!</string>
+    <string name="toast_subject_short_illegal_character">Your subject abbr. contains an illegal character!</string>
     <string name="toast_teacher_short_illegal_character">Your teacher abbr. contains an illegal character!</string>
     <string name="toast_teacher_full_illegal_character">Your teacher name contains an illegal character!</string>
 

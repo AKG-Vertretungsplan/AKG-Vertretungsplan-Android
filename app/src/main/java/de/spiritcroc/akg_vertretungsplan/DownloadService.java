@@ -983,6 +983,7 @@ public class DownloadService extends JobIntentService {
         int count = 0, tmpCellCount;
         String tmp = "a";   //not empty
         String[] tmpRowContent = new String[FormattedFragment.CELL_COUNT];
+        String[] headerRow = new String[FormattedFragment.CELL_COUNT];
         LessonPlan lessonPlan = LessonPlan.getInstance(sharedPreferences);
         for (int i = 1; !tmp.equals(""); i++) {
             tmp = Tools.getLine(currentContent, i);
@@ -993,7 +994,7 @@ public class DownloadService extends JobIntentService {
             if (tmp.length() > searchingFor.length()+1 && tmp.substring(0, searchingFor.length()).equals(searchingFor)) { //ignore empty rows
                 tmpCellCount = 0;
                 tmp = tmp.substring(searchingFor.length());
-                if (Tools.countHeaderCells(tmp)<=1) {//ignore headerRows
+                if (Tools.countHeaderCells(tmp)<=1) {
                     for (int j = 0; j < tmpRowContent.length; j++) {
                         tmpRowContent[j] = Tools.getCellContent(tmp, j+1);
                         if (!tmpRowContent[j].equals(""))
@@ -1019,7 +1020,8 @@ public class DownloadService extends JobIntentService {
                     }
                     else {
                         try {
-                            if (lessonPlan.isRelevant(tmpRowContent[0], calendar.get(Calendar.DAY_OF_WEEK), Integer.parseInt(tmpRowContent[2]), tmpRowContent[1])) {
+                            if (/*lessonPlan.isRelevant(tmpRowContent[0], calendar.get(Calendar.DAY_OF_WEEK), Integer.parseInt(tmpRowContent[2]), tmpRowContent[1])*/
+                                    lessonPlan.isRelevant(headerRow, tmpRowContent, calendar.get(Calendar.DAY_OF_WEEK))) {
                                 String item = FormattedFragment.createItem(context, tmpRowContent, false);
                                 allRelevant.add(item);
                                 if (!Tools.lineAvailable(latestContent, comparison)) {
@@ -1036,6 +1038,10 @@ public class DownloadService extends JobIntentService {
                         } catch (Exception e) {
                             Log.e("DownloadService", "getNewRelevantInformationCount: Got exception while checking for relevancy: " + e);
                         }
+                    }
+                } else {//headerRow
+                    for (int j = 0; j < tmpRowContent.length; j++) {
+                        headerRow[j] = Tools.getCellContent(tmp, j+1);
                     }
                 }
             }
