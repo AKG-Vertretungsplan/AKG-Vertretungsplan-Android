@@ -238,8 +238,10 @@ public class LessonPlan {
         return isRelevant(lessonClass, day, lesson, teacherShort, subjectShort);
     }
     private boolean isRelevant(String lessonClass, int day, int lesson, String teacherShort, String subjectShort){
+        // We can be lazy here and do a simple 'contains' since school only supports classes 5-13,
+        // of which none is a substring of the other
         if (!TextUtils.isEmpty(lessonClass) && !TextUtils.isEmpty(this.lessonClass) &&
-                lessonClass.contains(this.lessonClass)) {
+                lessonClass.toLowerCase().contains(this.lessonClass.toLowerCase())) {
             return true;
         }
         int dayPosition;
@@ -280,6 +282,34 @@ public class LessonPlan {
                 // Vertretungsplan with subject abbr.
                 if (subjectShort.equalsIgnoreCase(lessons[dayPosition][lesson - 1].getSubjectShort())) {
                     return true;
+                }
+                // Convert 'proper' subject class abbr. like 1d_3 to the ones used in the lesson plan, e.g. D3 (actually d3, then use equalsIgnoreCase)
+                String lessonSubjectShortNormalized = lessons[dayPosition][lesson - 1].getSubjectShort();
+                boolean leadingNum = true;
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < lessonSubjectShortNormalized.length(); i++) {
+                    char c = lessonSubjectShortNormalized.charAt(i);
+                    if ('0' <= c && c <= '9') {
+                        // Discard leading numbers
+                        if (!leadingNum) {
+                            sb.append(c);
+                        }
+                    } else {
+                        leadingNum = false;
+                        if (c != '_') {
+                            sb.append(c);
+                        }
+                    }
+                }
+                lessonSubjectShortNormalized = sb.toString();
+                if (!"".equals(lessonSubjectShortNormalized) &&
+                        (lessonSubjectShortNormalized.toLowerCase().contains(subjectShort.toLowerCase()) ||
+                        subjectShort.toLowerCase().contains(lessonSubjectShortNormalized.toLowerCase()))) {
+                    // Ensure class matches as well. We can be lazy here and do a simple 'contains'
+                    // since school only supports classes 5-13, of which none is a substring of the other
+                    if (lessonClass.toLowerCase().contains(this.lessonClass.toLowerCase()) || this.lessonClass.toLowerCase().contains(lessonClass.toLowerCase())) {
+                        return true;
+                    }
                 }
             }
         }
