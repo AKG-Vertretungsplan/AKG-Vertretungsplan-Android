@@ -648,4 +648,6 @@
     <string name="import_lesson_plan_tmp_class">view foreign</string>
 
     <string name="notification_channel_name">Updates</string>
+
+    <string name="action_show_subject_short">Show subject abbr.</string>
 </resources>

@@ -404,4 +404,6 @@
     <string name="import_lesson_plan_tmp_class">fremden anzeigen</string>
 
     <string name="notification_channel_name">Aktualisierungen</string>
+
+    <string name="action_show_subject_short">Zeige Fachkürzel</string>
 </resources>

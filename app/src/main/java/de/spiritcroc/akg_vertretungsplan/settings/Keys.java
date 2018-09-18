@@ -328,4 +328,6 @@ public class Keys {
 
     public static final String LESSON_PLAN_SHOW_INFORMATION = "pref_lesson_plan_show_information";
 
+    public static final String LESSON_PLAN_SHOW_SUBJECT_SHORT = "pref_lesson_plan_show_subject_short";
+
 }

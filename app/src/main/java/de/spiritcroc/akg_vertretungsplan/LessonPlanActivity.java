@@ -200,6 +200,7 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
         showFullTimeMenuItem = menu.findItem(R.id.action_show_full_time).setChecked(sharedPreferences.getBoolean(Keys.LESSON_PLAN_SHOW_FULL_TIME, false));
         showFullTimeMenuItem.setVisible(showTime);
         menu.findItem(R.id.action_show_information).setChecked(sharedPreferences.getBoolean(Keys.LESSON_PLAN_SHOW_INFORMATION, false));
+        menu.findItem(R.id.action_show_subject_short).setChecked(sharedPreferences.getBoolean(Keys.LESSON_PLAN_SHOW_SUBJECT_SHORT, true));
         reloadItem = menu.findItem(R.id.action_reload_web_view);
         setInformationVisibilities();
 
@@ -235,6 +236,12 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
                 fragmentPagerAdapter.notifyDataSetChanged();
                 updateAll();
                 setInformationVisibilities();
+                return true;
+            case R.id.action_show_subject_short:
+                boolean showSubjectShort = !item.isChecked();
+                item.setChecked(showSubjectShort);
+                sharedPreferences.edit().putBoolean(Keys.LESSON_PLAN_SHOW_SUBJECT_SHORT, showSubjectShort).apply();
+                updateAll();
                 return true;
             case R.id.action_reload_web_view:
                 startDownloadService(true);

@@ -41,6 +41,11 @@
         android:orderInCategory="21"
         android:checkable="true"
         app:showAsAction="never"/>
+    <item android:id="@+id/action_show_subject_short"
+        android:title="@string/action_show_subject_short"
+        android:orderInCategory="30"
+        android:checkable="true"
+        app:showAsAction="never"/>
     <item android:id="@+id/action_lesson_class"
         android:title="@string/action_lesson_class"
         android:orderInCategory="50"

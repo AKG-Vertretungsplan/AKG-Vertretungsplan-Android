@@ -65,6 +65,7 @@ public class LessonPlanFragment extends ListFragment
     private boolean showTime;
     private boolean showFullTime;
     private boolean showInformation;
+    private boolean showSubjectShort;
     private int currentLesson = -1;
 
     public static LessonPlanFragment newInstance(int day) {
@@ -109,6 +110,7 @@ public class LessonPlanFragment extends ListFragment
         textColors.clear();
 
         showInformation = sharedPreferences.getBoolean(Keys.LESSON_PLAN_SHOW_INFORMATION, false);
+        showSubjectShort = sharedPreferences.getBoolean(Keys.LESSON_PLAN_SHOW_SUBJECT_SHORT, true);
 
         int color = Integer.parseInt(sharedPreferences.getString(Keys.LESSON_PLAN_COLOR_LESSON, "" + Color.BLACK)),
                 colorFreeTime = Integer.parseInt(sharedPreferences.getString(Keys.LESSON_PLAN_COLOR_FREE_TIME, "" + Color.GRAY));
@@ -125,7 +127,7 @@ public class LessonPlanFragment extends ListFragment
                     lessonViewContent[i].content = getString(R.string.free_time);
                 textColors.add(colorFreeTime);
             } else {
-                lessonViewContent[i].content = lessons[i].getReadableName();
+                lessonViewContent[i].content = lessons[i].getReadableName(showSubjectShort);
                 textColors.add(color);
                 lessonViewContent[i].room = lessons[i].getRoom();
             }

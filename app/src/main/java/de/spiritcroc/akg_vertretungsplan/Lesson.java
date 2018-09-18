@@ -59,9 +59,12 @@ public class Lesson {
     public boolean teacherFullNameAvailable(){
         return teacherFull != null && !teacherFull.equals("");
     }
+    public boolean subjectShortAvailable() {
+        return subjectShort != null && !subjectShort.equals("");
+    }
 
-    public String getReadableName(){
-        return getSubject() + (teacherFullNameAvailable() ? " (" + getTeacherFull() + ")" : (teacherShortNameAvailable() ? " (" + getTeacherShort() + ")" : ""));
+    public String getReadableName(boolean showSubjectShort){
+        return (showSubjectShort && subjectShortAvailable() ? "[" + getSubjectShort() + "] " : "") + getSubject() + (teacherFullNameAvailable() ? " (" + getTeacherFull() + ")" : (teacherShortNameAvailable() ? " (" + getTeacherShort() + ")" : ""));
     }
 
     public boolean isFreeTime() {
