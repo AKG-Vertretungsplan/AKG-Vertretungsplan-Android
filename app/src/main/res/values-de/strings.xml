@@ -164,7 +164,7 @@
     <string name="dialog_subject">Fach:</string>
     <string name="dialog_subject_summary">Benötigt</string>
     <string name="dialog_subject_short">Fachkürzel:</string>
-    <string name="dialog_subject_short_summary">Benötigt zur individuellen Vertretungsplananzeige</string>
+    <string name="dialog_subject_short_summary">z.B. \"1d_1\" or \"d1\"; benötigt zur individuellen Vertretungsplananzeige</string>
     <string name="dialog_teacher_short">Lehrerkürzel:</string>
     <string name="dialog_teacher_short_summary">Benötigt zur individuellen Vertretungsplananzeige</string>
     <string name="dialog_teacher_full">Lehrername:</string>
@@ -270,7 +270,7 @@
     <string name="pref_plan_2">Gesamt</string>
     <string name="dialog_select_plan">Plan auswählen</string>
     <string name="dialog_enter_lesson_class">Klasse eingeben</string>
-    <string name="dialog_enter_lesson_class_summary">Wird zum Erkennen von relevanten Vertretungen verwendet</string>
+    <string name="dialog_enter_lesson_class_summary">z.B. \"5a\" oder \"Q11_1\"; wird zum Erkennen von relevanten Vertretungen verwendet</string>
     <string name="action_lesson_class">Klasse</string>
 
     <string name="pref_lesson_plan_add_launcher_shortcut">Launcher-Verknüpfung erstellen</string>
