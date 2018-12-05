@@ -450,13 +450,16 @@
     <string name="pref_plan">Plan</string>
     <string name="pref_plan_1">Oberstufe</string>
     <string name="pref_plan_2">Complete</string>
+    <string name="pref_plan_custom">Custom address</string>
     <string-array name="pref_plan_array" translatable="false">
         <item>@string/pref_plan_2</item>
         <item>@string/pref_plan_1</item>
+        <item>@string/pref_plan_custom</item>
     </string-array>
     <string-array name="pref_plan_value_array" translatable="false">
         <item>2</item>
         <item>1</item>
+        <item>3</item>
     </string-array>
 
     <string name="dialog_select_plan">Select plan</string>
@@ -650,4 +653,6 @@
     <string name="notification_channel_name">Updates</string>
 
     <string name="action_show_subject_short">Show subject abbr.</string>
+
+    <string name="dialog_custom_address">Custom address</string>
 </resources>

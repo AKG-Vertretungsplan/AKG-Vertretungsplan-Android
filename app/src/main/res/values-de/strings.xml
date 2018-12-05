@@ -268,6 +268,7 @@
     <string name="pref_plan">Plan</string>
     <string name="pref_plan_1">Oberstufe</string>
     <string name="pref_plan_2">Gesamt</string>
+    <string name="pref_plan_custom">Eigene Adresse</string>
     <string name="dialog_select_plan">Plan auswählen</string>
     <string name="dialog_enter_lesson_class">Klasse eingeben</string>
     <string name="dialog_enter_lesson_class_summary">z.B. \"5a\" oder \"Q11_1\"; wird zum Erkennen von relevanten Vertretungen verwendet</string>
@@ -406,4 +407,6 @@
     <string name="notification_channel_name">Aktualisierungen</string>
 
     <string name="action_show_subject_short">Zeige Fachkürzel</string>
+
+    <string name="dialog_custom_address">Eigene Adresse</string>
 </resources>

@@ -83,6 +83,7 @@ public class DownloadService extends JobIntentService {
     public static final String PLAN_1_ADDRESS = "http://www.akg-schwabach.de/Ver/";
     public static final String PLAN_2_ADDRESS = "http://www.akg-schwabach.de/Ver/HP.html";
     public static final String CSS_ADDRESS = "http://www.akg-schwabach.de/Ver/willi.css";
+    private static final String CSS_GUESS = "willi.css";
 
     public static final String NO_PLAN = "**null**";
 
@@ -172,7 +173,7 @@ public class DownloadService extends JobIntentService {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(2);
         try {
-            int plan = Integer.parseInt(getSharedPreferences().getString("pref_plan", "2"));
+            int plan = Integer.parseInt(getSharedPreferences().getString(Keys.PLAN, "2"));
             String result, css, url;
             switch (plan) {
                 case 1:
@@ -189,6 +190,32 @@ public class DownloadService extends JobIntentService {
                     //sharedPreferences.edit().remove(Keys.WEB_PLAN_CUSTOM_STYLE).apply();// test default
                     css = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
                   break;
+                }
+                case 3:
+                {
+                    username = getSharedPreferences().getString(Keys.USERNAME, "");
+                    password = getSharedPreferences().getString(Keys.PASSWORD, "");
+                    String base64EncodedCredentials = Base64.encodeToString((username + ":" + password).getBytes("US-ASCII"), Base64.URL_SAFE | Base64.NO_WRAP);
+                    DefaultHttpClient httpClient = new DefaultHttpClient();//On purpose use deprecated stuff because it works better (I have problems with HttpURLConnection: it does not read the credentials each time they are needed, and if they are wrong, there is no appropriate message (just an java.io.FileNotFoundException))
+                    url = getSharedPreferences().getString(Keys.CUSTOM_ADDRESS, "");
+                    if (!url.contains("://")) {
+                        url = "http://" + url;
+                    }
+                    HttpGet httpGet = new HttpGet(url);
+                    httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
+                    result = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
+                    String guessedCssAddress;
+                    if (url.contains("/") && (url.endsWith(".php") || url.endsWith(".html"))) {
+                        guessedCssAddress = url.substring(0, url.lastIndexOf("/"));
+                    } else {
+                        guessedCssAddress = url;
+                    }
+                    guessedCssAddress += "/" + CSS_GUESS;
+                    httpGet = new HttpGet(guessedCssAddress);
+                    httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
+                    //sharedPreferences.edit().remove(Keys.WEB_PLAN_CUSTOM_STYLE).apply();// test default
+                    css = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
+                    break;
                 }
                 default:
                 case 2:

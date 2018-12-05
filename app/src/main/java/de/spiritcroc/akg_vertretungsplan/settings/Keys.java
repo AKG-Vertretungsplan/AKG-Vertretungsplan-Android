@@ -314,6 +314,8 @@ public class Keys {
 
     public static final String PLAN = "pref_plan";
 
+    public static final String CUSTOM_ADDRESS = "pref_custom_address";
+
     public static final String LAST_PLAN_TYPE = "last_plan_type";
 
     public static final String TEXT_VIEW_TEXT = "pref_text_view_text";

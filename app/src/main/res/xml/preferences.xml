@@ -20,7 +20,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/settings">
 
-    <ListPreference
+    <de.spiritcroc.akg_vertretungsplan.DismissListenableListPreference
         android:key="pref_plan"
         android:title="@string/pref_plan"
         android:entries="@array/pref_plan_array"

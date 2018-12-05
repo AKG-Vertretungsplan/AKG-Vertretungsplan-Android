@@ -26,51 +26,50 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-
-import java.util.Arrays;
+import android.widget.EditText;
 
 import de.spiritcroc.akg_vertretungsplan.settings.Keys;
 
-public class BasicSetupDialog extends DialogFragment {
+public class CustomAddressDialog extends DialogFragment {
     private SharedPreferences sharedPreferences;
-    private int selection;
-    private boolean notLastDialog = false;
+    private EditText editAddress;
+    private DialogInterface.OnDismissListener onDismissListener;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        final String[] planValues = getResources().getStringArray(R.array.pref_plan_value_array);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        selection = Arrays.asList(planValues).indexOf(sharedPreferences.getString(Keys.PLAN, "2"));
-        if (selection < 0) {
-            selection = 0;
-        }
-        return builder.setTitle(R.string.dialog_select_plan)
+        editAddress = new EditText(getActivity());
+        editAddress.setText(sharedPreferences.getString(Keys.CUSTOM_ADDRESS, ""));
+        return builder.setTitle(R.string.dialog_custom_address)
+                .setView(editAddress)
+                .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Only close
+                    }
+                })
                 .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        sharedPreferences.edit().putString(Keys.PLAN, planValues[selection]).apply();
-                        if ("3".equals(planValues[selection])) {
-                            new CustomAddressDialog().show(getFragmentManager(), "CustomAddressDialog");
-                            notLastDialog = true;
-                        }
-                    }
-                })
-                .setSingleChoiceItems(R.array.pref_plan_array, selection, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        selection = which;
+                        sharedPreferences.edit().putString(Keys.CUSTOM_ADDRESS,
+                                editAddress.getText().toString()).apply();
                     }
                 }).create();
     }
+
     @Override
     public void onDismiss (DialogInterface dialog){
         super.onDismiss(dialog);
-        if (notLastDialog) {
-            return;
-        }
         Activity currentActivity = getActivity();
         if (currentActivity instanceof NavigationDrawerActivity)
             ((NavigationDrawerActivity) currentActivity).afterDisclaimer(new Bool());
+        if (onDismissListener != null) {
+            onDismissListener.onDismiss(dialog);
+        }
+    }
+
+    public void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener) {
+        this.onDismissListener = onDismissListener;
     }
 }

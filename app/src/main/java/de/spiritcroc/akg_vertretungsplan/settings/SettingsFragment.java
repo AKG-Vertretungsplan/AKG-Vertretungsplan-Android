@@ -19,19 +19,24 @@
 package de.spiritcroc.akg_vertretungsplan.settings;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.CheckBoxPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
+import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
+import de.spiritcroc.akg_vertretungsplan.CustomAddressDialog;
+import de.spiritcroc.akg_vertretungsplan.DismissListenableListPreference;
 import de.spiritcroc.akg_vertretungsplan.DownloadService;
 import de.spiritcroc.akg_vertretungsplan.OwnLog;
 import de.spiritcroc.akg_vertretungsplan.R;
@@ -67,6 +72,23 @@ public class SettingsFragment extends CustomPreferenceFragment {
         hiddenDebugPrefCategory = (PreferenceCategory) findPreference(KEY_HIDDEN_DEBUG_SCREEN);
         enableHiddenDebugPref = (CheckBoxPreference) findPreference(Keys.HIDDEN_DEBUG_ENABLED);
         ownLogPref = (CheckBoxPreference) findPreference(Keys.OWN_LOG);
+
+        ((DismissListenableListPreference)findPreference(Keys.PLAN)).setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                if ("3".equals(sharedPreferences.getString(Keys.PLAN, "2"))) {
+                    CustomAddressDialog customAddressDialog = new CustomAddressDialog();
+                    customAddressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            updatePlanSummary();
+                        }
+                    });
+                    customAddressDialog.show(getFragmentManager(), "CustomAddressDialog");
+                }
+            }
+        });
     }
 
     @Override
@@ -78,7 +100,7 @@ public class SettingsFragment extends CustomPreferenceFragment {
     private void init() {
         setTeslaUnreadPrefHidden();
         setHiddenDebugHidden();
-        setListPreferenceSummary(Keys.PLAN);
+        updatePlanSummary();
     }
 
     @Override
@@ -92,7 +114,7 @@ public class SettingsFragment extends CustomPreferenceFragment {
                 toggleOwnLog();
                 break;
             case Keys.PLAN:
-                setListPreferenceSummary(key);
+                updatePlanSummary();
                 break;
         }
     }
@@ -147,5 +169,15 @@ public class SettingsFragment extends CustomPreferenceFragment {
         Activity activity = getActivity();
         DownloadService.enqueueWork(activity, new Intent(activity, DownloadService.class)
                 .setAction(DownloadService.ACTION_RETRY));
+    }
+
+    private void updatePlanSummary() {
+        ListPreference planPreference = (ListPreference) findPreference(Keys.PLAN);
+        if ("3".equals(planPreference.getValue())) {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            planPreference.setSummary(sharedPreferences.getString(Keys.CUSTOM_ADDRESS, ""));
+        } else {
+            setListPreferenceSummary(planPreference);
+        }
     }
 }
