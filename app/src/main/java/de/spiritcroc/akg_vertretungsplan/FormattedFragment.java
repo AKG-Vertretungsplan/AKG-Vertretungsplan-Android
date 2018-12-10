@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 SpiritCroc
+ * Copyright (C) 2015-2018 SpiritCroc
  * Email: spiritcroc@gmail.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -313,12 +313,12 @@ public class FormattedFragment extends ListFragment{
                         backgroundColors.add(Integer.parseInt(sharedPreferences.getString(Keys.CLASS_TEXT_BG_COLOR, "" + Color.TRANSPARENT)));
                     }
                     if (headerRow[0]==null) { //e.g. when extra table "Gesamte Schule:"
-                        add = createItem(getActivity(), tmpRowContent, true);
+                        add = createItem(getActivity(), headerRow, tmpRowContent, true);
                         relevant = lessonPlan.isConfigured() && !sharedPreferences.getBoolean(Keys.FILTER_GENERAL, false);
                         if (relevant)
                             lastAddedHeader = false;
                     } else {
-                        add = createItem(getActivity(), tmpRowContent, false);
+                        add = createItem(getActivity(), headerRow, tmpRowContent, false);
                         try {
                             //relevant = lessonPlan.isRelevant( tmpRowContent[0], Tools.getDateFromPlanTitle(this.date).get(Calendar.DAY_OF_WEEK), Integer.parseInt(tmpRowContent[2]), tmpRowContent[1]);
                             relevant = lessonPlan.isRelevant(headerRow, tmpRowContent, Tools.getDateFromPlanTitle(this.date).get(Calendar.DAY_OF_WEEK));
@@ -371,22 +371,69 @@ public class FormattedFragment extends ListFragment{
      * @param noHeader
      * true e.g. when extra table "Gesamte Schule:" else false
      */
-    public static String createItem(Context context, String[] values, boolean noHeader) {
+    public static String createItem(Context context, String[] headerRow, String[] values, boolean noHeader) {
         if (noHeader) {
             return values[0] + (values[1].equals("") ? "" : " → " + values[1]);
         }
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         LessonPlan lessonPlan = LessonPlan.getInstance(sharedPreferences);
         boolean useFullTeacherNames = sharedPreferences.getBoolean(Keys.FORMATTED_PLAN_REPLACE_TEACHER_SHORT_WITH_TEACHER_FULL, true);
-        String result = values[2] + " " + (useFullTeacherNames ? getTeacherCombinationString(sharedPreferences, lessonPlan, values[1]) : values[1]) + " →";
-        if (!values[3].equals(""))
-            result += " " + (useFullTeacherNames ? getTeacherCombinationString(sharedPreferences, lessonPlan, values[3]) : values[3]);
-        if (!values[4].equals(""))
-            result += " (" + values[4] + ")";
-        if (!values[5].equals(""))
-            result += " " + values[5];
-        if (!values[6].equals(""))
-            result += " " + values[6];
+        int lessonIndex = -1;
+        int teacherIndex = -1;
+        int teacherSubstIndex = -1;
+        int subjectIndex = -1;
+        int originalSubjectIndex = -1;
+        int roomIndex = -1;
+        int extraInfoIndex = headerRow.length-1;
+        for (int i = 0; i < headerRow.length; i++) {
+            if (PlanConstants.LESSON.equalsIgnoreCase(headerRow[i])) {
+                lessonIndex = i;
+            }
+            if (PlanConstants.TEACHER_SHORT.equalsIgnoreCase(headerRow[i])) {
+                teacherIndex = i;
+            } else if (PlanConstants.TEACHER_SUBST.equalsIgnoreCase(headerRow[i])) {
+                teacherSubstIndex = i;
+            } else if (PlanConstants.SUBJECT_SHORT.equalsIgnoreCase(headerRow[i])) {
+                if (subjectIndex != -1) {
+                    originalSubjectIndex = subjectIndex;
+                }
+                subjectIndex = i;
+            } else if (PlanConstants.ROOM.equalsIgnoreCase(headerRow[i])) {
+                roomIndex = i;
+                /*
+            } else {
+                Log.d("LessonPlanActivity", "Unsupported header item " + headerRow[i]);
+                */
+            }
+        }
+        if (teacherSubstIndex == -1 || subjectIndex == -1 || roomIndex == -1) {
+            Log.w("FormattedFragment", "Could not determine all required header indices for createItem, assuming legacy");
+            teacherIndex = 1;
+            lessonIndex = 2;
+            teacherSubstIndex = 3;
+            subjectIndex = 4;
+            originalSubjectIndex = -1;
+            roomIndex = 5;
+
+        }
+        String result = values[lessonIndex] + " ";
+        if (teacherIndex != -1) {
+            if (originalSubjectIndex != -1) {
+                result += values[originalSubjectIndex] + " ";
+            }
+            result += (useFullTeacherNames ? getTeacherCombinationString(sharedPreferences, lessonPlan, values[teacherIndex]) : values[teacherIndex]);
+        } else if (originalSubjectIndex != -1) {
+            result += values[originalSubjectIndex];
+        }
+        result += " →";
+        if (!values[teacherSubstIndex].equals(""))
+            result += " " + (useFullTeacherNames ? getTeacherCombinationString(sharedPreferences, lessonPlan, values[teacherSubstIndex]) : values[teacherSubstIndex]);
+        if (!values[subjectIndex].equals(""))
+            result += " (" + values[subjectIndex] + ")";
+        if (!values[roomIndex].equals(""))
+            result += " " + values[roomIndex];
+        if (!values[extraInfoIndex].equals(""))
+            result += " " + values[extraInfoIndex];
         return result;
     }
     private void removeLastAddedItem(ArrayList result){

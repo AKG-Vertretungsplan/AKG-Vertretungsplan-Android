@@ -214,17 +214,17 @@ public class LessonPlan {
                 Log.e("LessonPlan", "isRelevant: more headerEntries than tableEntries (" + header.length + "/" + tableEntries.length + ")");
                 break;
             }
-            if (lessonClass == null && "Klasse".equalsIgnoreCase(head)) {
+            if (lessonClass == null && PlanConstants.LESSON_CLASS.equalsIgnoreCase(head)) {
                 lessonClass = tableEntries[i];
-            } else if (teacherShort == null && "Lkr.".equalsIgnoreCase(head)) {
+            } else if (teacherShort == null && PlanConstants.TEACHER_SHORT.equalsIgnoreCase(head)) {
                 teacherShort = tableEntries[i];
-            } else if ("Fach".equalsIgnoreCase(head)) {
+            } else if (PlanConstants.SUBJECT_SHORT.equalsIgnoreCase(head)) {
                 if (subjectShort == null) {
                     subjectShort = tableEntries[i];
                 } else {
                     subjectShortValid = true;
                 }
-            } else if (lesson == -1 && "Std.".equalsIgnoreCase(head)) {
+            } else if (lesson == -1 && PlanConstants.LESSON.equalsIgnoreCase(head)) {
                 try {
                     lesson = Integer.parseInt(tableEntries[i]);
                 } catch (Exception e) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 SpiritCroc
+ * Copyright (C) 2015-2018 SpiritCroc
  * Email: spiritcroc@gmail.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -42,12 +42,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -402,17 +399,17 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
                     if (tmpCellCount <= 2) {//general info for whole school
                         if (tmpCellCount == 1) {
                             if (!Tools.ignoreSubstitution(tmpRowContent[0])) {
-                                createItem(day, tmpRowContent, true);
+                                createItem(day, headerRow[day], tmpRowContent, true);
                             }
                         } else {
-                            createItem(day, tmpRowContent, true);
+                            createItem(day, headerRow[day], tmpRowContent, true);
                         }
                     }
                     else {
                         try {
                             if (/*lessonPlan.isRelevant(tmpRowContent[0], calendar.get(Calendar.DAY_OF_WEEK), Integer.parseInt(tmpRowContent[2]), tmpRowContent[1])*/
                                     lessonPlan.isRelevant(headerRow[day], tmpRowContent, calendar.get(Calendar.DAY_OF_WEEK))) {
-                                createItem(day, tmpRowContent, false);
+                                createItem(day, headerRow[day], tmpRowContent, false);
                             }
                         } catch (Exception e) {
                             Log.w("LessonPlanActivity", "getRelevantInformation: Got exception while checking for relevancy: " + e);
@@ -451,21 +448,49 @@ public class LessonPlanActivity extends NavigationDrawerActivity {
         overridePendingTransition(0, 0);
     }
 
-    private void createItem(int day, String[] values, boolean general) {
+    private void createItem(int day, String[] headerRow, String[] values, boolean general) {
         if (general) {
             generalInformation[day].add(values[0] + (values[1].equals("") ? "" : " → " + values[1]));
         } else {
             LessonPlan lessonPlan = LessonPlan.getInstance(sharedPreferences);
             boolean useFullTeacherNames = sharedPreferences.getBoolean(Keys.FORMATTED_PLAN_REPLACE_TEACHER_SHORT_WITH_TEACHER_FULL, true);
             String result = "", roomResult = "";
-            if (!values[3].equals("") && !values[3].equals(values[1]))//Ignore if same teacher
-                result += " " + (useFullTeacherNames ? FormattedFragment.getTeacherCombinationString(sharedPreferences, lessonPlan, values[3]) : values[3]);
-            if (!values[4].equals(""))
-                result += " (" + values[4] + ")";
-            if (!values[5].equals(""))
-                roomResult += " " + values[5];
-            if (!values[6].equals(""))
-                result += " " + values[6];
+            int teacherIndex = -1;
+            int teacherSubstIndex = -1;
+            int subjectIndex = -1;
+            int roomIndex = -1;
+            int extraInfoIndex = headerRow.length-1;
+            for (int i = 0; i < headerRow.length; i++) {
+                if (PlanConstants.TEACHER_SHORT.equalsIgnoreCase(headerRow[i])) {
+                    teacherIndex = i;
+                } else if (PlanConstants.TEACHER_SUBST.equalsIgnoreCase(headerRow[i])) {
+                    teacherSubstIndex = i;
+                } else if (PlanConstants.SUBJECT_SHORT.equalsIgnoreCase(headerRow[i])) {
+                    subjectIndex = i;
+                } else if (PlanConstants.ROOM.equalsIgnoreCase(headerRow[i])) {
+                    roomIndex = i;
+                    /*
+                } else {
+                    Log.d("LessonPlanActivity", "Unsupported header item " + headerRow[i]);
+                    */
+                }
+            }
+            if (teacherSubstIndex == -1 || subjectIndex == -1 || roomIndex == -1) {
+                Log.w("LessonPlanActivity", "Could not determine all required header indices for createItem, assuming legacy");
+                teacherIndex = 1;
+                teacherSubstIndex = 3;
+                subjectIndex = 4;
+                roomIndex = 5;
+
+            }
+            if (!values[teacherSubstIndex].equals("") && (teacherIndex == -1 || !values[teacherSubstIndex].equals(values[teacherIndex])))//Ignore if same teacher
+                result += " " + (useFullTeacherNames ? FormattedFragment.getTeacherCombinationString(sharedPreferences, lessonPlan, values[teacherSubstIndex]) : values[teacherSubstIndex]);
+            if (!values[subjectIndex].equals(""))
+                result += " (" + values[subjectIndex] + ")";
+            if (!values[roomIndex].equals(""))
+                roomResult += " " + values[roomIndex];
+            if (!values[extraInfoIndex].equals(""))
+                result += " " + values[extraInfoIndex];
             if (result.length() > 0) {
                 result = "→ " + result;
             }
