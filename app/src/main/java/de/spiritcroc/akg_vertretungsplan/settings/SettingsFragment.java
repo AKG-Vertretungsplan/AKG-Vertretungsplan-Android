@@ -77,7 +77,7 @@ public class SettingsFragment extends CustomPreferenceFragment {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                if ("3".equals(sharedPreferences.getString(Keys.PLAN, "2"))) {
+                if ("3".equals(sharedPreferences.getString(Keys.PLAN, getResources().getString(R.string.default_plan_selection)))) {
                     CustomAddressDialog customAddressDialog = new CustomAddressDialog();
                     customAddressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                         @Override
@@ -175,7 +175,7 @@ public class SettingsFragment extends CustomPreferenceFragment {
         ListPreference planPreference = (ListPreference) findPreference(Keys.PLAN);
         if ("3".equals(planPreference.getValue())) {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            planPreference.setSummary(sharedPreferences.getString(Keys.CUSTOM_ADDRESS, ""));
+            planPreference.setSummary(sharedPreferences.getString(Keys.CUSTOM_ADDRESS, getResources().getString(R.string.default_plan_custom_address)));
         } else {
             setListPreferenceSummary(planPreference);
         }

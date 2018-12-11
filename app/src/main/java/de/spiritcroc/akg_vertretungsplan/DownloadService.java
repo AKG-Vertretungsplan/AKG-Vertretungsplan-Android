@@ -173,7 +173,7 @@ public class DownloadService extends JobIntentService {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(2);
         try {
-            int plan = Integer.parseInt(getSharedPreferences().getString(Keys.PLAN, "2"));
+            int plan = Integer.parseInt(getSharedPreferences().getString(Keys.PLAN, getResources().getString(R.string.default_plan_selection)));
             String result, css, url;
             switch (plan) {
                 case 1:
@@ -197,7 +197,7 @@ public class DownloadService extends JobIntentService {
                     password = getSharedPreferences().getString(Keys.PASSWORD, "");
                     String base64EncodedCredentials = Base64.encodeToString((username + ":" + password).getBytes("US-ASCII"), Base64.URL_SAFE | Base64.NO_WRAP);
                     DefaultHttpClient httpClient = new DefaultHttpClient();//On purpose use deprecated stuff because it works better (I have problems with HttpURLConnection: it does not read the credentials each time they are needed, and if they are wrong, there is no appropriate message (just an java.io.FileNotFoundException))
-                    url = getSharedPreferences().getString(Keys.CUSTOM_ADDRESS, "");
+                    url = getSharedPreferences().getString(Keys.CUSTOM_ADDRESS, getResources().getString(R.string.default_plan_custom_address));
                     if (!url.contains("://")) {
                         url = "http://" + url;
                     }

@@ -40,7 +40,7 @@ public class CustomAddressDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         editAddress = new EditText(getActivity());
-        editAddress.setText(sharedPreferences.getString(Keys.CUSTOM_ADDRESS, ""));
+        editAddress.setText(sharedPreferences.getString(Keys.CUSTOM_ADDRESS, getResources().getString(R.string.default_plan_custom_address)));
         return builder.setTitle(R.string.dialog_custom_address)
                 .setView(editAddress)
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {

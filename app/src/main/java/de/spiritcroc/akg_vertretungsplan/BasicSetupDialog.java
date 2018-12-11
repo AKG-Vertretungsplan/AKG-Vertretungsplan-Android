@@ -41,7 +41,7 @@ public class BasicSetupDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final String[] planValues = getResources().getStringArray(R.array.pref_plan_value_array);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        selection = Arrays.asList(planValues).indexOf(sharedPreferences.getString(Keys.PLAN, "2"));
+        selection = Arrays.asList(planValues).indexOf(sharedPreferences.getString(Keys.PLAN, getResources().getString(R.string.default_plan_selection)));
         if (selection < 0) {
             selection = 0;
         }

@@ -17,7 +17,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    flavorDimensions "targetUser"
     productFlavors {
+        std {
+            dimension "targetUser"
+        }
+        teacherInSchool {
+            dimension "targetUser"
+            applicationIdSuffix ".lehrer"
+            versionNameSuffix "-lehrer"
+        }
     }
     useLibrary 'org.apache.http.legacy'
 }

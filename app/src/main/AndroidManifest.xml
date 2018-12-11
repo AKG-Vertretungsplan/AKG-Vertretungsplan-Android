@@ -138,7 +138,7 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="de.spiritcroc.akg_vertretungsplan.fileprovider"
+            android:authorities="@string/file_provider_authorities"
             android:grantUriPermissions="true"
             android:exported="false">
             <meta-data

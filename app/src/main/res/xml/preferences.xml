@@ -25,7 +25,7 @@
         android:title="@string/pref_plan"
         android:entries="@array/pref_plan_array"
         android:entryValues="@array/pref_plan_value_array"
-        android:defaultValue="2"/>
+        android:defaultValue="@string/default_plan_selection"/>
 
     <PreferenceCategory
         android:title="@string/userdata"
