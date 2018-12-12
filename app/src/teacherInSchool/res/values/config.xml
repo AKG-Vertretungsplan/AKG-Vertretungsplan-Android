@@ -3,4 +3,5 @@
     <string name="default_plan_selection" translatable="false">3</string>
     <string name="default_plan_custom_address" translatable="false">"https://schulserver/SCHULVERWALTUNG/to/vertretungsplan/lz2tage.html"</string>
     <string name="file_provider_authorities" translatable="false">de.spiritcroc.akg_vertretungsplan.lehrer.fileprovider</string>
+    <bool name="default_allow_unknown_ssl_certificates">true</bool>
 </resources>

@@ -3,4 +3,5 @@
     <string name="default_plan_selection" translatable="false">2</string>
     <string name="default_plan_custom_address" translatable="false">""</string>
     <string name="file_provider_authorities" translatable="false">de.spiritcroc.akg_vertretungsplan.fileprovider</string>
+    <bool name="default_allow_unknown_ssl_certificates">false</bool>
 </resources>

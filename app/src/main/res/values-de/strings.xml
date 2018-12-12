@@ -409,4 +409,7 @@
     <string name="action_show_subject_short">Zeige Fachkürzel</string>
 
     <string name="dialog_custom_address">Eigene Adresse</string>
+
+    <string name="pref_allow_unknown_ssl_certificates_title">Allen Zertifikaten trauen</string>
+    <string name="pref_allow_unknown_ssl_certificates_summary">Falls das Herunterladen des Planes fehlschlägt, weil die Schule ein ungültiges SSL/HTTPS-Zertifikat verwendet, dies aktivieren.</string>
 </resources>

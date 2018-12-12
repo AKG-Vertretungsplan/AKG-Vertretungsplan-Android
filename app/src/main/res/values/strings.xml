@@ -655,4 +655,7 @@
     <string name="action_show_subject_short">Show subject abbr.</string>
 
     <string name="dialog_custom_address">Custom address</string>
+
+    <string name="pref_allow_unknown_ssl_certificates_title">Trust all certificates</string>
+    <string name="pref_allow_unknown_ssl_certificates_summary">In case downloading the plan fails because of the school using an invalid SSL/HTTPS certificate, enable this.</string>
 </resources>

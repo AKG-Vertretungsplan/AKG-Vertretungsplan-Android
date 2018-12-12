@@ -47,19 +47,35 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import org.apache.http.HttpVersion;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.scheme.PlainSocketFactory;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.params.HttpProtocolParams;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.Socket;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -181,7 +197,7 @@ public class DownloadService extends JobIntentService {
                     username = getSharedPreferences().getString(Keys.USERNAME, "");
                     password = getSharedPreferences().getString(Keys.PASSWORD, "");
                     String base64EncodedCredentials = Base64.encodeToString((username + ":" + password).getBytes("US-ASCII"), Base64.URL_SAFE | Base64.NO_WRAP);
-                    DefaultHttpClient httpClient = new DefaultHttpClient();//On purpose use deprecated stuff because it works better (I have problems with HttpURLConnection: it does not read the credentials each time they are needed, and if they are wrong, there is no appropriate message (just an java.io.FileNotFoundException))
+                    DefaultHttpClient httpClient = getHttpClient();
                     HttpGet httpGet = new HttpGet(url = PLAN_1_ADDRESS);
                     httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
                     result = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
@@ -196,7 +212,7 @@ public class DownloadService extends JobIntentService {
                     username = getSharedPreferences().getString(Keys.USERNAME, "");
                     password = getSharedPreferences().getString(Keys.PASSWORD, "");
                     String base64EncodedCredentials = Base64.encodeToString((username + ":" + password).getBytes("US-ASCII"), Base64.URL_SAFE | Base64.NO_WRAP);
-                    DefaultHttpClient httpClient = new DefaultHttpClient();//On purpose use deprecated stuff because it works better (I have problems with HttpURLConnection: it does not read the credentials each time they are needed, and if they are wrong, there is no appropriate message (just an java.io.FileNotFoundException))
+                    DefaultHttpClient httpClient = getHttpClient();
                     url = getSharedPreferences().getString(Keys.CUSTOM_ADDRESS, getResources().getString(R.string.default_plan_custom_address));
                     if (!url.contains("://")) {
                         url = "http://" + url;
@@ -223,7 +239,7 @@ public class DownloadService extends JobIntentService {
                     username = getSharedPreferences().getString(Keys.USERNAME, "");
                     password = getSharedPreferences().getString(Keys.PASSWORD, "");
                     String base64EncodedCredentials = Base64.encodeToString((username + ":" + password).getBytes("US-ASCII"), Base64.URL_SAFE | Base64.NO_WRAP);
-                    DefaultHttpClient httpClient = new DefaultHttpClient();//On purpose use deprecated stuff because it works better (I have problems with HttpURLConnection: it does not read the credentials each time they are needed, and if they are wrong, there is no appropriate message (just an java.io.FileNotFoundException))
+                    DefaultHttpClient httpClient = getHttpClient();
                     HttpGet httpGet = new HttpGet(url = PLAN_2_ADDRESS);
                     httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
                     result = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
@@ -247,6 +263,35 @@ public class DownloadService extends JobIntentService {
         catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    //On purpose use deprecated stuff because it works better (I have problems with HttpURLConnection: it does not read the credentials each time they are needed, and if they are wrong, there is no appropriate message (just an java.io.FileNotFoundException))
+    private DefaultHttpClient getHttpClient() {
+        if (getSharedPreferences().getBoolean(Keys.ALLOW_UNKNOWN_SSL_CERTIFICATES,
+                getResources().getBoolean(R.bool.default_allow_unknown_ssl_certificates))) {
+            try {
+                KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
+                trustStore.load(null, null);
+
+                SSLSocketFactory socketFactory = new InsecureSSLSocketFactory(trustStore);
+                socketFactory.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+
+                HttpParams params = new BasicHttpParams();
+                HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
+                HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
+
+                SchemeRegistry schReg = new SchemeRegistry();
+                schReg.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+                schReg.register(new Scheme("https", socketFactory, 443));
+
+                ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, schReg);
+
+                return new DefaultHttpClient(ccm, params);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return new DefaultHttpClient();
     }
 
     private String getPlanInsecure(String address) {
@@ -1105,5 +1150,41 @@ public class DownloadService extends JobIntentService {
         }
 
         processPlan(result, getString(R.string.web_plan_custom_style_akg_default), PLAN_1_ADDRESS);
+    }
+
+    private class InsecureSSLSocketFactory extends SSLSocketFactory {
+        private SSLContext sslContext = SSLContext.getInstance("TLS");
+        public InsecureSSLSocketFactory(KeyStore trustStore) throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException, UnrecoverableKeyException {
+            super(trustStore);
+
+            TrustManager trustManager = new X509TrustManager() {
+                @Override
+                public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+
+                }
+
+                @Override
+                public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+
+                }
+
+                @Override
+                public X509Certificate[] getAcceptedIssuers() {
+                    return null;
+                }
+            };
+
+            sslContext.init(null, new TrustManager[]{trustManager}, null);
+        }
+
+        @Override
+        public Socket createSocket(Socket socket, String host, int port, boolean autoClose) throws IOException {
+            return sslContext.getSocketFactory().createSocket(socket, host, port, autoClose);
+        }
+
+        @Override
+        public Socket createSocket() throws IOException {
+            return sslContext.getSocketFactory().createSocket();
+        }
     }
 }

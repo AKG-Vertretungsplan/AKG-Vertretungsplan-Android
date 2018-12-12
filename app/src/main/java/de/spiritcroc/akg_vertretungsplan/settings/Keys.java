@@ -41,6 +41,8 @@ public class Keys {
 
     public static final String BACKGROUND_UPDATE_INTERVAL = "pref_background_update_interval";
 
+    public static final String ALLOW_UNKNOWN_SSL_CERTIFICATES = "pref_allow_unknown_ssl_certificates";
+
 
     /**
      * Settings - notifications

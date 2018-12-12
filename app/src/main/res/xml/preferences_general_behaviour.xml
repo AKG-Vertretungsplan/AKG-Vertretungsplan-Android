@@ -41,4 +41,9 @@
         android:numeric="integer"
         android:defaultValue="60"
         android:dependency="pref_background_service"/>
+    <CheckBoxPreference
+        android:key="pref_allow_unknown_ssl_certificates"
+        android:title="@string/pref_allow_unknown_ssl_certificates_title"
+        android:summary="@string/pref_allow_unknown_ssl_certificates_summary"
+        android:defaultValue="@bool/default_allow_unknown_ssl_certificates" />
 </PreferenceScreen>
