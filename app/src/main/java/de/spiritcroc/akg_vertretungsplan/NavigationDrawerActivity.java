@@ -164,7 +164,7 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
         themeDefaultDarkActionBarText = !Tools.isStyleWithDarkActionBar(Tools.getStyle(this));
         darkActionBarText = themeDefaultDarkActionBarText;
 
-        if (!getResources().getBoolean(R.bool.enable_initial_greeter) ||
+        if (!getResources().getBoolean(R.bool.enable_disclaimer) ||
                 sharedPreferences.getBoolean(Keys.SEEN_DISCLAIMER, false)) {
             afterDisclaimer(new Bool());
         } else {
@@ -221,7 +221,7 @@ public abstract class NavigationDrawerActivity extends AppCompatActivity {
     public boolean afterDisclaimer(Bool startedDownloadService){
         if (ranAfterDisclaimer)//only run once
             return true;
-        if (getResources().getBoolean(R.bool.enable_initial_greeter) &&
+        if (getResources().getBoolean(R.bool.enable_initial_setup_prompt) &&
                 !sharedPreferences.contains(Keys.PLAN)) {
             new BasicSetupDialog().show(getFragmentManager(), "BasicSetupDialog");
             // BasicSetupDialog will call this method again

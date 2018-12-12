@@ -1,5 +1,9 @@
 <resources>
+    <bool name="enable_disclaimer">false</bool>
+    <bool name="enable_initial_setup_prompt">false</bool>
+    <!--
     <bool name="enable_initial_greeter">false</bool>
+    -->
     <string name="default_plan_selection" translatable="false">3</string>
     <string name="default_plan_custom_address" translatable="false">"https://schulserver/SCHULVERWALTUNG/to/vertretungsplan/lz2tage.html"</string>
     <string name="file_provider_authorities" translatable="false">de.spiritcroc.akg_vertretungsplan.lehrer.fileprovider</string>

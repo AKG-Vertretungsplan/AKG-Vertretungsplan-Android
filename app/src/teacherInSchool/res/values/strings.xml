@@ -1,0 +1,4 @@
+<resources>
+    <string name="dialog_greeter_title">Teacher version</string>
+    <string name="dialog_greeter_message">The teacher version of the app comes with some preset settings differing from the normal variant, targeted at school-internal use.</string>
+</resources>

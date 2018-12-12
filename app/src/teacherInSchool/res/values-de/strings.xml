@@ -1,0 +1,4 @@
+<resources>
+    <string name="dialog_greeter_title">Version für Lehrer</string>
+    <string name="dialog_greeter_message">Diese Version der App kommt mit einigen Voreinstellungen für den schulinternen Gebrauch. Sonst unterscheidet sie sich kaum von der öffentlich zugänglichen Variante, womöglich ist sie allerdings ein paar Updates hinterher.</string>
+</resources>

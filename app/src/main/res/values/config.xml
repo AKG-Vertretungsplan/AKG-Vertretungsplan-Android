@@ -1,4 +1,6 @@
 <resources>
+    <bool name="enable_disclaimer">true</bool>
+    <bool name="enable_initial_setup_prompt">true</bool>
     <bool name="enable_initial_greeter">true</bool>
     <string name="default_plan_selection" translatable="false">2</string>
     <string name="default_plan_custom_address" translatable="false">""</string>
