@@ -28,6 +28,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -179,6 +181,10 @@ public class WebActivity extends NavigationDrawerActivity {
             css = sharedPreferences.getString(Keys.WEB_PLAN_CUSTOM_STYLE, getString(R.string.web_plan_default_custom_style));
         } else {
             css = sharedPreferences.getString(Keys.CSS, getString(R.string.web_plan_custom_style_akg_default));
+            if (TextUtils.isEmpty(css)) {
+                Log.w("WebActivity", "Empty CSS, fall back to default");
+                css = getString(R.string.web_plan_custom_style_akg_default);
+            }
         }
         return oldCss == null || !oldCss.equals(css);
     }

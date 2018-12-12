@@ -47,6 +47,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.ClientConnectionManager;
@@ -204,7 +205,12 @@ public class DownloadService extends JobIntentService {
                     httpGet = new HttpGet(CSS_ADDRESS);
                     httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
                     //sharedPreferences.edit().remove(Keys.WEB_PLAN_CUSTOM_STYLE).apply();// test default
-                    css = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
+                    HttpResponse cssResponse = httpClient.execute(httpGet);
+                    if (cssResponse.getStatusLine().getStatusCode() == 200) {
+                        css = EntityUtils.toString(cssResponse.getEntity());
+                    } else {
+                        css = "";
+                    }
                   break;
                 }
                 case 3:
@@ -230,7 +236,12 @@ public class DownloadService extends JobIntentService {
                     httpGet = new HttpGet(guessedCssAddress);
                     httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
                     //sharedPreferences.edit().remove(Keys.WEB_PLAN_CUSTOM_STYLE).apply();// test default
-                    css = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
+                    HttpResponse cssResponse = httpClient.execute(httpGet);
+                    if (cssResponse.getStatusLine().getStatusCode() == 200) {
+                        css = EntityUtils.toString(cssResponse.getEntity());
+                    } else {
+                        css = "";
+                    }
                     break;
                 }
                 default:
@@ -246,7 +257,12 @@ public class DownloadService extends JobIntentService {
                     httpGet = new HttpGet(CSS_ADDRESS);
                     httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
                     //sharedPreferences.edit().remove(Keys.WEB_PLAN_CUSTOM_STYLE).apply();// test default
-                    css = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
+                    HttpResponse cssResponse = httpClient.execute(httpGet);
+                    if (cssResponse.getStatusLine().getStatusCode() == 200) {
+                        css = EntityUtils.toString(cssResponse.getEntity());
+                    } else {
+                        css = "";
+                    }
                     break;
                 }
             }
