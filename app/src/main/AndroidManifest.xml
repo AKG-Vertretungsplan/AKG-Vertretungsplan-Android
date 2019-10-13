@@ -137,7 +137,7 @@
             android:permission="android.permission.BIND_JOB_SERVICE"/>
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="@string/file_provider_authorities"
             android:grantUriPermissions="true"
             android:exported="false">

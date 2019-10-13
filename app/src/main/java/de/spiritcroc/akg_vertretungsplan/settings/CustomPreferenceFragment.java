@@ -20,12 +20,11 @@ package de.spiritcroc.akg_vertretungsplan.settings;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 public abstract class CustomPreferenceFragment extends PreferenceFragment

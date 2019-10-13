@@ -334,4 +334,6 @@ public class Keys {
 
     public static final String LESSON_PLAN_SHOW_SUBJECT_SHORT = "pref_lesson_plan_show_subject_short";
 
+    public static final String CURRENT_STATUS_RESULT = "pref_last_status_result";
+
 }

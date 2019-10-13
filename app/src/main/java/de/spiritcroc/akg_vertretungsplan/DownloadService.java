@@ -32,37 +32,34 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Parcel;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.JobIntentService;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.LocalBroadcastManager;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.JobIntentService;
+import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.Base64;
 import android.util.Log;
-import android.widget.RemoteViews;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpVersion;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.scheme.PlainSocketFactory;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.params.HttpProtocolParams;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
+import cz.msebera.android.httpclient.HttpResponse;
+import cz.msebera.android.httpclient.HttpVersion;
+import cz.msebera.android.httpclient.client.methods.HttpGet;
+import cz.msebera.android.httpclient.conn.ClientConnectionManager;
+import cz.msebera.android.httpclient.conn.scheme.PlainSocketFactory;
+import cz.msebera.android.httpclient.conn.scheme.Scheme;
+import cz.msebera.android.httpclient.conn.scheme.SchemeRegistry;
+import cz.msebera.android.httpclient.conn.ssl.SSLSocketFactory;
+import cz.msebera.android.httpclient.impl.client.DefaultHttpClient;
+import cz.msebera.android.httpclient.impl.conn.tsccm.ThreadSafeClientConnManager;
+import cz.msebera.android.httpclient.params.BasicHttpParams;
+import cz.msebera.android.httpclient.params.HttpParams;
+import cz.msebera.android.httpclient.params.HttpProtocolParams;
+import cz.msebera.android.httpclient.protocol.HTTP;
+import cz.msebera.android.httpclient.util.EntityUtils;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -192,6 +189,7 @@ public class DownloadService extends JobIntentService {
         try {
             int plan = Integer.parseInt(getSharedPreferences().getString(Keys.PLAN, getResources().getString(R.string.default_plan_selection)));
             String result, css, url;
+            int status;
             switch (plan) {
                 case 1:
                 {
@@ -201,7 +199,9 @@ public class DownloadService extends JobIntentService {
                     DefaultHttpClient httpClient = getHttpClient();
                     HttpGet httpGet = new HttpGet(url = PLAN_1_ADDRESS);
                     httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
-                    result = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
+                    HttpResponse response = httpClient.execute(httpGet);
+                    result = EntityUtils.toString(response.getEntity());
+                    status = response.getStatusLine().getStatusCode();
                     httpGet = new HttpGet(CSS_ADDRESS);
                     httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
                     //sharedPreferences.edit().remove(Keys.WEB_PLAN_CUSTOM_STYLE).apply();// test default
@@ -225,7 +225,9 @@ public class DownloadService extends JobIntentService {
                     }
                     HttpGet httpGet = new HttpGet(url);
                     httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
-                    result = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
+                    HttpResponse response = httpClient.execute(httpGet);
+                    result = EntityUtils.toString(response.getEntity());
+                    status = response.getStatusLine().getStatusCode();
                     String guessedCssAddress;
                     if (url.contains("/") && (url.endsWith(".php") || url.endsWith(".html"))) {
                         guessedCssAddress = url.substring(0, url.lastIndexOf("/"));
@@ -253,7 +255,9 @@ public class DownloadService extends JobIntentService {
                     DefaultHttpClient httpClient = getHttpClient();
                     HttpGet httpGet = new HttpGet(url = PLAN_2_ADDRESS);
                     httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
-                    result = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
+                    HttpResponse response = httpClient.execute(httpGet);
+                    result = EntityUtils.toString(response.getEntity());
+                    status = response.getStatusLine().getStatusCode();
                     httpGet = new HttpGet(CSS_ADDRESS);
                     httpGet.setHeader("Authorization", "Basic " + base64EncodedCredentials);
                     //sharedPreferences.edit().remove(Keys.WEB_PLAN_CUSTOM_STYLE).apply();// test default
@@ -266,7 +270,7 @@ public class DownloadService extends JobIntentService {
                     break;
                 }
             }
-            processPlan(result, css, url);
+            processPlan(status, result, css, url);
             getSharedPreferences().edit().putInt(Keys.LAST_PLAN_TYPE, plan).apply();
         }
         catch (UnknownHostException e){
@@ -379,10 +383,12 @@ public class DownloadService extends JobIntentService {
         updateNavigationDrawerInformation(context);
     }
 
-    private void processPlan(String result, String css, String url){
+    private void processPlan(int resultStatusCode, String result, String css, String url){
         String latestHtml = getSharedPreferences().getString(Keys.HTML_LATEST, "");
         boolean newVersion = false;
-        if (result.contains("401 Authorization Required") || result.contains("401 Unauthorized")) {
+        SharedPreferences.Editor editor = getSharedPreferences().edit();
+        editor.putInt(Keys.CURRENT_STATUS_RESULT, resultStatusCode);
+        if (resultStatusCode == 401 || result.contains("401 Authorization Required") || result.contains("401 Unauthorized")) {
             showText((username.equals("") ? getString(R.string.enter_userdata) : getString(R.string.correct_userdata)));
             loginFailed = true;
             if (IsRunningSingleton.getInstance().isRunning()) {
@@ -392,7 +398,6 @@ public class DownloadService extends JobIntentService {
             }
         } else {
             String time = timeAndDateToString(Calendar.getInstance());
-            SharedPreferences.Editor editor = getSharedPreferences().edit();
             editor.putBoolean(Keys.ILLEGAL_PLAN, false).apply();//there are some textView updates below, and we don't know yet whether plan is illegal, so just pretend it is not for now and handle stuff later
             editor.putString(Keys.LAST_CHECKED, time);
             String latestContent = getContentFromHtml(latestHtml),
@@ -419,7 +424,6 @@ public class DownloadService extends JobIntentService {
             }
             editor.putString(Keys.HTML_LATEST, result);
             editor.putString(Keys.CSS, css);
-            editor.apply();
             loadWebViewData(result, url);
             if (!loadFormattedPlans(result))
                 setTextViewText(getString(R.string.error_illegal_plan));
@@ -492,6 +496,7 @@ public class DownloadService extends JobIntentService {
                 }
             }
         }
+        editor.apply();
         Tools.updateWidgets(this);
         updateNavigationDrawerInformation(this);
     }
@@ -714,7 +719,9 @@ public class DownloadService extends JobIntentService {
         int index = plan1.indexOf(searchingFor);
         if (index == -1){
             Log.e("getHeadsAndDivide", "Could not find " + searchingFor);
-            editor.putBoolean(Keys.ILLEGAL_PLAN, true).apply();
+            if (sharedPreferences.getInt(Keys.CURRENT_STATUS_RESULT, 0) != 401) {
+                editor.putBoolean(Keys.ILLEGAL_PLAN, true).apply();
+            }
             return false;
         }
         else
@@ -981,7 +988,7 @@ public class DownloadService extends JobIntentService {
         }
 
         Intent resultIntent = new Intent(this, touchActivity);
-        android.support.v4.app.TaskStackBuilder stackBuilder = android.support.v4.app.TaskStackBuilder.create(this);
+        androidx.core.app.TaskStackBuilder stackBuilder = androidx.core.app.TaskStackBuilder.create(this);
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(resultPendingIntent);
@@ -1165,7 +1172,7 @@ public class DownloadService extends JobIntentService {
                 break;
         }
 
-        processPlan(result, getString(R.string.web_plan_custom_style_akg_default), PLAN_1_ADDRESS);
+        processPlan(0, result, getString(R.string.web_plan_custom_style_akg_default), PLAN_1_ADDRESS);
     }
 
     private class InsecureSSLSocketFactory extends SSLSocketFactory {
